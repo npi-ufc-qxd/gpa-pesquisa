@@ -51,16 +51,16 @@ public class EmailObserver implements Observer {
 				final Evento eventoCopy = evento;
 				final String emailDiretor = usuarioService.getDiretor().getEmail();
 				final String emailCoordenador = projeto.getAutor().getEmail();
-				final String emailParecerista = projeto.getPareceres() != null && !projeto.getPareceres().isEmpty() ? 
-						projeto.getPareceres().get(0).getUsuario().getEmail() : "";
+				final String emailParecerista = projeto.getParecer() != null ? 
+						projeto.getParecer().getParecerista().getEmail() : "";
 				final String nomeCoordenador = projeto.getAutor().getNome();
-				final String nomeParecerista = projeto.getPareceres() != null && !projeto.getPareceres().isEmpty() ? 
-						projeto.getPareceres().get(0).getUsuario().getNome() : "";
+				final String nomeParecerista = projeto.getParecer() != null ? 
+						projeto.getParecer().getParecerista().getNome() : "";
 				final String nomeProjeto = new StringBuilder().append(projeto.getCodigo()).append(" - ").append(projeto.getNome()).toString();
 				final String subject = properties.getProperty(ASSUNTO).replace(NOME_PROJETO, nomeProjeto);
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				final String prazo = projeto.getPareceres() != null && !projeto.getPareceres().isEmpty() ? 
-						dateFormat.format(projeto.getPareceres().get(0).getPrazo()) : "";
+				final String prazo = projeto.getParecer() != null ? 
+						dateFormat.format(projeto.getParecer().getPrazo()) : "";
 				
 				Runnable enviarEmail = new Runnable() {
 					

@@ -1,6 +1,5 @@
 package ufc.quixada.npi.gpa.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -8,14 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Comentario implements Serializable {
+public class Comentario {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -27,29 +25,11 @@ public class Comentario implements Serializable {
 	private Date data;
 	
 	@ManyToOne
-	@JoinColumn(name = "pessoa_id")
-	@JsonBackReference
-	private Pessoa pessoa;
+	private Pessoa autor;
 	
 	@ManyToOne
-	@JoinColumn(name = "projeto_id")
-	@JsonBackReference
 	private Projeto projeto;
-
-	public Comentario() {
-		super();
-	}
-
-	public Comentario(Long id, String texto, Date data, Pessoa pessoa,
-			Projeto projeto) {
-		super();
-		this.id = id;
-		this.texto = texto;
-		this.data = data;
-		this.pessoa = pessoa;
-		this.projeto = projeto;
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -74,12 +54,12 @@ public class Comentario implements Serializable {
 		this.data = data;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public Pessoa getAutor() {
+		return autor;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setAutor(Pessoa autor) {
+		this.autor = autor;
 	}
 
 	public Projeto getProjeto() {
@@ -93,6 +73,6 @@ public class Comentario implements Serializable {
 	@Override
 	public String toString() {
 		return "Comentario [id=" + id + ", texto=" + texto + ", data=" + data
-				+ ", pessoa=" + pessoa + ", projeto=" + projeto + "]";
+				+ ", autor=" + autor + ", projeto=" + projeto + "]";
 	}
 }

@@ -1,7 +1,21 @@
 package ufc.quixada.npi.gpa.service;
 
-import ufc.quixada.npi.gpa.model.Documento;
+import java.util.List;
 
-public interface DocumentoService extends GenericService<Documento>{
+import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.Projeto;
+
+
+public interface DocumentoService {
+	
+	void salvar(Documento documento);
+	
+	void salvar(List<Documento> documentos);
+	
+	Documento getDocumentoById(Long id);
+	
+	void remover(Documento documento);
+	
+	List<Documento> getDocumentoByProjeto(Projeto projeto);
 	
 }

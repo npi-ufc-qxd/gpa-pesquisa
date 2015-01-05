@@ -1,165 +1,195 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>Informações do Projeto</title>
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
-	rel="stylesheet" />
-<link href="<c:url value="/resources/css/estilo.css" />"
-	rel="stylesheet" />
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Informações do Projeto</title>
 </head>
 
-<body onload="esconderComentarioSeVazio()">
-	<jsp:include page="../modulos/header.jsp" />
-
-	<div class="container" style="margin-bottom: 70px;">
-		<div class="novo-projeto" align="left">
-			<div class="form" align="center">
-				<h2>Detalhes do Projeto</h2>
-
-				<table id="details">
-					<tr>
-						<td class="head">Nome:</td>
-						<td class="content">${projeto.nome }</td>
-					</tr>
-					<tr>
-						<td class="head">Descrição:</td>
-						<td class="content">${projeto.descricao }</td>
-					</tr>
-					<tr>
-						<td class="head">Início:</td>
-						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
-								value="${projeto.inicio }" /></td>
-					</tr>
-					<tr>
-						<td class="head">Término:</td>
-						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
-								value="${projeto.termino }" /></td>
-					</tr>
-
-					<tr>
-						<td class="head">Submissão:</td>
-
-						<c:if test="${not empty projeto.submissao}">					
-							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
-									value="${projeto.submissao }" /> às <fmt:formatDate
-									pattern="HH:mm" value="${projeto.submissao }" /></td> 
-						</c:if>						
-
-					</tr>
-					<tr>
-						<td class="head">Avaliação:</td>
-
-						<c:if test="${not empty projeto.avaliacao}">					
-							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
-									value="${projeto.avaliacao }" /> às <fmt:formatDate
-									pattern="HH:mm" value="${projeto.avaliacao }" /></td> 
-						</c:if>						
-
-					</tr>
-					<tr>
-						<td class="head">Bolsas:</td>
-						<td class="content">${projeto.quantidadeBolsa }</td>
-					</tr>
-					<tr>
-						<td class="head">Local:</td>
-						<td class="content">${projeto.local }</td>
-					</tr>
-					<tr>
-						<td class="head">Carga Horária:</td>
-						<td class="content">${projeto.cargaHoraria}</td>
-					</tr>
-					<tr>
-						<td class="head">Valor da Bolsa:</td>
-						<td class="content">${projeto.valorDaBolsa}</td>
-					</tr>
-					<tr>
-						<td class="head" valign="top">Participantes:</td>
-							<c:forEach items="${projeto.participantes}" var="participante">
-							
-							<td class="content">	<a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a></td>
-							
-		           		    </c:forEach>
-					</tr>
-					<tr>
-						<td class="head">Atividades:</td>
-						<td class="content">${projeto.atividades }</td>
-					</tr>
-
-					<tr>
-						<td class="head" valign="top">Arquivos:</td>
-						<c:forEach var="documento" items="${projeto.documentos}">
-							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
-							<td class="content"><a
-								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-
-						</c:forEach>
-					</tr>
-				</table>
-
-				<div>
-
-
-					<div class="container ">
-						<h3 id="headComentarios">Comentários do Projeto</h3>
-						<ul id="comentarioList" class="ca-menu">
-							<c:forEach var="comentario" items="${projeto.comentarios}">
-								<li id="novoComentario" class="well">
-									<div class="nome_pessoa">${comentario.pessoa.nome}</div>
-									<div class="corpo_texto">${comentario.texto}</div>
-									<div class="formatacao_data">
-										<fmt:formatDate pattern="dd/MM/yyyy hh:mm"
-											value="${comentario.data}" />
-									</div>
-								</li>
-							</c:forEach>
-						</ul>
+<body>
+	<div class="container">
+		<jsp:include page="../modulos/header.jsp" />
+		<div class="formulario detalhes">
+			<input id="projetoId" type="hidden" value="${projeto.id }"/>
+			<h2>${projeto.nome }</h2>
+			<h3>Informações</h3><hr>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Status:</label>
+				<div class="col-sm-4 field-value">
+					<label>${projeto.status.descricao }</label>
+				</div>
+				<label class="col-sm-2 control-label field">Autor:</label>
+				<div class="col-sm-4 field-value">
+					<a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Descrição:</label>
+				<div class="col-sm-10 field-value">
+					<label>${projeto.descricao }</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Início:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.inicio }">
+						<label>-</label>
+					</c:if>
+					<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.inicio }" /></label>
+				</div>
+				<label class="col-sm-2 control-label field">Término:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.termino }">
+						<label>-</label>
+					</c:if>
+					<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Data de submissão:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.submissao }">
+						<label>-</label>
+					</c:if>
+					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.submissao }" /></label>
+				</div>
+				<label class="col-sm-2 control-label field">Data de avaliação:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.avaliacao }">
+						<label>-</label>
+					</c:if>
+					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.avaliacao }" /></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Local:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.local }">
+						<label>-</label>
+					</c:if>
+					<label>${projeto.local }</label>
+				</div>
+				<label class="col-sm-2 control-label field">Carga horária:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.cargaHoraria }">
+						<label>-</label>
+					</c:if>
+					<label>${projeto.cargaHoraria }</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Bolsas:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.quantidadeBolsa }">
+						<label>-</label>
+					</c:if>
+					<label>${projeto.quantidadeBolsa }</label>
+				</div>
+				<label class="col-sm-2 control-label field">Valor da bolsa:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.valorDaBolsa or projeto.valorDaBolsa == 0.0 }">
+						<label>-</label>
+					</c:if>
+					<c:if test="${not empty projeto.valorDaBolsa and projeto.valorDaBolsa != 0.0 }">
+						<label><fmt:formatNumber value="${projeto.valorDaBolsa}" type="currency"/></label>
+					</c:if>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Atividades:</label>
+				<div class="col-sm-10 field-value">
+					<c:if test="${empty projeto.atividades }">
+						<label>-</label>
+					</c:if>
+					<label>${projeto.atividades }</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Participantes:</label>
+				<div class="col-sm-10 field-value">
+					<c:if test="${empty projeto.participantes }">
+						<label>-</label>
+					</c:if>
+				</div>
+				<div class="col-sm-10 field-value">
+					<c:forEach items="${projeto.participantes }" var="participante">
+						<a href="<c:url value="/usuario/${participante.id}/detalhes" ></c:url>">${participante.nome}</a>
+					</c:forEach>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Anexos:</label>
+				<div class="col-sm-10 field-value">
+					<c:if test="${empty projeto.documentos }">
+						<label>-</label>
+					</c:if>
+				</div>
+				<div class="col-sm-10 field-value">
+					<c:forEach items="${projeto.documentos }" var="documento">
+						<a href="<c:url value="/documento/${projeto.id }/${documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
+					</c:forEach>
+				</div>
+			</div>
+			
+			<c:if test="${projeto.parecer != null}">
+				<h3>Parecer</h3><hr>
+				<div class="form-group">
+					<label class="col-sm-2 control-label field">Parecerista:</label>
+					<div class="col-sm-4 field-value">
+						<a href="<c:url value="/usuario/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a>
 					</div>
-
-				</div>
-
-				<div class="row text-center">
-
-
-					<form id="formularioCadastroComentario" role="form" method="POST"
-						class="form-horizontal">
-						<input type="hidden" id="projeto" name="projeto"
-							value="${projeto.id}"> <input type="hidden" id="pessoa"
-							name="pessoa" value="${usuario.id}"> <input
-							type="hidden" id="pessoa_nome" name="pessoa"
-							value="${usuario.nome}"> <label class="control-label"
-							for="textocomentarioInput"><h3>Novo Comentário</h3></label>
-						<div class="form-group">
-							<div class="input-group">
-								<textarea id="textocomentarioInput" name="texto"
-									class="form-control" placeholder="Comentário"></textarea>
-							</div>
+					<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
+						<label class="col-sm-2 control-label field">Prazo parecer:</label>
+						<div class="col-sm-4 field-value">
+							<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></label>
 						</div>
-						<br> <input name="botao" id="botaoEnviarComentario" type="submit"
-							class="btn btn-primary" value="Enviar" /> <a
-							href="<c:url value="/projeto/index"></c:url>"
-							class="btn btn-default">Voltar</a>
-					</form>
+					</c:if>
 				</div>
-
-
+				<div class="form-group">
+					<label class="col-sm-2 control-label field">Anexo:</label>
+					<div class="col-sm-10 field-value">
+						<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${projeto.parecer.documento.nome }</a>
+					</div>
+				</div>
+			</c:if>
+											
+			
+			<h3>Comentários</h3><hr>
+			<div class="form-group">
+				<div class="col-sm-12 field-value">
+					<ul class="cbp_tmtimeline">
+						<c:forEach items="${projeto.comentarios }" var="comentario">
+							<li>
+						        <time class="cbp_tmtime">
+						        	<span><fmt:formatDate pattern="dd/MM/yyyy" value="${comentario.data }"/></span>
+						        	<span><fmt:formatDate pattern="HH:mm" value="${comentario.data }" /></span>
+						        </time>
+						        <div class="cbp_tmlabel">
+						            <h2>${comentario.autor.nome }</h2>
+						            <p>${comentario.texto }</p>
+						        </div>
+						    </li>
+						</c:forEach>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div id="div-comentario" class="col-sm-12 field-value">
+					<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário"></textarea>
+				</div>
+			</div>
+			<div>
+				<input id="comentar" name="comentar" type="submit" class="btn btn-primary" value="Enviar" />
 			</div>
 		</div>
 	</div>
-
 	<jsp:include page="../modulos/footer.jsp" />
-
-
-	
-
 </body>
 </html>

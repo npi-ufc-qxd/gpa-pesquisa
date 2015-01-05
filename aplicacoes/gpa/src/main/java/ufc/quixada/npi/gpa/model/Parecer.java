@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -9,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,18 +24,19 @@ public class Parecer {
 	@Enumerated(EnumType.STRING)
 	private StatusPosicionamento status;
 	
-	@Lob
-	private String comentario;
+	@Column(columnDefinition = "TEXT")
+	private String observacao;
 	
-	private String posicionamento;
+	@Column(columnDefinition = "TEXT")
+	private String parecer;
 	
-	@DateTimeFormat(pattern = "dd/mm/yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataAtribuicao;
 	
-	@DateTimeFormat(pattern = "dd/mm/yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataRealizacao;
 	
-	@DateTimeFormat(pattern = "dd/mm/yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date prazo;
 	
 	@ManyToOne
@@ -43,34 +44,9 @@ public class Parecer {
 	private Documento documento;
 	
 	@ManyToOne
-	@JoinColumn(name = "pessoa_id")
-	private Pessoa usuario;
+	@JoinColumn(name = "parecerista_id")
+	private Pessoa parecerista;
 	
-	@ManyToOne
-	@JoinColumn(name = "projeto_id")
-	private Projeto projeto;
-
-	public Parecer(){
-		super();
-	}
-
-	public Parecer(Long id, StatusPosicionamento status, String comentario,
-			String posicionamento, Date dataAtribuicao, Date dataRealizacao,
-			Date prazo, Documento documento, Pessoa usuario, Projeto projeto) {
-		super();
-		this.id = id;
-		this.status = status;
-		this.comentario = comentario;
-		this.posicionamento = posicionamento;
-		this.dataAtribuicao = dataAtribuicao;
-		this.dataRealizacao = dataRealizacao;
-		this.prazo = prazo;
-		this.documento = documento;
-		this.usuario = usuario;
-		this.projeto = projeto;
-	}
-
-
 	public Long getId() {
 		return id;
 	}
@@ -87,8 +63,8 @@ public class Parecer {
 		this.status = status;
 	}
 
-	public String getComentario() {
-		return comentario;
+	public String getObservacao() {
+		return observacao;
 	}
 
 	public Documento getDocumento() {
@@ -99,8 +75,8 @@ public class Parecer {
 		this.documento = documento;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 	public Date getDataAtribuicao() {
@@ -127,44 +103,43 @@ public class Parecer {
 		this.prazo = prazo;
 	}
 
-	public Pessoa getUsuario() {
-		return usuario;
+	public Pessoa getParecerista() {
+		return parecerista;
 	}
 
-	public void setUsuario(Pessoa usuario) {
-		this.usuario = usuario;
+	public void setParecerista(Pessoa parecerista) {
+		this.parecerista = parecerista;
 	}
 
-	public Projeto getProjeto() {
-		return projeto;
+	public String getParecer() {
+		return parecer;
 	}
 
-	public void setProjeto(Projeto projeto) {
-		this.projeto = projeto;
+	public void setParecer(String parecer) {
+		this.parecer = parecer;
 	}
-
-	public String getPosicionamento() {
-		return posicionamento;
-	}
-
-	public void setPosicionamento(String posicionamento) {
-		this.posicionamento = posicionamento;
-	}
-
 
 	@Override
 	public String toString() {
 		return "Parecer [id=" + id + ", status=" + status + ", comentario="
-				+ comentario + ", posicionamento=" + posicionamento
+				+ observacao
 				+ ", dataAtribuicao=" + dataAtribuicao + ", dataRealizacao="
-				+ dataRealizacao + ", prazo=" + prazo + ", documento="
-				+ documento + ", usuario=" + usuario + ", projeto=" + projeto
-				+ "]";
+				+ dataRealizacao + ", prazo=" + prazo + "]";
 	}
 
 
 	public enum StatusPosicionamento {
-		FAVORAVEL , NAO_FAVORAVEL;
+		FAVORAVEL("FAVORÁVEL") , NAO_FAVORAVEL("NÃO FAVORÁVEL");
+		
+		private String descricao;
+
+		private StatusPosicionamento(String descricao) {
+			this.descricao = descricao;
+		}
+
+		public String getDescricao() {
+			return this.descricao;
+		}
 	}
 }
 

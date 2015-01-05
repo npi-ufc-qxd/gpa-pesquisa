@@ -19,6 +19,8 @@
 		<!-- Java EE / Java SE dependencies -->
 
 		<jstl.version>1.2</jstl.version>
+		<javax.mail.version>1.4.3</javax.mail.version>
+		<javax.servlet.version>3.0-alpha-1</javax.servlet.version>
 		<javaee.web.api.version>6.0</javaee.web.api.version>
 		<java.validation.version>1.1.0.Final</java.validation.version>
 		<javax.inject.version>1</javax.inject.version>
@@ -28,6 +30,7 @@
 
 		<!-- Hibernate / JPA -->
 		<hibernate.version>4.3.1.Final</hibernate.version>
+		<hibernate.validator.version>5.1.0.Final</hibernate.validator.version>
 
 		<!-- Database access -->
 		<postgresql.version>9.1-901.jdbc4</postgresql.version>
@@ -42,18 +45,33 @@
 		<bootstrap.version>3.1.1</bootstrap.version>
 		<jquery.version>2.1.0</jquery.version>
 		<jquery-ui.version>1.11.1</jquery-ui.version>
+		<jquery.maskedinput.version>1.3.1</jquery.maskedinput.version>
+		<jquery.validation.version>1.12.0</jquery.validation.version>
 		<dandelion.datatables.version>0.9.3</dandelion.datatables.version>
+		
+		<commons.fileupload.version>1.3.1</commons.fileupload.version>
+		<commons.io.version>2.4</commons.io.version>
+		
+		<!-- NPI -->
+		<npi.core.version>0.0.6</npi.core.version>
 
 
 	</properties>
+	
+	<repositories>
+		<repository>
+			<id>npi-mvn-repo</id>
+			<url>http://npi-ufc-qxd.github.io/npi-mvn-repo/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.3</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- Jackson JSON Mapper -->
 		<dependency>
@@ -66,7 +84,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>3.0-alpha-1</version>
+			<version>${javax.servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -117,33 +135,7 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-			<version>3.2.1.RELEASE</version>
-		</dependency>
-
-		<!-- HIBERNATE -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-
-		<!-- Databases - Uses POSTGRESQL by default -->
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgresql.version}</version>
-		</dependency>
-
-		<!-- Logging with SLF4J & LogBack -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j-log4j12.version}</version>
-		</dependency>
-
+		
 		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -162,6 +154,40 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		
+
+		<!-- HIBERNATE -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.validator.version}</version>
+		</dependency>
+
+		<!-- Databases - Uses POSTGRESQL by default -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+		</dependency>
+
+		<!-- Logging with SLF4J & LogBack -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-log4j12.version}</version>
+		</dependency>
+
 
 
 		<!-- Webjars (static dependencies distributed as JAR files) -->
@@ -182,6 +208,18 @@
 			<artifactId>jquery-ui</artifactId>
 			<version>${jquery-ui.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery-maskedinput</artifactId>
+			<version>${jquery.maskedinput.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery-validation</artifactId>
+			<version>${jquery.validation.version}</version>
+		</dependency>
 
 		<!-- Dandelion -->
 		<dependency>
@@ -200,44 +238,34 @@
 			<version>${dandelion.datatables.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery-maskedinput</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery-validation</artifactId>
-			<version>1.12.0</version>
-		</dependency>
 
 		<!-- Dependência do Apache Common File -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.3.1</version>
+			<version>${commons.fileupload.version}</version>
 		</dependency>
 
 		<!-- Apache Commons IO -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
+			<version>${commons.io.version}</version>
 		</dependency>
 
-		<!-- Dependência do hibernate validator para validar o form -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.0.Final</version>
-		</dependency>
 		
 		<!-- Dependência Java Mail -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.3</version>
+			<version>${javax.mail.version}</version>
+		</dependency>
+		
+		<!-- NPI Core -->
+		<dependency>
+			<groupId>br.ufc.quixada.npi</groupId>
+			<artifactId>npi-core-api</artifactId>
+			<version>${npi.core.version}</version>
 		</dependency>
 
 

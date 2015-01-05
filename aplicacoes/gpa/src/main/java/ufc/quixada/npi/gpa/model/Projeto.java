@@ -1,6 +1,6 @@
 package ufc.quixada.npi.gpa.model;
 
-import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,21 +17,20 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
-import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Projeto implements Serializable {
+public class Projeto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String codigo;
 
-	@Size(min = 2, message = "Mínimo 2 caracteres")
+	@Size(min = 2, message = "O nome deve ter no mínimo 2 caracteres")
 	private String nome;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -43,75 +42,48 @@ public class Projeto implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date avaliacao;
 
-	@Column(columnDefinition="TEXT")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date submissao;
 
 	@Column(columnDefinition = "TEXT")
-	@Size(min = 5, message = "Mínimo 5 caracteres")
+	@Size(min = 5, message = "A descrição deve ter no mínimo 5 caracteres")
 	private String descricao;
 
 	@ManyToOne
 	private Pessoa autor;
 
+	@Column(columnDefinition = "TEXT")
 	private String atividades;
 
-	//@NotNull(message="Campo obrigatório")
 	private Integer cargaHoraria;
 
-	private Integer valorDaBolsa;
+	private Double valorDaBolsa;
 
-	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
 
 	private String local;
-
+	
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 
 	@ManyToMany
-    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    @JoinTable(name="projeto_participante", joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="participante_id", referencedColumnName="id")})
     private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
-	@JsonManagedReference
 	private List<Comentario> comentarios;
-
-	@OneToMany(mappedBy = "projeto")
-	private List<Parecer> pareceres;
-
-	public Projeto() {
-		super();
-	}
-
-	public Projeto(Long id, String codigo, String nome, Date inicio,
-			Date termino, Date submissao, String descricao, Pessoa autor,
-			String atividades, Integer cargaHoraria, Integer valorDaBolsa,
-			Integer quantidadeBolsa, String local, StatusProjeto status,
-			List<Pessoa> participantes, List<Documento> documentos,
-			List<Comentario> comentarios, List<Parecer> pareceres) {
-		super();
-		this.id = id;
-		this.codigo = codigo;
-		this.nome = nome;
-		this.inicio = inicio;
-		this.termino = termino;
-		this.submissao = submissao;
-		this.descricao = descricao;
-		this.autor = autor;
-		this.atividades = atividades;
-		this.cargaHoraria = cargaHoraria;
-		this.valorDaBolsa = valorDaBolsa;
-		this.quantidadeBolsa = quantidadeBolsa;
-		this.local = local;
-		this.status = status;
-		this.participantes = participantes;
-		this.documentos = documentos;
-		this.comentarios = comentarios;
-		this.pareceres = pareceres;
-	}
+	
+	@OneToOne(cascade = CascadeType.REMOVE)
+	private Parecer parecer;
+	
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Documento ata;
+	
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Documento oficio;
 
 	public Date getAvaliacao() {
 		return avaliacao;
@@ -168,11 +140,11 @@ public class Projeto implements Serializable {
 		this.cargaHoraria = cargaHoraria;
 	}
 
-	public Integer getValorDaBolsa() {
+	public Double getValorDaBolsa() {
 		return valorDaBolsa;
 	}
 
-	public void setValorDaBolsa(Integer valorDaBolsa) {
+	public void setValorDaBolsa(Double valorDaBolsa) {
 		this.valorDaBolsa = valorDaBolsa;
 	}
 
@@ -240,20 +212,36 @@ public class Projeto implements Serializable {
 		return id;
 	}
 
-	public List<Parecer> getPareceres() {
-		return pareceres;
-	}
-
-	public void setPareceres(List<Parecer> pareceres) {
-		this.pareceres = pareceres;
-	}
-
 	public Date getSubmissao() {
 		return submissao;
 	}
 
 	public void setSubmissao(Date submissao) {
 		this.submissao = submissao;
+	}
+
+	public Parecer getParecer() {
+		return parecer;
+	}
+
+	public void setParecer(Parecer parecer) {
+		this.parecer = parecer;
+	}
+
+	public Documento getAta() {
+		return ata;
+	}
+
+	public void setAta(Documento ata) {
+		this.ata = ata;
+	}
+
+	public Documento getOficio() {
+		return oficio;
+	}
+
+	public void setOficio(Documento oficio) {
+		this.oficio = oficio;
 	}
 
 	@Override
@@ -284,10 +272,7 @@ public class Projeto implements Serializable {
 				+ ", autor=" + autor + ", atividades=" + atividades
 				+ ", cargaHoraria=" + cargaHoraria + ", valorDaBolsa="
 				+ valorDaBolsa + ", quantidadeBolsa=" + quantidadeBolsa
-				+ ", local=" + local + ", status=" + status
-				+ ", participantes=" + participantes + ", documentos="
-				+ documentos + ", comentarios=" + comentarios + ", pareceres="
-				+ pareceres + "]";
+				+ ", local=" + local + ", status=" + status + "]";
 	}
 
 	public enum StatusProjeto {
@@ -309,6 +294,49 @@ public class Projeto implements Serializable {
 
 	public enum Evento {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
+	}
+	
+	public boolean isDataTerminoFutura() {
+		if (this.termino != null && comparaDatas(new Date(), this.termino) > 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isPeriodoValido() {
+		if (this.termino != null && this.inicio != null && comparaDatas(this.inicio, this.termino) > 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	private int comparaDatas(Date date1, Date date2) {
+		Calendar calendar1 = Calendar.getInstance();
+		calendar1.setTime(date1);
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(date2);
+		if (calendar1.get(Calendar.YEAR) > calendar2.get(Calendar.YEAR)) {
+			return 1;
+		} else if (calendar1.get(Calendar.YEAR) < calendar2.get(Calendar.YEAR)) {
+			return -1;
+		} else {
+			if (calendar1.get(Calendar.MONTH) > calendar2.get(Calendar.MONTH)) {
+				return 1;
+			} else if (calendar1.get(Calendar.MONTH) < calendar2
+					.get(Calendar.MONTH)) {
+				return -1;
+			} else {
+				if (calendar1.get(Calendar.DAY_OF_MONTH) > calendar2
+						.get(Calendar.DAY_OF_MONTH)) {
+					return 1;
+				} else if (calendar1.get(Calendar.DAY_OF_MONTH) < calendar2
+						.get(Calendar.DAY_OF_MONTH)) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		}
 	}
 
 }

@@ -1,49 +1,98 @@
-div.container {
-	margin-bottom: 70px;
+body {
+	font-family: 'Lato', Calibri, Arial, sans-serif !important;
+	background: url('http://jrain.oscitas.netdna-cdn.com/wp-content/themes/zillapress/images/bg-body.png') repeat scroll 0% 0% transparent;
+	/* background: none repeat scroll 0% 0% #F2F2F2;*/
 }
 
-#header-page {
-	width: 100%;
-	background-color: #0064A1;
-	padding-top: 20px;
-	padding-bottom: 20px;
+button, a, h2 > a {
+	text-decoration: none;
+	outline: 0 !important;
 }
 
-div.row {
-	width: 100%;
+h3 {
+	text-align: left;
+	margin-bottom: 0px;
 }
 
-.navbar {
-	background-color: #f5f5f5;
+hr {
+	margin-top: 2px;
+	border-color: #47A3DA;
+	border-width: 2px;
 }
 
-.navbar-nav>li>a, .navbar-brand {
-	color: black !important;
+label {
+	line-height: 1;
+	font-size: 18px;
+	font-weight: 500;
 }
 
-.navbar-nav>li>a:HOVER, .navbar-brand:HOVER {
-	color: #0064A1 !important;
+label.field {
+	text-align: right;
+	font-weight: 700;
 }
 
-#footer {
-	position: fixed;
-	bottom: 0px;
-	width: 100%;
-	height: 50px;
-	background-color: #eee;
+div.detalhes > div.form-group {
+	padding-bottom: 13px;
+	padding-top: 13px;
 }
 
-#text-ufc {
-	margin-top: 20px;
+div.field-value {
+	text-align: left;
+	padding-left: 0px;
+}
+
+div.field-value.parecer > label {
+	margin-left: 17px;
+	margin-top: 7px;
+}
+
+div.field-value > a {
+	text-decoration: none;
+	font-size: 18px;
+	line-height: 1;
+}
+
+div.formulario {
 	text-align: center;
 }
 
-.controls {
-	width: 50%;
+.form-control {
+	font-size: 17px !important;
 }
 
-.acoes {
-	margin-top: 5%;
+div.container {
+	margin-bottom: 50px;
+}
+
+button.close {
+	margin: 5px !important;
+	padding: 2px;
+}
+
+h4.modal-title {
+	display: inline;
+}
+
+table.projetos {
+	background-color: #F5F5F5;
+}
+
+table.projetos > thead {
+	color: #473F3F;
+	background-color: #A4CDE6;
+}
+
+table.projetos > tbody > tr > td.acoes {
+	text-align: right;
+}
+
+table.projetos > tbody > tr > td > a {
+	text-decoration: none;
+	outline: 0;
+}
+
+div.main {
+	margin-bottom: 10px;
 }
 
 table#details {
@@ -66,24 +115,6 @@ table#details tr td.content {
 	color: #0064A1;
 }
 
-.nav-tabs>li.active>a {
-	background-color: #f5f5f5;
-	font-weight: bold;
-}
-
-.nav-tabs>li.active>a:hover {
-	background-color: #f5f5f5;
-}
-
-.nav-tabs>li.active>a:focus {
-	color: black;
-	background-color: #f5f5f5;
-}
-
-.nav-tabs>li>a {
-	font-weight: bold;
-}
-
 div.alert {
 	text-align: center;
 }
@@ -96,154 +127,47 @@ div.files {
 	text-align: left;
 }
 
-tr.processing {
-	display: none;
-}
-
 table#file-upload {
 	margin-top: 20px;
 }
 
-
-.content{
-	display:block;
-}
-
-
-.nome_pessoa {
-	text-decoration: underline;
-	font-weight: bold;
-}
-
-.formatacao_data {
-	text-align: right;
-	font-weight: bold;
-}
-
-.ca-menu>li {
-	list-style: none;
-	text-align: left;
-	margin-bottom: 5px;
-}
-
-.corpo_texto {
-	font-size: 1.25em;
-	word-break: break-all;
-}
-
-#textocomentarioInput {
-	max-width: 500px;
-	max-height: 100px;
-	min-width: 500px;
-	min-height: 100px;
-	border-radius: 4px;
-}
 .input-group{
 	margin: auto;
 }
 
-#first_cabecalho:first-child{
-	}
-	
-#addParticipante {
-	position: relative;
-	width: 200px;
-	color: #fff;
-	top: -34px;
-	margin-left: 79%;
-	left: 0;
-	background-color: #5cb85c;
-	border-color: #4cae4c;
-	background-image: none;
-	border: 1px solid transparent;
-	white-space: nowrap;
-	padding: 6px 12px;
-	font-size: 14px;
-	line-height: 1.42857143;
-	border-radius: 4px;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	background-color: #5cb85c;
-	margin-left: 79%;
+.has-success .control-label {
+    color: inherit;
 }
 
-#listaParticipantesCadastrados {
-	
-	position: relative;
-	background: #F5FFFA;
+.has-success .form-control {
+    border-color: #CCC;
+}
+
+.has-success .form-control:focus {
+    border-color: #66AFE9;
+    outline: 0px none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
+}
+
+span.required {
+	color: #A94442;
+}
+
+span.campo-obrigatorio {
+	font-size: 13px;
+	color: #555;
+}
+
+table#table-anexos {
+	margin-top: 20px;
+}
+
+textarea#comentario {
+	margin-bottom: 10px;
+	float: right;
+	width: 89%;
+}
+
+div.file-caption {
 	text-align: left;
-    height: 80px;
-	overflow-y: auto;
-	padding: 10px 5px 10px 5px;
-
-}
-
-.participanteSelecionado {
-	position: relative;
-	background: white;
-	margin-left: 20px;
-	padding: 5px 3px 5px 3px;
-}
-
-.ui-menu {
-	list-style:none;
-	background: #eee;
-	padding: 1px;
-	margin: 0;
-	display:block;
-	width: 80px;
-	float: left;
-}
-
-#ui-id-1 {
-	overflow-y:auto;
-	height: 120px;
-}
-
-.ui-menu li {
-	display: list-item;
-    border: solid 0px #879b17;
-    cursor: pointer; 
-    cursor: hand;
-    padding: 10px 10px 10px 10px;
-} 
-
-.ui-menu li:hover{
-	font-weight: bold;
-    background:white;
-}
-.ui-helper-hidden-accessible{
-	
-	display : none;
-	
-}
-
-.error{
-	
-	position: absolute;
-	background-color: #F0F8FF;
-	left: 50%;
-	top: 50%;
-	margin-left:-250px;
-	width: 500px;
-	text-align: center;
-	padding: 5px 5px 5px 5px;
-}
-.errorback{
-	
-	position: relative;
-	background: white;
-	width: 150px;
-	height: 50px;
-	font-size: 25px;
-	font-family: inherit;
-	padding: 5px 55px 5px 55px;
-	color: black;
-	text-decoration: none;
-}
-
-.errorback:hover{
-	background-color: #e7e7e7;
-	text-decoration: none;
 }

@@ -21,11 +21,6 @@
 	    </jsp-property-group>
 	</jsp-config>
 
-    <!-- used so we can use forms of method type 'PUT' and 'DELETE' (such as in the Pet form)
-see here: http://static.springsource.org/spring/docs/current/spring-framework-reference/html/view.html#rest-method-conversion
--->
-		
-
     <filter>
         <filter-name>httpMethodFilter</filter-name>
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
@@ -40,10 +35,10 @@ see here: http://static.springsource.org/spring/docs/current/spring-framework-re
     <error-code>404</error-code>
     <location>/WEB-INF/view/404.jsp</location>
   </error-page>
-    <error-page>
+    <!-- <error-page>
         <error-code>500</error-code>
         <location>/WEB-INF/view/500.jsp</location>
-    </error-page>
+    </error-page> -->
  
  	<context-param>
  		<param-name>contextConfigLocation</param-name>

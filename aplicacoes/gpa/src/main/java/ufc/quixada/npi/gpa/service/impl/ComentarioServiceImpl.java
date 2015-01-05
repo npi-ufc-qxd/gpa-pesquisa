@@ -1,14 +1,23 @@
 package ufc.quixada.npi.gpa.service.impl;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import javax.inject.Named;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.service.ComentarioService;
+import br.ufc.quixada.npi.repository.GenericRepository;
 
-@Repository
-@Transactional
-public class ComentarioServiceImpl<T> extends GenericServiceImpl<Comentario>
-		implements ComentarioService {
+@Named
+public class ComentarioServiceImpl implements ComentarioService {
+
+	@Autowired
+	private GenericRepository<Comentario> comentarioRepository;
+	
+	@Override
+	public void salvar(Comentario comentario) {
+		comentarioRepository.save(comentario);
+		
+	}
 
 }
