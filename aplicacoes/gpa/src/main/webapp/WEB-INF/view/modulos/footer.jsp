@@ -3,7 +3,7 @@
 
 <script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 <script src="<c:url value="/webjars/jquery-ui/1.11.1/jquery-ui.min.js" />"></script>
-<script src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/webjars/bootstrap/3.3.2/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-datepicker.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-datepicker.pt-BR.js" />"></script>
 <script src="<c:url value="/resources/js/funcoes.js" />"></script>
