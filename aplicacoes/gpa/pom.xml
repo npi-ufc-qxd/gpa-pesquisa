@@ -53,7 +53,7 @@
 		<commons.io.version>2.4</commons.io.version>
 		
 		<!-- NPI -->
-		<npi.core.version>0.0.6</npi.core.version>
+		<npi.core.version>0.0.9</npi.core.version>
 
 
 	</properties>
