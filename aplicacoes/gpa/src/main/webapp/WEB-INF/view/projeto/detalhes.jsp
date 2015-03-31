@@ -59,12 +59,12 @@
 					</c:if>
 					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.submissao }" /></label>
 				</div>
-				<label class="col-sm-2 control-label field">Data de avaliação:</label>
+				<label class="col-sm-2 control-label field">Data de emissão do parecer:</label>
 				<div class="col-sm-4 field-value">
-					<c:if test="${empty projeto.avaliacao }">
+					<c:if test="${empty projeto.parecer.dataRealizacao }">
 						<label>-</label>
 					</c:if>
-					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.avaliacao }" /></label>
+					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" /></label>
 				</div>
 			</div>
 			<div class="form-group">
@@ -103,12 +103,19 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Atividades:</label>
-				<div class="col-sm-10 field-value">
+				<div class="col-sm-4 field-value">
 					<c:if test="${empty projeto.atividades }">
 						<label>-</label>
 					</c:if>
 					<label>${projeto.atividades }</label>
-				</div>
+				</div>		
+				<label class="col-sm-2 control-label field">Data de avaliação:</label>
+				<div class="col-sm-4 field-value">
+					<c:if test="${empty projeto.avaliacao }">
+						<label>-</label>
+					</c:if>
+					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.avaliacao }" /></label>
+				</div>		
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Participantes:</label>
