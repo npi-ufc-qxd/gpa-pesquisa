@@ -3,6 +3,7 @@ package ufc.quixada.npi.gpa.controller;
 import java.security.Principal;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.HTML;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -50,6 +51,12 @@ public class LoginController {
 	
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
 	public String acessoNegado(ModelMap model, Principal user) {
+		model.addAttribute("message", "Oops, página não encontrada.");
+		return "403";
+	}
+	
+	@RequestMapping(value = "/404", method = RequestMethod.GET)
+	public String paginaInexistente(ModelMap model, Principal user) {
 		if (user != null) {
 			model.addAttribute("message", "Olá, " + user.getName() 
 			+ ", você não tem permissão para acessar essa página!");
@@ -57,6 +64,7 @@ public class LoginController {
 			model.addAttribute("message", 
 			"Você não tem permissão para acessar essa página!");
 		}
-		return "403";
+		return "404";
 	}
+	
 }
