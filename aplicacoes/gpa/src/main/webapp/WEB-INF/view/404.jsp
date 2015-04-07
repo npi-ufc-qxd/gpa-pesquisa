@@ -7,7 +7,7 @@
 <html>
 <head>
 <jsp:include page="modulos/header-estrutura.jsp" />
-<title>Página não encontrada</title>
+<title>404 - Página não encontrada</title>
 </head>
 <body>
 	<div class="container">

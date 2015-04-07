@@ -5,7 +5,7 @@
 
 <html>
 <head>
-	<title>403</title>
+	<title>403 - Acesso negado</title>
 	<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
 	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.js" />"></script>
 	<script src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
@@ -19,9 +19,6 @@
 				<p class="lead text-muted">${message}</p>
 			</div>
 			<br>
-			<%-- <div class="col-lg-6 col-lg-offset-3">
-				<a class="btn btn-warning btn-group-justified" href="<c:url value='login'/>"">Voltar</a>
-			</div> --%>
 		</div>
 	</div>
 </body>
