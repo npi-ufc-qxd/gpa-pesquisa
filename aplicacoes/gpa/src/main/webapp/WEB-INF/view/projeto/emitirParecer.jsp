@@ -93,7 +93,7 @@
 				</div>
 
 				<div class="controls">
-					<button type="button" class="btn btn-primary btn-lg"
+					<button type="button" class="btn btn-primary btn-lg" onclick="myFunction()"
 						data-toggle="modal" data-target="#confirmacaoModal">Salvar</button>
 					<a href="<c:url value="/projeto/index"></c:url>"
 						class="btn btn-default">Cancelar</a>
@@ -108,13 +108,11 @@
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<h4 class="modal-title" id="confirmacaoModalLabel">Confirmação
-									dos dados</h4>
+								<h4 class="modal-title" id="confirmacaoModalLabel">Emitir Parecer</h4>
 							</div>
 							<div class="modal-body">
-								Nome do Projeto = ${projeto.nome }<br> 
-								Posicionamento =
-								<div id="divpos"></div>
+								Nome do Projeto = <strong>${projeto.nome }</strong><br>
+								Posicionamento = <strong id="val_posicionamento" />
 
 							</div>
 							<div class="modal-footer">
@@ -128,11 +126,16 @@
 			</form:form>
 		</div>
 	</div>
+	<!-- Script para capturar valor do select posicionamento FAVORAVEL/NAO-FAVORAVEL--> 
 	<script type="text/javascript">
-		var conceptName = $("#posicionamento").find(":selected").val();
-		var div = document.getElementById("divpos");
-		div.textContent = conceptName;
-		var text = div.textContent;
+		function myFunction() {
+
+			var indexSelect = document.getElementById("posicionamento").selectedIndex;
+			var valueSelected = emitirParecerForm.posicionamento.options[indexSelect].value;
+
+			document.getElementById("val_posicionamento").textContent = valueSelected;
+
+		}
 	</script>
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>
 
