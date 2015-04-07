@@ -168,17 +168,7 @@
 							<label>${projeto.parecer.status }</label>
 						</div>						
 					</c:if>
-					
-					<%-- <div class="form-group">
-					<label class="col-sm-2 control-label field">Posicionamento:</label>
-					<div class="col-sm-10 field-value">
-						
-						<div class="col-sm-4 field-value">
-							<label>${projeto.parecer.status }</label>
-						</div>
-					</div>
-					</div> --%>
-					
+										
 					<div class="form-group">
 					<label class="col-sm-2 control-label field">Parecer:</label>
 					<div class="col-sm-4 field-value">
