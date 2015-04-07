@@ -120,9 +120,8 @@
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Descrição:</label>
 				<div class="col-sm-10 field-value">
-					<label><textarea class="form-control" rows="1" cols="60"style="resize:none" readonly>
-					${projeto.descricao }</textarea> </label>
-				</div>
+					<article><label>${projeto.descricao }</label></article>
+				</div>						
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Atividades:</label>
@@ -131,10 +130,11 @@
 						<label>-</label>
 					</c:if>
 					<c:if test="${not empty projeto.atividades }">
-						<label>
-						<textarea class="form-control" rows="1" cols="60" style="resize:none" readonly>
-						${projeto.atividades }</textarea>
-						</label>
+						<article>
+							<label>							
+							${projeto.atividades }
+							</label>
+						</article>
 					</c:if>
 					
 				</div>		
@@ -149,26 +149,26 @@
 					</c:if>
 					<c:if test="${not empty projeto.participantes }">
 						<c:forEach items="${projeto.participantes }" var="participante">
-							<a href="<c:url value="/usuario/${participante.id}/detalhes" ></c:url>">${participante.nome}</a>
+							<a href="<c:url value="/usuario/${participante.id}/detalhes" ></c:url>">${participante.nome};</a>
 						</c:forEach>
 					</c:if>
 				</div>
-			</div>			
-			<br>
+			</div>
+			<br>							
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Anexos:</label>
 				<div class="col-sm-10 field-value">
 					<c:if test="${empty projeto.documentos }">
-						<label>-</label>
+						<label>-</label>						
+					</c:if>				
+					<c:if test="${not empty projeto.documentos }">
+						<c:forEach items="${projeto.documentos }" var="documento">
+							<a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a>							
+						</c:forEach>
 					</c:if>
 				</div>
-				<div class="col-sm-10 field-value">
-					<c:forEach items="${projeto.documentos }" var="documento">
-						<a href="<c:url value="/documento/${projeto.id }/${documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
-					</c:forEach>
-				</div>
-			</div>
-			
+			</div>	
+			<br>				
 			<c:if test="${projeto.parecer != null}">
 				<h3>Parecer</h3><hr>
 				<div class="form-group">
@@ -183,12 +183,14 @@
 						</div>
 					</c:if>
 				</div>
+				<br>
 				<div class="form-group">
 					<label class="col-sm-2 control-label field">Anexo:</label>
 					<div class="col-sm-10 field-value">
 						<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${projeto.parecer.documento.nome }</a>
 					</div>
 				</div>
+				
 			</c:if>
 											
 			
@@ -222,6 +224,6 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="../modulos/footer.jsp" />
+	<jsp:include page="../modulos/footer.jsp" />	
 </body>
 </html>
