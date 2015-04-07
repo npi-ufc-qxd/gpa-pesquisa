@@ -132,11 +132,23 @@
 				</div>
 				<div class="col-sm-10 field-value">
 					<c:forEach items="${projeto.documentos }" var="documento">
-						<a href="<c:url value="/documento/${projeto.id }/${documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
+						<a href="<c:url value="/documento/${projeto.id }" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
 					</c:forEach>
 				</div>
 			</div>
 			
+			
+			<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+			<h3>Observações do Diretor</h3><hr>
+			<div class="form-group">
+					<div class="col-sm-4 field-value">						
+						<p>${projeto.parecer.observacao}</p>									   		
+					</div>				   		
+			</div>
+			</sec:authorize>
+			
+						
+			<sec:authorize ifAnyGranted="ROLE_DIRETOR">
 			<c:if test="${projeto.parecer != null}">
 				<h3>Parecer</h3><hr>
 				<div class="form-group">
@@ -148,9 +160,34 @@
 						<label class="col-sm-2 control-label field">Prazo parecer:</label>
 						<div class="col-sm-4 field-value">
 							<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></label>
-						</div>
+						</div>						
 					</c:if>
+					<c:if test="${projeto.status != 'AGUARDANDO_PARECER'}">
+						<label class="col-sm-2 control-label field">Posicionamento:</label>
+						<div class="col-sm-4 field-value">
+							<label>${projeto.parecer.status }</label>
+						</div>						
+					</c:if>
+					
+					<%-- <div class="form-group">
+					<label class="col-sm-2 control-label field">Posicionamento:</label>
+					<div class="col-sm-10 field-value">
+						
+						<div class="col-sm-4 field-value">
+							<label>${projeto.parecer.status }</label>
+						</div>
+					</div>
+					</div> --%>
+					
+					<div class="form-group">
+					<label class="col-sm-2 control-label field">Parecer:</label>
+					<div class="col-sm-4 field-value">
+						<label>${projeto.parecer.parecer}</label>
+					</div>
+					</div>
+					 		
 				</div>
+						
 				<div class="form-group">
 					<label class="col-sm-2 control-label field">Anexo:</label>
 					<div class="col-sm-10 field-value">
@@ -158,7 +195,7 @@
 					</div>
 				</div>
 			</c:if>
-											
+			</sec:authorize>								
 			
 			<h3>Comentários</h3><hr>
 			<div class="form-group">
