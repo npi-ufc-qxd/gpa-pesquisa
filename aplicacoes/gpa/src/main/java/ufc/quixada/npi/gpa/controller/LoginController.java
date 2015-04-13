@@ -1,8 +1,8 @@
 package ufc.quixada.npi.gpa.controller;
 
 import java.security.Principal;
-
 import javax.servlet.http.HttpSession;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(
 			@RequestParam(value = "error", required = false) String error,
@@ -34,7 +35,6 @@ public class LoginController {
 
 	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
 	public String loginerror(ModelMap model) {
-
 		model.addAttribute("error", "Usuário e/ou senha inválidos!");
 		return "login";
 
@@ -58,5 +58,17 @@ public class LoginController {
 			"Você não tem permissão para acessar essa página!");
 		}
 		return "403";
+	}
+	
+	@RequestMapping(value = "/404", method = RequestMethod.GET)
+	public String paginaInexistente(ModelMap model, Principal user) {
+		model.addAttribute("message", "Oops, página não encontrada.");
+		return "404";
+	}
+	
+	@RequestMapping(value = "/500", method = RequestMethod.GET)
+	public String erroServidor(ModelMap model, Principal user) {
+		model.addAttribute("message", "Ops, o site teve um erro técnico.");
+		return "500";
 	}
 }
