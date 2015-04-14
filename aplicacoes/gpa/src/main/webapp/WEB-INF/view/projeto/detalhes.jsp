@@ -29,12 +29,7 @@
 					<a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label field">Descrição:</label>
-				<div class="col-sm-10 field-value">
-					<label>${projeto.descricao }</label>
-				</div>
-			</div>
+			
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Início:</label>
 				<div class="col-sm-4 field-value">
@@ -55,41 +50,59 @@
 				<label class="col-sm-2 control-label field">Data de submissão:</label>
 				<div class="col-sm-4 field-value">
 					<c:if test="${empty projeto.submissao }">
-						<label>-</label>
+						<label class="datas">-</label>
 					</c:if>
-					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.submissao }" /></label>
+					<c:if test="${not empty projeto.submissao }">
+						<label class="datas">
+							<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.submissao }" />
+						</label>
+					</c:if>
 				</div>
-				<label class="col-sm-2 control-label field">Data de avaliação:</label>
+				<label class="col-sm-2 control-label field">Data de emissão do parecer:</label>
 				<div class="col-sm-4 field-value">
-					<c:if test="${empty projeto.avaliacao }">
-						<label>-</label>
+					<c:if test="${empty projeto.parecer.dataRealizacao }">
+						<label class="datas">-</label>
 					</c:if>
-					<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.avaliacao }" /></label>
+					<c:if test="${empty projeto.parecer.dataRealizacao }">
+						<label class="datas">
+							<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" />
+						</label>
+					</c:if>
 				</div>
 			</div>
+			<br>
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Local:</label>
 				<div class="col-sm-4 field-value">
 					<c:if test="${empty projeto.local }">
 						<label>-</label>
 					</c:if>
-					<label>${projeto.local }</label>
+					<c:if test="${not empty projeto.local }">
+						<label>${projeto.local }</label>
+					</c:if>					
 				</div>
 				<label class="col-sm-2 control-label field">Carga horária:</label>
 				<div class="col-sm-4 field-value">
 					<c:if test="${empty projeto.cargaHoraria }">
 						<label>-</label>
 					</c:if>
-					<label>${projeto.cargaHoraria }</label>
+					<c:if test="${not empty projeto.cargaHoraria }">
+						<label>${projeto.cargaHoraria }</label>
+					</c:if>
+					
 				</div>
 			</div>
+			<br>
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Bolsas:</label>
 				<div class="col-sm-4 field-value">
 					<c:if test="${empty projeto.quantidadeBolsa }">
 						<label>-</label>
 					</c:if>
-					<label>${projeto.quantidadeBolsa }</label>
+					<c:if test="${not empty projeto.quantidadeBolsa }">
+						<label>${projeto.quantidadeBolsa }</label>
+					</c:if>
+					
 				</div>
 				<label class="col-sm-2 control-label field">Valor da bolsa:</label>
 				<div class="col-sm-4 field-value">
@@ -102,25 +115,52 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-2 control-label field">Data de avaliação:</label>
+				<div class="col-sm-6 field-value">
+					<c:if test="${empty projeto.avaliacao }">
+						<label>-</label>
+					</c:if>
+					<c:if test="${not empty projeto.avaliacao }">
+						<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.avaliacao }" /></label>
+					</c:if>					
+				</div>							
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Descrição:</label>
+				<div class="col-sm-10 field-value">
+					<article><label>${projeto.descricao }</label></article>
+				</div>						
+			</div>
+			<br>
+			<div class="form-group">
 				<label class="col-sm-2 control-label field">Atividades:</label>
 				<div class="col-sm-10 field-value">
 					<c:if test="${empty projeto.atividades }">
 						<label>-</label>
 					</c:if>
-					<label>${projeto.atividades }</label>
-				</div>
+					<c:if test="${not empty projeto.atividades }">
+						<article>
+							<label>							
+							${projeto.atividades }
+							</label>
+						</article>
+					</c:if>
+					
+				</div>		
+						
 			</div>
+			<br>
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Participantes:</label>
 				<div class="col-sm-10 field-value">
 					<c:if test="${empty projeto.participantes }">
 						<label>-</label>
 					</c:if>
-				</div>
-				<div class="col-sm-10 field-value">
-					<c:forEach items="${projeto.participantes }" var="participante">
-						<a href="<c:url value="/usuario/${participante.id}/detalhes" ></c:url>">${participante.nome}</a>
-					</c:forEach>
+					<c:if test="${not empty projeto.participantes }">
+						<c:forEach items="${projeto.participantes }" var="participante">
+							<label><a href="<c:url value="/usuario/${participante.id}/detalhes" ></c:url>">${participante.nome};</a></label>
+						</c:forEach>
+					</c:if>
 				</div>
 			</div>
 			
@@ -128,23 +168,23 @@
 				<label class="col-sm-2 control-label field">Anexos:</label>
 				<div class="col-sm-10 field-value">
 					<c:if test="${empty projeto.documentos }">
-						<label>-</label>
+						<label>-</label>						
+					</c:if>				
+					<c:if test="${not empty projeto.documentos }">
+						<c:forEach items="${projeto.documentos }" var="documento">
+							<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label><br>							
+						</c:forEach>
 					</c:if>
-				</div>
-				<div class="col-sm-10 field-value">
-					<c:forEach items="${projeto.documentos }" var="documento">
-						<a href="<c:url value="/documento/${projeto.id }/${documento.id}" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
-					</c:forEach>
 				</div>
 			</div>
 			
 			
 			<sec:authorize ifAnyGranted="ROLE_DIRETOR">
-			<h3>Observações do Diretor</h3><hr>
 			<div class="form-group">
-					<div class="col-sm-4 field-value">						
-						<p>${projeto.parecer.observacao}</p>									   		
-					</div>				   		
+			<h3>Observações do Diretor</h3><hr>
+				<div class="col-sm-4 field-value">						
+					<p>${projeto.parecer.observacao}</p>									   		
+				</div>				   		
 			</div>
 			</sec:authorize>
 			
@@ -155,7 +195,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label field">Parecerista:</label>
 					<div class="col-sm-4 field-value">
-						<a href="<c:url value="/usuario/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a>
+						<label><a href="<c:url value="/usuario/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a></label>
 					</div>
 					<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
 						<label class="col-sm-2 control-label field">Prazo parecer:</label>
@@ -177,19 +217,13 @@
 					</div>
 					</div>
 					 		
-				</div>
-						
+				</div>	
+				<br>
 			<div class="form-group">
-				<label class="col-sm-2 control-label field">Anexos:</label>
+				<label class="col-sm-2 control-label field">Anexo:</label>
+
 				<div class="col-sm-10 field-value">
-					<c:if test="${empty projeto.documentos }">
-						<label>-</label>
-					</c:if>
-				</div>
-				<div class="col-sm-10 field-value">
-					<c:forEach items="${projeto.documentos }" var="documento">
-						<a href="<c:url value="/documento/${projeto.id }/${documento.id}" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
-					</c:forEach>
+						<label><a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${projeto.parecer.documento.nome }</a></label>
 				</div>
 			</div>
 				
@@ -226,6 +260,6 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="../modulos/footer.jsp" />
+	<jsp:include page="../modulos/footer.jsp" />	
 </body>
 </html>

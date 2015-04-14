@@ -7,6 +7,7 @@
 <script src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-datepicker.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-datepicker.pt-BR.js" />"></script>
+<script src="<c:url value="/resources/js/readmore.min.js" />"></script>
 <script src="<c:url value="/resources/js/funcoes.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrapValidator.min.js" />"></script>
 <script src="<c:url value="/resources/js/language/pt_BR.js" />"></script>
