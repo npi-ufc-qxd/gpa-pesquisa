@@ -123,6 +123,7 @@
 					</c:forEach>
 				</div>
 			</div>
+			
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Anexos:</label>
 				<div class="col-sm-10 field-value">
@@ -132,7 +133,7 @@
 				</div>
 				<div class="col-sm-10 field-value">
 					<c:forEach items="${projeto.documentos }" var="documento">
-						<a href="<c:url value="/documento/${projeto.id }" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
+						<a href="<c:url value="/documento/${projeto.id }/${documento.id}" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
 					</c:forEach>
 				</div>
 			</div>
@@ -178,12 +179,20 @@
 					 		
 				</div>
 						
-				<div class="form-group">
-					<label class="col-sm-2 control-label field">Anexo:</label>
-					<div class="col-sm-10 field-value">
-						<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${projeto.parecer.documento.nome }</a>
-					</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Anexos:</label>
+				<div class="col-sm-10 field-value">
+					<c:if test="${empty projeto.documentos }">
+						<label>-</label>
+					</c:if>
 				</div>
+				<div class="col-sm-10 field-value">
+					<c:forEach items="${projeto.documentos }" var="documento">
+						<a href="<c:url value="/documento/${projeto.id }/${documento.id}" />" class="col-sm-12" style="padding-left: 0px;">${documento.nome }</a>
+					</c:forEach>
+				</div>
+			</div>
+				
 			</c:if>
 			</sec:authorize>								
 			
