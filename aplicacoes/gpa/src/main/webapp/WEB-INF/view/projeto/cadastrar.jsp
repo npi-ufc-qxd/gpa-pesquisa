@@ -185,7 +185,6 @@
 								</tbody>
 							</table>
 						</c:if>
-						<span class="required">!Para mais de um arquivo, selecione todos de uma vez</span>
 					</div>
 				</div>
 				
