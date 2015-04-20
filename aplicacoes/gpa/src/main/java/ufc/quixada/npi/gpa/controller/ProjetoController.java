@@ -46,7 +46,9 @@ import ufc.quixada.npi.gpa.utils.Constants;
 @Controller
 @RequestMapping("projeto")
 public class ProjetoController {
-
+	
+	private JRDataSource jrDatasource;
+	
 	@Inject
 	private ProjetoService projetoService;
 
@@ -57,9 +59,7 @@ public class ProjetoController {
 	private ComentarioService comentarioService;
 	
 	@Autowired
-	private DocumentoService documentoService;
-	
-	private JRDataSource jrDatasource;
+	private DocumentoService documentoService;	
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
