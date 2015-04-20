@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import net.sf.jasperreports.engine.JRDataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,6 +58,8 @@ public class ProjetoController {
 	
 	@Autowired
 	private DocumentoService documentoService;
+	
+	private JRDataSource jrDatasource;
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
