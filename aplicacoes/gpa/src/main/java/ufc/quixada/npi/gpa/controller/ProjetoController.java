@@ -16,12 +16,15 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,8 +50,6 @@ import ufc.quixada.npi.gpa.utils.Constants;
 @RequestMapping("projeto")
 public class ProjetoController {
 	
-	private JRDataSource jrDatasource;
-	
 	@Inject
 	private ProjetoService projetoService;
 
@@ -60,6 +61,8 @@ public class ProjetoController {
 	
 	@Autowired
 	private DocumentoService documentoService;	
+	
+	private JRDataSource jrDatasource;
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
@@ -509,6 +512,16 @@ public class ProjetoController {
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
 		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
+	}
+	
+	@RequestMapping(value = "/projeto/{idDocente}/projetos-por-docente", method = RequestMethod.GET)
+	public String projetosPorDocente( ModelMap model, @PathVariable("idDocente") Long id) throws JRException {
+				
+		jrDatasource = new JRBeanCollectionDataSource(projetoService.getProjetosByUsuario(id));
+		
+		model.addAttribute("datasource", jrDatasource);
+		model.addAttribute("format", "pdf");
+		return "relatorioProjetoPorDocente";
 	}
 
 }
