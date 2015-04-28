@@ -19,7 +19,7 @@
 					<a href="<c:url value="/projeto/projetos-reprovados" />" title="Visualizar Relatorios Reprovados"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Visualizar Relatórios Reprovados</a>
 				</li>
 				<li>
-					<a href="<c:url value="/projeto/1/projetos-por-docente" />" title="Visualizar Relatorios Projetos por Docente"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Visualizar Relatórios Projetos por Docente</a>
+					<a href="<c:url value="/projeto/projetos-por-docente" />" title="Visualizar Relatorios Projetos por Docente"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Visualizar Relatórios Projetos por Docente</a>
 				</li>
 
 				<li style="float: right;">

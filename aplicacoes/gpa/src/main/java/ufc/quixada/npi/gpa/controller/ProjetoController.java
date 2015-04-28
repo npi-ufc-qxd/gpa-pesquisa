@@ -514,9 +514,9 @@ public class ProjetoController {
 		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
 	}
 	
-	@RequestMapping(value = "/projeto/{idDocente}/projetos-por-docente", method = RequestMethod.GET)
-	public String projetosPorDocente( ModelMap model, @PathVariable("idDocente") Long id) throws JRException {
-				
+	@RequestMapping(value = "/projetos-por-docente", method = RequestMethod.GET)
+	public String projetosPorDocente( ModelMap model) throws JRException {
+		Long id = (long) 1;
 		jrDatasource = new JRBeanCollectionDataSource(projetoService.getProjetosByUsuario(id));
 		
 		model.addAttribute("datasource", jrDatasource);
