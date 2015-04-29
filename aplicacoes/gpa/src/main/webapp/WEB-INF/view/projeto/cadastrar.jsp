@@ -160,7 +160,7 @@
 				<div class="form-group form-item">
 					<label for="atividades" class="col-sm-2 control-label">Anexos:</label>
 					<div class="col-sm-10">
-						<input type="file" id="anexos" name="anexos" class="file" multiple="multiple" ></input>
+						<input type="file" name="anexos" class="multi" multiple="multiple" ></input>
 						<c:if test="${not empty projeto.documentos }">
 							<table id="table-anexos" class="table table-striped">
 								<thead>
