@@ -12,7 +12,7 @@
 		<access-denied-handler error-page="/403" />
  		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
  		<intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
- 		<!-- <intercept-url pattern="/*/diretor/**" access="ROLE_DIRETOR" /> -->
+ 		<intercept-url pattern="/*/diretor/**" access="ROLE_DIRETOR" />
  		<intercept-url pattern="/**" access="ROLE_COORDENADOR,ROLE_DIRETOR" />	
  		
  		<form-login login-page="/login" default-target-url="/" 
