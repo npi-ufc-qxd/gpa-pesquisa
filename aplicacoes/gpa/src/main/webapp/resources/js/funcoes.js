@@ -255,6 +255,14 @@ $(document).ready(function() {
 		$(this).find('.modal-body').text('Tem certeza de que deseja submeter o projeto \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-primary').attr('href', $(e.relatedTarget).data('href'));
 	});
+	$('#confirm-parecer').on('show.bs.modal', function(e) {
+		var indexSelect = document.getElementById("posicionamento").selectedIndex;
+		var valueSelected = emitirParecerForm.posicionamento.options[indexSelect].value;
+
+		
+		$(this).find('.modal-body').text('Tem certeza de que deseja submeter o parecer do projeto \"' + $(e.relatedTarget).data('name') + '\" com o posicionamento '+valueSelected+'?');
+		$(this).find('.btn-primary').attr('href', $(e.relatedTarget).data('href'));
+	});
 	
 	
 	$(".file").fileinput({
@@ -292,4 +300,6 @@ $(document).ready(function() {
 	    	}
 		})
 	});
+	
+	$('article').readmore();
 });
