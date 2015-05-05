@@ -42,6 +42,7 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
+import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.UsuarioService;
 import ufc.quixada.npi.gpa.utils.Constants;
@@ -55,6 +56,9 @@ public class ProjetoController {
 
 	@Inject
 	private UsuarioService usuarioService;
+	
+	@Inject
+	private ProjetoPorDocenteRelatorioService projetoPorDocenteRelatorioService;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -516,11 +520,11 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "/projetos-por-docente", method = RequestMethod.GET)
 	public String projetosPorDocente( ModelMap model) throws JRException {
-		Long id = (long) 1;
-		jrDatasource = new JRBeanCollectionDataSource(projetoService.getProjetosByUsuario(id));
+		Long id = (long) 1;		
+		jrDatasource = new JRBeanCollectionDataSource(projetoPorDocenteRelatorioService.getRelatorio(id, 2015));
 		
 		model.addAttribute("datasource", jrDatasource);
-		model.addAttribute("format", "pdf");
+		model.addAttribute("format", "html");
 		return "relatorioProjetoPorDocente";
 	}
 

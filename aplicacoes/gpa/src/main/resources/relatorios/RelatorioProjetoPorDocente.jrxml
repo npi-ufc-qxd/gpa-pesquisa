@@ -26,6 +26,11 @@
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<subDataset name="Table Dataset 1"/>
 	<field name="autor.nome" class="java.lang.String"/>
+	<field name="inicio" class="java.util.Date"/>
+	<field name="cargaHoraria" class="java.lang.Integer"/>
+	<field name="valorDaBolsa" class="java.lang.Double"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="field1" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -56,25 +61,72 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="57" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="31" width="140" height="26"/>
-				<textElement>
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{autor.nome}]]></textFieldExpression>
+				<reportElement x="2" y="5" width="553" height="95"/>
+				<textElement/>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="0" width="140" height="20"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Nome]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="32" splitType="Stretch"/>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement x="424" y="1" width="131" height="26"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor da Bolsa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="1" width="144" height="26"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carga Horaria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="140" height="26"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="1" width="140" height="26"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vinculo]]></text>
+			</staticText>
+		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>
