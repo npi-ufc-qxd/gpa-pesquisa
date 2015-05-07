@@ -25,7 +25,7 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
-import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
@@ -39,7 +39,7 @@ public class DocumentoController {
 	private ProjetoService projetoService;
 	
 	@Inject
-	private UsuarioService usuarioService;
+	private PessoaService usuarioService;
 	
 	@RequestMapping(value = "/{idProjeto}/{idArquivo}", method = RequestMethod.GET)
 	public void getArquivo(@PathVariable("idProjeto") Long idProjeto, @PathVariable("idArquivo") Long idArquivo, HttpServletResponse response, HttpSession session) {
@@ -80,7 +80,7 @@ public class DocumentoController {
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
 			Pessoa usuario = usuarioService
-					.getUsuarioByLogin(SecurityContextHolder.getContext()
+					.getUsuarioByCpf(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}

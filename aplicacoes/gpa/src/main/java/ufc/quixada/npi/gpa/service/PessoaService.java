@@ -2,11 +2,12 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
+import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
 
-public interface UsuarioService {
+public interface PessoaService {
 
-	Pessoa getUsuarioByLogin(String login);
+	Pessoa getUsuarioByCpf(String cpf);
 	
 	Pessoa getUsuarioById(Long id);
 
@@ -17,7 +18,9 @@ public interface UsuarioService {
 	Pessoa getDiretor();
 
 	List<Pessoa> getParticipantes(Pessoa usuario);
-
+	
 	List<Pessoa> getParticipantesProjetos();
+	
+	List<Papel> getPapeis(String cpf);
 	
 }

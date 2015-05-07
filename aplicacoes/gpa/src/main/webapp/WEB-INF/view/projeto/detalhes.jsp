@@ -179,7 +179,7 @@
 			</div>
 			
 			
-			<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+			<sec:authorize ifAnyGranted="DIRETOR">
 			<div class="form-group">
 			<h3>Observações do Diretor</h3><hr>
 				<div class="col-sm-4 field-value">						
@@ -189,7 +189,7 @@
 			</sec:authorize>
 			
 						
-			<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+			<sec:authorize ifAnyGranted="DIRETOR">
 			<c:if test="${projeto.parecer != null}">
 				<h3>Parecer</h3><hr>
 				<div class="form-group">

@@ -1,6 +1,25 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.*;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECERISTA_ATRIBUIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECER_EMITIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_ATUALIZADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_AVALIADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_CADASTRADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_REMOVIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_SUBMETIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_AVALIAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO_DIRETOR;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,8 +58,8 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
+import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
-import ufc.quixada.npi.gpa.service.UsuarioService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
@@ -53,7 +72,7 @@ public class ProjetoController {
 	private ProjetoService projetoService;
 
 	@Inject
-	private UsuarioService usuarioService;
+	private PessoaService usuarioService;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -504,7 +523,7 @@ public class ProjetoController {
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
 			Pessoa usuario = usuarioService
-					.getUsuarioByLogin(SecurityContextHolder.getContext()
+					.getUsuarioByCpf(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}

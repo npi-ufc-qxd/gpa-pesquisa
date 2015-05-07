@@ -74,7 +74,7 @@
 														<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
 													</a>
 												</c:if>
-												<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+												<sec:authorize ifAnyGranted="DIRETOR">
 													<c:if test="${projeto.status == 'SUBMETIDO'}">
 														<a id="atribuirParecerista"href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
 															<button class="btn btn-primary">Atribuir Parecerista&nbsp;<i class="fa fa-user"></i></button>

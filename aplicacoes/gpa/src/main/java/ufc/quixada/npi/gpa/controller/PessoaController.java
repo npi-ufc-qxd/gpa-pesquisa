@@ -12,14 +12,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.service.ProjetoService;
-import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.PessoaService;
 
 @Controller
 @RequestMapping("usuario")
 public class PessoaController {
 	
 	@Inject
-	private UsuarioService usuarioService;
+	private PessoaService usuarioService;
 	
 	@Inject
 	private ProjetoService projetoService;

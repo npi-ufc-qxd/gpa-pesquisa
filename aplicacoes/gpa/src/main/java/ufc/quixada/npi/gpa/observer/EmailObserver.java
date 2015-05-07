@@ -13,7 +13,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.service.Observer;
-import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.impl.EmailService;
 
 
@@ -23,7 +23,7 @@ public class EmailObserver implements Observer {
 	private EmailService emailService;
 	
 	@Inject
-	private UsuarioService usuarioService;
+	private PessoaService usuarioService;
 	
 	private static final String ASSUNTO = "email.assunto";
 	private static final String CORPO_SUBMISSAO = "email.corpo.submissao";
