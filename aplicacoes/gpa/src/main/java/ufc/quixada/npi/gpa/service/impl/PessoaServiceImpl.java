@@ -23,7 +23,7 @@ public class PessoaServiceImpl implements PessoaService {
 	private GenericRepository<Papel> papelRepository;
 
 	@Override
-	public Pessoa getUsuarioByCpf(String cpf) {
+	public Pessoa getPessoaByCpf(String cpf) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", cpf);
 		return pessoaRepository.find(QueryType.JPQL,
@@ -72,7 +72,7 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public Pessoa getUsuarioById(Long id) {
+	public Pessoa getPessoaById(Long id) {
 		return pessoaRepository.find(Pessoa.class, id);
 	}
 

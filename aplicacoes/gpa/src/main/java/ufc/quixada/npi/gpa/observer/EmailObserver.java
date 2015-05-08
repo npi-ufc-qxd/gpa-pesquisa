@@ -23,7 +23,7 @@ public class EmailObserver implements Observer {
 	private EmailService emailService;
 	
 	@Inject
-	private PessoaService usuarioService;
+	private PessoaService pessoaService;
 	
 	private static final String ASSUNTO = "email.assunto";
 	private static final String CORPO_SUBMISSAO = "email.corpo.submissao";
@@ -49,7 +49,7 @@ public class EmailObserver implements Observer {
 			
 			if(properties.getProperty("email.ativo").equals("true")) {
 				final Evento eventoCopy = evento;
-				final String emailDiretor = usuarioService.getDiretor().getEmail();
+				final String emailDiretor = pessoaService.getDiretor().getEmail();
 				final String emailCoordenador = projeto.getAutor().getEmail();
 				final String emailParecerista = projeto.getParecer() != null ? 
 						projeto.getParecer().getParecerista().getEmail() : "";

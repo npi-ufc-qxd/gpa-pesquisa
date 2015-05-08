@@ -15,25 +15,25 @@ import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 
 @Controller
-@RequestMapping("usuario")
+@RequestMapping("pessoa")
 public class PessoaController {
 	
 	@Inject
-	private PessoaService usuarioService;
+	private PessoaService pessoaService;
 	
 	@Inject
 	private ProjetoService projetoService;
 
 	@RequestMapping(value = "/{id}/detalhes")
 	public String getDetalhes(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
-		Pessoa usuario = usuarioService.getUsuarioById(id);
-		if (usuario == null) {
+		Pessoa pessoa = pessoaService.getPessoaById(id);
+		if (pessoa == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 		} else {
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("projetos", projetoService.getProjetosByParticipante(usuario.getId()));
+			model.addAttribute("pessoa", pessoa);
+			model.addAttribute("projetos", projetoService.getProjetosByParticipante(pessoa.getId()));
 			return PAGINA_DETALHES_USUARIO;
 		}
 

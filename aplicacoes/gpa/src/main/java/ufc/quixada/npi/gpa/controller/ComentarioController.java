@@ -25,7 +25,7 @@ import ufc.quixada.npi.gpa.utils.Constants;
 public class ComentarioController {
 
 	@Inject
-	private PessoaService usuarioService;
+	private PessoaService pessoaService;
 
 	@Inject
 	private ProjetoService projetoService;
@@ -61,8 +61,8 @@ public class ComentarioController {
 	
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Pessoa usuario = usuarioService
-					.getUsuarioByCpf(SecurityContextHolder.getContext()
+			Pessoa usuario = pessoaService
+					.getPessoaByCpf(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
