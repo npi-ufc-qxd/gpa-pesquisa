@@ -54,6 +54,7 @@
 		
 		<!-- NPI -->
 		<npi.core.version>0.0.9</npi.core.version>
+		<npi.ldap.version>0.1</npi.ldap.version>
 
 
 	</properties>
@@ -273,6 +274,13 @@
 			<groupId>br.ufc.quixada.npi</groupId>
 			<artifactId>npi-core-api</artifactId>
 			<version>${npi.core.version}</version>
+		</dependency>
+		
+		<!-- NPI LDAP -->
+		<dependency>
+			<groupId>br.ufc.quixada.npi</groupId>
+			<artifactId>npi-ldap</artifactId>
+			<version>${npi.ldap.version}</version>
 		</dependency>
 
 

@@ -73,7 +73,7 @@
 													<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
 												</a>
 											</c:if>
-											<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+											<sec:authorize ifAnyGranted="DIRETOR">
 												<c:if test="${projeto.status == 'SUBMETIDO'}">
 													<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
 														<button class="btn btn-primary">Atribuir Parecerista&nbsp;<i class="fa fa-user"></i></button>
@@ -108,7 +108,7 @@
 											<td>
 												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
 											</td>
-											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
@@ -144,7 +144,7 @@
 											<td>
 												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
 											</td>
-											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 										</tr>
 									</c:forEach>

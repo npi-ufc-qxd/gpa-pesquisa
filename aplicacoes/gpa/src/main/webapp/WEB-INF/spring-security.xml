@@ -8,19 +8,44 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd"> 
   
-	<http auto-config="true">
+	<beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter">
+	    <beans:property name="rolePrefix" value=""/>
+	</beans:bean>
+	
+	<beans:bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter"/>   
+
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+	    <beans:constructor-arg >
+	        <beans:list>
+	            <beans:ref bean="roleVoter"/>
+	            <beans:ref bean="authenticatedVoter"/>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+	
+	<http access-decision-manager-ref="accessDecisionManager" auto-config="true">
 		<access-denied-handler error-page="/403" />
  		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
  		<intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
- 		<intercept-url pattern="/*/diretor/**" access="ROLE_DIRETOR" />
- 		<intercept-url pattern="/**" access="ROLE_COORDENADOR,ROLE_DIRETOR" />	
+ 		<intercept-url pattern="/*/diretor/**" access="DIRETOR" />
+ 		<intercept-url pattern="/**" access="COORDENADOR,DIRETOR" />	
  		
  		<form-login login-page="/login" default-target-url="/" 
  			authentication-failure-url="/loginfailed" />
  		<logout logout-success-url="/login" invalidate-session="true"/> 	
  	</http>
+ 	
+ 	<!-- <beans:bean id="myAuthenticationSuccessHandler" class="ufc.quixada.npi.afastamento.service.SimpleUrlAuthenticationSuccessHandler" /> -->
+ 	
+ 	<beans:bean id="ldapAuthentication" class="ufc.quixada.npi.gpa.service.LdapAuthentication"></beans:bean>
+ 
+		<authentication-manager alias="authenticationManager">
+		    <authentication-provider ref="ldapAuthentication"></authentication-provider>
+		</authentication-manager>
+
+  	<global-method-security  secured-annotations = "enabled"  />
   
- 	<authentication-manager>
+ 	<!-- <authentication-manager>
 		<authentication-provider>
 			<password-encoder hash="sha-256"/>
 			<jdbc-user-service data-source-ref="gpa_pesquisa"
@@ -33,5 +58,5 @@
                     />
 		</authentication-provider>
  	</authentication-manager>
-  <global-method-security  secured-annotations = "enabled"  />
+  <global-method-security  secured-annotations = "enabled"  /> -->
 </beans:beans>

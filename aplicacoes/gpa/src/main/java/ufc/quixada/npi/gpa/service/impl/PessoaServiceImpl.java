@@ -9,37 +9,40 @@ import javax.inject.Named;
 
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
-import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.PessoaService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
-public class UsuarioServiceImpl implements UsuarioService {
+public class PessoaServiceImpl implements PessoaService {
 
 	@Inject
-	private GenericRepository<Pessoa> usuarioRepository;
+	private GenericRepository<Pessoa> pessoaRepository;
+	
+	@Inject
+	private GenericRepository<Papel> papelRepository;
 
 	@Override
-	public Pessoa getUsuarioByLogin(String login) {
+	public Pessoa getPessoaByCpf(String cpf) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("login", login);
-		return usuarioRepository.find(QueryType.JPQL,
-				"from Pessoa where login = :login", params).get(0);
+		params.put("cpf", cpf);
+		return pessoaRepository.find(QueryType.JPQL,
+				"from Pessoa where cpf = :cpf", params).get(0);
 	}
 
 	@Override
 	public List<Pessoa> getPareceristas(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return usuarioRepository.find(QueryType.JPQL,
+		return pessoaRepository.find(QueryType.JPQL,
 				"from Pessoa u where u.id != :id", params);
 	}
 
 	@Override
-	public boolean isDiretor(Pessoa usuario) {
-		List<Papel> papeis = usuario.getPapeis();
+	public boolean isDiretor(Pessoa pessoa) {
+		List<Papel> papeis = getPapeis(pessoa.getCpf());
 		for (Papel p : papeis) {
-			if (p.getNome().equals("ROLE_DIRETOR")) {
+			if (p.getNome().equals("DIRETOR")) {
 				return true;
 			}
 		}
@@ -50,27 +53,34 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Pessoa getDiretor() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("papel", "DIRETOR");
-		return usuarioRepository.findFirst("select pe Pessoa pe, pe.papeis pa where pa.nome = :papel", params);
+		return pessoaRepository.findFirst("select pe Pessoa pe, pe.papeis pa where pa.nome = :papel", params);
 	}
 
 	
 	@Override
 	public List<Pessoa> getParticipantes(Pessoa usuario) {
-		List<Pessoa> participantes = usuarioRepository.find(Pessoa.class);
+		List<Pessoa> participantes = pessoaRepository.find(Pessoa.class);
 		participantes.remove(usuario);
 		return participantes;
 	}
 
 	@Override
 	public List<Pessoa> getParticipantesProjetos() {
-		List<Pessoa> participantes = usuarioRepository.find(QueryType.JPQL,
+		List<Pessoa> participantes = pessoaRepository.find(QueryType.JPQL,
 				"select distinct proj.participantes from Projeto proj", null);
 		return participantes;
 	}
 
 	@Override
-	public Pessoa getUsuarioById(Long id) {
-		return usuarioRepository.find(Pessoa.class, id);
+	public Pessoa getPessoaById(Long id) {
+		return pessoaRepository.find(Pessoa.class, id);
+	}
+
+	@Override
+	public List<Papel> getPapeis(String cpf) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("cpf", cpf);
+		return papelRepository.find(QueryType.JPQL, "select p.papeis FROM Pessoa p WHERE p.cpf = :cpf", params);
 	}
 
 }
