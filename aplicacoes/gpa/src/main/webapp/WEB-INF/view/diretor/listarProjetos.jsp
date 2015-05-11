@@ -74,7 +74,7 @@
 														<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
 													</a>
 												</c:if>
-												<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+												<sec:authorize ifAnyGranted="DIRETOR">
 													<c:if test="${projeto.status == 'SUBMETIDO'}">
 														<a id="atribuirParecerista"href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
 															<button class="btn btn-primary">Atribuir Parecerista&nbsp;<i class="fa fa-user"></i></button>
@@ -115,12 +115,12 @@
 									<c:forEach var="projeto" items="${projetosSubmetidos}">
 										<tr>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 											<td>
 												<c:if test="${projeto.parecer == null }">-</c:if>
 												<c:if test="${projeto.parecer != null }">
-													<a href="<c:url value="/usuario/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a>
+													<a href="<c:url value="/pessoa/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a>
 												</c:if>
 											</td>
 											<td>
@@ -165,7 +165,7 @@
 									<c:forEach var="projeto" items="${projetosAvaliados}">
 										<tr>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 										</tr>
 									</c:forEach>
@@ -190,7 +190,7 @@
 									<c:forEach var="participante" items="${participantes}">
 										<tr>
 											<td>
-												<a href="<c:url value="/usuario/${participante.id}/detalhes" ></c:url>">${participante.nome}</a>
+												<a href="<c:url value="/pessoa/${participante.id}/detalhes" ></c:url>">${participante.nome}</a>
 											</td>
 										</tr>
 									</c:forEach>

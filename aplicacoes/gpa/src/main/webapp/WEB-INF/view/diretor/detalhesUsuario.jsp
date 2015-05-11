@@ -17,24 +17,24 @@
 		<jsp:include page="../modulos/header.jsp" />
 		<div class="formulario detalhes">
 			<input id="projetoId" type="hidden" value="${projeto.id }"/>
-			<h2>${usuario.nome }</h2>
+			<h2>${pessoa.nome }</h2>
 			<h3>Informações</h3><hr>
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Nome:</label>
 				<div class="col-sm-4 field-value">
-					<label>${usuario.nome }</label>
+					<label>${pessoa.nome }</label>
 				</div>
 			</div>
 			
 			<h3>Projetos que coordena</h3><hr>
 			<div class="form-group">
 				<div class="col-sm-12 field-value">
-					<c:if test="${empty usuario.projetos }">
+					<c:if test="${empty pessoa.projetos }">
 						<label>-</label>
 					</c:if>
 				</div>
 				<div class="col-sm-12 field-value">
-					<c:forEach items="${usuario.projetos }" var="projeto">
+					<c:forEach items="${pessoa.projetos }" var="projeto">
 						<a href="<c:url value="/projeto/${projeto.id }/detalhes" />" class="col-sm-12" style="padding-left: 0px;">${projeto.nome }</a>
 					</c:forEach>
 				</div>
@@ -43,7 +43,7 @@
 			<h3>Projetos de que participa</h3><hr>
 			<div class="form-group">
 				<div class="col-sm-12 field-value">
-					<c:if test="${empty usuario.projetos }">
+					<c:if test="${empty pessoa.projetos }">
 						<label>-</label>
 					</c:if>
 				</div>
