@@ -55,11 +55,14 @@ import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
+import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
+import ufc.quixada.npi.gpa.service.Observer;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
+import ufc.quixada.npi.gpa.service.impl.NotificationService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
@@ -73,6 +76,9 @@ public class ProjetoController {
 
 	@Inject
 	private PessoaService pessoaService;
+	
+	@Inject
+	private NotificationService notificationService;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -296,6 +302,7 @@ public class ProjetoController {
 			Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
 			if(resultadoValidacao.isEmpty()) {
 				redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+				notificationService.notificar(projeto, Evento.SUBMISSAO);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			}
 			model.addAttribute("projeto", projeto);
@@ -347,6 +354,7 @@ public class ProjetoController {
 		Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
 		if(resultadoValidacao.isEmpty()) {
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+			notificationService.notificar(projeto, Evento.SUBMISSAO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
@@ -395,6 +403,7 @@ public class ProjetoController {
 		}
 		
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
+		notificationService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
@@ -454,6 +463,7 @@ public class ProjetoController {
 		}
 
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
+		notificationService.notificar(projeto, Evento.EMISSAO_PARECER);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
@@ -499,6 +509,7 @@ public class ProjetoController {
 		Map<String, String> resultado = projetoService.avaliar(projeto);
 		if(resultado.isEmpty()) {
 			redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
+			notificationService.notificar(projeto, Evento.AVALIACAO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		model.addAttribute("projeto", projeto);
