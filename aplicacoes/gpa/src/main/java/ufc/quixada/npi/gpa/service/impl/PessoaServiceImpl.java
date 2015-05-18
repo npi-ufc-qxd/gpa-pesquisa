@@ -53,7 +53,7 @@ public class PessoaServiceImpl implements PessoaService {
 	public Pessoa getDiretor() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("papel", "DIRETOR");
-		return pessoaRepository.findFirst("select pe Pessoa pe, pe.papeis pa where pa.nome = :papel", params);
+		return pessoaRepository.findFirst(QueryType.JPQL, "select pe from Pessoa pe, Papel pa where pa.nome = :papel and pa member of pe.papeis", params, 0);
 	}
 
 	
