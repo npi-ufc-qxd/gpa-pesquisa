@@ -34,8 +34,16 @@
 		<!-- one of the properties available; the maximum file size in bytes -->
 		<!-- <property name="maxUploadSize" value="100000"/> -->
 	</bean>
-
+	
+	<bean id="mailSession" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:comp/env/mail/Session" />
+	</bean>
+	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="session" ref="mailSession"/>
+	</bean>
+
+	<!-- <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
 		<property name="username" value="${email}" />
@@ -49,7 +57,7 @@
 				<prop key="mail.debug">true</prop>
 			</props>
 		</property>
-	</bean>
+	</bean> -->
 	
 	<bean id="notificationService" class="ufc.quixada.npi.gpa.service.impl.NotificationService">
 		<property name="observadores">
@@ -83,10 +91,8 @@
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
 	<context:annotation-config />
-	<context:component-scan base-package="ufc.quixada.npi.gpa.repository" />
-	<context:component-scan base-package="ufc.quixada.npi.gpa.service" />
-	<context:component-scan base-package="ufc.quixada.npi.gpa.controller" />
-	<context:component-scan base-package="br.ufc.quixada.npi.repository" />
+	<context:component-scan base-package="ufc.quixada.npi.gpa.*" />
+	<context:component-scan base-package="br.ufc.quixada.npi.*" />
 	<context:component-scan base-package="br.ufc.quixada.npi.ldap.*" />
 	
 </beans>
