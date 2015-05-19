@@ -163,7 +163,7 @@
 					</c:if>
 				</div>
 			</div>
-										
+			
 			<div class="form-group">
 				<label class="col-sm-2 control-label field">Anexos:</label>
 				<div class="col-sm-10 field-value">
@@ -172,12 +172,24 @@
 					</c:if>				
 					<c:if test="${not empty projeto.documentos }">
 						<c:forEach items="${projeto.documentos }" var="documento">
-							<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label>							
+							<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label><br>							
 						</c:forEach>
 					</c:if>
 				</div>
-			</div>	
-							
+			</div>
+			
+			
+			<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+			<div class="form-group">
+			<h3>Observações do Diretor</h3><hr>
+				<div class="col-sm-4 field-value">						
+					<p>${projeto.parecer.observacao}</p>									   		
+				</div>				   		
+			</div>
+			</sec:authorize>
+			
+						
+			<sec:authorize ifAnyGranted="ROLE_DIRETOR">
 			<c:if test="${projeto.parecer != null}">
 				<h3>Parecer</h3><hr>
 				<div class="form-group">
@@ -189,19 +201,34 @@
 						<label class="col-sm-2 control-label field">Prazo parecer:</label>
 						<div class="col-sm-4 field-value">
 							<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></label>
-						</div>
+						</div>						
 					</c:if>
-				</div>
-				<br>
-				<div class="form-group">
-					<label class="col-sm-2 control-label field">Anexo:</label>
-					<div class="col-sm-10 field-value">
-						<label><a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${projeto.parecer.documento.nome }</a></label>
+					<c:if test="${projeto.status != 'AGUARDANDO_PARECER'}">
+						<label class="col-sm-2 control-label field">Posicionamento:</label>
+						<div class="col-sm-4 field-value">
+							<label>${projeto.parecer.status }</label>
+						</div>						
+					</c:if>
+										
+					<div class="form-group">
+					<label class="col-sm-2 control-label field">Parecer:</label>
+					<div class="col-sm-4 field-value">
+						<label>${projeto.parecer.parecer}</label>
 					</div>
+					</div>
+					 		
+				</div>	
+				<br>
+			<div class="form-group">
+				<label class="col-sm-2 control-label field">Anexo:</label>
+
+				<div class="col-sm-10 field-value">
+						<label><a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="padding-left: 0px;">${projeto.parecer.documento.nome }</a></label>
 				</div>
+			</div>
 				
 			</c:if>
-											
+			</sec:authorize>								
 			
 			<h3>Comentários</h3><hr>
 			<div class="form-group">
