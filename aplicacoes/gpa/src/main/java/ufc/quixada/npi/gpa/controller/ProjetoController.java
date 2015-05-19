@@ -1,6 +1,25 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.*;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECERISTA_ATRIBUIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECER_EMITIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_ATUALIZADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_AVALIADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_CADASTRADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_REMOVIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_SUBMETIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_AVALIAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO_DIRETOR;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,11 +55,14 @@ import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
+import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
+import ufc.quixada.npi.gpa.service.Observer;
+import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
-import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.impl.NotificationService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
@@ -53,7 +75,10 @@ public class ProjetoController {
 	private ProjetoService projetoService;
 
 	@Inject
-	private UsuarioService usuarioService;
+	private PessoaService pessoaService;
+	
+	@Inject
+	private NotificationService notificationService;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -73,10 +98,10 @@ public class ProjetoController {
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliadosDoUsuario(idUsuarioLogado));
 
-		if (usuarioService.isDiretor(getUsuarioLogado(session))) {
+		if (pessoaService.isDiretor(getUsuarioLogado(session))) {
 			model.addAttribute("projetosSubmetidos", projetoService.getProjetosSubmetidos());
 			model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados());
-			model.addAttribute("participantes", usuarioService.getParticipantesProjetos());
+			model.addAttribute("participantes", pessoaService.getParticipantesProjetos());
 			return PAGINA_LISTAR_PROJETO_DIRETOR;
 		}
 		return PAGINA_LISTAR_PROJETO;
@@ -86,7 +111,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
 	public String cadastrarForm(Model model, HttpSession session) {   
 		model.addAttribute("projeto", new Projeto());
-		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
+		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		model.addAttribute("action", "cadastrar");
 		return PAGINA_CADASTRAR_PROJETO;
 	}
@@ -95,7 +120,7 @@ public class ProjetoController {
 	public String cadastrar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @RequestParam("anexos") List<MultipartFile> anexos,
 			@Valid Projeto projeto, BindingResult result, HttpSession session, RedirectAttributes redirect, Model model) {
 		
-		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
+		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		model.addAttribute("action", "cadastrar");
 		if (result.hasErrors()) {
 			return PAGINA_CADASTRAR_PROJETO;
@@ -106,7 +131,7 @@ public class ProjetoController {
 		if(idParticipantes != null && !idParticipantes.isEmpty()) {
 			List<Pessoa> participantes = new ArrayList<Pessoa>();
 			for(String idParticipante : idParticipantes) {
-				participantes.add(usuarioService.getUsuarioById(new Long(idParticipante)));
+				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
 			}
 			projeto.setParticipantes(participantes);
 		}
@@ -152,9 +177,9 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = getUsuarioLogado(session);
-		if (usuario.getId() == projeto.getAutor().getId() || usuarioService.isDiretor(usuario) || 
-				(projeto.getParecer() != null && projeto.getParecer().getParecerista().getId() == usuario.getId())) {
+		Pessoa pessoa = getUsuarioLogado(session);
+		if (pessoa.getId() == projeto.getAutor().getId() || pessoaService.isDiretor(pessoa) || 
+				(projeto.getParecer() != null && projeto.getParecer().getParecerista().getId() == pessoa.getId())) {
 			List<Comentario> comentarios = projeto.getComentarios();
 			Collections.sort(comentarios, new Comparator<Comentario>() {
 		        @Override
@@ -182,7 +207,7 @@ public class ProjetoController {
 		Pessoa usuario = getUsuarioLogado(session);
 		if (usuario.getId() == projeto.getAutor().getId() && projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes", usuarioService.getParticipantes(usuario));
+			model.addAttribute("participantes", pessoaService.getParticipantes(usuario));
 			model.addAttribute("action", "editar");
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -196,7 +221,7 @@ public class ProjetoController {
 			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) {
 		
-		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
+		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		model.addAttribute("action", "cadastrar");
 		if (result.hasErrors()) {
 			return PAGINA_CADASTRAR_PROJETO;
@@ -207,7 +232,7 @@ public class ProjetoController {
 		if(idParticipantes != null && !idParticipantes.isEmpty()) {
 			List<Pessoa> participantes = new ArrayList<Pessoa>();
 			for(String idParticipante : idParticipantes) {
-				participantes.add(usuarioService.getUsuarioById(new Long(idParticipante)));
+				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
 			}
 			projeto.setParticipantes(participantes);
 		}
@@ -277,10 +302,11 @@ public class ProjetoController {
 			Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
 			if(resultadoValidacao.isEmpty()) {
 				redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+				notificationService.notificar(projeto, Evento.SUBMISSAO);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			}
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes", usuarioService.getParticipantes(usuario));
+			model.addAttribute("participantes", pessoaService.getParticipantes(usuario));
 			model.addAttribute("alert", MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
 			return PAGINA_SUBMETER_PROJETO;
 		} else {
@@ -297,7 +323,7 @@ public class ProjetoController {
 		if(idParticipantes != null && !idParticipantes.isEmpty()) {
 			List<Pessoa> participantes = new ArrayList<Pessoa>();
 			for(String idParticipante : idParticipantes) {
-				participantes.add(usuarioService.getUsuarioById(new Long(idParticipante)));
+				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
 			}
 			projeto.setParticipantes(participantes);
 		}
@@ -328,11 +354,12 @@ public class ProjetoController {
 		Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
 		if(resultadoValidacao.isEmpty()) {
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+			notificationService.notificar(projeto, Evento.SUBMISSAO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
 		model.addAttribute("projeto", projeto);
-		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
+		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		buildValidacoesModel(resultadoValidacao, model);
 		return PAGINA_SUBMETER_PROJETO;
 	}
@@ -350,7 +377,7 @@ public class ProjetoController {
 		}
 
 		model.addAttribute("projeto", projeto);
-		model.addAttribute("usuarios", usuarioService.getPareceristas(projeto.getAutor().getId()));
+		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto.getAutor().getId()));
 		return PAGINA_ATRIBUIR_PARECERISTA;
 	}
 	
@@ -359,7 +386,7 @@ public class ProjetoController {
 			@RequestParam("pareceristaId") Long pareceristaId, Model model, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjetoById(projetoId);
-		Pessoa parecerista = usuarioService.getUsuarioById(pareceristaId);
+		Pessoa parecerista = pessoaService.getPessoaById(pareceristaId);
 		
 		Parecer parecer = new Parecer();
 		parecer.setDataAtribuicao(new Date());
@@ -371,11 +398,12 @@ public class ProjetoController {
 		if(!resultado.isEmpty()) {
 			buildValidacoesModel(resultado, model);
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("usuarios", usuarioService.getPareceristas(projeto.getAutor().getId()));
+			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto.getAutor().getId()));
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
+		notificationService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
@@ -435,6 +463,7 @@ public class ProjetoController {
 		}
 
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
+		notificationService.notificar(projeto, Evento.EMISSAO_PARECER);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
@@ -480,6 +509,7 @@ public class ProjetoController {
 		Map<String, String> resultado = projetoService.avaliar(projeto);
 		if(resultado.isEmpty()) {
 			redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
+			notificationService.notificar(projeto, Evento.AVALIACAO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		model.addAttribute("projeto", projeto);
@@ -503,8 +533,8 @@ public class ProjetoController {
 	
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Pessoa usuario = usuarioService
-					.getUsuarioByLogin(SecurityContextHolder.getContext()
+			Pessoa usuario = pessoaService
+					.getPessoaByCpf(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}

@@ -17,7 +17,7 @@ import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
-import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
@@ -25,7 +25,7 @@ import ufc.quixada.npi.gpa.utils.Constants;
 public class ComentarioController {
 
 	@Inject
-	private UsuarioService usuarioService;
+	private PessoaService pessoaService;
 
 	@Inject
 	private ProjetoService projetoService;
@@ -61,8 +61,8 @@ public class ComentarioController {
 	
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Pessoa usuario = usuarioService
-					.getUsuarioByLogin(SecurityContextHolder.getContext()
+			Pessoa usuario = pessoaService
+					.getPessoaByCpf(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
