@@ -86,8 +86,12 @@ public class ProjetoController {
 
 	}
 	
-	@RequestMapping(value = "/relatorio_a", method = RequestMethod.GET)
-	public String aprovados(ModelMap model) throws JRException {
+	@RequestMapping(value = "/relatorio-aprovados", method = RequestMethod.GET)
+	public String aprovados(ModelMap model, @RequestParam(value = "iniInterInicio", required = false) String iniInterInicio,
+			@RequestParam(value = "fimInterInicio", required = false) String fimInterInicio,
+			@RequestParam(value = "iniInterTermino", required = false) String iniInterTermino,
+			@RequestParam(value = "iniInterTermino", required = false) String fimInterTermino) throws JRException {
+		
 
 		jrDatasource = new JRBeanCollectionDataSource(projetoService.getProjetosAprovados());
 
@@ -95,6 +99,23 @@ public class ProjetoController {
 		model.addAttribute("format", "html");
 		
 		return "projetosAprovados";
+	}
+	
+	@RequestMapping(value = "/relatorio-reprovado", method = RequestMethod.GET)
+	public String reprovados(ModelMap model, @RequestParam(value = "iniInter", required = false) String iniInter, 
+			@RequestParam(value = "fimInter", required = false) String fimInter) throws JRException{
+		
+		//**//
+		
+		return "projetosReprovados";
+		
+	}
+	
+	@RequestMapping(value = "/relatorio-p-docente", method = RequestMethod.GET)
+	public String projetosDodente(ModelMap model, @RequestParam(value = "idParticipantes", required = true) String idParticipantes,
+			@RequestParam(value="ano", required = false)String ano) throws JRException{
+		//**//
+		return "projetosPorDocente";
 	}
 	
 	@RequestMapping(value = "/relatorio", method = RequestMethod.GET)

@@ -28,60 +28,58 @@
 			<h2>Relatórios</h2>
 			
 			<!-- Forma de visualização opcional -->
-			<div class="panel-group" id="accordion">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapseOne">Projetos aprovados</a>
-						</h4>
-					</div>
-					<div id="collapseOne" class="panel-collapse collapse in">
-						<div class="panel-body">
-							<form class="form-inline">
-								<div class="form-group">
-									<input type="text"
-										class="form-control" placeholder="1">
-								</div>
-								<div class="form-group">
-									<input type="text" class="form-control"
-										placeholder="2">
-								</div>
-								<button type="submit" class="btn btn-default">OK</button>
-							</form>
+			<div  class="col-sm-6 control-label">
 
-							<a href="<c:url value="/projeto/relatorio_a" />"
+				<div class="formulario">
+				<h3>Projetos Aprovados</h3>
+							<form:form method="GET" action="/gpa-pesquisa/projeto/relatorio-aprovados" cssClass="form-horizontal">
+								<h5>Intervalo de Início</h5>
+								<input data-provide="datepicker" name="iniInterInicio" type="text">
+								<input data-provide="datepicker" name="fimInterInicio" type="text">
+								<h5>Intervalo de Término</h5>
+								<input data-provide="datepicker" name="iniInterTermino"type="text">
+								<input data-provide="datepicker" name="fimInterTermino"type="text"><br>
+								<button type="submit" class="btn btn-default">Gerar</button>
+							</form:form>
+
+							<a href="<c:url value="/projeto/relatorio-aprovados" />"
 								title="Visualizar Relatorios Reprovados">Visualizar Relatórios
 								Aprovados</a>
-						</div>
-					</div>
 				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapseTwo">Projetos Reprovados</a>
-						</h4>
-					</div>
-					<div id="collapseTwo" class="panel-collapse collapse">
-						<div class="panel-body"></div>
-					</div>
+				
+				<div class="formulario">
+							<h3>Projetos Reprovados</h3>
+					<form:form method = "GET" action="/gpa-pesquisa/projeto/relatorio-reprovados" cssClass = "form-horizontal">
+							<h5>Intervalo da Submissão</h5>
+							<input data-provide="datepicker" name="iniInter" type="text">
+							<input data-provide="datepicker" name="fimInter" type="text"><br>
+							<button type="submit" class="btn btn-default">Gerar</button>
+					</form:form>
 				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-parent="#accordion"
-								href="#collapseThree">Projetos por docente</a>
-						</h4>
-					</div>
-					<div id="collapseThree" class="panel-collapse collapse">
-						<div class="panel-body"></div>
+				
+				<div class="formulario">
+							<h3>Projetos por docente</h3><br>
+							<form:form method ="GET" action="/gpa-pesquisa/projeto/relatorio-p-docente"  cssClass = "form-horizontal">
+								<h4>Participantes:</h4>
+									<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple">
+										<c:set var="part" value="${projeto.participantes }"></c:set>
+										<c:forEach items="${participantes }" var="participante">
+											<c:set var="selected" value=""></c:set>
+											<c:set var="idParticipante" value="id=${participante.id }"></c:set>
+											<option value="${participante.id }" ${selected }>${participante.nome }</option>
+										</c:forEach>
+									</select>
+									<span class="campo-obrigatorio"><span class="required">*</span> Campo obrigatório</span>
+									<h5>Ano</h5>
+									<input id="pickerYear" type="text" name="ano" />
+									<span class="add-on"><i class="icon-th"></i></span> <br>     
+									<button type="submit" class="btn btn-default">Gerar</button>
+							</form:form>
+						
 					</div>
 				</div>
 			</div>
-		</div>
-
-
+		</div>		
 		<jsp:include page="../modulos/footer.jsp" />
 </body>
 </html>
