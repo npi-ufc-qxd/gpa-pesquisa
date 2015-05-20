@@ -5,7 +5,7 @@ import java.util.List;
 public class Relatorio {
 
 	private String nomeDoDocente;
-	private int anoDeConsulta;
+	private Integer anoDeConsulta;
 	private Integer cargaHorariaTotal;
 	private Double valorTotalDaBolsa;
 	private List<ProjetoPorDocenteRelatorio> projetos;
@@ -18,11 +18,11 @@ public class Relatorio {
 		this.nomeDoDocente = nomeDoDocente;
 	}
 
-	public int getAnoDeConsulta() {
+	public Integer getAnoDeConsulta() {
 		return anoDeConsulta;
 	}
 
-	public void setAnoDeConsulta(int anoDeConsulta) {
+	public void setAnoDeConsulta(Integer anoDeConsulta) {
 		this.anoDeConsulta = anoDeConsulta;
 	}
 

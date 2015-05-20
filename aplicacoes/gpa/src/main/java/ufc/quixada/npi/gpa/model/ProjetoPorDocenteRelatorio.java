@@ -30,11 +30,11 @@ public class ProjetoPorDocenteRelatorio {
 		this.horas = horas;
 	}
 
-	public Double getValBolsa() {
+	public Double getValorBolsa() {
 		return valorBolsa;
 	}
 
-	public void setValBolsa(Double valBolsa) {
-		this.valorBolsa = valBolsa;
+	public void setValorBolsa(Double valorBolsa) {
+		this.valorBolsa = valorBolsa;
 	}
 }

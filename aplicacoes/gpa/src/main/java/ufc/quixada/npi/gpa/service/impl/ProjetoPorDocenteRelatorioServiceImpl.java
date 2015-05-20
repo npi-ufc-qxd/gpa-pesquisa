@@ -11,6 +11,7 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.ProjetoPorDocenteRelatorio;
 import ufc.quixada.npi.gpa.model.Relatorio;
 import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
+import ufc.quixada.npi.gpa.service.UsuarioService;
 
 @Named
 public class ProjetoPorDocenteRelatorioServiceImpl implements
@@ -19,7 +20,8 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 	@Inject
 	private ProjetoServiceImpl projetoService;
 
-	private String nomeDocente;
+	@Inject
+	private UsuarioService usuarioService;
 
 	@Override
 	public Integer getCargaHorariaTotal(
@@ -35,47 +37,48 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 	public Double getValorTotalBolsas(List<ProjetoPorDocenteRelatorio> projetos) {
 		Double valorTotal = 0.0;
 		for (ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio : projetos) {
-			valorTotal += projetoPorDocenteRelatorio.getValBolsa();
+			valorTotal += projetoPorDocenteRelatorio.getValorBolsa();
 		}
 
 		return valorTotal;
 	}
 
 	@Override
-	public List<ProjetoPorDocenteRelatorio> getProjetos(Long id, int ano) {
+	public List<ProjetoPorDocenteRelatorio> getProjetos(Long id, Integer ano) {
 		List<ProjetoPorDocenteRelatorio> projetos = new ArrayList<ProjetoPorDocenteRelatorio>();
 		List<Projeto> projetoParticipante = projetoService
 				.getProjetosByParticipante(id);
 		List<Projeto> projetoAutor = projetoService.getProjetosByUsuario(id);
-		ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio = new ProjetoPorDocenteRelatorio();
+		
 		Calendar calen = Calendar.getInstance();
 
-		if (projetoParticipante != null) {
+		if (!projetoParticipante.isEmpty()) {
 			for (Projeto projeto : projetoParticipante) {
-				nomeDocente = projeto.getAutor().getNome();
 				calen.setTimeInMillis(projeto.getInicio().getTime());
 
-				if (calen.get(Calendar.YEAR) == ano) {
+				if (calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) {
+					ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio = new ProjetoPorDocenteRelatorio();
 					projetoPorDocenteRelatorio.setHoras(projeto
 							.getCargaHoraria());
 					projetoPorDocenteRelatorio.setNome(projeto.getNome());
-					projetoPorDocenteRelatorio.setValBolsa(projeto
+					projetoPorDocenteRelatorio.setValorBolsa(projeto
 							.getValorDaBolsa());
 					projetoPorDocenteRelatorio.setVinculo("PARTICIPANTE");
 
 					projetos.add(projetoPorDocenteRelatorio);
 				}
 			}
-		} else if (projetoAutor != null) {
+		}
+		if (!projetoAutor.isEmpty()) {
 			for (Projeto projeto : projetoAutor) {
-				nomeDocente = projeto.getAutor().getNome();
 				calen.setTimeInMillis(projeto.getInicio().getTime());
 
-				if (calen.get(Calendar.YEAR) == ano) {
+				if (calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) {
+					ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio = new ProjetoPorDocenteRelatorio();
 					projetoPorDocenteRelatorio.setHoras(projeto
 							.getCargaHoraria());
 					projetoPorDocenteRelatorio.setNome(projeto.getNome());
-					projetoPorDocenteRelatorio.setValBolsa(projeto
+					projetoPorDocenteRelatorio.setValorBolsa(projeto
 							.getValorDaBolsa());
 					projetoPorDocenteRelatorio.setVinculo("AUTOR");
 
@@ -88,19 +91,17 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 	}
 
 	@Override
-	public List<Relatorio> getRelatorio(Long id, int ano) {
+	public Relatorio getRelatorio(Long id, Integer ano) {
 		Relatorio relatorio = new Relatorio();
-		List<Relatorio> relatorios = new ArrayList<Relatorio>();
+
 		List<ProjetoPorDocenteRelatorio> projetos = getProjetos(id, ano);
 
-		relatorio.setNomeDoDocente(nomeDocente);
+		relatorio.setNomeDoDocente(usuarioService.getUsuarioById(id).getNome());
 		relatorio.setProjetos(projetos);
 		relatorio.setAnoDeConsulta(ano);
 		relatorio.setCargaHorariaTotal(getCargaHorariaTotal(projetos));
 		relatorio.setValorTotalDaBolsa(getValorTotalBolsas(projetos));
 
-		relatorios.add(relatorio);
-
-		return relatorios;
+		return relatorio;
 	}
 }

@@ -98,7 +98,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	public List<Projeto> getProjetosByParticipante(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "select distinct p FROM Projeto p JOIN p.participantes pa WHERE pa.id = :id and p.status != 'NOVO'", params);
+		return projetoRepository.find(QueryType.JPQL, "select distinct p FROM Projeto as p JOIN p.participantes pa WHERE pa.id = :id and p.status != 'NOVO'", params);
 	}
 	
 

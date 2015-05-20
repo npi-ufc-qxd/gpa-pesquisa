@@ -11,8 +11,8 @@ public interface ProjetoPorDocenteRelatorioService {
 
 	Double getValorTotalBolsas(List<ProjetoPorDocenteRelatorio> projetos);
 
-	List<ProjetoPorDocenteRelatorio> getProjetos(Long id, int ano);
+	List<ProjetoPorDocenteRelatorio> getProjetos(Long id, Integer ano);
 	
-	List<Relatorio> getRelatorio(Long id, int ano);
+	Relatorio getRelatorio(Long id, Integer ano);
 
 }

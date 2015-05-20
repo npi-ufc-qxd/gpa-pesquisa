@@ -1,6 +1,25 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.*;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECERISTA_ATRIBUIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECER_EMITIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_ATUALIZADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_AVALIADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_CADASTRADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_REMOVIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_SUBMETIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_AVALIAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO_DIRETOR;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +59,7 @@ import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
+import ufc.quixada.npi.gpa.model.Relatorio;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
@@ -520,11 +540,17 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "/projetos-por-docente", method = RequestMethod.GET)
 	public String projetosPorDocente( ModelMap model) throws JRException {
-		Long id = (long) 1;		
-		jrDatasource = new JRBeanCollectionDataSource(projetoPorDocenteRelatorioService.getRelatorio(id, 2015));
+		Long id = (long) 7;				
 		
+		Relatorio relatorio = projetoPorDocenteRelatorioService.getRelatorio(id, 2012);
+		model.addAttribute("NOME_DOCENTE", relatorio.getNomeDoDocente());
+		model.addAttribute("ANO_CONSULTA", 2012);
+		model.addAttribute("HORAS_TOTAIS",  relatorio.getCargaHorariaTotal());
+		model.addAttribute("VALOR_BOLSAS_TOTAL", relatorio.getValorTotalDaBolsa());
+		jrDatasource = new JRBeanCollectionDataSource(relatorio.getProjetos());
 		model.addAttribute("datasource", jrDatasource);
 		model.addAttribute("format", "html");
+		
 		return "relatorioProjetoPorDocente";
 	}
 
