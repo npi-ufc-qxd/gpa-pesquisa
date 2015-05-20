@@ -35,12 +35,15 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,6 +109,45 @@ public class ProjetoController {
 		}
 		return PAGINA_LISTAR_PROJETO;
 
+	}
+	
+	@RequestMapping(value = "/relatorio-aprovados", method = RequestMethod.GET)
+	public String aprovados(ModelMap model, @RequestParam(value = "iniInterInicio", required = false) String iniInterInicio,
+			@RequestParam(value = "fimInterInicio", required = false) String fimInterInicio,
+			@RequestParam(value = "iniInterTermino", required = false) String iniInterTermino,
+			@RequestParam(value = "iniInterTermino", required = false) String fimInterTermino) throws JRException {
+		
+
+		jrDatasource = new JRBeanCollectionDataSource(projetoService.getProjetosAprovados());
+
+		model.addAttribute("datasource", jrDatasource);
+		model.addAttribute("format", "html");
+		
+		return "projetosAprovados";
+	}
+	
+	@RequestMapping(value = "/relatorio-reprovado", method = RequestMethod.GET)
+	public String reprovados(ModelMap model, @RequestParam(value = "iniInter", required = false) String iniInter, 
+			@RequestParam(value = "fimInter", required = false) String fimInter) throws JRException{
+		
+		//**//
+		
+		return "projetosReprovados";
+		
+	}
+	
+	@RequestMapping(value = "/relatorio-p-docente", method = RequestMethod.GET)
+	public String projetosDodente(ModelMap model, @RequestParam(value = "idParticipantes", required = true) String idParticipantes,
+			@RequestParam(value="ano", required = false)String ano) throws JRException{
+		//**//
+		return "projetosPorDocente";
+	}
+	
+	@RequestMapping(value = "/relatorio", method = RequestMethod.GET)
+	public String visualizarRelatorios(Model model, HttpSession session) {
+		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
+		
+		return PAGINA_VISUALIZAR_RELATORIOS;
 	}
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.GET)

@@ -243,4 +243,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return resultado;
 	}
 
+	@Override
+	public List<Projeto> getProjetosAprovados() {
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where (p.status = 'APROVADO')", null);
+	}
+
 }

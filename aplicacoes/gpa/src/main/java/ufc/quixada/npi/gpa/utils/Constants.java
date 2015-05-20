@@ -26,11 +26,13 @@ public class Constants {
 	
 	public static final String PAGINA_DETALHES_USUARIO = "diretor/detalhesUsuario";
 	
+	public static final String PAGINA_VISUALIZAR_RELATORIOS = "diretor/visualizarRelatorios";
 	
 	/** Redirecionamentos */
 	
 	public static final String REDIRECT_PAGINA_LISTAR_PROJETO = "redirect:/projeto/listar";
 	
+	public static final String REDIRECT_PAGINA_VISUALIZAR_RELATORIOS = "redirect:/projeto/relatorio";
 	
 	/** Mensagens */
 	public static final String MENSAGEM_PERMISSAO_NEGADA = "Permissão negada";
