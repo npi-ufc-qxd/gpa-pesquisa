@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -14,17 +15,17 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.service.Observer;
 import ufc.quixada.npi.gpa.service.PessoaService;
-import ufc.quixada.npi.gpa.service.impl.EmailService;
-
+import br.ufc.quixada.npi.model.Email;
+import br.ufc.quixada.npi.service.EmailService;
 
 public class EmailObserver implements Observer {
-	
+
 	@Inject
 	private EmailService emailService;
-	
+
 	@Inject
 	private PessoaService pessoaService;
-	
+
 	private static final String ASSUNTO = "email.assunto";
 	private static final String CORPO_SUBMISSAO = "email.corpo.submissao";
 	private static final String CORPO_ATRIBUICAO_PARECERISTA_COORDENADOR = "email.corpo.atribuicao_parecerista.coordenador";
@@ -34,7 +35,7 @@ public class EmailObserver implements Observer {
 	private static final String CORPO_EMISSAO_PARECER_PARECERISTA = "email.corpo.emissao_parecer.parecerista";
 	private static final String CORPO_EMISSAO_PARECER_DIRETOR = "email.corpo.emissao_parecer.diretor";
 	private static final String CORPO_AVALIACAO_DIRETOR = "email.corpo.avaliacao";
-	
+
 	private static final String NOME_PROJETO = "#NOME_PROJETO#";
 	private static final String NOME_PARECERISTA = "#NOME_PARECERISTA#";
 	private static final String NOME_COORDENADOR = "#NOME_COORDENADOR#";
@@ -44,83 +45,182 @@ public class EmailObserver implements Observer {
 	@Override
 	public void notificar(Projeto projeto, Evento evento) {
 		try {
-			Resource resource = new ClassPathResource("/notification.properties");
-			final Properties properties = PropertiesLoaderUtils.loadProperties(resource);
-			
-			if(properties.getProperty("email.ativo").equals("true")) {
+			Resource resource = new ClassPathResource(
+					"/notification.properties");
+			final Properties properties = PropertiesLoaderUtils
+					.loadProperties(resource);
+
+			if (properties.getProperty("email.ativo").equals("true")) {
 				final Evento eventoCopy = evento;
-				final String emailDiretor = pessoaService.getDiretor().getEmail();
+				final String emailDiretor = pessoaService.getDiretor()
+						.getEmail();
 				final String emailCoordenador = projeto.getAutor().getEmail();
-				final String emailParecerista = projeto.getParecer() != null ? 
-						projeto.getParecer().getParecerista().getEmail() : "";
+				final String emailParecerista = projeto.getParecer() != null ? projeto
+						.getParecer().getParecerista().getEmail()
+						: "";
 				final String nomeCoordenador = projeto.getAutor().getNome();
-				final String nomeParecerista = projeto.getParecer() != null ? 
-						projeto.getParecer().getParecerista().getNome() : "";
-				final String nomeProjeto = new StringBuilder().append(projeto.getCodigo()).append(" - ").append(projeto.getNome()).toString();
-				final String subject = properties.getProperty(ASSUNTO).replace(NOME_PROJETO, nomeProjeto);
+				final String nomeParecerista = projeto.getParecer() != null ? projeto
+						.getParecer().getParecerista().getNome()
+						: "";
+				final String nomeProjeto = new StringBuilder()
+						.append(projeto.getCodigo()).append(" - ")
+						.append(projeto.getNome()).toString();
+				final String subject = properties.getProperty(ASSUNTO).replace(
+						NOME_PROJETO, nomeProjeto);
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				final String prazo = projeto.getParecer() != null ? 
-						dateFormat.format(projeto.getParecer().getPrazo()) : "";
-				
+				final String prazo = projeto.getParecer() != null ? dateFormat
+						.format(projeto.getParecer().getPrazo()) : "";
+
 				Runnable enviarEmail = new Runnable() {
-					
+
 					@Override
 					public void run() {
+						
+						Email email = new Email();
+						
+						String emailGPA = "naoresponda@gpapesquisa.com";
+
 						switch (eventoCopy) {
 						case SUBMISSAO:
-							String body = properties.getProperty(CORPO_SUBMISSAO).replaceAll(NOME_PROJETO, nomeProjeto)
-									.replaceAll(NOME_COORDENADOR, nomeCoordenador);
-							emailService.sendMail(emailCoordenador, subject, body);
-							emailService.sendMail(emailDiretor, subject, body);
+							String body = properties
+									.getProperty(CORPO_SUBMISSAO)
+									.replaceAll(NOME_PROJETO, nomeProjeto)
+									.replaceAll(NOME_COORDENADOR,
+											nomeCoordenador);
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailCoordenador, emailDiretor);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
 							break;
-						
+
 						case ATRIBUICAO_PARECERISTA:
-							body = properties.getProperty(CORPO_ATRIBUICAO_PARECERISTA_COORDENADOR).replaceAll(NOME_PROJETO, nomeProjeto);
-							emailService.sendMail(emailCoordenador, subject, body);
-							
-							body = properties.getProperty(CORPO_ATRIBUICAO_PARECERISTA_PARECERISTA).replaceAll(NOME_PROJETO, nomeProjeto)
+							body = properties.getProperty(
+									CORPO_ATRIBUICAO_PARECERISTA_COORDENADOR)
+									.replaceAll(NOME_PROJETO, nomeProjeto);
+
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailCoordenador);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
+
+							body = properties
+									.getProperty(
+											CORPO_ATRIBUICAO_PARECERISTA_PARECERISTA)
+									.replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(PRAZO, prazo);
-							emailService.sendMail(emailParecerista, subject, body);
-							
-							body = properties.getProperty(CORPO_ATRIBUICAO_PARECERISTA_DIRETOR).replaceAll(NOME_PROJETO, nomeProjeto)
-									.replaceAll(NOME_PARECERISTA, nomeParecerista);
-							emailService.sendMail(emailDiretor, subject, body);
-							
+
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailParecerista);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
+
+							body = properties
+									.getProperty(
+											CORPO_ATRIBUICAO_PARECERISTA_DIRETOR)
+									.replaceAll(NOME_PROJETO, nomeProjeto)
+									.replaceAll(NOME_PARECERISTA,
+											nomeParecerista);
+
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailDiretor);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
 							break;
-							
+
 						case EMISSAO_PARECER:
-							body = properties.getProperty(CORPO_EMISSAO_PARECER_COORDENADOR).replaceAll(NOME_PROJETO, nomeProjeto)
-									.replaceAll(NOME_PARECERISTA, nomeParecerista);
-							emailService.sendMail(emailCoordenador, subject, body);
-							
-							body = properties.getProperty(CORPO_EMISSAO_PARECER_PARECERISTA).replaceAll(NOME_PROJETO, nomeProjeto);
-							emailService.sendMail(emailParecerista, subject, body);
-							
-							body = properties.getProperty(CORPO_EMISSAO_PARECER_DIRETOR).replaceAll(NOME_PROJETO, nomeProjeto)
-									.replaceAll(NOME_PARECERISTA, nomeParecerista);
-							emailService.sendMail(emailDiretor, subject, body);
-							
+							body = properties
+									.getProperty(
+											CORPO_EMISSAO_PARECER_COORDENADOR)
+									.replaceAll(NOME_PROJETO, nomeProjeto)
+									.replaceAll(NOME_PARECERISTA,
+											nomeParecerista);
+
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailCoordenador);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
+							body = properties.getProperty(
+									CORPO_EMISSAO_PARECER_PARECERISTA)
+									.replaceAll(NOME_PROJETO, nomeProjeto);
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailParecerista);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
+							body = properties
+									.getProperty(CORPO_EMISSAO_PARECER_DIRETOR)
+									.replaceAll(NOME_PROJETO, nomeProjeto)
+									.replaceAll(NOME_PARECERISTA,
+											nomeParecerista);
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailDiretor);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
 							break;
-							
+
 						case AVALIACAO:
-							body = properties.getProperty(CORPO_AVALIACAO_DIRETOR).replaceAll(NOME_PROJETO, nomeProjeto)
-									.replaceAll(STATUS_AVALIACAO, "Status da avaliação");
-							emailService.sendMail(emailCoordenador, subject, body);
-							emailService.sendMail(emailDiretor, subject, body);
+							body = properties
+									.getProperty(CORPO_AVALIACAO_DIRETOR)
+									.replaceAll(NOME_PROJETO, nomeProjeto)
+									.replaceAll(STATUS_AVALIACAO,
+											"Status da avaliação");
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailDiretor, emailCoordenador);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
 							break;
-					}
-						
+						}
+
 					}
 				};
-				
+
 				Thread threadEnviarEmail = new Thread(enviarEmail);
 				threadEnviarEmail.start();
-				
+
 			}
-		} catch(IOException ex) {
-			
+		} catch (IOException ex) {
+
 		}
-		
+
 	}
 
 }
