@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <header class="clearfix">
 	<span>GPA-Pequisa</span></span>
@@ -22,6 +23,11 @@
 					<a href="<c:url value="/projeto/projetos-por-docente" />" title="Visualizar Relatorios Projetos por Docente"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Visualizar Relatórios Projetos por Docente</a>
 				</li>
 
+				<sec:authorize ifAllGranted="ROLE_DIRETOR">
+					<li>
+						<a href="<c:url value="/projeto/relatorio" />" title="Visualizar Relatórios"><i class="fa fa-list fa-2x"></i>&nbsp; Visualizar Relatórios</a>
+					</li>
+				</sec:authorize>
 				<li style="float: right;">
 					<a href="<c:url value="/j_spring_security_logout" />" title="Sair"><i class="fa fa-power-off"></i>&nbsp;</a>
 				</li>

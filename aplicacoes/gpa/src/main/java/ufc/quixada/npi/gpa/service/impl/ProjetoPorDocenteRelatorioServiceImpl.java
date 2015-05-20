@@ -10,8 +10,8 @@ import javax.inject.Named;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.ProjetoPorDocenteRelatorio;
 import ufc.quixada.npi.gpa.model.Relatorio;
+import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
-import ufc.quixada.npi.gpa.service.UsuarioService;
 
 @Named
 public class ProjetoPorDocenteRelatorioServiceImpl implements
@@ -21,7 +21,7 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 	private ProjetoServiceImpl projetoService;
 
 	@Inject
-	private UsuarioService usuarioService;
+	private PessoaService pessoaService;
 
 	@Override
 	public Integer getCargaHorariaTotal(
@@ -96,7 +96,7 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 
 		List<ProjetoPorDocenteRelatorio> projetos = getProjetos(id, ano);
 
-		relatorio.setNomeDoDocente(usuarioService.getUsuarioById(id).getNome());
+		relatorio.setNomeDoDocente(pessoaService.getPessoaById(id).getNome());
 		relatorio.setProjetos(projetos);
 		relatorio.setAnoDeConsulta(ano);
 		relatorio.setCargaHorariaTotal(getCargaHorariaTotal(projetos));

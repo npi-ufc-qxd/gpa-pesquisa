@@ -19,3 +19,9 @@
 <script src="<c:url value="/resources/js/select2_locale_pt-BR.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
 <script src="<c:url value="/resources/js/tabs.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.MultiFile.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.fileupload.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.iframe-transport.js" />"></script>
+<script src="<c:url value="/resources/js/vendor/jquery.ui.widget.js.js" />"></script>
+
+

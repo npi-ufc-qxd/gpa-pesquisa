@@ -86,12 +86,12 @@
 	</filter-mapping>
 	
 	<filter>
-		<filter-name>OpenEntityManagerInViewFilter</filter-name>
-		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>OpenEntityManagerInViewFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+ 		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+ 		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+ 	</filter>
+ 	<filter-mapping>
+ 		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+ 		<url-pattern>/*</url-pattern>
 	</filter-mapping> 
 		
 </web-app>

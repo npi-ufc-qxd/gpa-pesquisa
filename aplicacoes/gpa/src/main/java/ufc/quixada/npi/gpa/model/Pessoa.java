@@ -2,8 +2,8 @@ package ufc.quixada.npi.gpa.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,27 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name = "pessoa", uniqueConstraints = @UniqueConstraint(columnNames = {
-		"id", "login" }))
+@EntityListeners(PessoaEntityListener.class)
 public class Pessoa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(nullable = false)
-	private String login;
-
-	@Column(nullable = false)
-	private String password;
-
-	@Column(nullable = false)
-	private boolean habilitado;
-
+	
 	@ManyToMany
 	@JoinTable(name = "papel_pessoa", joinColumns = @JoinColumn(name = "pessoa_id"), inverseJoinColumns = @JoinColumn(name = "papel_id"))
 	private List<Papel> papeis;
@@ -39,13 +28,12 @@ public class Pessoa {
 	@OneToMany(mappedBy = "autor")
 	private List<Projeto> projetos;
 
-	@ManyToMany
-	private List<Projeto> projetosEnvolvidos;
-
 	private String cpf;
 
+	@Transient
 	private String nome;
 
+	@Transient
 	private String email;
 
 	public List<Projeto> getProjetos() {
@@ -72,14 +60,6 @@ public class Pessoa {
 		this.nome = nome;
 	}
 
-	public List<Projeto> getProjetosEnvolvidos() {
-		return projetosEnvolvidos;
-	}
-
-	public void setProjetosEnvolvidos(List<Projeto> projetosEnvolvidos) {
-		this.projetosEnvolvidos = projetosEnvolvidos;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -88,36 +68,12 @@ public class Pessoa {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public boolean isHabilitado() {
-		return habilitado;
-	}
-
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
 	}
 
 	public List<Papel> getPapeis() {
