@@ -194,6 +194,12 @@ $(document).ready(function() {
         $('#adicionarProjetoForm, #submeterProjetoForm').bootstrapValidator('revalidateField', 'inicio');
     });
     
+    $("#pickerYear").datepicker({
+        format: " yyyy", 
+   	    viewMode: "years", 
+   	    minViewMode: "years"
+	});
+    
     $("#termino").datepicker({
 		format : "dd/mm/yyyy",
 		todayBtn : "linked",
@@ -302,4 +308,6 @@ $(document).ready(function() {
 	});
 	
 	$('article').readmore();
+	
+	
 });
