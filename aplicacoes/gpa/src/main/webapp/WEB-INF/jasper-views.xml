@@ -10,5 +10,9 @@
 	   class="org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView" 
 	   p:url="classpath:ProjetosAprovados.jrxml">
 	</bean>
+	<bean id="relatorioProjetoPorDocente"
+	   class="org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView" 
+	   p:url="classpath:relatorios/RelatorioProjetoPorDocente.jrxml">
+	</bean>
 
 </beans>

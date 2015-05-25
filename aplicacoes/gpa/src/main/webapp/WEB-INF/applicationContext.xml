@@ -93,6 +93,11 @@
 		<property name="order" value="0"/>
 	</bean>
 
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="location" value="WEB-INF/jasper-views.xml" />
+		<property name="order" value="0"/>
+	</bean>
+	
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
 	<context:annotation-config />

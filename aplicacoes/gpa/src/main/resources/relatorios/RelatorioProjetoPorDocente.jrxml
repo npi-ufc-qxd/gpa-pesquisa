@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioProjetoPorDocente" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0245201830476072"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<subDataset name="Table Dataset 1"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/wellington.moura/git/gpa-pesquisa/aplicacoes/gpa/src/main/resources/relatorios/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NOME_DOCENTE" class="java.lang.String"/>
+	<parameter name="ANO_CONSULTA" class="java.lang.Integer"/>
+	<parameter name="HORAS_TOTAIS" class="java.lang.Integer"/>
+	<parameter name="VALOR_BOLSAS_TOTAL" class="java.lang.Double"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="horas" class="java.lang.Integer"/>
+	<field name="valorBolsa" class="java.lang.Double"/>
+	<field name="vinculo" class="java.lang.String"/>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="74" y="0" width="521" height="89"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Universidade Federal do Ceará Campus Quixadá]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="74" height="89"/>
+				<box topPadding="1" leftPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<imageExpression><![CDATA["/home/wellington.moura/git/gpa-pesquisa/aplicacoes/gpa/src/main/resources/relatorios/imagens/ufc.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="595" height="25"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO PROJETOS POR DOCENTE]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="103" height="20"/>
+				<box topPadding="1" leftPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome Prof.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="0" width="109" height="20"/>
+				<box topPadding="1" leftPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ano Consulta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="113" height="20"/>
+				<box topPadding="1" leftPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carga Horária:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="20" width="109" height="20"/>
+				<box topPadding="1" leftPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="0" width="300" height="20"/>
+				<box topPadding="1" leftPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NOME_DOCENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="512" y="0" width="83" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ANO_CONSULTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="20" width="259" height="20"/>
+				<box topPadding="1" leftPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{HORAS_TOTAIS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="481" y="20" width="114" height="20"/>
+				<box topPadding="1" leftPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VALOR_BOLSAS_TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="595" height="19"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROJETOS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="53" splitType="Stretch">
+			<textField>
+				<reportElement x="58" y="0" width="537" height="30"/>
+				<box topPadding="1" leftPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="58" y="30" width="147" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vinculo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="481" y="30" width="114" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorBolsa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="30" width="62" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="58" height="30"/>
+				<box topPadding="1" leftPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="58" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vinculo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="30" width="105" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carga Horaria:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="30" width="109" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor da Bolsa:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="51" width="595" height="1"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

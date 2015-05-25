@@ -3,7 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <header class="clearfix">
-	<span>GPA-Pequisa</span></span>
+	<span>GPA-Pequisa</span>
 	<h1>Gestão de Programas Acadêmicos</h1>
 </header>
 <div class="main">
@@ -15,8 +15,9 @@
 				</li>
 				<li>
 					<a href="<c:url value="/projeto/listar" />" title="Projetos"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Projetos</a>
-				</li>
-				<sec:authorize ifAllGranted="ROLE_DIRETOR">
+				</li>				
+
+				<sec:authorize ifAllGranted="DIRETOR">
 					<li>
 						<a href="<c:url value="/projeto/relatorio" />" title="Visualizar Relatórios"><i class="fa fa-list fa-2x"></i>&nbsp; Visualizar Relatórios</a>
 					</li>

@@ -20,6 +20,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO_DIRETOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VISUALIZAR_RELATORIOS;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,10 +61,11 @@ import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
+import ufc.quixada.npi.gpa.model.Relatorio;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
-import ufc.quixada.npi.gpa.service.Observer;
 import ufc.quixada.npi.gpa.service.PessoaService;
+import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificationService;
 import ufc.quixada.npi.gpa.utils.Constants;
@@ -72,13 +74,14 @@ import ufc.quixada.npi.gpa.utils.Constants;
 @RequestMapping("projeto")
 public class ProjetoController {
 	
-	private JRDataSource jrDatasource;
-	
 	@Inject
 	private ProjetoService projetoService;
 
 	@Inject
 	private PessoaService pessoaService;
+	
+	@Inject
+	private ProjetoPorDocenteRelatorioService projetoPorDocenteRelatorioService;
 	
 	@Inject
 	private NotificationService notificationService;
@@ -88,6 +91,8 @@ public class ProjetoController {
 	
 	@Autowired
 	private DocumentoService documentoService;	
+	
+	private JRDataSource jrDatasource;
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
@@ -136,16 +141,26 @@ public class ProjetoController {
 		
 	}
 	
-	@RequestMapping(value = "/relatorio-p-docente", method = RequestMethod.GET)
-	public String projetosDodente(ModelMap model, @RequestParam(value = "idParticipantes", required = true) String idParticipantes,
-			@RequestParam(value="ano", required = false)String ano) throws JRException{
-		//**//
-		return "projetosPorDocente";
+	@RequestMapping(value = "/relatorio-projeto-por-docente", method = RequestMethod.GET)
+	public String projetosDodente(ModelMap model, @RequestParam(value = "idParticipantes", required = true) Long idParticipantes,
+			@RequestParam(value="ano", required = false)String ano) throws JRException{		
+		ano = ano.substring(1,5);
+		Integer ano2 = Integer.parseInt(ano);	
+		Relatorio relatorio = projetoPorDocenteRelatorioService.getRelatorio(idParticipantes, ano2);
+		model.addAttribute("NOME_DOCENTE", relatorio.getNomeDoDocente());
+		model.addAttribute("ANO_CONSULTA", ano2);
+		model.addAttribute("HORAS_TOTAIS",  relatorio.getCargaHorariaTotal());
+		model.addAttribute("VALOR_BOLSAS_TOTAL", relatorio.getValorTotalDaBolsa());
+		jrDatasource = new JRBeanCollectionDataSource(relatorio.getProjetos());
+		model.addAttribute("datasource", jrDatasource);
+		model.addAttribute("format", "html");
+		
+		return "relatorioProjetoPorDocente";
 	}
 	
 	@RequestMapping(value = "/relatorio", method = RequestMethod.GET)
 	public String visualizarRelatorios(Model model, HttpSession session) {
-		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
+		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		
 		return PAGINA_VISUALIZAR_RELATORIOS;
 	}
@@ -581,6 +596,6 @@ public class ProjetoController {
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
 		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
-	}
+	}	
 
 }
