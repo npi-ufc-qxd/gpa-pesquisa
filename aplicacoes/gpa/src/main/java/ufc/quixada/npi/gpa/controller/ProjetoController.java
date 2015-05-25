@@ -141,14 +141,14 @@ public class ProjetoController {
 		
 	}
 	
-	@RequestMapping(value = "/relatorio-p-docente", method = RequestMethod.GET)
-	public String projetosDodente(ModelMap model, @RequestParam(value = "idParticipantes", required = true) String idParticipantes,
-			@RequestParam(value="ano", required = false)String ano) throws JRException{
-		Long id = (long) 7;				
-		
-		Relatorio relatorio = projetoPorDocenteRelatorioService.getRelatorio(id, 2012);
+	@RequestMapping(value = "/relatorio-projeto-por-docente", method = RequestMethod.GET)
+	public String projetosDodente(ModelMap model, @RequestParam(value = "idParticipantes", required = true) Long idParticipantes,
+			@RequestParam(value="ano", required = false)String ano) throws JRException{		
+		ano = ano.substring(1,5);
+		Integer ano2 = Integer.parseInt(ano);	
+		Relatorio relatorio = projetoPorDocenteRelatorioService.getRelatorio(idParticipantes, ano2);
 		model.addAttribute("NOME_DOCENTE", relatorio.getNomeDoDocente());
-		model.addAttribute("ANO_CONSULTA", 2012);
+		model.addAttribute("ANO_CONSULTA", ano2);
 		model.addAttribute("HORAS_TOTAIS",  relatorio.getCargaHorariaTotal());
 		model.addAttribute("VALOR_BOLSAS_TOTAL", relatorio.getValorTotalDaBolsa());
 		jrDatasource = new JRBeanCollectionDataSource(relatorio.getProjetos());

@@ -59,7 +59,7 @@
 				
 				<div class="formulario">
 							<h3>Projetos por docente</h3><br>
-							<form:form method ="GET" action="/gpa-pesquisa/projeto/relatorio-p-docente"  cssClass = "form-horizontal">
+							<form:form method ="GET" action="/gpa-pesquisa/projeto/relatorio-projeto-por-docente"  cssClass = "form-horizontal">
 								<h4>Participantes:</h4>
 									<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple">
 										<c:set var="part" value="${projeto.participantes }"></c:set>
