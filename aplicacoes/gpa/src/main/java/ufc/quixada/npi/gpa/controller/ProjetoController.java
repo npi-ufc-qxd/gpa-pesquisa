@@ -20,6 +20,8 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO_DIRETOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VISUALIZAR_RELATORIOS;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +64,6 @@ import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
-import ufc.quixada.npi.gpa.service.Observer;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificationService;
@@ -145,7 +146,7 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "/relatorio", method = RequestMethod.GET)
 	public String visualizarRelatorios(Model model, HttpSession session) {
-		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
+		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		
 		return PAGINA_VISUALIZAR_RELATORIOS;
 	}

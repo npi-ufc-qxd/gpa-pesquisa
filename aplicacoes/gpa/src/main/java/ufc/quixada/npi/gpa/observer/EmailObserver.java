@@ -5,12 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import javax.inject.Inject;
-import javax.mail.MessagingException;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-
+import javax.mail.MessagingException;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.service.Observer;

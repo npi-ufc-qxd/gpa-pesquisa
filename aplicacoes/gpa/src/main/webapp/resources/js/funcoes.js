@@ -200,6 +200,10 @@ $(document).ready(function() {
    	    minViewMode: "years"
 	});
     
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+    
     $("#termino").datepicker({
 		format : "dd/mm/yyyy",
 		todayBtn : "linked",
