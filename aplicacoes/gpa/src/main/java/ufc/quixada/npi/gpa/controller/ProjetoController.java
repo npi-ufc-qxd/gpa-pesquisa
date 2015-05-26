@@ -153,7 +153,7 @@ public class ProjetoController {
 		model.addAttribute("VALOR_BOLSAS_TOTAL", relatorio.getValorTotalDaBolsa());
 		jrDatasource = new JRBeanCollectionDataSource(relatorio.getProjetos());
 		model.addAttribute("datasource", jrDatasource);
-		model.addAttribute("format", "html");
+		model.addAttribute("format", "pdf");
 		
 		return "relatorioProjetoPorDocente";
 	}
