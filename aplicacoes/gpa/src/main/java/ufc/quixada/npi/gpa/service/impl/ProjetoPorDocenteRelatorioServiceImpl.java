@@ -56,7 +56,7 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 			for (Projeto projeto : projetoParticipante) {
 				calen.setTimeInMillis(projeto.getInicio().getTime());
 
-				if (calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) {
+				if ((calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) || (ano == 0 && !projetos.contains(projeto))) {
 					ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio = new ProjetoPorDocenteRelatorio();
 					projetoPorDocenteRelatorio.setHoras(projeto
 							.getCargaHoraria());
@@ -73,7 +73,7 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 			for (Projeto projeto : projetoAutor) {
 				calen.setTimeInMillis(projeto.getInicio().getTime());
 
-				if (calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) {
+				if ((calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) || (ano == 0 && !projetos.contains(projeto))) {
 					ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio = new ProjetoPorDocenteRelatorio();
 					projetoPorDocenteRelatorio.setHoras(projeto
 							.getCargaHoraria());
