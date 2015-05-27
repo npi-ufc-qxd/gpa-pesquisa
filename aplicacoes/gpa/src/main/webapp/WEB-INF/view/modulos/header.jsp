@@ -15,7 +15,8 @@
 				</li>
 				<li>
 					<a href="<c:url value="/projeto/listar" />" title="Projetos"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Projetos</a>
-				</li>
+				</li>				
+
 				<sec:authorize ifAllGranted="DIRETOR">
 					<li>
 						<a href="<c:url value="/projeto/relatorio" />" title="Visualizar Relatórios"><i class="fa fa-list fa-2x"></i>&nbsp; Visualizar Relatórios</a>

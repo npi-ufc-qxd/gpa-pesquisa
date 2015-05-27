@@ -104,17 +104,19 @@
 							<table id="table_d_submetidos" class="display">
 								<thead>
 									<tr>
+										<th>Data Submissão</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Status</th>
 										<th>Parecerista</th>
 										<th>Prazo</th>
-										<th></th>
+										<th>Ações</th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="projeto" items="${projetosSubmetidos}">
 										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
@@ -155,6 +157,7 @@
 							<table id="table_d_avaliados" class="table table-striped projetos">
 								<thead>
 									<tr>
+										<th>Data Submissão</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Status</th>
@@ -163,6 +166,7 @@
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAvaliados}">
 										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
