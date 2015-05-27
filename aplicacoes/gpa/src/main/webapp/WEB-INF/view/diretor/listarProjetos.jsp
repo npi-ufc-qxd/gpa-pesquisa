@@ -46,11 +46,12 @@
 						<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 					</c:if>
 					<c:if test="${not empty projetos}">
-						<div class="panel panel-default">
-							<table id="table-meus-projetos" class="table table-striped projetos">
+							<table id="table_diretor" class="display">
 								<thead>
 									<tr>
+										<th>Data de Submissão</th>
 										<th>Nome</th>
+										<th>Autor</th>
 										<th>Status</th>
 										<th></th>
 									</tr>
@@ -58,7 +59,9 @@
 								<tbody>
 									<c:forEach var="projeto" items="${projetos}">
 										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'NOVO'}">
@@ -91,7 +94,6 @@
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
 					</c:if>
 		        </section>
 		        <section id="section-projetos-submetidos">
@@ -99,21 +101,22 @@
 						<div class="alert alert-warning" role="alert">Não há projetos submetidos.</div>
 					</c:if>
 					<c:if test="${not empty projetosSubmetidos}">
-						<div class="panel panel-default">
-							<table id="table-projetos-submetidos" class="table table-striped projetos">
+							<table id="table_d_submetidos" class="display">
 								<thead>
 									<tr>
+										<th>Data Submissão</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Status</th>
 										<th>Parecerista</th>
 										<th>Prazo</th>
-										<th></th>
+										<th>Ações</th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="projeto" items="${projetosSubmetidos}">
 										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
@@ -143,7 +146,6 @@
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
 					</c:if>
 		        </section>
 		        <section id="section-projetos-avaliados">
@@ -151,11 +153,11 @@
 						<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
 					</c:if>
 					<c:if test="${not empty projetosAvaliados}">
-						<div class="panel panel-default">
 							<input type="hidden" name="parecerId" value="${parecerId}">
-							<table id="table-projetos-avaliados" class="table table-striped projetos">
+							<table id="table_d_avaliados" class="table table-striped projetos">
 								<thead>
 									<tr>
+										<th>Data Submissão</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Status</th>
@@ -164,6 +166,7 @@
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAvaliados}">
 										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
@@ -171,7 +174,6 @@
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
 					</c:if>
 		        </section>
 		        <section id="section-participantes">
@@ -179,8 +181,7 @@
 						<div class="alert alert-warning" role="alert">Não há participantes nos projetos.</div>
 					</c:if>
 					<c:if test="${not empty participantes}">
-						<div class="panel panel-default">
-							<table id="table-participantes" class="table table-striped projetos">
+							<table id="table_d_participantes" class="display">
 								<thead>
 									<tr>
 										<th>Nome</th>
@@ -196,7 +197,6 @@
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
 					</c:if>
 		        </section>
 		    </div><!-- /content -->

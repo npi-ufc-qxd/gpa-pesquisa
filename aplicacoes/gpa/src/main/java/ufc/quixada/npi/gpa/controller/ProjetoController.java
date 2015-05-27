@@ -600,6 +600,6 @@ public class ProjetoController {
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
 		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
-	}	
+	}
 
 }

@@ -42,9 +42,11 @@
 						<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 					</c:if>
 					<c:if test="${not empty projetos}">
-						<table id="meus-projetos" class="table table-striped projetos">
+						
+						<table id="table_id" class="display">
 							<thead>
 								<tr>
+									<th>Data Submissão</th>
 									<th>Nome</th>
 									<th>Status</th>
 									<th></th>
@@ -53,6 +55,7 @@
 							<tbody>
 								<c:forEach var="projeto" items="${projetos}">
 									<tr>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 										<td>
 											<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
 										</td>
@@ -92,19 +95,21 @@
 						<div class="alert alert-warning" role="alert">Não há projetos aguardando parecer.</div>
 					</c:if>
 					<c:if test="${not empty projetosAguardandoParecer}">
-						<div class="panel panel-default">
-							<table id="projetos-aguardando-parecer" class="table table-striped projetos">
+						
+							<table id="table_parecerista" class="display">
 								<thead>
 									<tr>
+										<th>Data Submissão</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Prazo</th>
-										<th></th>
+										<th>Parecer</th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAguardandoParecer}">
 										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td>
 												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
 											</td>
@@ -121,7 +126,6 @@
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
 					</c:if>
 		        </section>
 		        <section id="section-projetos-avaliados">
@@ -129,10 +133,10 @@
 						<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
 					</c:if>
 					<c:if test="${not empty projetosAvaliados}">
-						<div class="panel panel-default">
-							<table id="projetos-avaliados" class="table table-striped projetos">
+							<table id="table_avaliados" class="display">
 								<thead>
 									<tr>
+										<th>Data Submissão</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Status</th>
@@ -141,6 +145,7 @@
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAvaliados}">
 										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td>
 												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
 											</td>
@@ -150,7 +155,6 @@
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
 					</c:if>
 		        </section>
 		    </div><!-- /content -->
