@@ -35,7 +35,7 @@
 		    <nav>
 		        <ul>
 		            <li><a href="#meus-projetos"><span>Meus Projetos&nbsp; <i class="fa fa-folder-open-o"></i></span></a></li>
-		            <li><a href="#section-projetos-submetidos"><span>Projetos Submetidos&nbsp; <i class="fa fa-cloud-upload"></i></span></a></li>
+		            <li><a href="#section-projetos-submetidos"><span>Projetos em Tramitação&nbsp; <i class="fa fa-cloud-upload"></i></span></a></li>
 		            <li><a href="#section-projetos-avaliados"><span>Projetos Avaliados&nbsp; <i class="fa fa-check-square-o"></i></span></a></li>
 		            <li><a href="#section-participantes"><span>Participantes&nbsp; <i class="fa fa-users"></i></span></a></li>
 		        </ul>
