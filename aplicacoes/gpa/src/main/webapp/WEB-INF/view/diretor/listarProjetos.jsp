@@ -34,10 +34,11 @@
 		<div id="tabs" class="tabs">
 		    <nav>
 		        <ul>
-		            <li><a href="#meus-projetos"><span>Meus Projetos&nbsp; <i class="fa fa-folder-open-o"></i></span></a></li>
-		            <li><a href="#section-projetos-submetidos"><span>Projetos Submetidos&nbsp; <i class="fa fa-cloud-upload"></i></span></a></li>
-		            <li><a href="#section-projetos-avaliados"><span>Projetos Avaliados&nbsp; <i class="fa fa-check-square-o"></i></span></a></li>
-		            <li><a href="#section-participantes"><span>Participantes&nbsp; <i class="fa fa-users"></i></span></a></li>
+		            <li><a href="#meus-projetos"><span class="aba">Meus Projetos&nbsp; <i class="fa fa-folder-open-o"></i></span></a></li>
+		            <li><a href="#section-projetos-participante"><span class="aba">Em Participação&nbsp; <i class="fa"></i></span></a></li>
+		            <li><a href="#section-projetos-submetidos"><span class="aba">Projetos em Tramitação&nbsp; <i class="fa fa-cloud-upload"></i></span></a></li>
+		            <li><a href="#section-projetos-avaliados"><span class="aba">Projetos Avaliados&nbsp; <i class="fa fa-check-square-o"></i></span></a></li>
+		            <li><a href="#section-participantes"><span class="aba">Participantes&nbsp; <i class="fa fa-users"></i></span></a></li>
 		        </ul>
 		    </nav>
 		    <div class="content">
@@ -50,8 +51,7 @@
 								<thead>
 									<tr>
 										<th>Data de Submissão</th>
-										<th>Nome</th>
-										<th>Autor</th>
+										<th>Nome</th>										
 										<th>Status</th>
 										<th></th>
 									</tr>
@@ -60,23 +60,9 @@
 									<c:forEach var="projeto" items="${projetos}">
 										<tr>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
-											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>											
 											<td>${projeto.status.descricao}</td>
-											<td class="acoes">
-												<c:if test="${projeto.status == 'NOVO'}">
-													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#"
-														data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>" data-name="${projeto.nome }">
-														<button class="btn btn-primary">Submeter&nbsp;<i class="fa fa-cloud-upload"></i></button>
-													</a>
-													<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-														<button class="btn btn-primary">Editar&nbsp;<i class="fa fa-edit"></i></button>
-													</a>
-													<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
-														data-href="<c:url value="/projeto/${projeto.id}/excluir"></c:url>" data-name="${projeto.nome }">
-														<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
-													</a>
-												</c:if>
+											<td class="acoes">												
 												<sec:authorize ifAnyGranted="DIRETOR">
 													<c:if test="${projeto.status == 'SUBMETIDO'}">
 														<a id="atribuirParecerista"href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
@@ -86,6 +72,48 @@
 												</sec:authorize>
 												<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
 													<a id="avaliarProjeto" data-toggle="modal" href="<c:url value="/projeto/diretor/${projeto.id}/avaliar" ></c:url>">
+														<button class="btn btn-primary">Avaliar Projeto&nbsp;<i class="fa fa-check-square-o"></i></button>
+													</a>
+												</c:if>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+					</c:if>
+		        </section>
+				<section id="section-projetos-participante">
+		            <c:if test="${empty projetosParticipante}">
+						<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
+					</c:if>
+					<c:if test="${not empty projetosParticipante}">
+							<table id="table_diretor" class="display">
+								<thead>
+									<tr>
+										<th>Data de Submissão</th>
+										<th>Nome</th>	
+										<th>Autor</th>									
+										<th>Status</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="projetosParticipante" items="${projetosParticipante}">
+										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projetosParticipante.submissao }" /></td>
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
+											<td>${projetosParticipante.status.descricao}</td>
+											<td class="acoes">												
+												<sec:authorize ifAnyGranted="DIRETOR">
+													<c:if test="${projetosParticipante.status == 'SUBMETIDO'}">
+														<a id="atribuirParecerista"href="<c:url value="/projeto/diretor/${projetosParticipante.id}/atribuirParecerista" ></c:url>">
+															<button class="btn btn-primary">Atribuir Parecerista&nbsp;<i class="fa fa-user"></i></button>
+														</a>
+													</c:if>
+												</sec:authorize>
+												<c:if test="${projetosParticipante.status == 'AGUARDANDO_AVALIACAO'}">
+													<a id="avaliarProjeto" data-toggle="modal" href="<c:url value="/projeto/diretor/${projetosParticipante.id}/avaliar" ></c:url>">
 														<button class="btn btn-primary">Avaliar Projeto&nbsp;<i class="fa fa-check-square-o"></i></button>
 													</a>
 												</c:if>
@@ -240,7 +268,8 @@
 	<jsp:include page="../modulos/footer.jsp" />
 	
 	<script>
-	    new CBPFWTabs( document.getElementById( 'tabs' ) );
+	    new 
+		CBPFWTabs(document.getElementById('tabs'));
 	</script>
 </body>
 </html>
