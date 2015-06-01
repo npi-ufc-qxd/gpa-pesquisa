@@ -32,8 +32,8 @@
 		    <nav>
 		        <ul>
 		            <li><a href="#section-1"><span>Meus Projetos&nbsp; <i class="fa fa-folder-open-o"></i></span></a></li>
-		            <li><a href="#section-projetos-participante"><span>Em Participação&nbsp; <i class="fa"></i></span></a></li>
-		            <li><a href="#section-2"><span>Aguardando Parecer&nbsp; <i class="fa fa-gavel"></i></span></a></li>
+		            <li><a href="#section-projetos-participante"><span>Em Participação&nbsp; <i class="fa"></i></span></a></li>		            
+		            <li><a href="#section-2"><span>Emissão de Parecer&nbsp; <i class="fa fa-gavel"></i></span></a></li>
 		            <li><a href="#section-3"><span>Projetos Avaliados&nbsp; <i class="fa fa-check-square-o"></i></span></a></li>
 		        </ul>
 		    </nav>
