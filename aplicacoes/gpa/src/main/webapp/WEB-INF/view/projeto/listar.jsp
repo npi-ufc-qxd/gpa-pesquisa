@@ -32,7 +32,8 @@
 		    <nav>
 		        <ul>
 		            <li><a href="#section-1"><span>Meus Projetos&nbsp; <i class="fa fa-folder-open-o"></i></span></a></li>
-		            <li><a href="#section-2"><span>Aguardando Parecer&nbsp; <i class="fa fa-gavel"></i></span></a></li>
+		            <li><a href="#section-projetos-participante"><span>Em Participação&nbsp; <i class="fa"></i></span></a></li>		            
+		            <li><a href="#section-2"><span>Emissão de Parecer&nbsp; <i class="fa fa-gavel"></i></span></a></li>
 		            <li><a href="#section-3"><span>Projetos Avaliados&nbsp; <i class="fa fa-check-square-o"></i></span></a></li>
 		        </ul>
 		    </nav>
@@ -88,6 +89,33 @@
 								</c:forEach>
 							</tbody>
 						</table>
+					</c:if>
+		        </section>
+		       	<section id="section-projetos-participante">
+		            <c:if test="${empty projetosParticipante}">
+						<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
+					</c:if>
+					<c:if test="${not empty projetosParticipante}">
+							<table id="table_diretor" class="display">
+								<thead>
+									<tr>
+										<th>Data de Submissão</th>
+										<th>Nome</th>	
+										<th>Autor</th>									
+										<th>Status</th>										
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="projetosParticipante" items="${projetosParticipante}">
+										<tr>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projetosParticipante.submissao }" /></td>
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
+											<td>${projetosParticipante.status.descricao}</td>											
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 					</c:if>
 		        </section>
 		        <section id="section-projetos-aguardando-parecer">

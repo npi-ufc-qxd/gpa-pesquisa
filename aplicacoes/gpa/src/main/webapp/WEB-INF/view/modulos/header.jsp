@@ -3,7 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <header class="clearfix">
-	<span>GPA-Pequisa</span>
+	<span>GPA-Pesquisa</span>
 	<h1>Gestão de Programas Acadêmicos</h1>
 </header>
 <div class="main">
