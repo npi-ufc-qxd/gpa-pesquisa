@@ -33,7 +33,9 @@ public class PessoaController {
 
 		} else {
 			model.addAttribute("pessoa", pessoa);
+			model.addAttribute("reprovados", projetoService.getProjetosReprovadosByUsuario(pessoa.getId()));
 			model.addAttribute("projetos", projetoService.getProjetosByParticipante(pessoa.getId()));
+			model.addAttribute("coordenou",projetoService.getProjetosByUsuarioCoordenou(pessoa.getId()));
 			return PAGINA_DETALHES_USUARIO;
 		}
 

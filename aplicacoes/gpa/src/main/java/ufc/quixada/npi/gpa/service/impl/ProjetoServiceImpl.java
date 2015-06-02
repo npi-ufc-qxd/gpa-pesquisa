@@ -4,6 +4,8 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_INICIO_TERMINO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_TERMINO_FUTURA;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -246,6 +248,31 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public List<Projeto> getProjetosAprovados() {
 		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where (p.status = 'APROVADO')", null);
+	}
+
+	@Override
+	public List<Projeto> getProjetosReprovadosByUsuario(Long id) {	
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where ((p.status = 'REPROVADO') and (autor.id = :id))", params);
+	}
+
+	@Override
+	public List<Projeto> getProjetosByUsuarioCoordenou(Long id) {	
+		List<Projeto> projetos = new ArrayList<Projeto>();
+		Date data = new Date();
+		Calendar dataAtual = Calendar.getInstance();
+		Calendar dataTermino = Calendar.getInstance();
+		
+		dataAtual.setTimeInMillis(data.getTime());
+		
+		for (Projeto projeto : getProjetosByUsuario(id)) {
+			dataTermino.setTimeInMillis(projeto.getTermino().getTime());
+			if(dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()){
+				projetos.add(projeto);
+			}
+		}
+		return projetos;
 	}
 
 }
