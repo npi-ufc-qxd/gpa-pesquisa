@@ -35,7 +35,7 @@
 			            <li><a href="#section-projetos-participante"><span>Participante&nbsp; <i class="fa"></i></span></a></li>
 			            <li><a href="#section-projetos-coordenou"><span>Coordenou&nbsp; <i class="fa"></i></span></a></li>
 			            <li><a href="#section-projetos-participou"><span>Participou&nbsp; <i class="fa"></i></span></a></li>			            
-			            <li><a href="#section-projetos-reprovados"><span>Projetos Reprovados&nbsp; <i class="fa"></i></span></a></li>			            
+			            <li><a href="#section-projetos-reprovados"><span>Reprovados&nbsp; <i class="fa"></i></span></a></li>			            
 			        </ul>
 		    	</nav>				
 		        			
