@@ -31,6 +31,12 @@ public interface ProjetoService {
 	List<Projeto> getProjetosAvaliados();
 	
 	List<Projeto> getProjetosAprovados();
+	
+	List<Projeto> getProjetosReprovadosByUsuario(Long id);
+	
+	List<Projeto> getProjetosByUsuarioCoordenou(Long id);
+	
+	List<Projeto> getProjetosByUsuarioParticipou(Long id);
 
 	List<Projeto> getProjetosAguardandoParecer(Long id);
 
