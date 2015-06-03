@@ -26,22 +26,22 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
 	private GenericRepository<Projeto> projetoRepository;
-	
+
 	@Inject
 	private GenericRepository<Parecer> parecerRepository;
-	
+
 	@Override
 	public Map<String, String> cadastrar(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		
-		if(!projeto.isDataTerminoFutura()) {
+
+		if (!projeto.isDataTerminoFutura()) {
 			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
 		}
-		
-		if(!projeto.isPeriodoValido()) {
+
+		if (!projeto.isPeriodoValido()) {
 			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
 		}
-		
+
 		if (resultado.isEmpty()) {
 			projeto.setStatus(StatusProjeto.NOVO);
 			projetoRepository.save(projeto);
@@ -50,30 +50,30 @@ public class ProjetoServiceImpl implements ProjetoService {
 			projeto.setCodigo(codigo);
 			projetoRepository.update(projeto);
 		}
-		
+
 		return resultado;
 	}
-	
+
 	@Override
 	public Map<String, String> atualizar(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		
-		if(!projeto.isDataTerminoFutura()) {
+
+		if (!projeto.isDataTerminoFutura()) {
 			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
 		}
-		
-		if(!projeto.isPeriodoValido()) {
+
+		if (!projeto.isPeriodoValido()) {
 			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
 		}
-		
+
 		if (resultado.isEmpty()) {
 			projeto.setStatus(StatusProjeto.NOVO);
 			projetoRepository.update(projeto);
 		}
-		
+
 		return resultado;
 	}
-	
+
 	@Override
 	public void remover(Projeto projeto) {
 		projetoRepository.delete(projeto);
@@ -81,53 +81,70 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Override
 	public List<Projeto> getProjetosSubmetidos() {
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'SUBMETIDO' or p.status = 'AGUARDANDO_PARECER' or p.status = 'AGUARDANDO_AVALIACAO'", null);
+		return projetoRepository
+				.find(QueryType.JPQL,
+						"from Projeto as p where p.status = 'SUBMETIDO' or p.status = 'AGUARDANDO_PARECER' or p.status = 'AGUARDANDO_AVALIACAO'",
+						null);
 	}
-	
+
 	@Override
 	public List<Projeto> getProjetosAtribuidos() {
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'AGUARDANDO_PARECER' ", null);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto as p where p.status = 'AGUARDANDO_PARECER' ",
+				null);
 	}
 
 	@Override
 	public List<Projeto> getProjetosByUsuario(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id", params);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where autor.id = :id", params);
 	}
-	
+
 	@Override
 	public List<Projeto> getProjetosByParticipante(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "select distinct p FROM Projeto as p JOIN p.participantes pa WHERE pa.id = :id and p.status != 'NOVO'", params);
+		return projetoRepository
+				.find(QueryType.JPQL,
+						"select distinct p FROM Projeto as p JOIN p.participantes pa WHERE pa.id = :id and p.status != 'NOVO'",
+						params);
 	}
-	
 
 	@Override
 	public List<Projeto> getProjetosAvaliadosDoUsuario(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where ((p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')) AND (autor.id = :id)" , params);
+		return projetoRepository
+				.find(QueryType.JPQL,
+						"from Projeto as p where ((p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')) AND (autor.id = :id)",
+						params);
 	}
 
 	@Override
 	public List<Projeto> getProjetosAvaliados() {
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where (p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')" , null);
+		return projetoRepository
+				.find(QueryType.JPQL,
+						"from Projeto as p where (p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')",
+						null);
 	}
 
 	@Override
 	public List<Projeto> getProjetosAguardandoParecer(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "select p from Projeto as p where p.parecer.parecerista.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
+		return projetoRepository
+				.find(QueryType.JPQL,
+						"select p from Projeto as p where p.parecer.parecerista.id = :id and p.status = 'AGUARDANDO_PARECER'",
+						params);
 	}
 
 	@Override
 	public Projeto getProjetoById(Long id) {
 		return projetoRepository.find(Projeto.class, id);
 	}
-	
+
 	private String geraCodigoProjeto(Long id) {
 		if (id < 10) {
 			return "PESQ0" + id;
@@ -138,52 +155,54 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	private Map<String, String> validarSubmissao(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		
-		if(projeto.getNome() == null || projeto.getNome().isEmpty()) {
+
+		if (projeto.getNome() == null || projeto.getNome().isEmpty()) {
 			resultado.put("nome", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(projeto.getDescricao() == null || projeto.getDescricao().isEmpty()) {
+
+		if (projeto.getDescricao() == null || projeto.getDescricao().isEmpty()) {
 			resultado.put("descricao", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(projeto.getInicio() == null) {
+
+		if (projeto.getInicio() == null) {
 			resultado.put("inicio", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(!projeto.isPeriodoValido()) {
+
+		if (!projeto.isPeriodoValido()) {
 			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
 		}
-		
-		if(projeto.getTermino() == null) {
+
+		if (projeto.getTermino() == null) {
 			resultado.put("termino", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(!projeto.isDataTerminoFutura()) {
+
+		if (!projeto.isDataTerminoFutura()) {
 			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
 		}
-		
-		if(projeto.getCargaHoraria() == null || projeto.getCargaHoraria() == 0) {
+
+		if (projeto.getCargaHoraria() == null || projeto.getCargaHoraria() == 0) {
 			resultado.put("cargaHoraria", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(projeto.getParticipantes() == null || projeto.getParticipantes().isEmpty()) {
+
+		if (projeto.getParticipantes() == null
+				|| projeto.getParticipantes().isEmpty()) {
 			resultado.put("participantes", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(projeto.getLocal() == null || projeto.getLocal().isEmpty()) {
+
+		if (projeto.getLocal() == null || projeto.getLocal().isEmpty()) {
 			resultado.put("local", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(projeto.getAtividades() == null || projeto.getAtividades().isEmpty()) {
+
+		if (projeto.getAtividades() == null
+				|| projeto.getAtividades().isEmpty()) {
 			resultado.put("atividades", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		if(projeto.getDocumentos() == null || projeto.getDocumentos().isEmpty()) {
+
+		if (projeto.getDocumentos() == null
+				|| projeto.getDocumentos().isEmpty()) {
 			resultado.put("documentos", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		
-		
+
 		return resultado;
 	}
 
@@ -199,17 +218,18 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public Map<String, String> atribuirParecerista(Projeto projeto, Parecer parecer) {
+	public Map<String, String> atribuirParecerista(Projeto projeto,
+			Parecer parecer) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		if(parecer.getPrazo() == null) {
+		if (parecer.getPrazo() == null) {
 			resultado.put("prazo", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		if(resultado.isEmpty()) {
+		if (resultado.isEmpty()) {
 			parecerRepository.save(parecer);
 			projeto.setParecer(parecer);
 			projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 			projetoRepository.update(projeto);
-			
+
 		}
 		return resultado;
 	}
@@ -217,13 +237,14 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public Map<String, String> emitirParecer(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		if(projeto.getParecer().getParecer() == null || projeto.getParecer().getParecer().isEmpty()) {
+		if (projeto.getParecer().getParecer() == null
+				|| projeto.getParecer().getParecer().isEmpty()) {
 			resultado.put("parecer", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		if(resultado.isEmpty()) {
+		if (resultado.isEmpty()) {
 			projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
 			projetoRepository.update(projeto);
-			
+
 		}
 		return resultado;
 	}
@@ -231,13 +252,13 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public Map<String, String> avaliar(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		if(projeto.getAta() == null) {
+		if (projeto.getAta() == null) {
 			resultado.put("ata", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		if(projeto.getOficio() == null) {
+		if (projeto.getOficio() == null) {
 			resultado.put("oficio", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
-		if(resultado.isEmpty()) {
+		if (resultado.isEmpty()) {
 			projeto.setAvaliacao(new Date());
 			projetoRepository.update(projeto);
 			projetoRepository.update(projeto);
@@ -247,29 +268,35 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Override
 	public List<Projeto> getProjetosAprovados() {
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where (p.status = 'APROVADO')", null);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto as p where (p.status = 'APROVADO')", null);
 	}
 
 	@Override
-	public List<Projeto> getProjetosReprovadosByUsuario(Long id) {	
+	public List<Projeto> getProjetosReprovadosByUsuario(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where ((p.status = 'REPROVADO') and (autor.id = :id))", params);
+		return projetoRepository
+				.find(QueryType.JPQL,
+						"from Projeto as p where ((p.status = 'REPROVADO') and (autor.id = :id))",
+						params);
 	}
 
 	@Override
-	public List<Projeto> getProjetosByUsuarioCoordenou(Long id) {	
+	public List<Projeto> getProjetosByUsuarioCoordenou(Long id) {
 		List<Projeto> projetos = new ArrayList<Projeto>();
 		Date data = new Date();
 		Calendar dataAtual = Calendar.getInstance();
 		Calendar dataTermino = Calendar.getInstance();
-		
+
 		dataAtual.setTimeInMillis(data.getTime());
-		
+
 		for (Projeto projeto : getProjetosByUsuario(id)) {
-			dataTermino.setTimeInMillis(projeto.getTermino().getTime());
-			if(dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()){
-				projetos.add(projeto);
+			if (projeto.getTermino() != null) {
+				dataTermino.setTimeInMillis(projeto.getTermino().getTime());
+				if (dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()) {
+					projetos.add(projeto);
+				}
 			}
 		}
 		return projetos;
@@ -277,21 +304,22 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Override
 	public List<Projeto> getProjetosByUsuarioParticipou(Long id) {
-		
+
 		List<Projeto> projetos = new ArrayList<Projeto>();
 		Date data = new Date();
 		Calendar dataAtual = Calendar.getInstance();
 		Calendar dataTermino = Calendar.getInstance();
-		
+
 		dataAtual.setTimeInMillis(data.getTime());
-		
+
 		for (Projeto projeto : getProjetosByParticipante(id)) {
-			dataTermino.setTimeInMillis(projeto.getTermino().getTime());
-			if(dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()){
-				projetos.add(projeto);
+			if (projeto.getTermino() != null) {
+				dataTermino.setTimeInMillis(projeto.getTermino().getTime());
+				if (dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()) {
+					projetos.add(projeto);
+				}
 			}
 		}
 		return projetos;
 	}
-
 }
