@@ -31,11 +31,11 @@
 			<div id="tabs" class="tabs">
 				<nav>
 			        <ul>
-			            <li><a href="#section-projetos-coordenador"><span class="aba">Coordena&nbsp; <i class="fa"></i></span></a></li>
-			            <li><a href="#section-projetos-participante"><span class="aba">Participante&nbsp; <i class="fa"></i></span></a></li>
-			            <li><a href="#section-projetos-coordenou"><span class="aba">Coordenou&nbsp; <i class="fa"></i></span></a></li>
-			            <li><a href="#section-projetos-participou"><span class="aba">Participou&nbsp; <i class="fa"></i></span></a></li>			            
-			            <li><a href="#section-projetos-reprovados"><span class="aba">Projetos Reprovados&nbsp; <i class="fa"></i></span></a></li>			            
+			            <li><a href="#section-projetos-coordenador"><span>Coordena&nbsp; <i class="fa"></i></span></a></li>
+			            <li><a href="#section-projetos-participante"><span>Participante&nbsp; <i class="fa"></i></span></a></li>
+			            <li><a href="#section-projetos-coordenou"><span>Coordenou&nbsp; <i class="fa"></i></span></a></li>
+			            <li><a href="#section-projetos-participou"><span>Participou&nbsp; <i class="fa"></i></span></a></li>			            
+			            <li><a href="#section-projetos-reprovados"><span>Projetos Reprovados&nbsp; <i class="fa"></i></span></a></li>			            
 			        </ul>
 		    	</nav>				
 		        			
@@ -103,6 +103,25 @@
 					</section>
 					
 					<section id="section-projetos-participou">
+						<div class="col-sm-12 field-value">					
+							<c:if test="${empty participou }">
+								<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
+							</c:if>
+						</div>
+						<div class="col-sm-12 field-value">
+							<table class="table table-condensed">
+							<tbody>
+								<c:forEach items="${participou }" var="projeto">
+									<tr class="active">
+										<td>
+										<a href="<c:url value="/projeto/${projeto.id }/detalhes" />"
+											class="col-sm-12" style="padding-left: 0px;">${projeto.nome }</a>
+										</td>
+									</tr>
+								</c:forEach>
+								</tbody>
+							</table>
+						</div>
 					</section>
 					
 					<section id="section-projetos-reprovados">

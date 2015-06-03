@@ -275,4 +275,23 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return projetos;
 	}
 
+	@Override
+	public List<Projeto> getProjetosByUsuarioParticipou(Long id) {
+		
+		List<Projeto> projetos = new ArrayList<Projeto>();
+		Date data = new Date();
+		Calendar dataAtual = Calendar.getInstance();
+		Calendar dataTermino = Calendar.getInstance();
+		
+		dataAtual.setTimeInMillis(data.getTime());
+		
+		for (Projeto projeto : getProjetosByParticipante(id)) {
+			dataTermino.setTimeInMillis(projeto.getTermino().getTime());
+			if(dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()){
+				projetos.add(projeto);
+			}
+		}
+		return projetos;
+	}
+
 }
