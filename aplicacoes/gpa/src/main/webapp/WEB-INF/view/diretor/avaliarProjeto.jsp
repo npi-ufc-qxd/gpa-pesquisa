@@ -29,19 +29,25 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="observacao" class="col-sm-2 control-label">Parecer:</label>
+					<label class="col-sm-2 control-label">Parecer:</label>
 					<div class="col-sm-10 field-value parecer">
 						<label>${projeto.parecer.parecer }</label>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="observacao" class="col-sm-2 control-label">Anexo:</label>
+					<label class="col-sm-2 control-label">Posicionamento:</label>
+					<div class="col-sm-10 field-value parecer">
+						<label>${projeto.parecer.status.descricao }</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Anexo:</label>
 					<div class="col-sm-10 field-value parecer">
 						<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="margin-top: 5px;">${projeto.parecer.documento.nome }</a>
 					</div>
 				</div>
 				<div class="form-group form-item">
-					<label for="avaliacao" class="col-sm-2 control-label">Status:</label>
+					<label class="col-sm-2 control-label">Status:</label>
 					<div class="col-sm-4">
 						<select id="avaliacao" name="avaliacao" class="form-control">
 							<option value="APROVADO">APROVADO</option>

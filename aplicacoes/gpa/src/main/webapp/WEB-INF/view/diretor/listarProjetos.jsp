@@ -50,19 +50,34 @@
 							<table id="table_diretor" class="display">
 								<thead>
 									<tr>
-										<th>Data de Submissão</th>
 										<th>Nome</th>										
 										<th>Status</th>
+										<th>Data de Submissão</th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="projeto" items="${projetos}">
 										<tr>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>											
 											<td>${projeto.status.descricao}</td>
-											<td class="acoes">												
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
+											<td class="acoes">
+												<c:if test="${projeto.status == 'NOVO'}">
+													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#"
+														data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>" data-name="${projeto.nome }">
+														<button class="btn btn-primary">Submeter&nbsp;<i class="fa fa-cloud-upload"></i></button>
+													</a>
+		
+													<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
+														<button class="btn btn-primary">Editar&nbsp;<i class="fa fa-edit"></i></button>
+													</a>
+		
+													<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
+														data-href="<c:url value="/projeto/${projeto.id}/excluir"></c:url>" data-name="${projeto.nome }">
+														<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
+													</a>
+												</c:if>												
 												<sec:authorize ifAnyGranted="DIRETOR">
 													<c:if test="${projeto.status == 'SUBMETIDO'}">
 														<a id="atribuirParecerista"href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
