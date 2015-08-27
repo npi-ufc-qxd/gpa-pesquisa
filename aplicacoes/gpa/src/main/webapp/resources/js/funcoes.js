@@ -310,9 +310,19 @@ $(document).ready(function() {
 		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
 	});
 	
+	$('#empty-comentario').hide();
+	
 	$('#comentar').on('click', function(e){
 		var texto = $('#comentario').val();
 	    var projetoId = $('#projetoId').val();
+	    if (texto.trim() == '') {
+	    	$('#div-comentario').addClass('has-error');
+	    	$('#empty-comentario').show();
+	    	return;
+	    } else {
+	    	$('#div-comentario').removeClass('has-error');
+	    	$('#empty-comentario').hide();
+	    }
 	       
 	    $.ajax({
 	    	type: "POST",

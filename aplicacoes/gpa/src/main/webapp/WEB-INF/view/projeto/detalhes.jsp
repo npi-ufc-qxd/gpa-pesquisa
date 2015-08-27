@@ -252,10 +252,11 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
-				<div id="div-comentario" class="col-sm-12 field-value">
+			<div id="div-comentario" class="form-group">
+				<div id="campo-comentario" class="col-sm-12 field-value">
 					<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário"></textarea>
 				</div>
+				<small id="empty-comentario" class="has-error help-block">Por favor insira um valor</small>
 			</div>
 			<div>
 				<input id="comentar" name="comentar" type="submit" class="btn btn-primary" value="Enviar" />
