@@ -543,7 +543,8 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "/diretor/{id}/avaliar", method = RequestMethod.POST)
 	public String avaliar(@PathVariable("id") Long id, @RequestParam("avaliacao") StatusProjeto avaliacao, 
-			@RequestParam("ata") MultipartFile ata, @RequestParam("oficio") MultipartFile oficio, Model model, RedirectAttributes redirect) {
+			@RequestParam("ata") MultipartFile ata, @RequestParam("oficio") MultipartFile oficio, 
+			@RequestParam("observacao")String observacao, Model model, RedirectAttributes redirect) {
 		Documento ataDocumento = null;
 		Documento oficioDocumento = null;
 		try {
@@ -568,6 +569,7 @@ public class ProjetoController {
 		projeto.setStatus(avaliacao);
 		projeto.setAta(ataDocumento);
 		projeto.setOficio(oficioDocumento);
+		projeto.setObservacaoAvaliacao(observacao);
 		Map<String, String> resultado = projetoService.avaliar(projeto);
 		if(resultado.isEmpty()) {
 			redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);

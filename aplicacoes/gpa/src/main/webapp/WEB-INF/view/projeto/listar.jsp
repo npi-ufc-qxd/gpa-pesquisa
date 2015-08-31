@@ -47,20 +47,20 @@
 						<table id="table_id" class="display">
 							<thead>
 								<tr>
-									<th>Data Submissão</th>
 									<th>Nome</th>
 									<th>Status</th>
+									<th>Data Submissão</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="projeto" items="${projetos}">
 									<tr>
-										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 										<td>
 											<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
 										</td>
 										<td>${projeto.status.descricao}</td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 										<td class="acoes">
 											<c:if test="${projeto.status == 'NOVO'}">
 												<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#"
