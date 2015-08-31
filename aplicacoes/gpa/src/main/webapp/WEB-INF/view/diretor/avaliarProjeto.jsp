@@ -81,7 +81,13 @@
 					</div>
 				</div>
 
-
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Observação:</label>
+					<div class="col-sm-10">
+						<textarea id="observacao" name="observacao" class="form-control" rows="8" placeholder="Observação"></textarea>
+					</div>
+				</div>
+				
 				<div class="controls">
 					<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
 					<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>

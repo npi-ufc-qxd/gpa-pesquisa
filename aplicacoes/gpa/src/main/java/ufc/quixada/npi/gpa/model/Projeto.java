@@ -84,6 +84,9 @@ public class Projeto {
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Documento oficio;
+	
+	@Column(columnDefinition = "TEXT")
+	private String observacaoAvaliacao;
 
 	public Date getAvaliacao() {
 		return avaliacao;
@@ -262,6 +265,14 @@ public class Projeto {
 
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	public String getObservacaoAvaliacao() {
+		return observacaoAvaliacao;
+	}
+
+	public void setObservacaoAvaliacao(String observacaoAvaliacao) {
+		this.observacaoAvaliacao = observacaoAvaliacao;
 	}
 
 	@Override
