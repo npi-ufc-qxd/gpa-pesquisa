@@ -23,8 +23,13 @@
 		<c:set var="titulo" value="Editar - ${projeto.nome } "></c:set>
 	</c:if>
 
-	<div class="container">
 	<jsp:include page="../modulos/header.jsp" />
+	<div class="container">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Novo projeto</h3>
+			</div>
+			<div class="panel-body">
 		<c:if test="${not empty erro}">
 			<div class="alert alert-danger alert-dismissible" role="alert">
 				<button type="button" class="close" data-dismiss="alert">
@@ -200,7 +205,9 @@
 					<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
 				</div>
 			</form:form>
+			</div>
 		</div>
+	</div>
 	</div>
 	
 	<!-- Modal Excluir Arquivo -->

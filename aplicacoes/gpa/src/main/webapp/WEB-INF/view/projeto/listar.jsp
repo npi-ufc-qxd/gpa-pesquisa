@@ -225,9 +225,9 @@
 
 	<jsp:include page="../modulos/footer.jsp" />
 	
-	<script>
+	<!-- <script>
 	    new CBPFWTabs( document.getElementById( 'tabs' ) );
-	</script>
+	</script> -->
 
 </body>
 </html>

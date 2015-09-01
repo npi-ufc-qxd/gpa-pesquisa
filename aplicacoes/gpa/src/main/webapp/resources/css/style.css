@@ -1,0 +1,32 @@
+
+/* Geral */
+
+body {
+	background-color: #E9E9E9;
+}
+
+a, a:hover, a:VISITED, a:ACTIVE, button, button:hover, button:VISITED, button:ACTIVE {
+	outline: none !important;
+	outline-offset:0 !important;
+	text-decoration: none !important;
+}
+
+h3 {
+	padding: 5px 10px;
+}
+
+.tab-content {
+	margin: 20px 10px;
+}
+
+table tr {
+	height: 40px;
+}
+
+table > tbody > tr > td.acoes {
+	text-align: right;
+}
+
+div.alert {
+	text-align: center;
+}
