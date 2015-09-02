@@ -179,7 +179,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public String cadastrar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @RequestParam("anexos") List<MultipartFile> anexos,
+	public String cadastrar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @RequestParam("anexos") MultipartFile[] anexos,
 			@Valid Projeto projeto, BindingResult result, HttpSession session, RedirectAttributes redirect, Model model) {
 		
 		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
@@ -199,7 +199,7 @@ public class ProjetoController {
 		}
 		
 		List<Documento> documentos = new ArrayList<Documento>();
-		if(anexos != null && !anexos.isEmpty()) {
+		if(anexos != null && anexos.length != 0) {
 			for(MultipartFile anexo : anexos) {
 				try {
 					if(anexo.getBytes() != null && anexo.getBytes().length != 0) {
