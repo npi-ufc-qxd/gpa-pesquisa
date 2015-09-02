@@ -16,7 +16,7 @@
 	<div class="container">
 		<jsp:include page="../modulos/header.jsp" />
 		<div class="formulario">
-			<h2>Avaliar - <a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></h2>
+			<h2>Avaliar - <a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a></h2>
 			<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/projeto/diretor/${projeto.id}/avaliar" method="POST" cssClass="form-horizontal">
 				<div class="form-group">
 					<label for="autor" class="col-sm-2 control-label">Parecerista:</label>
@@ -25,23 +25,29 @@
 					</div>
 					<label for="autor" class="col-sm-2 control-label">Autor:</label>
 					<div class="col-sm-4 field-value parecer">
-						<label><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></label>
+						<label><a href="<c:url value="/pessoa/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="observacao" class="col-sm-2 control-label">Parecer:</label>
+					<label class="col-sm-2 control-label">Parecer:</label>
 					<div class="col-sm-10 field-value parecer">
 						<label>${projeto.parecer.parecer }</label>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="observacao" class="col-sm-2 control-label">Anexo:</label>
+					<label class="col-sm-2 control-label">Posicionamento:</label>
+					<div class="col-sm-10 field-value parecer">
+						<label>${projeto.parecer.status.descricao }</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Anexo:</label>
 					<div class="col-sm-10 field-value parecer">
 						<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="margin-top: 5px;">${projeto.parecer.documento.nome }</a>
 					</div>
 				</div>
 				<div class="form-group form-item">
-					<label for="avaliacao" class="col-sm-2 control-label">Status:</label>
+					<label class="col-sm-2 control-label">Status:</label>
 					<div class="col-sm-4">
 						<select id="avaliacao" name="avaliacao" class="form-control">
 							<option value="APROVADO">APROVADO</option>
@@ -75,7 +81,13 @@
 					</div>
 				</div>
 
-
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Observação:</label>
+					<div class="col-sm-10">
+						<textarea id="observacao" name="observacao" class="form-control" rows="8" placeholder="Observação"></textarea>
+					</div>
+				</div>
+				
 				<div class="controls">
 					<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
 					<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>

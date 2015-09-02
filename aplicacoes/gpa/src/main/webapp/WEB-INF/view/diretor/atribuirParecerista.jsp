@@ -17,7 +17,7 @@
 	<div class="container">
 		<jsp:include page="../modulos/header.jsp" />
 		<div class="formulario" align="center">
-			<h2>Atribuir Parecerista - <a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></h2>
+			<h2>Atribuir Parecerista - <a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a></h2>
 			<form:form id="atribuirPareceristaForm" servletRelativeAction="/projeto/diretor/atribuirParecerista" method="POST" cssClass="form-horizontal">
 				<input type="hidden" name="projetoId" value="${projeto.id}">
 				<div class="form-group form-item">

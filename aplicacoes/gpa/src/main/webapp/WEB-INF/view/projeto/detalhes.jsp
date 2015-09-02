@@ -26,7 +26,7 @@
 				</div>
 				<label class="col-sm-2 control-label field">Autor:</label>
 				<div class="col-sm-4 field-value">
-					<a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a>
+					<a href="<c:url value="/pessoa/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a>
 				</div>
 			</div>
 			
@@ -160,7 +160,7 @@
 					</c:if>
 					<c:if test="${not empty projeto.participacoes }">
 						<c:forEach items="${projeto.participacoes }" var="participacao">
-							<label><a href="<c:url value="/pessoa/${participacao.participante.id}/detalhes" ></c:url>">${participacao.participante.nome};</a></label>
+							<label><a href="<c:url value="/pessoa/${participacao.participante.id}" ></c:url>">${participacao.participante.nome};</a></label>
 						</c:forEach>
 					</c:if>
 				</div>
@@ -173,7 +173,7 @@
 					</c:if>
 					<c:if test="${not empty projeto.participantes }">
 						<c:forEach items="${projeto.participantes }" var="participante">
-							<label><a href="<c:url value="/pessoa/${participante.id}/detalhes" ></c:url>">${participante.nome};</a></label>
+							<label><a href="<c:url value="/pessoa/${participante.id}" ></c:url>">${participante.nome};</a></label>
 						</c:forEach>
 					</c:if>
 				</div>
@@ -210,7 +210,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label field">Parecerista:</label>
 					<div class="col-sm-4 field-value">
-						<label><a href="<c:url value="/pessoa/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a></label>
+						<label><a href="<c:url value="/pessoa/${projeto.parecer.parecerista.id}" ></c:url>">${projeto.parecer.parecerista.nome}</a></label>
 					</div>
 					<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
 						<label class="col-sm-2 control-label field">Prazo parecer:</label>
@@ -265,10 +265,11 @@
 				</div>
 			</div>
 			
-			<div class="form-group">
-				<div id="div-comentario" class="col-sm-12 field-value">
+			<div id="div-comentario" class="form-group">
+				<div id="campo-comentario" class="col-sm-12 field-value">
 					<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário"></textarea>
 				</div>
+				<small id="empty-comentario" class="has-error help-block">Por favor insira um valor</small>
 			</div>
 			<div>
 				<input id="comentar" name="comentar" type="submit" class="btn btn-primary" value="Enviar" />

@@ -47,20 +47,20 @@
 						<table id="table_id" class="display">
 							<thead>
 								<tr>
-									<th>Data Submissão</th>
 									<th>Nome</th>
 									<th>Status</th>
+									<th>Data Submissão</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="projeto" items="${projetos}">
 									<tr>
-										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 										<td>
 											<a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a>
 										</td>
 										<td>${projeto.status.descricao}</td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 										<td class="acoes">
 											<c:if test="${projeto.status == 'NOVO'}">
 												<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#"
@@ -142,8 +142,8 @@
 									<c:forEach var="projetosParticipante" items="${projetosParticipante}">
 										<tr>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projetosParticipante.submissao }" /></td>
-											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.nome}</a></td>
-											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}" ></c:url>">${projetosParticipante.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
 											<td>${projetosParticipante.status.descricao}</td>											
 										</tr>
 									</c:forEach>

@@ -24,7 +24,7 @@ public class PessoaController {
 	@Inject
 	private ProjetoService projetoService;
 
-	@RequestMapping(value = "/{id}/detalhes")
+	@RequestMapping(value = "/{id}")
 	public String getDetalhes(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
 		Pessoa pessoa = pessoaService.getPessoaById(id);
 		if (pessoa == null) {

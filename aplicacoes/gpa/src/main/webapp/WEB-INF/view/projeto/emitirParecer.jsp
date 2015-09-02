@@ -26,7 +26,7 @@
 		<div class="formulario">
 			<h2>
 				Emitir Parecer - <a
-					href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
+					href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a>
 			</h2>
 			<form:form id="emitirParecerForm" enctype="multipart/form-data"
 				servletRelativeAction="/projeto/${projeto.id}/emitirParecer"
@@ -35,7 +35,7 @@
 					<label for="autor" class="col-sm-2 control-label">Autor:</label>
 					<div class="col-sm-10 field-value parecer">
 						<label><a
-							href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></label>
+							href="<c:url value="/pessoa/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 					</div>
 				</div>
 				<div class="form-group form-item">
