@@ -113,7 +113,7 @@
 									<c:forEach var="participacao" items="${participacoesEmProjetos}">
 										<tr>
 											<td><a href="<c:url value="/projeto/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
-											<td><a href="<c:url value="/projeto/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
+											<td><a href="<c:url value="/pessoa/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
 											<td>${participacao.projeto.status.descricao}</td>
 											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
 											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>

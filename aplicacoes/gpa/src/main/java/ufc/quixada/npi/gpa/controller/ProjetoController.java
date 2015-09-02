@@ -94,7 +94,7 @@ public class ProjetoController {
 	
 	private JRDataSource jrDatasource;
 	
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	@RequestMapping(value = {"/index","/"}, method = RequestMethod.GET)
 	public String index() {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -232,7 +232,7 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
-	@RequestMapping(value = "/{id}/detalhes")
+	@RequestMapping(value = "/{id}")
 	public String verDetalhes(@PathVariable("id") Long id, Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjetoById(id);

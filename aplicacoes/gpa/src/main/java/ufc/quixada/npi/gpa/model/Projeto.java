@@ -72,7 +72,7 @@ public class Projeto {
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Participacao> participacoes;
-	
+
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
@@ -91,6 +91,14 @@ public class Projeto {
 	@Column(columnDefinition = "TEXT")
 	private String observacaoAvaliacao;
 
+	public List<Participacao> getParticipacoes() {
+		return participacoes;
+	}
+
+	public void setParticipacoes(List<Participacao> participacoes) {
+		this.participacoes = participacoes;
+	}
+	
 	public Date getAvaliacao() {
 		return avaliacao;
 	}
