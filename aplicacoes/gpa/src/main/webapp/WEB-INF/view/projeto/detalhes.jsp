@@ -153,6 +153,19 @@
 			</div>
 			<br>
 			<div class="form-group">
+				<label class="col-sm-2 control-label field">Participantes: (novo)</label>
+				<div class="col-sm-10 field-value">
+					<c:if test="${empty projeto.participacoes }">
+						<label>-</label>
+					</c:if>
+					<c:if test="${not empty projeto.participacoes }">
+						<c:forEach items="${projeto.participacoes }" var="participacao">
+							<label><a href="<c:url value="/pessoa/${participacao.participante.id}/detalhes" ></c:url>">${participacao.participante.nome};</a></label>
+						</c:forEach>
+					</c:if>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-2 control-label field">Participantes:</label>
 				<div class="col-sm-10 field-value">
 					<c:if test="${empty projeto.participantes }">

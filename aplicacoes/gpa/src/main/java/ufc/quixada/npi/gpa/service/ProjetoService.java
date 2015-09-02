@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Projeto;
 
 public interface ProjetoService {
@@ -45,5 +46,7 @@ public interface ProjetoService {
 	Map<String, String> emitirParecer(Projeto projeto);
 	
 	Map<String, String> avaliar(Projeto projeto);
+
+	List<Participacao> getParticipacoesDe(Long id);
 	
 }

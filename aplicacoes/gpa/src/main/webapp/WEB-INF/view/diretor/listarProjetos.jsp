@@ -60,7 +60,7 @@
 									<c:forEach var="projeto" items="${projetos}">
 										<tr>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
-											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>											
+											<td><a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a></td>											
 											<td>${projeto.status.descricao}</td>
 											<td class="acoes">												
 												<sec:authorize ifAnyGranted="DIRETOR">
@@ -101,8 +101,8 @@
 									<c:forEach var="projetosParticipante" items="${projetosParticipante}">
 										<tr>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projetosParticipante.submissao }" /></td>
-											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.nome}</a></td>
-											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}" ></c:url>">${projetosParticipante.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${projetosParticipante.id}" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
 											<td>${projetosParticipante.status.descricao}</td>
 											<td class="acoes">												
 												<sec:authorize ifAnyGranted="DIRETOR">
@@ -145,13 +145,13 @@
 									<c:forEach var="projeto" items="${projetosSubmetidos}">
 										<tr>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
-											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 											<td>
 												<c:if test="${projeto.parecer == null }">-</c:if>
 												<c:if test="${projeto.parecer != null }">
-													<a href="<c:url value="/pessoa/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a>
+													<a href="<c:url value="/pessoa/${projeto.parecer.parecerista.id}" ></c:url>">${projeto.parecer.parecerista.nome}</a>
 												</c:if>
 											</td>
 											<td>

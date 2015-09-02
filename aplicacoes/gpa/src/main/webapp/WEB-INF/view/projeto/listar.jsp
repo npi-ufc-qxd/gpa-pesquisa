@@ -58,7 +58,7 @@
 									<tr>
 										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 										<td>
-											<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
+											<a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a>
 										</td>
 										<td>${projeto.status.descricao}</td>
 										<td class="acoes">
@@ -92,6 +92,39 @@
 					</c:if>
 		        </section>
 		       	<section id="section-projetos-participante">
+		            <c:if test="${empty participacoesEmProjetos}">
+						<div class="alert alert-warning" role="alert">Não há participações em projetos.</div>
+					</c:if>
+					<c:if test="${not empty participacoesEmProjetos}">
+							<table id="table_diretor" class="display">
+								<thead>
+									Participações em Projetos
+									<tr>
+										<th>Projeto</th>
+										<th>Coordenador(a)</th>
+										<th>Status</th>
+										<th>Mês início</th>	
+										<th>Mês término</th>									
+										<th>Carga horária mensal</th>
+										<th>Valor bolsa mensal</th>										
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="participacao" items="${participacoesEmProjetos}">
+										<tr>
+											<td><a href="<c:url value="/projeto/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
+											<td><a href="<c:url value="/projeto/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
+											<td>${participacao.projeto.status.descricao}</td>
+											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+											<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
+											<td><fmt:formatNumber type="CURRENCY" currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+					</c:if>
+		            
 		            <c:if test="${empty projetosParticipante}">
 						<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 					</c:if>
@@ -139,9 +172,9 @@
 										<tr>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td>
-												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
+												<a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a>
 											</td>
-											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
@@ -175,9 +208,9 @@
 										<tr>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td>
-												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
+												<a href="<c:url value="/projeto/${projeto.id}" ></c:url>">${projeto.nome}</a>
 											</td>
-											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 										</tr>
 									</c:forEach>

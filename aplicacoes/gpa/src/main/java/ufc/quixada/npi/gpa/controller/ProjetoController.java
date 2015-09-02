@@ -104,6 +104,7 @@ public class ProjetoController {
 		Long idUsuarioLogado = getUsuarioLogado(session).getId();
 		model.addAttribute("projetos", projetoService.getProjetosByUsuario(idUsuarioLogado));
 		model.addAttribute("projetosParticipante", projetoService.getProjetosByParticipante(idUsuarioLogado));
+		model.addAttribute("participacoesEmProjetos", projetoService.getParticipacoesDe(idUsuarioLogado));
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliadosDoUsuario(idUsuarioLogado));
 
@@ -284,7 +285,7 @@ public class ProjetoController {
 			RedirectAttributes redirect) {
 		
 		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
-		model.addAttribute("action", "cadastrar");
+		model.addAttribute("action", "editar");
 		if (result.hasErrors()) {
 			return PAGINA_CADASTRAR_PROJETO;
 		}

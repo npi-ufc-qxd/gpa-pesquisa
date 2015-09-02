@@ -4,6 +4,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_INICIO_TERMINO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_TERMINO_FUTURA;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
@@ -26,6 +28,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
 	private GenericRepository<Projeto> projetoRepository;
+	
+	@Inject
+	private GenericRepository<Participacao> participacaoRepository;
 
 	@Inject
 	private GenericRepository<Parecer> parecerRepository;
@@ -111,6 +116,18 @@ public class ProjetoServiceImpl implements ProjetoService {
 						"select distinct p FROM Projeto as p JOIN p.participantes pa WHERE pa.id = :id and p.status != 'NOVO'",
 						params);
 	}
+	
+	@Override
+	public List<Participacao> getParticipacoesDe(Long id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		List<Participacao> lista = participacaoRepository
+				.find(QueryType.JPQL,
+						  "select distinct part FROM Participacao as part "
+						+ "WHERE part.participante.id = :id ",
+						params);
+		return lista;
+	}
 
 	@Override
 	public List<Projeto> getProjetosAvaliadosDoUsuario(Long id) {
@@ -146,11 +163,14 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	private String geraCodigoProjeto(Long id) {
-		if (id < 10) {
-			return "PESQ0" + id;
-		} else {
-			return "PESQ" + id;
-		}
+		NumberFormat formatador = NumberFormat.getInstance();
+		formatador.setMinimumIntegerDigits(4);
+		return "PESQ" + formatador.format(id);
+//		if (id < 10) {
+//			return "PESQ0" + id;
+//		} else {
+//			return "PESQ" + id;
+//		}
 	}
 
 	private Map<String, String> validarSubmissao(Projeto projeto) {
@@ -322,4 +342,5 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 		return projetos;
 	}
+
 }

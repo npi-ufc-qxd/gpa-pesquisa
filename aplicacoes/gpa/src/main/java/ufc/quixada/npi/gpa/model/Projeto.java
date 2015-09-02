@@ -71,6 +71,9 @@ public class Projeto {
     private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	private List<Participacao> participacoes;
+	
+	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
