@@ -20,14 +20,14 @@
 	</c:if>
 	<c:if test="${action eq 'editar' }">
 		<c:set var="url" value="/projeto/editar"></c:set>
-		<c:set var="titulo" value="Editar - ${projeto.nome } "></c:set>
+		<c:set var="titulo" value="Editar Projeto "></c:set>
 	</c:if>
 	
 	<jsp:include page="../modulos/header.jsp" />
 	<div class="container">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Novo projeto</h3>
+				<h3 class="panel-title">${titulo }</h3>
 			</div>
 			<div class="panel-body">
 				<c:if test="${not empty erro}">
@@ -166,11 +166,11 @@
 							<div class="col-sm-10">
 								<input id="anexos" type="file" name="anexos" class="file-loading" multiple="multiple" ></input>
 								<c:if test="${not empty projeto.documentos }">
-									<table id="table-anexos" class="table table-striped">
+									<table id="table-anexos" class="table table-striped table-hover">
 										<thead>
 											<tr>
-												<th data-column-id="nome" data-order="desc">Arquivo</th>
-												<th data-column-id="excluir" width="5%">Excluir</th>
+												<th></th>
+												<th></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -179,9 +179,10 @@
 											        <td>
 											            <a href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
 											        </td>
-											        <td>
-											        	<a id="exluir-arquivo" data-toggle="modal" data-target="#delete-file" href="#" data-id="${documento.id}" data-name="${documento.nome }">
-															<button class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+											        <td class="align-right">
+											        	<a id="exluir-arquivo" data-toggle="modal" data-target="#confirm-delete-file" href="#" title="Excluir"
+											        		data-name="${documento.nome }" data-id="${documento.id }">
+															<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
 														</a>
 											        </td>
 											    </tr>	
@@ -210,16 +211,16 @@
 	</div>
 	
 	<!-- Modal Excluir Arquivo -->
-	<div class="modal fade" id="delete-file" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="confirm-delete-file">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        			<h4 class="modal-title" id="excluirArquivoModalLabel">Excluir</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;<span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">Excluir</h4>
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger confirm-delete-file" data-dismiss="modal">Excluir</button>
+					<a id="button-delete-file" href="#" class="btn btn-danger">Excluir</a>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
