@@ -5,7 +5,8 @@ body {
 	background-color: #E9E9E9;
 }
 
-a, a:hover, a:VISITED, a:ACTIVE, button, button:hover, button:VISITED, button:ACTIVE {
+a, a:hover, a:VISITED, a:ACTIVE, button, button:hover, button:VISITED, button:ACTIVE
+input.btn, input.btn:VISITED, input.btn:ACTIVE, input.btn:FOCUS {
 	outline: none !important;
 	outline-offset:0 !important;
 	text-decoration: none !important;
@@ -37,6 +38,40 @@ div.controls {
 
 table#table-anexos {
 	margin-top: 10px;
+}
+
+h4.subtitle {
+	margin-top: 40px;
+}
+
+span.line {
+	border: 1px solid #2C3E50;
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.value-label {
+	padding-top: 11px;
+	color: #18BC9C;
+	text-align: justify;
+	padding-left: 0px;
+}
+
+.value-label > label {
+	font-weight: normal;
+}
+
+.value-label > a {
+	text-decoration: underline !important;
+}
+
+#comentarios .panel-body {
+	color: #65696E;
+}
+
+.date-comment {
+	float: right;
 }
 
 /* Sobrescrita bootstrap */
