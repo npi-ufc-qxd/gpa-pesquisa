@@ -23,3 +23,5 @@
 <link href="<c:url value="/resources/css/dropzone.css"/>" rel="stylesheet"/>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="shortcut icon" href="<c:url value="/resources/images/gpa-icone.jpg" />" />
