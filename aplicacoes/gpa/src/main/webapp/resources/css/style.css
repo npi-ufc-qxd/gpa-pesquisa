@@ -5,6 +5,11 @@ body {
 	background-color: #E9E9E9;
 }
 
+img#logo {
+	height: 60px;
+	border-bottom: 1px solid #2C3E50;
+}
+
 a, a:hover, a:VISITED, a:ACTIVE, button, button:hover, button:VISITED, button:ACTIVE
 input.btn, input.btn:VISITED, input.btn:ACTIVE, input.btn:FOCUS {
 	outline: none !important;

@@ -80,7 +80,7 @@
 													</c:if>												
 													<sec:authorize ifAnyGranted="DIRETOR">
 														<c:if test="${projeto.status == 'SUBMETIDO'}">
-															<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
+															<a id="atribuirParecerista" title="Atribuir parecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
 																<button class="btn btn-primary btn-xs"><i class="fa fa-user"></i></button>
 															</a>
 														</c:if>

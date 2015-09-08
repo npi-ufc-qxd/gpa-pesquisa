@@ -8,93 +8,109 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
-<head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Avaliar Projeto</title>
-</head>
+	<head>
+		<title>Avaliar Projeto</title>
+		<jsp:include page="../modulos/header-estrutura.jsp" />
+	</head>
 <body>
+	<jsp:include page="../modulos/header.jsp" />
 	<div class="container">
-		<jsp:include page="../modulos/header.jsp" />
-		<div class="formulario">
-			<h2>Avaliar - <a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></h2>
-			<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/projeto/diretor/${projeto.id}/avaliar" method="POST" cssClass="form-horizontal">
-				<div class="form-group">
-					<label for="autor" class="col-sm-2 control-label">Parecerista:</label>
-					<div class="col-sm-4 field-value parecer">
-						<label>${projeto.parecer.parecerista.nome }</label>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Avaliar</h3>
+			</div>
+			<div class="panel-body">
+				<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/projeto/diretor/${projeto.id}/avaliar" method="POST" cssClass="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Projeto:</label>
+						<div class="col-sm-8 value-label">
+							<label>${projeto.nome }</label>
+						</div>
 					</div>
-					<label for="autor" class="col-sm-2 control-label">Autor:</label>
-					<div class="col-sm-4 field-value parecer">
-						<label><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></label>
+					<div class="form-group">
+						<label for="autor" class="col-sm-2 control-label">Parecerista:</label>
+						<div class="col-sm-4 value-label">
+							<label>${projeto.parecer.parecerista.nome }</label>
+						</div>
+						<label for="autor" class="col-sm-2 control-label">Autor:</label>
+						<div class="col-sm-4 value-label">
+							<label><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></label>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Parecer:</label>
-					<div class="col-sm-10 field-value parecer">
-						<label>${projeto.parecer.parecer }</label>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Parecer:</label>
+						<div class="col-sm-10 value-label">
+							<label>${projeto.parecer.parecer }</label>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Posicionamento:</label>
-					<div class="col-sm-10 field-value parecer">
-						<label>${projeto.parecer.status.descricao }</label>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Posicionamento:</label>
+						<div class="col-sm-10 value-label">
+							<label>${projeto.parecer.status.descricao }</label>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Anexo:</label>
-					<div class="col-sm-10 field-value parecer">
-						<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="margin-top: 5px;">${projeto.parecer.documento.nome }</a>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Anexo:</label>
+						<div class="col-sm-10 value-label">
+							<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="margin-top: 5px;">${projeto.parecer.documento.nome }</a>
+						</div>
 					</div>
-				</div>
-				<div class="form-group form-item">
-					<label class="col-sm-2 control-label">Status:</label>
-					<div class="col-sm-4">
-						<select id="avaliacao" name="avaliacao" class="form-control">
-							<option value="APROVADO">APROVADO</option>
-							<option value="APROVADO_COM_RESTRICAO">APROVADO COM RESTRIÇÃO</option>
-							<option value="REPROVADO">REPROVADO</option>
-						</select>
+					<div class="form-group form-item">
+						<label class="col-sm-2 control-label">Status:</label>
+						<div class="col-sm-4">
+							<select id="avaliacao" name="avaliacao" class="form-control">
+								<option value="APROVADO">APROVADO</option>
+								<option value="APROVADO_COM_RESTRICAO">APROVADO COM RESTRIÇÃO</option>
+								<option value="REPROVADO">REPROVADO</option>
+							</select>
+						</div>
 					</div>
-				</div>
-
-				<div class="form-group form-item">
-					<label for="ata" class="col-sm-2 control-label"><span class="required">*</span> Ata de reunião:</label>
-					<div class="col-sm-10 files">
-						<input type="file" id="ata" name="ata" class="file"></input>
-						<c:if test="${not empty erro_ata}">
-							<div class="error-validation">
-								<span>${erro_ata}</span>
-							</div>
-						</c:if>
+	
+					<div class="form-group form-item">
+						<label for="ata" class="col-sm-2 control-label"><span class="required">*</span> Ata de reunião:</label>
+						<div class="col-sm-10">
+							<input type="file" id="ata" name="ata" class="anexo file-loading" required="required"></input>
+							<c:if test="${not empty erro_ata}">
+								<div class="error-validation">
+									<span>${erro_ata}</span>
+								</div>
+							</c:if>
+						</div>
 					</div>
-				</div>
-				
-				<div class="form-group form-item">
-					<label for="oficio" class="col-sm-2 control-label"><span class="required">*</span> Ofício de aceitação:</label>
-					<div class="col-sm-10 files">
-						<input type="file" id="oficio" name="oficio" class="file"></input>
-						<c:if test="${not empty erro_oficio}">
-							<div class="error-validation">
-								<span>${erro_oficio}</span>
-							</div>
-						</c:if>
+					
+					<div class="form-group form-item">
+						<label for="oficio" class="col-sm-2 control-label"><span class="required">*</span> Ofício de aceitação:</label>
+						<div class="col-sm-10">
+							<input type="file" id="oficio" name="oficio" class="anexo file-loading" required="required"></input>
+							<c:if test="${not empty erro_oficio}">
+								<div class="error-validation">
+									<span>${erro_oficio}</span>
+								</div>
+							</c:if>
+						</div>
 					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Observação:</label>
-					<div class="col-sm-10">
-						<textarea id="observacao" name="observacao" class="form-control" rows="8" placeholder="Observação"></textarea>
+	
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Observação:</label>
+						<div class="col-sm-10">
+							<textarea id="observacao" name="observacao" class="form-control" rows="8" placeholder="Observação"></textarea>
+						</div>
 					</div>
-				</div>
-				
-				<div class="controls">
-					<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
-					<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
-				</div>
-			</form:form>
-		</div>
-	</div>
+					
+					<div class="controls">
+						<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
+						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
+					</div>
+				</form:form>
+			</div><!-- /panel-body -->
+		</div><!-- /panel -->
+	</div><!-- /container -->
+	
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>
+	
+	<script type="text/javascript">
+		$('#menu-projetos').addClass('active');
+	</script>
+	
 </body>
 </html>

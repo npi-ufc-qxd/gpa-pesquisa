@@ -204,7 +204,7 @@
 					</div>
 				
 					<form id="comentarForm">
-						<div id="div-comentario" class="form-group form-item">
+						<div id="div-comentario" class="col-sm-12 form-item">
 							<div id="campo-comentario" class="col-sm-12">
 								<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário" required="required"></textarea>
 							</div>
@@ -217,6 +217,12 @@
 			</div> <!-- /panel-body -->
 		</div> <!-- /panel -->
 	</div> <!-- /container -->
-	<jsp:include page="../modulos/footer.jsp" />	
+	
+	<jsp:include page="../modulos/footer.jsp" />
+	
+	<script type="text/javascript">
+		$('#menu-projetos').addClass('active');
+	</script>
+		
 </body>
 </html>

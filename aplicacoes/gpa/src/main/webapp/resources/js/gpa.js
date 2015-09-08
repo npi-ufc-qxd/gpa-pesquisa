@@ -2,7 +2,7 @@ $(document).ready(function() {
 	
 	// Página Listar Projetos (Diretor)
 	
-	$('#projetos-diretor').DataTable({
+	$('#projetos-diretor, #meus-projetos').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
             {"targets" : 2, "orderable" : false},
@@ -36,6 +36,30 @@ $(document).ready(function() {
         }
 	});
 	
+	$('#projetos-em-participacao-coordenador').DataTable({
+		"order" : [[ 0, 'asc' ]],
+		"columnDefs" : [ 
+            {"targets" : 2, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
+	$('#projetos-aguardando-parecer').DataTable({
+		"order" : [[ 0, 'asc' ]],
+		"columnDefs" : [ 
+            {"targets" : 2, "orderable" : false},
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 4, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$('#projetos-em-tramitacao').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
@@ -49,7 +73,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#inicio, #termino").datepicker({
+	$("#inicio, #termino, #prazo").datepicker({
 		format : "dd/mm/yyyy",
 		todayBtn : "linked",
 		language : "pt-BR",
@@ -57,6 +81,7 @@ $(document).ready(function() {
 	}).on('changeDate', function(e) {
 		$(this).datepicker('hide');
         $('#adicionarProjetoForm, #submeterProjetoForm').bootstrapValidator('revalidateField', 'inicio');
+        $('#atribuirPareceristaForm').bootstrapValidator('revalidateField', 'prazo');
     });
 	
 	// Usado para não apagar a máscara e enviar somente o valor para o servidor
@@ -70,7 +95,7 @@ $(document).ready(function() {
     	$('[name="bolsa"]').maskMoney('mask');
     }
     
-    $("#anexos").fileinput({
+    $(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",
     	showUpload:false,
     	showRemove: false,
@@ -180,6 +205,62 @@ $(document).ready(function() {
             	}
             }
             
+        }
+    });
+	
+	$('#submeterProjetoForm').bootstrapValidator({
+		group: '.form-item',
+		excluded: ':disabled',
+        fields: {
+            nome: {
+                validators: {
+                    stringLength: {
+                        min: 5,
+                        message: 'O nome deve ter no mínimo 5 caracteres'
+                    }
+                }
+            },
+            quantidadeBolsa: {
+            	validators: {
+            		integer: {
+                        message: 'Digite um número válido'
+                    }
+            	}
+            },
+            cargaHoraria: {
+            	validators: {
+            		integer: {
+                        message: 'Digite um número válido'
+                    }
+            	}
+            },
+            inicio :{
+            	validators: {
+            		callback: {
+                        message: 'A data de início deve ser anterior à data de término',
+                        callback: function(value, validator) {
+                        	var termino = validator.getFieldElements('termino').val();
+                        	if(value != "" && termino != "") {
+                        		termino = moment(termino, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	var inicio = moment(value, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	if(moment(termino, "DD/MM/YYYY").isBefore(moment(inicio, "DD/MM/YYYY"))) {
+	                        		return false;
+	                        	}
+                        	}
+                        	return true;
+                        }
+                    }
+            	}
+            }
+        }
+    });
+	
+	$('#atribuirPareceristaForm, #emitirParecerForm, #avaliarProjetoForm').bootstrapValidator({
+		group: '.form-item',
+		excluded: ':disabled',
+        feedbackIcons: {
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
         }
     });
 	

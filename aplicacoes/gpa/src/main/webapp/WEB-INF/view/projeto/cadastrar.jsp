@@ -162,9 +162,9 @@
 						</div>
 						
 						<div class="form-group form-item">
-							<label for="atividades" class="col-sm-2 control-label">Anexos:</label>
+							<label for="anexos" class="col-sm-2 control-label">Anexos:</label>
 							<div class="col-sm-10">
-								<input id="anexos" type="file" name="anexos" class="file-loading" multiple="multiple" ></input>
+								<input id="anexos" type="file" name="anexos" class="anexo file-loading" multiple="multiple" ></input>
 								<c:if test="${not empty projeto.documentos }">
 									<table id="table-anexos" class="table table-striped table-hover">
 										<thead>
@@ -228,6 +228,10 @@
 	</div>
 
 	<jsp:include page="../modulos/footer.jsp" />
+	
+	<script type="text/javascript">
+		$('#menu-novo-projeto').addClass('active');
+	</script>
 
 </body>
 </html>
