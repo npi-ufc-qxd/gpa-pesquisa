@@ -123,7 +123,7 @@
 					<div class="form-group form-item">
 						<label for="idParticipantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
-							<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple">
+							<select id="participantes" name="id-participantes" class="form-control" multiple="multiple">
 								<c:set var="part" value="${projeto.participantes }"></c:set>
 								<c:forEach items="${participantes }" var="participante">
 									<c:set var="selected" value=""></c:set>
@@ -190,46 +190,8 @@
 						</div>
 					</div>
 					
-					<%-- <div class="form-group form-item">
-						<div class="form-item">
-							<label for="atividades" class="col-sm-2 control-label"><span class="required">*</span> Anexos:</label>
-							<div class="col-sm-10">
-								<input type="file" id="anexos" name="anexos" class="file" multiple="multiple"></input>
-								<c:if test="${not empty erro_documentos}">
-									<div class="error-validation">
-										<span>${erro_documentos}</span>
-									</div>
-								</c:if>
-								<c:if test="${not empty projeto.documentos }">
-									<table id="table-anexos" class="table table-striped">
-										<thead>
-											<tr>
-												<th data-column-id="nome" data-order="desc">Arquivo</th>
-												<th data-column-id="excluir" width="5%">Excluir</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach items="${projeto.documentos }" var="documento">
-				                    			<tr id="documento-${documento.id}">
-											        <td>
-											            <a href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
-											        </td>
-											        <td>
-											        	<a id="exluir-arquivo" data-toggle="modal" data-target="#delete-file" href="#" data-id="${documento.id}" data-name="${documento.nome }">
-															<button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
-														</a>
-											        </td>
-											    </tr>	
-				                    		</c:forEach>
-										</tbody>
-									</table>
-								</c:if>
-							</div>
-						</div>
-					</div> --%>
-					
 					<div class="form-group form-item">
-						<label for="anexos" class="col-sm-2 control-label">Anexos:</label>
+						<label for="anexos" class="col-sm-2 control-label"><span class="required">*</span> Anexos:</label>
 						<div class="col-sm-10">
 							<input id="anexos" type="file" name="anexos" class="anexo file-loading" multiple="multiple" required="required"></input>
 							<c:if test="${not empty projeto.documentos }">

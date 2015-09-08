@@ -28,9 +28,9 @@
 						<c:out value="${erro}"></c:out>
 					</div>
 				</c:if>
-				<form:form id="emitirParecerForm" enctype="multipart/form-data" servletRelativeAction="/projeto/${projeto.id}/emitirParecer"
+				<form:form id="emitirParecerForm" enctype="multipart/form-data" servletRelativeAction="/projeto/emitir-parecer"
 					commandName="parecer" method="POST" cssClass="form-horizontal">
-					
+					<input type="hidden" name="id-projeto" value="${projeto.id }"/>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
 						<div class="col-sm-8 value-label">

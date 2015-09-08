@@ -41,13 +41,13 @@ public class DocumentoController {
 	@Inject
 	private PessoaService pessoaService;
 	
-	@RequestMapping(value = "/{idProjeto}/{idArquivo}", method = RequestMethod.GET)
-	public void getArquivo(@PathVariable("idProjeto") Long idProjeto, @PathVariable("idArquivo") Long idArquivo, HttpServletResponse response, HttpSession session) {
+	@RequestMapping(value = "/{id-projeto}/{id-arquivo}", method = RequestMethod.GET)
+	public void getArquivo(@PathVariable("id-projeto") Long idProjeto, @PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, HttpSession session) {
 		try {
 			Projeto projeto = projetoService.getProjetoById(idProjeto);
 			Documento documento = documentoService.getDocumentoById(idArquivo);
 			if(documento != null && projeto != null && (getUsuarioLogado(session).equals(projeto.getAutor()) || 
-					pessoaService.isDiretor(getUsuarioLogado(session)) || (projeto.getParecer() != null && getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())))) {
+					getUsuarioLogado(session).isDirecao() || (projeto.getParecer() != null && getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())))) {
 				InputStream is = new ByteArrayInputStream(documento.getArquivo());
 				response.setContentType(documento.getExtensao());
 				response.setHeader("Content-Disposition", "attachment; filename=" + documento.getNome());
@@ -58,8 +58,8 @@ public class DocumentoController {
 		}
 	}
 	
-	@RequestMapping(value = "/ajax/remover/{id}", method = RequestMethod.POST)
-	@ResponseBody public  ModelMap excluirDocumento(@PathVariable("id") Long id, HttpSession session) {
+	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
+	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, HttpSession session) {
 		ModelMap model = new ModelMap();
 		Documento documento = documentoService.getDocumentoById(id);
 		if(documento == null) {

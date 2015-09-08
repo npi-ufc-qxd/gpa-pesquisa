@@ -133,7 +133,7 @@
 						<div class="form-group form-item">
 							<label for="idParticipantes" class="col-sm-2 control-label">Participantes:</label>
 							<div class="col-sm-10">
-								<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple">
+								<select id="participantes" name="id-participantes" class="form-control" multiple="multiple">
 									<c:set var="part" value="${projeto.participantes }"></c:set>
 									<c:forEach items="${participantes }" var="participante">
 										<c:set var="selected" value=""></c:set>

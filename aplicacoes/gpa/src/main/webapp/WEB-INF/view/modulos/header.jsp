@@ -10,10 +10,15 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li id="menu-projetos" class=""><a href="<c:url value="/projeto/listar" />" title="Projetos">Projetos</a></li>
+        <li id="menu-projetos" class=""><a href="<c:url value="/projeto" />" title="Projetos">Projetos</a></li>
         <li id="menu-novo-projeto" class="">
            	<a href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto">Novo Projeto</a>
        	</li>
+       	<sec:authorize ifAnyGranted="DIRECAO">
+      		<li id="menu-direcao" class="">
+	           	<a href="<c:url value="/direcao" />" title="Direção">Direção</a>
+	       	</li>
+       	</sec:authorize>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="<c:url value="/j_spring_security_logout" />" title="Sair">Sair</a></li>

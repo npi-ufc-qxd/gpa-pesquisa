@@ -20,7 +20,8 @@
 				<h3 class="panel-title">Avaliar</h3>
 			</div>
 			<div class="panel-body">
-				<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/projeto/diretor/${projeto.id}/avaliar" method="POST" cssClass="form-horizontal">
+				<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/direcao/avaliar" method="POST" cssClass="form-horizontal">
+					<input type="hidden" name="id" value="${projeto.id }"/>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
 						<div class="col-sm-8 value-label">

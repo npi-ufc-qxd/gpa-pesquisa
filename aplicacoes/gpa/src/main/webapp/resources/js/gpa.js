@@ -2,11 +2,11 @@ $(document).ready(function() {
 	
 	// Página Listar Projetos (Diretor)
 	
-	$('#projetos-diretor, #meus-projetos').DataTable({
+	$('#meus-projetos').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
-            {"targets" : 2, "orderable" : false},
-            {"targets" : 3, "orderable" : false}
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 4, "orderable" : false}
 		],
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
@@ -27,19 +27,7 @@ $(document).ready(function() {
 	$('#projetos-em-participacao').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
-            {"targets" : 2, "orderable" : false},
-            {"targets" : 4, "orderable" : false}
-		],
-		"bAutoWidth": false,
-		"language": {
-            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
-	});
-	
-	$('#projetos-em-participacao-coordenador').DataTable({
-		"order" : [[ 0, 'asc' ]],
-		"columnDefs" : [ 
-            {"targets" : 2, "orderable" : false}
+            {"targets" : 3, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
@@ -63,8 +51,7 @@ $(document).ready(function() {
 	$('#projetos-em-tramitacao').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
-            {"targets" : 2, "orderable" : false},
-            {"targets" : 5, "orderable" : false},
+            {"targets" : 3, "orderable" : false},
             {"targets" : 6, "orderable" : false}
 		],
 		"bAutoWidth": false,

@@ -43,7 +43,7 @@
 		<property name="session" ref="mailSession"/>
 	</bean>
 	
-	<bean id="notificationService" class="ufc.quixada.npi.gpa.service.impl.NotificationService">
+	<bean id="notificationService" class="ufc.quixada.npi.gpa.service.impl.NotificacaoService">
 		<property name="observadores">
 			<list>
 				<bean name="emailObserver" class="ufc.quixada.npi.gpa.observer.EmailObserver"></bean>

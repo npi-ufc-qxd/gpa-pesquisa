@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <html>
@@ -36,8 +35,8 @@
 		        <ul class="nav nav-tabs">
 		            <li class="active"><a aria-expanded="true" href="#tab-meus-projetos" data-toggle="tab">Meus projetos <span class="badge">${projetos.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Em Participação <span class="badge">${projetosParticipante.size() }</span></a></li>		            
-		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
+		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
 		        </ul>
 		        <div class="tab-content">
 		        	<div class="tab-pane fade active in" id="tab-meus-projetos">
@@ -48,6 +47,7 @@
 							<table id="meus-projetos" class="display">
 								<thead>
 									<tr>
+										<th>Código</th>
 										<th>Nome</th>
 										<th>Status</th>
 										<th>Data Submissão</th>
@@ -57,34 +57,31 @@
 								<tbody>
 									<c:forEach var="projeto" items="${projetos}">
 										<tr>
+											<td>${projeto.codigo }</td>
 											<td>
-												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
+												<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a>
 											</td>
 											<td>${projeto.status.descricao}</td>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
+											<td>
+												<c:if test="${empty projeto.submissao }">-</c:if>
+												<fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" />
+											</td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'NOVO'}">
-													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#"
-														data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>" data-name="${projeto.nome }">
-														<button class="btn btn-primary">Submeter&nbsp;<i class="fa fa-cloud-upload"></i></button>
+													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
+														data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }">
+														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>
 													</a>
 		
-													<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-														<button class="btn btn-primary">Editar&nbsp;<i class="fa fa-edit"></i></button>
+													<a id="editar" href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>" title="Editar">
+														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 													</a>
 		
-													<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
-														data-href="<c:url value="/projeto/${projeto.id}/excluir"></c:url>" data-name="${projeto.nome }">
-														<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
+													<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" title="Excluir"
+														data-href="<c:url value="/projeto/excluir/${projeto.id}"></c:url>" data-name="${projeto.nome }">
+														<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
 													</a>
 												</c:if>
-												<sec:authorize ifAnyGranted="DIRETOR">
-													<c:if test="${projeto.status == 'SUBMETIDO'}">
-														<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-															<button class="btn btn-primary">Atribuir Parecerista&nbsp;<i class="fa fa-user"></i></button>
-														</a>
-													</c:if>
-												</sec:authorize>
 											</td>
 										</tr>
 									</c:forEach>
@@ -98,9 +95,10 @@
 							<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 						</c:if>
 						<c:if test="${not empty projetosParticipante}">
-							<table id="projetos-em-participacao-coordenador" class="display">
+							<table id="projetos-em-participacao" class="display">
 								<thead>
 									<tr>
+										<th>Código</th>
 										<th>Nome</th>	
 										<th>Status</th>										
 										<th>Data de Submissão</th>
@@ -110,10 +108,11 @@
 								<tbody>
 									<c:forEach var="projetosParticipante" items="${projetosParticipante}">
 										<tr>
-											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.nome}</a></td>
+											<td>${projetosParticipante.codigo }</td>
+											<td><a href="<c:url value="/projeto/detalhes/${projetosParticipante.id}" ></c:url>">${projetosParticipante.nome}</a></td>
 											<td>${projetosParticipante.status.descricao}</td>											
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projetosParticipante.submissao }" /></td>
-											<td><a href="<c:url value="/projeto/${projetosParticipante.id}/detalhes" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
+											<td><a href="<c:url value="/projeto/detalhes/${projetosParticipante.id}" ></c:url>">${projetosParticipante.autor.nome}</a></td>					
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -121,7 +120,39 @@
 						</c:if>
 		        	</div><!-- tab-em-participacao -->
 		        	
-		        	<div class="tab-pane fade" id="tab-parecer">
+			        <div class="tab-pane fade" id="tab-avaliados">
+			            <c:if test="${empty projetosAvaliados}">
+							<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
+						</c:if>
+						<c:if test="${not empty projetosAvaliados}">
+							<table id="projetos-avaliados" class="display">
+								<thead>
+									<tr>
+										<th>Código</th>
+										<th>Nome</th>
+										<th>Status</th>
+										<th>Data Submissão</th>
+										<th>Data Avaliação</th>
+										<th>Autor</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="projeto" items="${projetosAvaliados}">
+										<tr>
+											<td>${projeto.codigo }</td>
+											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
+											<td>${projeto.status.descricao}</td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.avaliacao }" /></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:if>
+			        </div><!-- tab-avaliados -->
+			        
+			        <div class="tab-pane fade" id="tab-parecer">
 			            <c:if test="${empty projetosAguardandoParecer}">
 							<div class="alert alert-warning" role="alert">Não há projetos aguardando parecer.</div>
 						</c:if>
@@ -139,13 +170,13 @@
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAguardandoParecer}">
 										<tr>
-											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
-													<a id="emitirParecer" title="Emitir parecer" href="<c:url value="/projeto/${projeto.id}/emitirParecer" ></c:url>">
+													<a id="emitirParecer" title="Emitir parecer" href="<c:url value="/projeto/emitir-parecer/${projeto.id}" ></c:url>">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-gavel"></i></button>
 													</a>
 												</c:if>
@@ -156,36 +187,6 @@
 							</table>
 						</c:if>
 			        </div><!-- tab-parecer -->
-			        
-			        <div class="tab-pane fade" id="tab-avaliados">
-			            <c:if test="${empty projetosAvaliados}">
-							<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
-						</c:if>
-						<c:if test="${not empty projetosAvaliados}">
-							<table id="projetos-avaliados" class="display">
-								<thead>
-									<tr>
-										<th>Data Submissão</th>
-										<th>Nome</th>
-										<th>Autor</th>
-										<th>Status</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="projeto" items="${projetosAvaliados}">
-										<tr>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
-											<td>
-												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
-											</td>
-											<td><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
-											<td>${projeto.status.descricao}</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-						</c:if>
-			        </div><!-- tab-avaliados -->
 		        </div><!-- tab-content -->
 		    </div><!-- /panel-body -->
 		</div><!-- /panel -->

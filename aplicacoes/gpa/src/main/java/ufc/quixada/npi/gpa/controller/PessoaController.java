@@ -24,7 +24,7 @@ public class PessoaController {
 	@Inject
 	private ProjetoService projetoService;
 
-	@RequestMapping(value = "/{id}/detalhes")
+	@RequestMapping(value = "/detalhes/{id}")
 	public String getDetalhes(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
 		Pessoa pessoa = pessoaService.getPessoaById(id);
 		if (pessoa == null) {
@@ -38,7 +38,7 @@ public class PessoaController {
 			model.addAttribute("coordenou",projetoService.getProjetosByUsuarioCoordenou(pessoa.getId()));
 			model.addAttribute("participou",projetoService.getProjetosByUsuarioParticipou(pessoa.getId()));
 			
-			return PAGINA_DETALHES_USUARIO;
+			return PAGINA_DETALHES_PARTICIPANTE;
 		}
 
 	}

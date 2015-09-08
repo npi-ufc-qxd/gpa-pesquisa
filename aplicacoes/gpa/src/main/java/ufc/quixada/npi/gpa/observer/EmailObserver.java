@@ -51,7 +51,7 @@ public class EmailObserver implements Observer {
 
 			if (properties.getProperty("email.ativo").equals("true")) {
 				final Evento eventoCopy = evento;
-				final String emailDiretor = pessoaService.getDiretor()
+				final String emailDiretor = pessoaService.getDirecao()
 						.getEmail();
 				final String emailCoordenador = projeto.getAutor().getEmail();
 				final String emailParecerista = projeto.getParecer() != null ? projeto

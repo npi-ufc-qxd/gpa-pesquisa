@@ -20,7 +20,7 @@
 				<h3 class="panel-title">Atribuir Parecerista</h3>
 			</div>
 			<div class="panel-body">
-				<form:form id="atribuirPareceristaForm" servletRelativeAction="/projeto/diretor/atribuirParecerista" method="POST" cssClass="form-horizontal">
+				<form:form id="atribuirPareceristaForm" servletRelativeAction="/direcao/atribuir-parecerista" method="POST" cssClass="form-horizontal">
 					<input type="hidden" name="projetoId" value="${projeto.id}">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
