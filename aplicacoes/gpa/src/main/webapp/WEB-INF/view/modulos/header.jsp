@@ -2,31 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<header class="clearfix">
-	<span>GPA-Pesquisa</span>
-	<h1>Gestão de Programas Acadêmicos</h1>
-</header>
-<div class="main">
-	<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
-		<div class="cbp-hsinner">
-			<ul class="cbp-hsmenu">
-				<li>
-					<a href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto"><i class="fa fa-plus-circle fa-2x"></i>&nbsp; Novo Projeto</a>
-				</li>
-				<li>
-					<a href="<c:url value="/projeto/listar" />" title="Projetos"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Projetos</a>
-				</li>				
+<nav class="navbar navbar-default">
+  <div class="container-fluid container">
+    <div class="navbar-header">
+    	<a href="<c:url value="/projeto/listar" />"><img id="logo" alt="GPA-Pesquisa" src="<c:url value="/resources/images/gpa-logo.jpg"/>"></a>
+    </div>
 
-				<sec:authorize ifAllGranted="DIRETOR">
-					<li>
-						<a href="<c:url value="/projeto/relatorio" />" title="Visualizar Relatórios"><i class="fa fa-list fa-2x"></i>&nbsp; Visualizar Relatórios</a>
-					</li>
-				</sec:authorize>
-				<li style="float: right;">
-					<a href="<c:url value="/j_spring_security_logout" />" title="Sair"><i class="fa fa-power-off"></i>&nbsp;</a>
-				</li>
-			</ul>
-		</div>
-		<div class="cbp-hsmenubg"></div>
-	</nav>
-</div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li id="menu-projetos" class=""><a href="<c:url value="/projeto" />" title="Projetos">Projetos</a></li>
+        <li id="menu-novo-projeto" class="">
+           	<a href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto">Novo Projeto</a>
+       	</li>
+       	<sec:authorize ifAnyGranted="DIRECAO">
+      		<li id="menu-direcao" class="">
+	           	<a href="<c:url value="/direcao" />" title="Direção">Direção</a>
+	       	</li>
+       	</sec:authorize>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="<c:url value="/j_spring_security_logout" />" title="Sair">Sair</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
