@@ -8,6 +8,8 @@ public class Constants {
 	
 	public static final String PAGINA_CADASTRAR_PROJETO = "projeto/cadastrar";
 	
+	public static final String PAGINA_VINCULAR_PARTICIPANTES_PROJETO = "projeto/vincular";
+	
 	public static final String PAGINA_DETALHES_PROJETO = "projeto/detalhes";
 	
 	public static final String PAGINA_EDITAR_PROJETO = "projeto/editar";
@@ -40,6 +42,8 @@ public class Constants {
 	public static final String MENSAGEM_CAMPO_OBRIGATORIO = "Campo obrigatório";
 	
 	public static final String MENSAGEM_PROJETO_INEXISTENTE = "Projeto inexistente";
+	
+	public static final String MENSAGEM_PARTICIPACOES_INCOMPLETAS = "Projeto sem participações ou coordenador sem participação";
 	
 	public static final String MENSAGEM_PROJETO_ATUALIZADO = "Projeto atualizado com sucesso";
 	

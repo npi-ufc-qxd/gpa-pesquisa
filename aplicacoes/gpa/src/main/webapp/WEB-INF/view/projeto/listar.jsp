@@ -71,7 +71,9 @@
 												<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
 													<button class="btn btn-primary">Editar&nbsp;<i class="fa fa-edit"></i></button>
 												</a>
-	
+												<a id="vincular" href="<c:url value="/projeto/${projeto.id}/participacoes" ></c:url>">
+													<button class="btn btn-primary">Vincular&nbsp;<i class="fa fa-edit"></i></button>
+												</a>	
 												<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
 													data-href="<c:url value="/projeto/${projeto.id}/excluir"></c:url>" data-name="${projeto.nome }">
 													<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
@@ -96,9 +98,9 @@
 						<div class="alert alert-warning" role="alert">Não há participações em projetos.</div>
 					</c:if>
 					<c:if test="${not empty participacoesEmProjetos}">
+							<p>Participações em Projetos</p>
 							<table id="table_diretor" class="display">
 								<thead>
-									Participações em Projetos
 									<tr>
 										<th>Projeto</th>
 										<th>Coordenador(a)</th>

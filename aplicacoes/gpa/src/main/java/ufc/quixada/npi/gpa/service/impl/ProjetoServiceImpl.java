@@ -1,6 +1,7 @@
 package ufc.quixada.npi.gpa.service.impl;
 
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARTICIPACOES_INCOMPLETAS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_INICIO_TERMINO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_TERMINO_FUTURA;
 
@@ -204,9 +205,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 			resultado.put("cargaHoraria", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
 
-		if (projeto.getParticipantes() == null
-				|| projeto.getParticipantes().isEmpty()) {
-			resultado.put("participantes", MENSAGEM_CAMPO_OBRIGATORIO);
+		if (projeto.getParticipacoes().isEmpty()
+				|| projeto.getParticipacoes().contains(projeto.getAutor())) {
+			resultado.put("participacoes", MENSAGEM_PARTICIPACOES_INCOMPLETAS);
 		}
 
 		if (projeto.getLocal() == null || projeto.getLocal().isEmpty()) {

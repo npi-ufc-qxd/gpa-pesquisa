@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -18,6 +19,7 @@ public class Participacao {
 	private Long id;
 	
 	@ManyToOne
+	@JoinColumn(name="projeto_id")
 	private Projeto projeto;
 	
 	@OneToOne(cascade = CascadeType.REMOVE)
@@ -102,6 +104,16 @@ public class Participacao {
 		this.participante = participante;
 	}
 	
-	
+	@Override
+	public String toString(){
+		return (this.participante != null ? this.participante.getNome() : "Sem Participante") + ";"
+				+ (this.projeto != null ? this.projeto.getNome() : "Sem Projeto") + ";"
+				+ mesInicio + ";"
+				+ anoInicio + ";"
+				+ mesTermino + ";"
+				+ anoTermino + ";"
+				+ bolsaValorMensal + ";"
+				+ cargaHorariaMensal;
+	}
 	
 }

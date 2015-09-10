@@ -19,8 +19,9 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO_DIRETOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
-import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VISUALIZAR_RELATORIOS;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
+import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
@@ -191,13 +193,13 @@ public class ProjetoController {
 		
 		projeto.setAutor(getUsuarioLogado(session));
 		
-		if(idParticipantes != null && !idParticipantes.isEmpty()) {
-			List<Pessoa> participantes = new ArrayList<Pessoa>();
-			for(String idParticipante : idParticipantes) {
-				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
-			}
-			projeto.setParticipantes(participantes);
-		}
+//		if(idParticipantes != null && !idParticipantes.isEmpty()) {
+//			List<Pessoa> participantes = new ArrayList<Pessoa>();
+//			for(String idParticipante : idParticipantes) {
+//				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
+//			}
+//			projeto.setParticipantes(participantes);
+//		}
 		
 		List<Documento> documentos = new ArrayList<Documento>();
 		if(anexos != null && !anexos.isEmpty()) {
@@ -279,6 +281,52 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 	
+	@RequestMapping(value = "/{id}/participacoes", method = RequestMethod.GET)
+	public String listarParticipacoes(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
+		Projeto projeto = projetoService.getProjetoById(id);
+		Pessoa usuario = getUsuarioLogado(session);
+		
+		if (projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		if (usuario.getId() != projeto.getAutor().getId() && projeto.getStatus().equals(StatusProjeto.NOVO)) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;		
+		}
+
+		model.addAttribute("projeto", projeto);
+		model.addAttribute("participacao", new Participacao());
+		model.addAttribute("pessoas", pessoaService.getPessoas());
+		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
+	}
+	
+	@RequestMapping(value = "/{id}/participacoes", method = RequestMethod.POST)
+	public String adicionarParticipacao(@PathVariable("id") Long id, @RequestParam(value = "participanteSelecionado", required = true) String idParticipanteSelecionado, 
+										Participacao participacao, HttpSession session,  Model model, RedirectAttributes redirectAttributes) {		
+		Projeto projeto = projetoService.getProjetoById(id);
+		Pessoa usuario = getUsuarioLogado(session);
+		
+		if (projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		if (usuario.getId() != projeto.getAutor().getId() && projeto.getStatus().equals(StatusProjeto.NOVO)) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;		
+		}
+		
+		participacao.setParticipante(pessoaService.getPessoaById(new Long(idParticipanteSelecionado)));
+		projeto.addParticipacao(participacao);
+		projetoService.atualizar(projeto);
+		
+		
+		model.addAttribute("projeto", projeto);
+		model.addAttribute("participacao", new Participacao());
+		model.addAttribute("pessoas", pessoaService.getPessoas());
+		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
+	}
+	
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public String editar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @RequestParam("anexos") List<MultipartFile> anexos,
 			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
@@ -292,13 +340,13 @@ public class ProjetoController {
 		
 		projeto.setAutor(getUsuarioLogado(session));
 		
-		if(idParticipantes != null && !idParticipantes.isEmpty()) {
-			List<Pessoa> participantes = new ArrayList<Pessoa>();
-			for(String idParticipante : idParticipantes) {
-				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
-			}
-			projeto.setParticipantes(participantes);
-		}
+//		if(idParticipantes != null && !idParticipantes.isEmpty()) {
+//			List<Pessoa> participantes = new ArrayList<Pessoa>();
+//			for(String idParticipante : idParticipantes) {
+//				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
+//			}
+//			projeto.setParticipantes(participantes);
+//		}
 		
 		List<Documento> documentos = new ArrayList<Documento>();
 		if(anexos != null && !anexos.isEmpty()) {
@@ -383,13 +431,13 @@ public class ProjetoController {
 			@Valid Projeto projeto, Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
 		
 		projeto.setAutor(getUsuarioLogado(session));
-		if(idParticipantes != null && !idParticipantes.isEmpty()) {
-			List<Pessoa> participantes = new ArrayList<Pessoa>();
-			for(String idParticipante : idParticipantes) {
-				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
-			}
-			projeto.setParticipantes(participantes);
-		}
+//		if(idParticipantes != null && !idParticipantes.isEmpty()) {
+//			List<Pessoa> participantes = new ArrayList<Pessoa>();
+//			for(String idParticipante : idParticipantes) {
+//				participantes.add(pessoaService.getPessoaById(new Long(idParticipante)));
+//			}
+//			projeto.setParticipantes(participantes);
+//		}
 		List<Documento> documentos = new ArrayList<Documento>();
 		if(anexos != null && !anexos.isEmpty()) {
 			for(MultipartFile anexo : anexos) {

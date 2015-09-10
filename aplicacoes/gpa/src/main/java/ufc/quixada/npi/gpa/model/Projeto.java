@@ -66,11 +66,11 @@ public class Projeto {
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 
-	@ManyToMany
-    @JoinTable(name="projeto_participante", joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="participante_id", referencedColumnName="id")})
-    private List<Pessoa> participantes;
+//	@ManyToMany
+//    @JoinTable(name="projeto_participante", joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="participante_id", referencedColumnName="id")})
+//    private List<Pessoa> participantes;
 	
-	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private List<Participacao> participacoes;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
@@ -186,13 +186,13 @@ public class Projeto {
 		this.status = status;
 	}
 
-	public List<Pessoa> getParticipantes() {
-		return participantes;
-	}
-
-	public void setParticipantes(List<Pessoa> participantes) {
-		this.participantes = participantes;
-	}
+//	public List<Pessoa> getParticipantes() {
+//		return participantes;
+//	}
+//
+//	public void setParticipantes(List<Pessoa> participantes) {
+//		this.participantes = participantes;
+//	}
 
 	public List<Documento> getDocumentos() {
 		return documentos;
@@ -359,6 +359,11 @@ public class Projeto {
 				}
 			}
 		}
+	}
+
+	public void addParticipacao(Participacao participacao) {
+		participacoes.add(participacao);
+		participacao.setProjeto(this);
 	}
 
 }
