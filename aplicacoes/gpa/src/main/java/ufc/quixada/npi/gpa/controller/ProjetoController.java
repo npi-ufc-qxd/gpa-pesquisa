@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -410,9 +411,8 @@ public class ProjetoController {
 
 	}
 	
-	@RequestMapping(value = "/comentar", method = RequestMethod.POST)
-	@ResponseBody
-	public Comentario comentar(HttpServletRequest request, HttpSession session) {
+	@RequestMapping(value = "/comentar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Model comentar(HttpServletRequest request, HttpSession session, Model model) {
 		Comentario comentario = new Comentario();
 		comentario.setTexto(request.getParameter("texto"));
 		comentario.setData(new Date());
@@ -426,14 +426,13 @@ public class ProjetoController {
 		comentario.setProjeto(projeto);
 		this.comentarioService.salvar(comentario);
 		
-		Pessoa autorResult = new Pessoa();
-		autorResult.setNome(autor.getNome());
 		Comentario comentarioResult = new Comentario();
 		comentarioResult.setId(comentario.getId());
 		comentarioResult.setData(comentario.getData());
 		comentarioResult.setTexto(comentario.getTexto());
-		comentarioResult.setAutor(autorResult);
-		return comentarioResult;
+		model.addAttribute("comentario", comentarioResult);
+		model.addAttribute("autor", autor.getNome());
+		return model;
 	}
 	
 	/*private void buildValidacoesBindingResult(Map<String, String> resultado, BindingResult result) {

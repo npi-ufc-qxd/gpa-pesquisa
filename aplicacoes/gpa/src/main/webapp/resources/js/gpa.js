@@ -272,33 +272,31 @@ $(document).ready(function() {
 		var texto = $('#comentario').val();
 	    var projetoId = $('#projetoId').val();
 	    $('#comentarForm').bootstrapValidator('validate');
-	    if (texto.trim() != '') {
-	    	$.ajax({
-		    	type: "POST",
-		        url: '/gpa-pesquisa/comentario/comentar',
-		        data : {
-		        	texto : texto,
-		        	projetoId : projetoId
-				}
-		    })
-		    .success(function(comentario) {
-		    	if(comentario.id) {
-		    		var data = moment(comentario.data).format('DD/MM/YYYY');
-		    		var hora = moment(comentario.data).format('HH:mm');
-		    		$('#comentario').val('');
-		    		$('#comentarForm').bootstrapValidator('resetForm');
-		    		$('#comentarios').append(
-	    				'<div class="panel panel-default">' +
-							'<div class="panel-heading">' + comentario.autor.nome +
-								'<span class="date-comment">' + data + ' - ' +
-								hora + '</span>' +
-							'</div>' +
-							'<div class="panel-body">' + comentario.texto + '</div>' +
-						'</div>'
-		    		);
-		    	}
-			});
-	    }
+    	$.ajax({
+	    	type: "POST",
+	        url: '/gpa-pesquisa/projeto/comentar',
+	        data : {
+	        	texto : texto,
+	        	projetoId : projetoId
+			}
+	    })
+	    .success(function(result) {
+	    	if(result.comentario.id) {
+	    		var data = moment(result.comentario.data).format('DD/MM/YYYY');
+	    		var hora = moment(result.comentario.data).format('HH:mm');
+	    		$('#comentario').val('');
+	    		$('#comentarForm').bootstrapValidator('resetForm');
+	    		$('#comentarios').append(
+    				'<div class="panel panel-default">' +
+						'<div class="panel-heading">' + result.autor +
+							'<span class="date-comment">' + data + ' - ' +
+							hora + '</span>' +
+						'</div>' +
+						'<div class="panel-body">' + result.comentario.texto + '</div>' +
+					'</div>'
+	    		);
+	    	}
+	    });
 	});
 	
 });
