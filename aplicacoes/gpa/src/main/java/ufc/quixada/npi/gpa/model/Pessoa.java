@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import ufc.quixada.npi.gpa.utils.Constants;
+
 @Entity
 @EntityListeners(PessoaEntityListener.class)
 public class Pessoa {
@@ -90,6 +92,15 @@ public class Pessoa {
 			Pessoa other = (Pessoa) obj;
 			if (other != null && other.getId() != null && this.id != null
 					&& other.getId().equals(this.id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isDirecao() {
+		for (Papel p : papeis) {
+			if (p.getNome().equals(Constants.PAPEL_DIRECAO)) {
 				return true;
 			}
 		}

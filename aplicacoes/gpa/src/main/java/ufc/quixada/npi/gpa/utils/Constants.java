@@ -18,23 +18,27 @@ public class Constants {
 	
 	public static final String PAGINA_SUBMETER_PROJETO = "projeto/submeter";
 	
-	public static final String PAGINA_LISTAR_PROJETO_DIRETOR = "diretor/listarProjetos";
+	public static final String PAGINA_INICIAL_DIRECAO = "direcao/index";
 	
-	public static final String PAGINA_EMITIR_PARECER = "projeto/emitirParecer";
+	public static final String PAGINA_EMITIR_PARECER = "projeto/emitir-parecer";
 	
-	public static final String PAGINA_ATRIBUIR_PARECERISTA = "diretor/atribuirParecerista";
+	public static final String PAGINA_ATRIBUIR_PARECERISTA = "direcao/atribuir-parecerista";
 	
-	public static final String PAGINA_AVALIAR_PROJETO = "diretor/avaliarProjeto";
+	public static final String PAGINA_AVALIAR_PROJETO = "direcao/avaliar-projeto";
 	
-	public static final String PAGINA_DETALHES_USUARIO = "diretor/detalhesUsuario";
+	public static final String PAGINA_DETALHES_PARTICIPANTE = "direcao/participante";
 	
-	public static final String PAGINA_VISUALIZAR_RELATORIOS = "diretor/visualizarRelatorios";
+	public static final String PAGINA_RELATORIOS = "direcao/relatorios";
+	
 	
 	/** Redirecionamentos */
 	
-	public static final String REDIRECT_PAGINA_LISTAR_PROJETO = "redirect:/projeto/listar";
+	public static final String REDIRECT_PAGINA_LISTAR_PROJETO = "redirect:/projeto";
 	
-	public static final String REDIRECT_PAGINA_VISUALIZAR_RELATORIOS = "redirect:/projeto/relatorio";
+	public static final String REDIRECT_PAGINA_RELATORIOS = "redirect:/direcao/relatorio";
+	
+	public static final String REDIRECT_PAGINA_INICIAL_DIRECAO = "redirect:/direcao";
+	
 	
 	/** Mensagens */
 	public static final String MENSAGEM_PERMISSAO_NEGADA = "Permissão negada";
@@ -72,5 +76,10 @@ public class Constants {
 	public static final String MENSAGEM_DOCUMENTO_INEXISTENTE = "Documento inexistente";
 	
 	public static final String MENSAGEM_USUARIO_NAO_ENCONTRADO = "Usuário não encontrado";
+	
+	
+	
+	public static final String PAPEL_DIRECAO = "DIRECAO";
+	
 	
 }

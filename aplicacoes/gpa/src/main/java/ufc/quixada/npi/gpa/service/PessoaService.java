@@ -13,9 +13,7 @@ public interface PessoaService {
 
 	List<Pessoa> getPareceristas(Long id);
 
-	boolean isDiretor(Pessoa pessoa);
-
-	Pessoa getDiretor();
+	Pessoa getDirecao();
 
 	List<Pessoa> getParticipantes(Pessoa pessoa);
 	

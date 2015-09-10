@@ -51,7 +51,7 @@
 							<c:forEach items="${pessoa.projetos }" var="projeto">
 								<tr class="active">
 									<td>
-									<a href="<c:url value="/projeto/${projeto.id }" />"
+									<a href="<c:url value="/projeto/${projeto.id }/detalhes" />"
 									class="col-sm-12" style="padding-left: 0px;">${projeto.nome }</a>
 									</td>
 								</tr>
@@ -71,7 +71,7 @@
 								<c:forEach items="${projetos }" var="projeto">
 									<tr class="active">
 										<td>
-										<a href="<c:url value="/projeto/${projeto.id }" />"
+										<a href="<c:url value="/projeto/${projeto.id }/detalhes" />"
 											class="col-sm-12" style="padding-left: 0px;">${projeto.nome }</a>
 										</td>
 									</tr>
@@ -92,7 +92,7 @@
 									<c:forEach items="${coordenou }" var="projeto">
 										<tr class="active">
 											<td>
-											<a href="<c:url value="/projeto/${projeto.id }" />"
+											<a href="<c:url value="/projeto/${projeto.id }/detalhes" />"
 												class="col-sm-12" style="padding-left: 0px;">${projeto.nome }</a>
 											</td>
 										</tr>
@@ -114,7 +114,7 @@
 								<c:forEach items="${participou }" var="projeto">
 									<tr class="active">
 										<td>
-										<a href="<c:url value="/projeto/${projeto.id }" />"
+										<a href="<c:url value="/projeto/${projeto.id }/detalhes" />"
 											class="col-sm-12" style="padding-left: 0px;">${projeto.nome }</a>
 										</td>
 									</tr>
@@ -136,7 +136,7 @@
 								<c:forEach items="${reprovados }" var="projeto">
 									<tr class="active">
 										<td>
-										<a href="<c:url value="/projeto/${projeto.id }" />"
+										<a href="<c:url value="/projeto/${projeto.id }/detalhes" />"
 											class="col-sm-12" style="padding-left: 0px;">${projeto.nome }</a>
 										</td>
 									</tr>

@@ -10,6 +10,7 @@ import javax.inject.Named;
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.service.PessoaService;
+import ufc.quixada.npi.gpa.utils.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 
@@ -39,20 +40,9 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public boolean isDiretor(Pessoa pessoa) {
-		List<Papel> papeis = getPapeis(pessoa.getCpf());
-		for (Papel p : papeis) {
-			if (p.getNome().equals("DIRETOR")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public Pessoa getDiretor() {
+	public Pessoa getDirecao() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("papel", "DIRETOR");
+		params.put("papel", Constants.PAPEL_DIRECAO);
 		return pessoaRepository.findFirst(QueryType.JPQL, "select pe from Pessoa pe, Papel pa where pa.nome = :papel and pa member of pe.papeis", params, 0);
 	}
 

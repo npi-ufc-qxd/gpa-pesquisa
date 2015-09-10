@@ -1,0 +1,97 @@
+
+/* Geral */
+
+body {
+	background-color: #E9E9E9;
+}
+
+img#logo {
+	height: 60px;
+	border-bottom: 1px solid #2C3E50;
+}
+
+a, a:hover, a:VISITED, a:ACTIVE, button, button:hover, button:VISITED, button:ACTIVE
+input.btn, input.btn:VISITED, input.btn:ACTIVE, input.btn:FOCUS {
+	outline: none !important;
+	outline-offset:0 !important;
+	text-decoration: none !important;
+}
+
+h3 {
+	padding: 5px 10px;
+}
+
+.tab-content {
+	margin: 20px 10px;
+}
+
+table tr {
+	height: 40px;
+}
+
+table > tbody > tr > td.acoes {
+	text-align: right;
+}
+
+div.alert {
+	text-align: center;
+}
+
+div.controls {
+	text-align: center;
+}
+
+table#table-anexos {
+	margin-top: 10px;
+}
+
+h4.subtitle {
+	margin-top: 40px;
+}
+
+span.line {
+	border: 1px solid #2C3E50;
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.value-label {
+	padding-top: 11px;
+	color: #18BC9C;
+	text-align: justify;
+	padding-left: 0px;
+}
+
+.value-label > label {
+	font-weight: normal;
+}
+
+.value-label > a {
+	text-decoration: underline !important;
+}
+
+#comentarios .panel-body {
+	color: #65696E;
+}
+
+.date-comment {
+	float: right;
+}
+
+/* Sobrescrita bootstrap */
+
+.has-success .help-block, .has-success .control-label, .has-success .radio, .has-success .checkbox, 
+.has-success .radio-inline, .has-success .checkbox-inline, .has-success.radio label, 
+.has-success.checkbox label, .has-success.radio-inline label, .has-success.checkbox-inline label, 
+.has-success .form-control-feedback {
+	color: inherit;
+}
+
+.has-success .form-control, .has-success .form-control:focus {
+	border: 2px solid rgb(220, 228, 236);
+}
+
+.align-right {
+	text-align: right;
+}
