@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%-- <link href="<c:url value="/resources/css/tabs.css"/>" rel="stylesheet"/>
-<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
-
-<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet" />
-
-<link href="<c:url value="/resources/css/bootstrap-select.min.css" />" rel="stylesheet" />
-
-
-<link href="<c:url value="/resources/css/font-awesome.min.css"/>" rel="stylesheet"/>
-<link href="<c:url value="/resources/css/jquery.dataTables.css"/>" rel="stylesheet"/> --%>
 <link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css"/>" rel="stylesheet">
 <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet">
 <link href="<c:url value="/resources/css/jquery.dataTables.min.css"/>" rel="stylesheet">

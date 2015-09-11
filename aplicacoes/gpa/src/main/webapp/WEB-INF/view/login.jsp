@@ -1,67 +1,71 @@
+<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <html>
 <head>
-<title>Página de Login</title>
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
-	rel="stylesheet" />
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.js" />"></script>
-<script
-	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-
-<style>
-.errorblock {
-	color: #ff0000;
-	background-color: #ffEEEE;
-	border: 3px solid #ff0000;
-	padding: 8px;
-	margin: 16px;
-}
-
-.center {
-	float: none;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: 100px;
-}
-</style>
+	<title>Login</title>
+	<link rel="shortcut icon" href="<c:url value="/resources/images/gpa-icone.jpg" />" />
+	
+	<link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css"/>" rel="stylesheet">
+	<link href="<c:url value="/resources/css/font-awesome.min.css"/>" rel="stylesheet"/>
+	<link href="<c:url value="/resources/css/bootstrapValidator.css" />" rel="stylesheet" />
+	<link href="<c:url value="/resources/css/style-login.css"/>" rel="stylesheet">
 </head>
 
-<body onload='document.f.j_username.focus();'>
-	<div class="center col-md-4">
-		<div style="text-align: center" class="panel panel-default">
-			<div class="panel-heading">
-				<h5 class="panel-title">Login</h5>
-			</div>
-			<div class="panel-body">
+<body>
+	<div id="container">
+		<div id="header">
+			<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/gpa-logo.jpg" />">
+		</div>
 
-				<c:if test="${not empty error}">
-					<div class="error">${error}</div>
-				</c:if>
-				<c:if test="${not empty msg}">
-					<div class="msg">${msg}</div>
+		<div class="formulario">
+			<div class="login-text">
+				<span>Faça seu login</span>
+			</div>
+			<form:form id="login-form" role="form" servletRelativeAction="/j_spring_security_check" method="post" class="form-horizontal">
+				<c:if test="${not empty erro}">
+					<div class="login-error">${erro }</div>
 				</c:if>
 
-				<form name='f' action="<c:url value='j_spring_security_check' />"
-					method='POST'>
-					<div class="form-group col-md-12 form-inline">
-						<h4 class="col-md-4">Usuário:</h4>
-						<input class="col-md-8 form-control" type='text' name='j_username'
-							value=''>
+				<div class="form-group">
+					<div id="inputLogin" class="form-inline input-group input-login">
+						<span class="input-group-addon"><i class="fa fa-user"></i></span>
+						<input type="text" name="j_username" id="cpf" class="form-control" placeholder="cpf" required="required">
 					</div>
-					<div class="form-group col-md-12 form-inline">
-						<h4 class="col-md-4">Senha:</h4>
-						<input class="col-md-8 form-control" type='password'
-							name='j_password' />
+				</div>
+
+				<div class="form-group">
+					<div id="inputSenha" class="form-inline input-group input-login">
+						<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+						<input type="password" name="j_password" id="senha" class="form-control" placeholder="senha" required="required">
 					</div>
-					<input class="btn btn-primary" name="submit" type="submit"
-						value="Login" value="Login" /> <input class="btn btn-default"
-						name="reset" type="reset" value="Limpar" />
-				</form>
-			</div>
+				</div>
+				
+				<!-- <div id="div-captcha-erro">
+					<div id="captcha-login" class=""></div>
+				</div> -->
+
+				<div class="controls">
+					<input id="btn-login" class="btn btn-default" name="submit" type="submit" value="Login" value="Login"/>
+				</div>
+			</form:form>
 		</div>
 	</div>
+	<footer>
+		<img id="logo-npi" alt="Núcleo de Práticas em Informática - Campus da UFC em Quixadá" 
+			src="<c:url value="/resources/images/logo-npi.png" />">
+		<p>Desenvolvido por <a href="http://www.npi.quixada.ufc.br" target="_blank">Núcleo de Práticas em Informática</a></p>
+		<p><a href="http://www.quixada.ufc.br" target="_blank">Universidade Federal do Ceará - Campus Quixadá</a></p>
+	</footer>
+
+	<!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+	<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
+	<script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
+	<script src="<c:url value="/resources/js/bootstrapValidator.min.js" />"></script>
+	<script src="<c:url value="/resources/js/language/pt_BR.js" />"></script>
+	<script src="<c:url value="/resources/js/gpa-login.js" />"></script>
+
 </body>
 </html>
