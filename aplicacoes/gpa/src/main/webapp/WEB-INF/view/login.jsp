@@ -14,43 +14,39 @@
 	<link href="<c:url value="/resources/css/style-login.css"/>" rel="stylesheet">
 </head>
 
-<body>
+<body onload='document.loginForm.j_username.focus();'>
 	<div id="container">
 		<div id="header">
 			<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/gpa-logo.jpg" />">
 		</div>
-
 		<div class="formulario">
 			<div class="login-text">
 				<span>Faça seu login</span>
 			</div>
-			<form:form id="login-form" role="form" servletRelativeAction="/j_spring_security_check" method="post" class="form-horizontal">
+
+			<form id="loginForm" name="loginForm" action="<c:url value='j_spring_security_check' />" method='POST' class="form-horizontal">
 				<c:if test="${not empty erro}">
 					<div class="login-error">${erro }</div>
 				</c:if>
-
-				<div class="form-group">
+				
+				<div class="form-group form-item">
 					<div id="inputLogin" class="form-inline input-group input-login">
 						<span class="input-group-addon"><i class="fa fa-user"></i></span>
-						<input type="text" name="j_username" id="cpf" class="form-control" placeholder="cpf" required="required">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div id="inputSenha" class="form-inline input-group input-login">
-						<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-						<input type="password" name="j_password" id="senha" class="form-control" placeholder="senha" required="required">
+						<input class="form-control" type='text' name='j_username' placeholder="cpf" required="required"/>
 					</div>
 				</div>
 				
-				<!-- <div id="div-captcha-erro">
-					<div id="captcha-login" class=""></div>
-				</div> -->
-
-				<div class="controls">
-					<input id="btn-login" class="btn btn-default" name="submit" type="submit" value="Login" value="Login"/>
+				<div class="form-group form-item">
+					<div id="inputSenha" class="form-inline input-group input-login">
+						<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+						<input class="form-control" type='password' name='j_password' placeholder="senha" required="required"/>
+					</div>
 				</div>
-			</form:form>
+				
+				<div class="controls">
+					<input id="btn-login" class="btn btn-primary" type="submit" value="Login"/>
+				</div>
+			</form>
 		</div>
 	</div>
 	<footer>
@@ -59,13 +55,10 @@
 		<p>Desenvolvido por <a href="http://www.npi.quixada.ufc.br" target="_blank">Núcleo de Práticas em Informática</a></p>
 		<p><a href="http://www.quixada.ufc.br" target="_blank">Universidade Federal do Ceará - Campus Quixadá</a></p>
 	</footer>
-
-	<!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
 	<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 	<script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/js/bootstrapValidator.min.js" />"></script>
 	<script src="<c:url value="/resources/js/language/pt_BR.js" />"></script>
 	<script src="<c:url value="/resources/js/gpa-login.js" />"></script>
-
 </body>
 </html>
