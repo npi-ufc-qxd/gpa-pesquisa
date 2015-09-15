@@ -103,7 +103,7 @@ $(document).ready(function() {
     if($('.anexoSubmeter').length){
     	if($('#table-anexos').find('tr').length){
     		console.info('Há anexos cadastrados');
-    		$('#anexos').removeAttr('required');
+    		$('#anexos').removeAttr('required');teste
     	}
     }
     $('.anexoSubmeter').change(function(){
