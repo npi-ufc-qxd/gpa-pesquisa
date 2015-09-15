@@ -34,7 +34,7 @@
 				</c:if>
 		        <ul class="nav nav-tabs">
 		            <li class="active"><a aria-expanded="true" href="#tab-meus-projetos" data-toggle="tab">Meus projetos <span class="badge">${projetos.size() }</span></a></li>
-		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Em Participação <span class="badge">${projetosParticipante.size() }</span></a></li>		            
+		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Em Participação <span class="badge">${participacoesEmProjetos.size() }</span></a></li>		            
 		            <li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
 		        </ul>
@@ -73,6 +73,10 @@
 														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>
 													</a>
 		
+													<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" title="Vincular participantes">
+														<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
+													</a>
+													
 													<a id="editar" href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>" title="Editar">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 													</a>
@@ -96,9 +100,10 @@
 						</c:if>
 						<c:if test="${not empty participacoesEmProjetos}">
 								<p>Participações em Projetos</p>
-								<table id="table_diretor" class="display">
+								<table id="minhas-participacoes" class="display">
 									<thead>
 										<tr>
+											<th>Código</th>
 											<th>Projeto</th>
 											<th>Coordenador(a)</th>
 											<th>Status</th>
@@ -111,8 +116,9 @@
 									<tbody>
 										<c:forEach var="participacao" items="${participacoesEmProjetos}">
 											<tr>
-												<td><a href="<c:url value="/projeto/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
-												<td><a href="<c:url value="/pessoa/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
+												<td>${participacao.projeto.codigo}</td>
+												<td><a href="<c:url value="/projeto/detalhes/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
+												<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
 												<td>${participacao.projeto.status.descricao}</td>
 												<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
 												<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
@@ -165,7 +171,8 @@
 							<table id="projetos-aguardando-parecer" class="display">
 								<thead>
 									<tr>
-										<th>Nome</th>
+										<th>Código</th>
+										<th>Projeto</th>
 										<th>Autor</th>
 										<th>Data Submissão</th>
 										<th>Prazo</th>
@@ -175,6 +182,7 @@
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAguardandoParecer}">
 										<tr>
+											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>

@@ -63,7 +63,7 @@ public class PessoaServiceImpl implements PessoaService {
 	@Override
 	public List<Pessoa> getParticipantesProjetos() {
 		List<Pessoa> participantes = pessoaRepository.find(QueryType.JPQL,
-				"select distinct proj.participantes from Projeto proj", null);
+				"select distinct part.participante from Participacao part", null);
 		return participantes;
 	}
 

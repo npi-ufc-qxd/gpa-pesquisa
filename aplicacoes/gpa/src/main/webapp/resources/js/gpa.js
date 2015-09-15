@@ -3,7 +3,7 @@ $(document).ready(function() {
 	// Página Listar Projetos (Diretor)
 	
 	$('#meus-projetos').DataTable({
-		"order" : [[ 0, 'asc' ]],
+		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
             {"targets" : 3, "orderable" : false},
             {"targets" : 4, "orderable" : false}
@@ -13,8 +13,21 @@ $(document).ready(function() {
         }
 	});
 	
+	$('#minhas-participacoes').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+            {"targets" : 4, "orderable" : false},
+            {"targets" : 5, "orderable" : false},
+            {"targets" : 6, "orderable" : false},
+            {"targets" : 7, "orderable" : false}
+		],
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$('#projetos-avaliados').DataTable({
-		"order" : [[ 0, 'asc' ]],
+		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
             {"targets" : 2, "orderable" : false}
 		],
@@ -24,11 +37,8 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-em-participacao').DataTable({
+	$('#participantes-projetos').DataTable({
 		"order" : [[ 0, 'asc' ]],
-		"columnDefs" : [ 
-            {"targets" : 3, "orderable" : false}
-		],
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
@@ -36,7 +46,7 @@ $(document).ready(function() {
 	});
 	
 	$('#projetos-aguardando-parecer').DataTable({
-		"order" : [[ 0, 'asc' ]],
+		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
             {"targets" : 2, "orderable" : false},
             {"targets" : 3, "orderable" : false},
@@ -71,11 +81,6 @@ $(document).ready(function() {
         $('#atribuirPareceristaForm').bootstrapValidator('revalidateField', 'prazo');
     });
 	
-	// Usado para não apagar a máscara e enviar somente o valor para o servidor
-	$("#adicionarProjetoForm, #submeterProjetoForm").submit(function() {
-		$('#valorDaBolsa').val($('#bolsa').maskMoney('unmasked')[0]);
-	});
-	
 	// Máscaras
     $('[name="bolsa"]').maskMoney({prefix:'R$ ', showSymbol:true, thousands:'.', decimal:','});
     if($('[name="bolsa"]').val() != '') {
@@ -106,6 +111,11 @@ $(document).ready(function() {
 	
 	$('#confirm-delete').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o projeto \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+	});
+	
+	$('#confirm-delete-participacao').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
@@ -158,20 +168,6 @@ $(document).ready(function() {
                         message: 'A descrição deve ter no mínimo 5 caracteres'
                     }
                 }
-            },
-            quantidadeBolsa: {
-            	validators: {
-            		integer: {
-                        message: 'Digite um número válido'
-                    }
-            	}
-            },
-            cargaHoraria: {
-            	validators: {
-            		integer: {
-                        message: 'Digite um número válido'
-                    }
-            	}
             },
             inicio :{
             	validators: {

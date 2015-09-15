@@ -37,5 +37,3 @@
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput_locale_pt-BR.js" />"></script>
 
-<%-- <script src="<c:url value="/resources/js/app.min.js" />"></script>
-<script src="<c:url value="/resources/js/demo.js" />"></script> --%>

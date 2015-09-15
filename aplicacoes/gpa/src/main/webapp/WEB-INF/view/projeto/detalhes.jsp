@@ -92,7 +92,7 @@
 					</div>
 				<br>
 					<div class="form-group">
-						<label class="col-sm-2 control-label field">Local:</label>
+						<label class="col-sm-2 control-label field">Local de execução:</label>
 						<div class="col-sm-4 field-value">
 							<c:if test="${empty projeto.local }">
 								<label>-</label>
@@ -101,39 +101,8 @@
 								<label>${projeto.local }</label>
 							</c:if>					
 						</div>
-						<label class="col-sm-2 control-label field">Carga horária:</label>
-						<div class="col-sm-4 field-value">
-							<c:if test="${empty projeto.cargaHoraria }">
-								<label>-</label>
-							</c:if>
-							<c:if test="${not empty projeto.cargaHoraria }">
-								<label>${projeto.cargaHoraria }</label>
-							</c:if>
-							
-						</div>
 					</div>
 					<br>
-					<div class="form-group">
-						<label class="col-sm-2 control-label field">Bolsas:</label>
-						<div class="col-sm-4 field-value">
-							<c:if test="${empty projeto.quantidadeBolsa }">
-								<label>-</label>
-							</c:if>
-							<c:if test="${not empty projeto.quantidadeBolsa }">
-								<label>${projeto.quantidadeBolsa }</label>
-							</c:if>
-							
-						</div>
-						<label class="col-sm-2 control-label field">Valor da bolsa:</label>
-						<div class="col-sm-4 field-value">
-							<c:if test="${empty projeto.valorDaBolsa or projeto.valorDaBolsa == 0.0 }">
-								<label>-</label>
-							</c:if>
-							<c:if test="${not empty projeto.valorDaBolsa and projeto.valorDaBolsa != 0.0 }">
-								<label><fmt:formatNumber value="${projeto.valorDaBolsa}" type="currency"/></label>
-							</c:if>
-						</div>
-					</div>
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
 						<c:if test="${not empty projeto.avaliacao }">
@@ -154,7 +123,7 @@
 					</div>
 					<br>
 					<div class="form-group">
-						<label class="col-sm-2 control-label field">Atividades:</label>
+						<label class="col-sm-2 control-label field">Atividades Gerais:</label>
 						<div class="col-sm-10 field-value">
 							<c:if test="${empty projeto.atividades }">
 								<label>-</label>
@@ -179,7 +148,7 @@
 							</c:if>
 							<c:if test="${not empty projeto.participacoes }">
 								<c:forEach items="${projeto.participacoes }" var="participacao">
-									<label><a href="<c:url value="/pessoa/${participacao.participante.id}" ></c:url>">${participacao.participante.nome};</a></label>
+									<label><a href="<c:url value="/pessoa/${participacao.participante.id}" ></c:url>">${participacao.participante.nome};</a></label><br>
 								</c:forEach>
 							</c:if>
 						</div>

@@ -1,10 +1,12 @@
 package ufc.quixada.npi.gpa.service.impl;
 
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARTICIPACOES_INCOMPLETAS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_INICIO_TERMINO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_TERMINO_FUTURA;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_AUTOR_NAO_PARTICIPANTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_SEM_PARTICIPANTES;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,6 +20,7 @@ import javax.inject.Named;
 
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
+import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
@@ -114,18 +117,35 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("id", id);
 		return projetoRepository
 				.find(QueryType.JPQL,
-						"select distinct p FROM Projeto as p JOIN p.participantes pa WHERE pa.id = :id and p.status != 'NOVO'",
+						"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status != 'NOVO'",
 						params);
 	}
 	
 	@Override
-	public List<Participacao> getParticipacoesDe(Long id) {
+	public Participacao getParticipacaoById(Long id) {
+		return participacaoRepository.find(Participacao.class, id);
+	}
+	
+	@Override
+	public List<Participacao> getParticipacoesDePessoa(Long idPessoa) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
+		params.put("id", idPessoa);
 		List<Participacao> lista = participacaoRepository
 				.find(QueryType.JPQL,
 						  "select distinct part FROM Participacao as part "
 						+ "WHERE part.participante.id = :id ",
+						params);
+		return lista;
+	}
+	
+	@Override
+	public List<Participacao> getParticipacoesDoProjeto(Long idProjeto) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idProjeto);
+		List<Participacao> lista = participacaoRepository
+				.find(QueryType.JPQL,
+						  "select distinct part FROM Participacao as part "
+						+ "WHERE part.projeto.id = :id ",
 						params);
 		return lista;
 	}
@@ -164,14 +184,8 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	private String geraCodigoProjeto(Long id) {
-		NumberFormat formatador = NumberFormat.getInstance();
-		formatador.setMinimumIntegerDigits(4);
+		NumberFormat formatador = new DecimalFormat("#0000");
 		return "PESQ" + formatador.format(id);
-//		if (id < 10) {
-//			return "PESQ0" + id;
-//		} else {
-//			return "PESQ" + id;
-//		}
 	}
 
 	private Map<String, String> validarSubmissao(Projeto projeto) {
@@ -200,14 +214,15 @@ public class ProjetoServiceImpl implements ProjetoService {
 		if (!projeto.isDataTerminoFutura()) {
 			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
 		}
-
-		if (projeto.getCargaHoraria() == null || projeto.getCargaHoraria() == 0) {
-			resultado.put("cargaHoraria", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		if (projeto.getParticipacoes().isEmpty()
-				|| projeto.getParticipacoes().contains(projeto.getAutor())) {
-			resultado.put("participacoes", MENSAGEM_PARTICIPACOES_INCOMPLETAS);
+		
+		if (projeto.getParticipacoes().isEmpty()){
+			resultado.put("participacoes", MENSAGEM_SEM_PARTICIPANTES);
+		} else {
+			boolean ehParticipante = false;
+			for(Participacao p : projeto.getParticipacoes()){
+				ehParticipante = ehParticipante || p.getParticipante().equals(projeto.getAutor()); 
+			}
+			if(!ehParticipante) resultado.put("participacoes", MENSAGEM_AUTOR_NAO_PARTICIPANTE);
 		}
 
 		if (projeto.getLocal() == null || projeto.getLocal().isEmpty()) {
@@ -344,4 +359,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return projetos;
 	}
 
+	@Override
+	public void removerParticipacao(Projeto projeto,	Participacao participacao) {
+		if(projeto.getParticipacoes().contains(participacao)) {
+			projeto.removerParticipacao(participacao);
+			participacaoRepository.delete(participacao);
+		}
+	}
 }

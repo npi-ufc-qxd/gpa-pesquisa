@@ -2,7 +2,6 @@ package ufc.quixada.npi.gpa.model;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +21,7 @@ public class Participacao {
 	@JoinColumn(name="projeto_id")
 	private Projeto projeto;
 	
-	@OneToOne(cascade = CascadeType.REMOVE)
+	@OneToOne
 	private Pessoa participante;
 	
 	private Integer mesInicio;

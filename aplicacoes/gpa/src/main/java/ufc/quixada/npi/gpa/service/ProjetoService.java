@@ -47,6 +47,12 @@ public interface ProjetoService {
 	
 	Map<String, String> avaliar(Projeto projeto);
 
-	List<Participacao> getParticipacoesDe(Long id);
+	List<Participacao> getParticipacoesDePessoa(Long idPessoa);
+
+	void removerParticipacao(Projeto projeto, Participacao participacao);
+
+	Participacao getParticipacaoById(Long idParticipacao);
+
+	List<Participacao> getParticipacoesDoProjeto(Long idProjeto);
 	
 }

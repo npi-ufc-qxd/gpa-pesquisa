@@ -14,7 +14,7 @@
         <li id="menu-novo-projeto" class="">
            	<a href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto">Novo Projeto</a>
        	</li>
-       	<sec:authorize ifAnyGranted="DIRECAO">
+       	<sec:authorize ifAnyGranted="DIRETOR">
       		<li id="menu-direcao" class="">
 	           	<a href="<c:url value="/direcao" />" title="Direção">Direção</a>
 	       	</li>
