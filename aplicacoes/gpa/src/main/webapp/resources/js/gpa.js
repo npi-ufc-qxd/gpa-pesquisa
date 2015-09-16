@@ -102,12 +102,10 @@ $(document).ready(function() {
     // Verifica se ocorre alteração no input do anexo para confirmar validação.
     if($('.anexoSubmeter').length){
     	if($('#table-anexos').find('tr').length){
-    		console.info('Há anexos cadastrados');
     		$('#anexos').removeAttr('required');
     	}
     }
     $('.anexoSubmeter').change(function(){
-    	console.log('Imput de Anexo alterado, habilitando validação...');
     	$('#anexos').attr('required', 'true');
     });
     
