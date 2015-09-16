@@ -98,6 +98,17 @@ $(document).ready(function() {
     	}
     });
     
+    // Verificando se há anexos para proceder com a validação do formulário via js.
+    // Verifica se ocorre alteração no input do anexo para confirmar validação.
+    if($('.anexoSubmeter').length){
+    	if($('#table-anexos').find('tr').length){
+    		$('#anexos').removeAttr('required');
+    	}
+    }
+    $('.anexoSubmeter').change(function(){
+    	$('#anexos').attr('required', 'true');
+    });
+    
 	
 	$('#confirm-submit').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja submeter o projeto \"' + $(e.relatedTarget).data('name') + '\"?');
