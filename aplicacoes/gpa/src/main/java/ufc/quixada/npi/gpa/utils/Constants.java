@@ -8,6 +8,8 @@ public class Constants {
 	
 	public static final String PAGINA_CADASTRAR_PROJETO = "projeto/cadastrar";
 	
+	public static final String PAGINA_VINCULAR_PARTICIPANTES_PROJETO = "projeto/participacoes";
+	
 	public static final String PAGINA_DETALHES_PROJETO = "projeto/detalhes";
 	
 	public static final String PAGINA_EDITAR_PROJETO = "projeto/editar";
@@ -45,6 +47,12 @@ public class Constants {
 	
 	public static final String MENSAGEM_PROJETO_INEXISTENTE = "Projeto inexistente";
 	
+	public static final String MENSAGEM_SEM_PARTICIPANTES = "Projeto sem participações cadastradas";
+	
+	public static final String MENSAGEM_AUTOR_NAO_PARTICIPANTE = "Coordenador do projeto deve ter pelo menos uma participação cadastrada";
+	
+	public static final String MENSAGEM_PARTICIPACAO_INEXISTENTE = "Participação inexistente ou não relacionado com projeto";
+	
 	public static final String MENSAGEM_PROJETO_ATUALIZADO = "Projeto atualizado com sucesso";
 	
 	public static final String MENSAGEM_PROJETO_CADASTRADO = "Projeto cadastrado com sucesso";
@@ -57,6 +65,8 @@ public class Constants {
 	
 	public static final String MENSAGEM_PROJETO_REMOVIDO = "Projeto removido com sucesso";
 	
+	public static final String MENSAGEM_PARTICIPACAO_REMOVIDA = "Participação removida com sucesso";
+	
 	public static final String MENSAGEM_PROJETO_AVALIADO = "Projeto avaliado com sucesso";
 	
 	public static final String MENSAGEM_DATA_TERMINO_FUTURA = "A data de término não pode ser anterior à data atual";
@@ -64,6 +74,8 @@ public class Constants {
 	public static final String MENSAGEM_DATA_INICIO_TERMINO = "A data de início deve ser anterior à data de término";
 	
 	public static final String MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO = "É necessário preencher todas as informações do projeto para submetê-lo";
+	
+	public static final String MENSAGEM_CAMPO_OBRIGATORIO_PARTICIPACAO = "É necessário preencher todas as informações da participação";
 	
 	public static final String MENSAGEM_DATA_INVALIDA = "Data inválida";
 	

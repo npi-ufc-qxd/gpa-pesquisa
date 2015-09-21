@@ -21,4 +21,6 @@ public interface PessoaService {
 	
 	List<Papel> getPapeis(String cpf);
 	
+	List<Pessoa> getPessoas();
+	
 }

@@ -13,7 +13,6 @@
 		<title>Submeter Projeto</title>
 	</head>
 <body>
-	<fmt:formatNumber value="${projeto.valorDaBolsa}"  type="currency" var="valorBolsa"/>
 	<jsp:include page="../modulos/header.jsp" />
 	<div class="container">
 		<div class="panel panel-primary">
@@ -34,7 +33,6 @@
 					</div>
 				</c:if>
 				<form:form id="submeterProjetoForm" role="form" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="/projeto/submeter" method="POST" cssClass="form-horizontal">
-					<input type="hidden" id="valorDaBolsa" name="valorDaBolsa" value="${projeto.valorDaBolsa }"/>
 					<input type="hidden" id="id" name="id" value="${projeto.id }"/>
 					<input type="hidden" id="codigo" name="codigo" value="${projeto.codigo }"/>
 					
@@ -90,81 +88,25 @@
 								</c:if>
 							</div>
 						</div>
-
-						<div class="form-item">
-							<label for="quantidadeBolsa" class="col-sm-2 control-label">Número de bolsas:</label>
-							<div class="col-sm-2" >
-								<form:input id="quantidadeBolsa" name="quantidadeBolsa" type="number" placeholder="0" path="quantidadeBolsa" cssClass="form-control" min="0" />
-							</div>
-						</div>
 					</div>
 
 					<div class="form-group">
-						<div class="form-item">
-							<label for="cargaHoraria" class="col-sm-2 control-label"><span class="required">*</span> Carga horária:</label>
-							<div class="col-sm-2">
-								<form:input id="cargaHoraria" name="cargaHoraria" type="number" placeholder="0" path="cargaHoraria" cssClass="form-control" min="1" required="required"/>
-								<c:if test="${not empty erro_cargaHoraria}">
-									<div class="error-validation">
-										<span>${erro_cargaHoraria}</span>
-									</div>
-								</c:if>
-							</div>
-						</div>
-						
-						<div class="form-item">
-							<label for="bolsa" class="col-sm-2 control-label">Valor da bolsa:</label>
-							<div class="col-sm-2">
-								<input id="bolsa" name="bolsa" placeholder="R$ 0,00" class="form-control" value="${valorBolsa }" />
-							</div>
-						</div>
-					</div>
-					
-					<div class="form-group form-item">
-						<label for="idParticipantes" class="col-sm-2 control-label">Participantes:</label>
-						<div class="col-sm-10">
-							<select id="participantes" name="id-participantes" class="form-control" multiple="multiple">
-								<c:set var="part" value="${projeto.participantes }"></c:set>
-								<c:forEach items="${participantes }" var="participante">
-									<c:set var="selected" value=""></c:set>
-									<c:set var="idParticipante" value="id=${participante.id }"></c:set>
-									<c:if test="${fn:contains(part, idParticipante)}">
-										<c:set var="selected" value="selected=\"selected\""></c:set>
-									</c:if>
-									<option value="${participante.id }" ${selected }>${participante.nome }</option>
+						<label class="col-sm-2 control-label field">Participantes:</label>
+						<div class="col-sm-10 field-value">
+							<c:if test="${empty projeto.participacoes }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.participacoes }">
+								<c:forEach items="${projeto.participacoes }" var="participacao">
+									<label>${participacao.participante.nome}</label>
 								</c:forEach>
-							</select>
+							</c:if>
 						</div>
 					</div>
 					
-					<%-- <div class="form-group">
-						<div class="form-item">
-							<label for="participantes" class="col-sm-2 control-label"><span class="required">*</span> Participantes:</label>
-							<div class="col-sm-10">
-								<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple" required="required">
-									<c:set var="part" value="${projeto.participantes }"></c:set>
-									<option value=""></option>
-									<c:forEach items="${participantes }" var="participante">
-										<c:set var="selected" value=""></c:set>
-										<c:set var="idParticipante" value="id=${participante.id }"></c:set>
-										<c:if test="${fn:contains(part, idParticipante)}">
-											<c:set var="selected" value="selected=\"selected\""></c:set>
-										</c:if>
-										<option value="${participante.id }" ${selected }>${participante.nome }</option>
-									</c:forEach>
-								</select>
-								<c:if test="${not empty erro_participantes}">
-									<div class="error-validation">
-										<span>${erro_participantes}</span>
-									</div>
-								</c:if>
-							</div>
-						</div>
-					</div> --%>
-					
 					<div class="form-group">
 						<div class="form-item">
-							<label for="local" class="col-sm-2 control-label"><span class="required">*</span> Local:</label>
+							<label for="local" class="col-sm-2 control-label"><span class="required">*</span> Local de execução:</label>
 							<div class="col-sm-10">
 								<form:input id="local" path="local" cssClass="form-control" placeholder="Local do projeto" required="required"/>
 							</div>
@@ -178,7 +120,7 @@
 
 					<div class="form-group">
 						<div class="form-item">
-							<label for="atividades" class="col-sm-2 control-label"><span class="required">*</span> Atividades:</label>
+							<label for="atividades" class="col-sm-2 control-label"><span class="required">*</span> Atividades gerais:</label>
 							<div class="col-sm-10">
 								<form:textarea id="atividades" path="atividades" name="atividades" class="form-control" rows="5" placeholder="Atividades" required="required"></form:textarea>
 							</div>
