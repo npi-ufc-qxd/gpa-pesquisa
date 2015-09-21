@@ -95,3 +95,13 @@ span.line {
 .align-right {
 	text-align: right;
 }
+
+footer {
+	text-align: center;
+	margin-bottom: 40px;
+	clear: both;
+}
+
+footer img {
+	width: 100px;
+}

@@ -1,0 +1,107 @@
+body {
+	background-color: #E9E9E9;
+}
+
+#container {
+	margin: 100px auto;
+	width: 550px;
+	
+	-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
+	-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 0 2px #ffffff;
+}
+
+#header {
+ 	text-align: center;
+ 	background-color: #FFF;
+ 	vertical-align: middle;
+}
+
+#header img {
+	padding: 0;
+	margin: 0;
+	width: 60%;
+	margin-top: 20px;
+}
+
+.formulario {
+ 	background: #fff; 
+ 	padding: 30px;
+ 	padding-top: 15px;
+}
+
+.formulario .login-text {
+	color: #777;
+	font-style: italic;
+	position: relative;
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.formulario .login-text:before {
+	background: #E9E9E9;
+	content: "";
+	height: 1px;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 50%;
+}
+
+.formulario .login-text span {
+	background: #fff;
+	padding: 0 20px;
+	position: relative;
+}
+
+.login-error {
+	margin-bottom: 10px;
+	color: #A94442;
+	text-align: center;
+}
+
+div#div-captcha-erro {
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+div.controls {
+	text-align: center;
+	margin-top: 10px;
+}
+
+span#captcha-erro {
+	text-align: center;
+	color: #E74C3C;
+}
+
+footer {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+footer > img {
+	max-width: 100px;
+	margin-bottom: 10px;
+}
+
+footer > p {
+	margin-bottom: 0;
+	color: #7C7C7C;
+}
+
+div#div-captcha-erro {
+	margin-top: 10px;
+	margin-left: 15px;
+}
+
+a, a:hover, a:VISITED, a:ACTIVE, button, button:hover, button:VISITED, button:ACTIVE
+input.btn, input.btn:VISITED, input.btn:ACTIVE, input.btn:FOCUS {
+	outline: none !important;
+	outline-offset:0 !important;
+	text-decoration: none !important;
+}
+
+.has-success .form-control:focus {
+	box-shadow: none !important;
+}

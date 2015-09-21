@@ -5,7 +5,7 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid container">
     <div class="navbar-header">
-    	<a href="<c:url value="/projeto/listar" />"><img id="logo" alt="GPA-Pesquisa" src="<c:url value="/resources/images/gpa-logo.jpg"/>"></a>
+    	<a href="<c:url value="/projeto/" />"><img id="logo" alt="GPA-Pesquisa" src="<c:url value="/resources/images/gpa-logo.jpg"/>"></a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
