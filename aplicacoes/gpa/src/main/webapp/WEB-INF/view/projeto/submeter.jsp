@@ -43,6 +43,10 @@
 							<label for="nome" class="col-sm-2 control-label"><span class="required">*</span> Nome:</label>
 							<div class="col-sm-10">
 								<form:input id="nome" name="nome" path="nome" cssClass="form-control" placeholder="Nome do projeto" required="required"/>
+								<div class="error-validation">
+									<form:errors path="nome"></form:errors>
+								</div>
+								
 								<c:if test="${not empty erro_nome}">
 									<div class="error-validation">
 										<span>${erro_nome}</span>
@@ -57,6 +61,10 @@
 							<label for="descricao" class="col-sm-2 control-label"><span class="required">*</span> Descrição:</label>
 							<div class="col-sm-10">
 								<form:textarea id="descricao" path="descricao" class="form-control" rows="5" placeholder="Descrição" name="descricao" required="required"/>
+								<div class="error-validation">
+									<form:errors path="descricao"></form:errors>
+								</div>
+								
 								<c:if test="${not empty erro_descricao}">
 									<div class="error-validation">
 										<span>${erro_descricao}</span>
@@ -71,6 +79,10 @@
 							<label for="inicio" class="col-sm-2 control-label"><span class="required">*</span> Início:</label>
 							<div class="col-sm-2">
 								<form:input id="inicio" type="text" path="inicio" cssClass="form-control data" placeholder="Data de início" required="required"/>
+								<div class="error-validation">
+									<form:errors path="inicio"></form:errors>
+								</div>
+								
 								<c:if test="${not empty erro_inicio}">
 									<div class="error-validation">
 										<span>${erro_inicio}</span>
@@ -82,7 +94,11 @@
 						<div class="form-item">
 							<label for="termino" class="col-sm-2 control-label"><span class="required">*</span> Término:</label>
 							<div class="col-sm-2">
-								<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de término"  required="required"/>
+								<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de término" required="required"/>
+								<div class="error-validation">
+									<form:errors path="termino"></form:errors>
+								</div>
+								
 								<c:if test="${not empty erro_termino}">
 									<div class="error-validation">
 										<span>${erro_termino}</span>
@@ -104,6 +120,10 @@
 							<label for="cargaHoraria" class="col-sm-2 control-label"><span class="required">*</span> Carga horária:</label>
 							<div class="col-sm-2">
 								<form:input id="cargaHoraria" name="cargaHoraria" type="number" placeholder="0" path="cargaHoraria" cssClass="form-control" min="1" required="required"/>
+								<div class="error-validation">
+									<form:errors path="cargaHoraria"></form:errors>
+								</div>
+								
 								<c:if test="${not empty erro_cargaHoraria}">
 									<div class="error-validation">
 										<span>${erro_cargaHoraria}</span>
@@ -116,6 +136,7 @@
 							<label for="bolsa" class="col-sm-2 control-label">Valor da bolsa:</label>
 							<div class="col-sm-2">
 								<input id="bolsa" name="bolsa" placeholder="R$ 0,00" class="form-control" value="${valorBolsa }" />
+
 							</div>
 						</div>
 					</div>
@@ -134,6 +155,9 @@
 									<option value="${participante.id }" ${selected }>${participante.nome }</option>
 								</c:forEach>
 							</select>
+							<div class="error-validation">
+								<form:errors path="participantes"></form:errors>
+							</div>
 						</div>
 					</div>
 					
@@ -167,6 +191,9 @@
 							<label for="local" class="col-sm-2 control-label"><span class="required">*</span> Local:</label>
 							<div class="col-sm-10">
 								<form:input id="local" path="local" cssClass="form-control" placeholder="Local do projeto" required="required"/>
+								<div class="error-validation">
+									<form:errors path="local"></form:errors>
+								</div>
 							</div>
 							<c:if test="${not empty erro_local}">
 								<div class="error-validation">
@@ -181,12 +208,16 @@
 							<label for="atividades" class="col-sm-2 control-label"><span class="required">*</span> Atividades:</label>
 							<div class="col-sm-10">
 								<form:textarea id="atividades" path="atividades" name="atividades" class="form-control" rows="5" placeholder="Atividades" required="required"></form:textarea>
+								<div class="error-validation">
+									<form:errors path="atividades"></form:errors>
+								</div>
 							</div>
 							<c:if test="${not empty erro_atividades}">
 								<div class="error-validation">
 									<span>${erro_atividades}</span>
 								</div>
 							</c:if>
+							
 						</div>
 					</div>
 					
@@ -194,6 +225,7 @@
 						<label for="anexos" class="col-sm-2 control-label"><span class="required">*</span> Anexos:</label>
 						<div class="col-sm-10">
 							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple" required="required"></input>
+							
 							<c:if test="${not empty projeto.documentos }">
 								<table id="table-anexos" class="table table-striped table-hover">
 									<thead>

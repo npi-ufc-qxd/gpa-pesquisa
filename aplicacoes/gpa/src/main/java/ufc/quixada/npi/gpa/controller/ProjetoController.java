@@ -55,6 +55,7 @@ import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
+import ufc.quixada.npi.gpa.service.impl.ProjetoValidator;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
@@ -102,6 +103,11 @@ public class ProjetoController {
 		
 		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		model.addAttribute("action", "cadastrar");
+		
+		// Spring Validation
+		ProjetoValidator projetoValidator = new ProjetoValidator();
+		projetoValidator.validate(projeto, result);
+		
 		if (result.hasErrors()) {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -300,7 +306,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam(value = "id-participantes", required = false) List<String> idParticipantes, @RequestParam("anexos") List<MultipartFile> anexos,
-			@Valid Projeto projeto, Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
+			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
 		
 		projeto.setAutor(getUsuarioLogado(session));
 		if(idParticipantes != null && !idParticipantes.isEmpty()) {
@@ -310,6 +316,7 @@ public class ProjetoController {
 			}
 			projeto.setParticipantes(participantes);
 		}
+		
 		List<Documento> documentos = new ArrayList<Documento>();
 		if(anexos != null && !anexos.isEmpty()) {
 			for(MultipartFile anexo : anexos) {
@@ -332,22 +339,36 @@ public class ProjetoController {
 		if(!documentos.isEmpty()) {
 			documentoService.salvar(documentos);
 		}
-		projetoService.atualizar(projeto);
+		
 		projeto.setDocumentos(documentoService.getDocumentoByProjeto(projeto));
 		
-		// TODO: criar validador de submissão
-		Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
-		if(resultadoValidacao.isEmpty()) {
-			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
-			notificacaoService.notificar(projeto, Evento.SUBMISSAO);
-			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		// Spring Validation
+		ProjetoValidator projetoValidator = new ProjetoValidator();
+		projetoValidator.validateSubmissao(projeto, result);
+		
+		if(result.hasErrors()){
+			model.addAttribute("projeto", projeto);
+			model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
+			return PAGINA_SUBMETER_PROJETO;
+		} else {
+			projetoService.atualizar(projeto);
+			
+			Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
+			if(resultadoValidacao.isEmpty()) {
+				redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO);
+				return REDIRECT_PAGINA_LISTAR_PROJETO;
+			} else {
+				System.out.println(resultadoValidacao);
+				
+				
+				model.addAttribute("projeto", projeto);
+				model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
+				return PAGINA_SUBMETER_PROJETO;
+			}
 		}
 		
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
-		//buildValidacoesModel(resultadoValidacao, model);
-		return PAGINA_SUBMETER_PROJETO;
-	}
+}
 
 	@RequestMapping(value = "/emitir-parecer/{id-projeto}", method = RequestMethod.GET)
 	public String emitirParecerForm(@PathVariable("id-projeto") long idProjeto, Model model, HttpSession session, RedirectAttributes redirectAttributes) {

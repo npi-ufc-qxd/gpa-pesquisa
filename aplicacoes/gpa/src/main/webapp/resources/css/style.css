@@ -105,3 +105,10 @@ footer {
 footer img {
 	width: 100px;
 }
+
+.error-validation{
+	color: #E74C3C;
+	font-size: 86%;
+	display: block;
+	margin-top: 5px;
+}

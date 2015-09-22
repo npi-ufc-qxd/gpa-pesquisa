@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans          
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context 
@@ -12,13 +11,11 @@
 		   http://www.springframework.org/schema/jee 
            http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
 
-	<context:property-placeholder location="classpath:notification.properties" 
-		/> 
-		
-		<bean id="applicationContextProvder" class="ufc.quixada.npi.gpa.model.PessoaEntityListener"/>
+	<context:property-placeholder location="classpath:notification.properties" />
 
-	<bean id="emf"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<bean id="applicationContextProvder" class="ufc.quixada.npi.gpa.model.PessoaEntityListener" />
+
+	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="dev" />
 		<property name="dataSource" ref="gpa_pesquisa" />
 	</bean>
@@ -34,15 +31,15 @@
 		<!-- one of the properties available; the maximum file size in bytes -->
 		<!-- <property name="maxUploadSize" value="100000"/> -->
 	</bean>
-	
+
 	<bean id="mailSession" class="org.springframework.jndi.JndiObjectFactoryBean">
-    	<property name="jndiName" value="java:comp/env/mail/Session" />
+		<property name="jndiName" value="java:comp/env/mail/Session" />
 	</bean>
-	
+
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="session" ref="mailSession"/>
+		<property name="session" ref="mailSession" />
 	</bean>
-	
+
 	<bean id="notificationService" class="ufc.quixada.npi.gpa.service.impl.NotificacaoService">
 		<property name="observadores">
 			<list>
@@ -50,43 +47,46 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<jee:jndi-lookup id="ldapUrl" jndi-name="java:comp/env/ldap/url" expected-type="java.lang.String" />
-    <jee:jndi-lookup id="ldapBase" jndi-name="java:comp/env/ldap/base" expected-type="java.lang.String" />
-    <jee:jndi-lookup id="ldapUserDn" jndi-name="java:comp/env/ldap/userdn" expected-type="java.lang.String" />
-    <jee:jndi-lookup id="ldapPassword" jndi-name="java:comp/env/ldap/password" expected-type="java.lang.String" />
-    <jee:jndi-lookup id="ldapOu" jndi-name="java:comp/env/ldapou" expected-type="java.lang.String" />
-                     
-    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
-        <property name="url" ref="ldapUrl" />
-        <property name="base" ref="ldapBase" />
-        <property name="userDn" ref="ldapUserDn" />
-        <property name="password" ref="ldapPassword" />
-    </bean>
-    
-    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
-        <constructor-arg ref="contextSource" />
-    </bean>
-    
-    <bean id="base" class="java.lang.String">
-        <constructor-arg ref="ldapOu" />
-    </bean>
+	<jee:jndi-lookup id="ldapBase" jndi-name="java:comp/env/ldap/base" expected-type="java.lang.String" />
+	<jee:jndi-lookup id="ldapUserDn" jndi-name="java:comp/env/ldap/userdn" expected-type="java.lang.String" />
+	<jee:jndi-lookup id="ldapPassword" jndi-name="java:comp/env/ldap/password" expected-type="java.lang.String" />
+	<jee:jndi-lookup id="ldapOu" jndi-name="java:comp/env/ldapou" expected-type="java.lang.String" />
 
-	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
-		<property name="location" value="WEB-INF/jasper-views.xml" />
-		<property name="order" value="0"/>
+	<bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" ref="ldapUrl" />
+		<property name="base" ref="ldapBase" />
+		<property name="userDn" ref="ldapUserDn" />
+		<property name="password" ref="ldapPassword" />
+	</bean>
+
+	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+		<constructor-arg ref="contextSource" />
+	</bean>
+
+	<bean id="base" class="java.lang.String">
+		<constructor-arg ref="ldapOu" />
 	</bean>
 
 	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
 		<property name="location" value="WEB-INF/jasper-views.xml" />
-		<property name="order" value="0"/>
+		<property name="order" value="0" />
 	</bean>
-	
+
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="location" value="WEB-INF/jasper-views.xml" />
+		<property name="order" value="0" />
+	</bean>
+
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
 	<context:annotation-config />
 	<context:component-scan base-package="ufc.quixada.npi.gpa.*" />
 	<context:component-scan base-package="br.ufc.quixada.npi.*" />
 	<context:component-scan base-package="br.ufc.quixada.npi.ldap.*" />
-	
+
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:WEB-INF/messages" />
+	</bean>
 </beans>

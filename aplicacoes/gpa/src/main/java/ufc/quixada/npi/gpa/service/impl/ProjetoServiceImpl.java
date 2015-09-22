@@ -153,6 +153,13 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 	}
 
+	/**
+	 * Validação do projeto.
+	 * @deprecated As regras de validação serão baseadas nas definições do modelo.
+	 * @param projeto
+	 * @return {@link Map}
+	 */
+	@Deprecated
 	private Map<String, String> validarSubmissao(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
 
