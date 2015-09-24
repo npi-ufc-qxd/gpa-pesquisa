@@ -14,6 +14,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.validation.ObjectError;
+
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
@@ -30,26 +32,21 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Inject
 	private GenericRepository<Parecer> parecerRepository;
 
+	/**
+	 * Cadastrar projeto.<br>
+	 * TODO: Verificar a assinatura deste método, o retorno acontece para realizar validação no controller,
+	 * porém agora é realizada via {@link ProjetoValidator}
+	 */
 	@Override
 	public Map<String, String> cadastrar(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
 
-		if (!projeto.isDataTerminoFutura()) {
-			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
-		}
+		projeto.setStatus(StatusProjeto.NOVO);
+		projetoRepository.save(projeto);
 
-		if (!projeto.isPeriodoValido()) {
-			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
-		}
-
-		if (resultado.isEmpty()) {
-			projeto.setStatus(StatusProjeto.NOVO);
-			projetoRepository.save(projeto);
-
-			String codigo = geraCodigoProjeto(projeto.getId());
-			projeto.setCodigo(codigo);
-			projetoRepository.update(projeto);
-		}
+		String codigo = geraCodigoProjeto(projeto.getId());
+		projeto.setCodigo(codigo);
+		projetoRepository.update(projeto);
 
 		return resultado;
 	}
@@ -58,18 +55,8 @@ public class ProjetoServiceImpl implements ProjetoService {
 	public Map<String, String> atualizar(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
 
-		if (!projeto.isDataTerminoFutura()) {
-			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
-		}
-
-		if (!projeto.isPeriodoValido()) {
-			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
-		}
-
-		if (resultado.isEmpty()) {
-			projeto.setStatus(StatusProjeto.NOVO);
-			projetoRepository.update(projeto);
-		}
+		projeto.setStatus(StatusProjeto.NOVO);
+		projetoRepository.update(projeto);
 
 		return resultado;
 	}
@@ -155,6 +142,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	/**
 	 * Validação do projeto.
+	 * 
 	 * @deprecated As regras de validação serão baseadas nas definições do modelo.
 	 * @param projeto
 	 * @return {@link Map}
@@ -216,11 +204,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public Map<String, String> submeter(Projeto projeto) {
 		Map<String, String> resultadoValidacao = this.validarSubmissao(projeto);
-		if (resultadoValidacao.isEmpty()) {
-			projeto.setStatus(StatusProjeto.SUBMETIDO);
-			projeto.setSubmissao(new Date());
-			projetoRepository.update(projeto);
-		}
+		
+		projeto.setStatus(StatusProjeto.SUBMETIDO);
+		projeto.setSubmissao(new Date());
+		projetoRepository.update(projeto);
+	
 		return resultadoValidacao;
 	}
 

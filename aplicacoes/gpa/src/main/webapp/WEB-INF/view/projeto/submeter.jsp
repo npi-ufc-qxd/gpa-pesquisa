@@ -112,7 +112,7 @@
 							<div class="col-sm-2" >
 								<form:input id="quantidadeBolsa" name="quantidadeBolsa" type="number" placeholder="0" path="quantidadeBolsa" cssClass="form-control" min="0" />
 							</div>
-						</div>
+					</div>
 					</div>
 
 					<div class="form-group">
@@ -136,7 +136,6 @@
 							<label for="bolsa" class="col-sm-2 control-label">Valor da bolsa:</label>
 							<div class="col-sm-2">
 								<input id="bolsa" name="bolsa" placeholder="R$ 0,00" class="form-control" value="${valorBolsa }" />
-
 							</div>
 						</div>
 					</div>
@@ -226,7 +225,7 @@
 						<div class="col-sm-10">
 							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple" required="required"></input>
 							
-							<c:if test="${not empty projeto.documentos }">
+							<c:if test="${not empty projeto.documentos}">
 								<table id="table-anexos" class="table table-striped table-hover">
 									<thead>
 										<tr>

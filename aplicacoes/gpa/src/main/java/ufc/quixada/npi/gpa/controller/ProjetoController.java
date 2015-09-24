@@ -141,12 +141,8 @@ public class ProjetoController {
 			}
 		}
 		
-		// TODO: criar validador para cadastro de projetos
-		Map<String, String> resultado = projetoService.cadastrar(projeto);
-		if (!resultado.isEmpty()) {
-			//buildValidacoesBindingResult(resultado, result);
-			return PAGINA_CADASTRAR_PROJETO;
-		}
+		// TODO: Verificar assinatura, não é necessário retorno para validação.
+		projetoService.cadastrar(projeto);
 		
 		if(!documentos.isEmpty()) {
 			documentoService.salvar(documentos);
@@ -210,6 +206,10 @@ public class ProjetoController {
 		
 		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 		model.addAttribute("action", "editar");
+		
+		ProjetoValidator projetoValidator = new ProjetoValidator();
+		projetoValidator.validate(projeto, result);
+		
 		if (result.hasErrors()) {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -243,16 +243,12 @@ public class ProjetoController {
 			}
 		}
 		
-		// TODO: criar validador para edição de projeto
-		Map<String, String> resultado = projetoService.atualizar(projeto);
-		if (!resultado.isEmpty()) {
-			//buildValidacoesBindingResult(resultado, result);
-			return PAGINA_CADASTRAR_PROJETO;
-		}
-		
 		if(!documentos.isEmpty()) {
 			documentoService.salvar(documentos);
 		}
+		
+		// TODO: Verificar assinatura, não é necessário retorno para validação.
+		projetoService.atualizar(projeto);
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -350,22 +346,15 @@ public class ProjetoController {
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 			return PAGINA_SUBMETER_PROJETO;
+			
 		} else {
 			projetoService.atualizar(projeto);
 			
-			Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
-			if(resultadoValidacao.isEmpty()) {
-				redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO);
-				return REDIRECT_PAGINA_LISTAR_PROJETO;
-			} else {
-				System.out.println(resultadoValidacao);
-				
-				
-				model.addAttribute("projeto", projeto);
-				model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
-				return PAGINA_SUBMETER_PROJETO;
-			}
+			projetoService.submeter(projeto);
+			
+			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+			notificacaoService.notificar(projeto, Evento.SUBMISSAO);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
 }

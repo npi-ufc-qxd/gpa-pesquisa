@@ -1,5 +1,9 @@
 package ufc.quixada.npi.gpa.service.impl;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -28,6 +32,8 @@ public class ProjetoValidator implements Validator {
 	public void validate(Object target, Errors errors) {		
 		Projeto p = (Projeto) target;
 		
+		System.out.println(p.toString());
+		
 		validateCadastro(p, errors);
 	}	
 	
@@ -39,6 +45,11 @@ public class ProjetoValidator implements Validator {
 	protected void validateCadastro(Projeto projeto, Errors errors){
 		validaCampoMin("nome", projeto.getNome(), 2, errors);
 		validaCampoMin("descricao", projeto.getDescricao(), 5, errors);
+		
+		Map<String, Date> datas = new HashMap<>();
+		datas.put("inicio", projeto.getInicio());
+		datas.put("termino", projeto.getTermino());
+		validaCampoData(datas, true, errors);
 	}
 	
 	
@@ -51,13 +62,16 @@ public class ProjetoValidator implements Validator {
 		validaCampoMin("nome", projeto.getNome(), 2, errors);
 		validaCampoMin("descricao", projeto.getDescricao(), 5, errors);
 		
-		validaCampoObrigatorio("inicio", errors);
-		validaCampoObrigatorio("termino", errors);
 		validaCampoObrigatorio("cargaHoraria", errors);
 		validaCampoObrigatorio("local", errors);
 		validaCampoObrigatorio("atividades", errors);
-		validaCampoObrigatorio("atividades", errors);
+		validaCampoObrigatorio("participantes", errors);
 		validaCampoObrigatorio("documentos", errors);
+		
+		Map<String, Date> datas = new HashMap<>();
+		datas.put("inicio", projeto.getInicio());
+		datas.put("termino", projeto.getTermino());
+		validaCampoData(datas, false, errors);
 	}
 	
 	
@@ -87,5 +101,39 @@ public class ProjetoValidator implements Validator {
 	 */
 	private void validaCampoObrigatorio(String campo, Errors errors){
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, campo, "projeto.campoNulo");
+	}
+	
+	
+	/**
+	 * Valida campos de Início e Término.<br>
+	 * - ByPass em campos nulos, Valida se a data de Início antecede a data de Término.
+	 * 
+	 * @param campos {@link HashMap} Index[0] = Inicio, Index[1] = Término.
+	 * @param byPass {@link Boolean} True = Permite campos nulos, False = Valida campos nulos.
+	 * @param errors {@link Errors}
+	 */
+	private void validaCampoData(Map<String, Date> campos, Boolean byPass, Errors errors){
+		if(!byPass){
+			if(campos.get("inicio") == null){
+				ValidationUtils.rejectIfEmpty(errors, campos.keySet().toArray()[0].toString(), "projeto.campoNulo");
+			}
+			if(campos.get("termino") == null){
+				ValidationUtils.rejectIfEmpty(errors, campos.keySet().toArray()[1].toString(), "projeto.campoNulo");
+			}
+		}
+		
+		try {
+			Date dataInicio = campos.get("inicio");
+			Date dataTermino = campos.get("termino");
+			
+			if(dataInicio.after(dataTermino)){
+				errors.rejectValue(campos.keySet().toArray()[0].toString(), "projeto.campoDataAntecedente");
+			}
+			if(dataInicio.equals(dataTermino)){
+				errors.rejectValue(campos.keySet().toArray()[0].toString(), "projeto.campoDataIguais");
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 }
