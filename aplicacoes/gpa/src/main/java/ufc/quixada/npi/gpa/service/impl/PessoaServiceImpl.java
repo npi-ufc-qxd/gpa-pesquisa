@@ -47,17 +47,23 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	
+	@Deprecated 
 	@Override
 	public List<Pessoa> getParticipantes(Pessoa usuario) {
 		List<Pessoa> participantes = pessoaRepository.find(Pessoa.class);
 		participantes.remove(usuario);
 		return participantes;
 	}
+	
+	@Override
+	public List<Pessoa> getPessoas() {
+		return pessoaRepository.find(Pessoa.class);
+	}
 
 	@Override
 	public List<Pessoa> getParticipantesProjetos() {
 		List<Pessoa> participantes = pessoaRepository.find(QueryType.JPQL,
-				"select distinct proj.participantes from Projeto proj", null);
+				"select distinct part.participante from Participacao part", null);
 		return participantes;
 	}
 

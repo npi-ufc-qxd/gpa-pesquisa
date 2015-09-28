@@ -31,9 +31,7 @@ public class ProjetoValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {		
 		Projeto p = (Projeto) target;
-		
-		System.out.println(p.toString());
-		
+				
 		validateCadastro(p, errors);
 	}	
 	
@@ -62,10 +60,8 @@ public class ProjetoValidator implements Validator {
 		validaCampoMin("nome", projeto.getNome(), 2, errors);
 		validaCampoMin("descricao", projeto.getDescricao(), 5, errors);
 		
-		validaCampoObrigatorio("cargaHoraria", errors);
 		validaCampoObrigatorio("local", errors);
 		validaCampoObrigatorio("atividades", errors);
-		validaCampoObrigatorio("participantes", errors);
 		validaCampoObrigatorio("documentos", errors);
 		
 		Map<String, Date> datas = new HashMap<>();
@@ -133,7 +129,7 @@ public class ProjetoValidator implements Validator {
 				errors.rejectValue(campos.keySet().toArray()[0].toString(), "projeto.campoDataIguais");
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("Datas == null, " + e);
 		}
 	}
 }

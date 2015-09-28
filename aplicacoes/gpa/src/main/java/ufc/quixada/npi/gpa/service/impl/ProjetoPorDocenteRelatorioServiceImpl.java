@@ -58,11 +58,11 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 
 				if ((calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) || (ano == 0 && !projetos.contains(projeto))) {
 					ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio = new ProjetoPorDocenteRelatorio();
-					projetoPorDocenteRelatorio.setHoras(projeto
-							.getCargaHoraria());
+//					projetoPorDocenteRelatorio.setHoras(projeto
+//							.getCargaHoraria());
 					projetoPorDocenteRelatorio.setNome(projeto.getNome());
-					projetoPorDocenteRelatorio.setValorBolsa(projeto
-							.getValorDaBolsa());
+//					projetoPorDocenteRelatorio.setValorBolsa(projeto
+//							.getValorDaBolsa());
 					projetoPorDocenteRelatorio.setVinculo("PARTICIPANTE");
 
 					projetos.add(projetoPorDocenteRelatorio);
@@ -75,11 +75,11 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 
 				if ((calen.get(Calendar.YEAR) == ano && !projetos.contains(projeto)) || (ano == 0 && !projetos.contains(projeto))) {
 					ProjetoPorDocenteRelatorio projetoPorDocenteRelatorio = new ProjetoPorDocenteRelatorio();
-					projetoPorDocenteRelatorio.setHoras(projeto
-							.getCargaHoraria());
+//					projetoPorDocenteRelatorio.setHoras(projeto
+//							.getCargaHoraria());
 					projetoPorDocenteRelatorio.setNome(projeto.getNome());
-					projetoPorDocenteRelatorio.setValorBolsa(projeto
-							.getValorDaBolsa());
+//					projetoPorDocenteRelatorio.setValorBolsa(projeto
+//							.getValorDaBolsa());
 					projetoPorDocenteRelatorio.setVinculo("AUTOR");
 
 					projetos.add(projetoPorDocenteRelatorio);

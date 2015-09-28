@@ -36,6 +36,7 @@
 					<ul class="nav nav-tabs">
 						<li class="active"><a aria-expanded="true" href="#tab-em-tramitacao" data-toggle="tab">Em tramitação <span class="badge">${projetosSubmetidos.size() }</span></a></li>
 						<li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
+						<li class=""><a aria-expanded="false" href="#tab-participantes" data-toggle="tab">Participantes <span class="badge">${participantes.size() }</span></a></li>
 					</ul>
 				    <div class="tab-content">
 				       	<div  class="tab-pane fade active in" id="tab-em-tramitacao">
@@ -117,12 +118,12 @@
 								</table>
 							</c:if>
 				       	</div>
-				       	<%-- <div  class="tab-pane fade" id="participantes">
+				       	<div  class="tab-pane fade" id="tab-participantes">
 					       	<c:if test="${empty participantes}">
-								<div class="alert alert-warning" role="alert">Não há participantes nos projetos.</div>
+								<div class="alert alert-warning" role="alert">Não há participantes em projetos.</div>
 							</c:if>
 							<c:if test="${not empty participantes}">
-								<table id="table_d_participantes" class="display">
+								<table id="participantes-projetos" class="display">
 									<thead>
 										<tr>
 											<th>Nome</th>
@@ -132,14 +133,14 @@
 										<c:forEach var="participante" items="${participantes}">
 											<tr>
 												<td>
-													<a href="<c:url value="/pessoa/${participante.id}/detalhes" ></c:url>">${participante.nome}</a>
+													<a href="<c:url value="/pessoa/detalhes/${participante.id}" ></c:url>">${participante.nome}</a>
 												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
 								</table>
 							</c:if>
-				       	</div> --%>
+				       	</div>
 			       	</div>
 		       	</div>
 		   </div><!-- /panel -->

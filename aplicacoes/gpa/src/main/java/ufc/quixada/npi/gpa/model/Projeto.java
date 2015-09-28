@@ -12,13 +12,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -56,21 +52,14 @@ public class Projeto {
 	@Column(columnDefinition = "TEXT")
 	private String atividades;
 
-	private Integer cargaHoraria;
-
-	private Double valorDaBolsa;
-
-	private Integer quantidadeBolsa;
-
 	private String local;
 	
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
-
-	@ManyToMany
-    @JoinTable(name="projeto_participante", joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="participante_id", referencedColumnName="id")})
-    private List<Pessoa> participantes;
 	
+	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+	private List<Participacao> participacoes;
+
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
@@ -89,6 +78,14 @@ public class Projeto {
 	@Column(columnDefinition = "TEXT")
 	private String observacaoAvaliacao;
 
+	public List<Participacao> getParticipacoes() {
+		return participacoes;
+	}
+
+	public void setParticipacoes(List<Participacao> participacoes) {
+		this.participacoes = participacoes;
+	}
+	
 	public Date getAvaliacao() {
 		return avaliacao;
 	}
@@ -136,30 +133,6 @@ public class Projeto {
 		this.atividades = atividades;
 	}
 
-	public Integer getCargaHoraria() {
-		return cargaHoraria;
-	}
-
-	public void setCargaHoraria(Integer cargaHoraria) {
-		this.cargaHoraria = cargaHoraria;
-	}
-
-	public Double getValorDaBolsa() {
-		return valorDaBolsa;
-	}
-
-	public void setValorDaBolsa(Double valorDaBolsa) {
-		this.valorDaBolsa = valorDaBolsa;
-	}
-
-	public Integer getQuantidadeBolsa() {
-		return quantidadeBolsa;
-	}
-
-	public void setQuantidadeBolsa(Integer quantidadeBolsa) {
-		this.quantidadeBolsa = quantidadeBolsa;
-	}
-
 	public String getLocal() {
 		return local;
 	}
@@ -176,13 +149,13 @@ public class Projeto {
 		this.status = status;
 	}
 
-	public List<Pessoa> getParticipantes() {
-		return participantes;
-	}
-
-	public void setParticipantes(List<Pessoa> participantes) {
-		this.participantes = participantes;
-	}
+//	public List<Pessoa> getParticipantes() {
+//		return participantes;
+//	}
+//
+//	public void setParticipantes(List<Pessoa> participantes) {
+//		this.participantes = participantes;
+//	}
 
 	public List<Documento> getDocumentos() {
 		return documentos;
@@ -282,8 +255,6 @@ public class Projeto {
 				+ ", inicio=" + inicio + ", termino=" + termino
 				+ ", submissao=" + submissao + ", descricao=" + descricao
 				+ ", autor=" + autor + ", atividades=" + atividades
-				+ ", cargaHoraria=" + cargaHoraria + ", valorDaBolsa="
-				+ valorDaBolsa + ", quantidadeBolsa=" + quantidadeBolsa
 				+ ", local=" + local + ", status=" + status + "]";
 	}
 
@@ -352,6 +323,15 @@ public class Projeto {
 				}
 			}
 		}
+	}
+
+	public void adicionarParticipacao(Participacao participacao) {
+		participacoes.add(participacao);
+		participacao.setProjeto(this);
+	}
+
+	public void removerParticipacao(Participacao participacao) {
+		this.participacoes.remove(participacao);
 	}
 
 }
