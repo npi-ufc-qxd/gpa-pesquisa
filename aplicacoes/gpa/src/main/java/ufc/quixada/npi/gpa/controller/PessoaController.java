@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 
@@ -26,17 +27,17 @@ public class PessoaController {
 
 	@RequestMapping(value = "/detalhes/{id}")
 	public String getDetalhes(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
-		Pessoa pessoa = pessoaService.getPessoaById(id);
+		Pessoa pessoa = pessoaService.getPessoa(id);
 		if (pessoa == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 		} else {
 			model.addAttribute("pessoa", pessoa);
-			model.addAttribute("reprovados", projetoService.getProjetosReprovadosByUsuario(pessoa.getId()));
+			model.addAttribute("reprovados", projetoService.getProjetos(pessoa.getId(), StatusProjeto.REPROVADO));
 			model.addAttribute("projetos", projetoService.getProjetosByParticipante(pessoa.getId()));
-			model.addAttribute("coordenou",projetoService.getProjetosByUsuarioCoordenou(pessoa.getId()));
-			model.addAttribute("participou",projetoService.getProjetosByUsuarioParticipou(pessoa.getId()));
+			model.addAttribute("coordenou", projetoService.getProjetos(pessoa.getId()));
+			model.addAttribute("participou", projetoService.getProjetosByParticipante(pessoa.getId()));
 			
 			return PAGINA_DETALHES_PARTICIPANTE;
 		}

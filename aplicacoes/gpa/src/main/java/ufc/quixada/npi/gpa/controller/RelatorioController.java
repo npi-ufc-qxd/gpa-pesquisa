@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.model.Relatorio;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
@@ -43,7 +44,7 @@ public class RelatorioController {
 			@RequestParam(value = "iniInterTermino", required = false) String iniInterTermino,
 			@RequestParam(value = "iniInterTermino", required = false) String fimInterTermino) throws JRException {
 		
-		JRDataSource jrDatasource = new JRBeanCollectionDataSource(projetoService.getProjetosAprovados());
+		JRDataSource jrDatasource = new JRBeanCollectionDataSource(projetoService.getProjetos(StatusProjeto.APROVADO));
 
 		model.addAttribute("datasource", jrDatasource);
 		model.addAttribute("format", "html");
@@ -92,7 +93,7 @@ public class RelatorioController {
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
 			Pessoa usuario = pessoaService
-					.getPessoaByCpf(SecurityContextHolder.getContext()
+					.getPessoa(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}

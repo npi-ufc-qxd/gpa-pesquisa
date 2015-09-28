@@ -44,8 +44,8 @@ public class DocumentoController {
 	@RequestMapping(value = "/{id-projeto}/{id-arquivo}", method = RequestMethod.GET)
 	public void getArquivo(@PathVariable("id-projeto") Long idProjeto, @PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, HttpSession session) {
 		try {
-			Projeto projeto = projetoService.getProjetoById(idProjeto);
-			Documento documento = documentoService.getDocumentoById(idArquivo);
+			Projeto projeto = projetoService.getProjeto(idProjeto);
+			Documento documento = documentoService.getDocumento(idArquivo);
 			if(documento != null && projeto != null && (getUsuarioLogado(session).equals(projeto.getAutor()) || 
 					getUsuarioLogado(session).isDirecao() || (projeto.getParecer() != null && getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())))) {
 				InputStream is = new ByteArrayInputStream(documento.getArquivo());
@@ -61,7 +61,7 @@ public class DocumentoController {
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
 	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, HttpSession session) {
 		ModelMap model = new ModelMap();
-		Documento documento = documentoService.getDocumentoById(id);
+		Documento documento = documentoService.getDocumento(id);
 		if(documento == null) {
 			model.addAttribute("result", "erro");
 			model.addAttribute("mensagem", MENSAGEM_DOCUMENTO_INEXISTENTE);
@@ -80,7 +80,7 @@ public class DocumentoController {
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
 			Pessoa usuario = pessoaService
-					.getPessoaByCpf(SecurityContextHolder.getContext()
+					.getPessoa(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
