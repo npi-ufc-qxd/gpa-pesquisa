@@ -9,13 +9,13 @@ import ufc.quixada.npi.gpa.model.Projeto;
 
 public interface ProjetoService {
 	
-	Map<String, String> cadastrar(Projeto projeto);
+	void cadastrar(Projeto projeto);
 	
-	Map<String, String> atualizar(Projeto projeto);
+	void atualizar(Projeto projeto);
 	
 	void remover(Projeto projeto);
 	
-	Map<String, String> submeter(Projeto projeto);
+	void submeter(Projeto projeto);
 	
 	Projeto getProjetoById(Long id);
 

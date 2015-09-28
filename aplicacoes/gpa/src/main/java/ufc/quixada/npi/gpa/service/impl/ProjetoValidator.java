@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Named;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -16,6 +18,7 @@ import ufc.quixada.npi.gpa.model.Projeto;
  * 
  * @author 00056726198
  */
+@Named
 public class ProjetoValidator implements Validator {
 
 	/**

@@ -38,33 +38,21 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Inject
 	private GenericRepository<Parecer> parecerRepository;
 
-	/**
-	 * Cadastrar projeto.<br>
-	 * TODO: Verificar a assinatura deste método, o retorno acontece para realizar validação no controller,
-	 * porém agora é realizada via {@link ProjetoValidator}
-	 */
-	@Override
-	public Map<String, String> cadastrar(Projeto projeto) {
-		Map<String, String> resultado = new HashMap<String, String>();
 
+	@Override
+	public void cadastrar(Projeto projeto) {
 		projeto.setStatus(StatusProjeto.NOVO);
 		projetoRepository.save(projeto);
 
 		String codigo = geraCodigoProjeto(projeto.getId());
 		projeto.setCodigo(codigo);
 		projetoRepository.update(projeto);
-
-		return resultado;
 	}
 
 	@Override
-	public Map<String, String> atualizar(Projeto projeto) {
-		Map<String, String> resultado = new HashMap<String, String>();
-
+	public void atualizar(Projeto projeto) {
 		projeto.setStatus(StatusProjeto.NOVO);
 		projetoRepository.update(projeto);
-
-		return resultado;
 	}
 
 	@Override
@@ -172,77 +160,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return "PESQ" + formatador.format(id);
 	}
 
-	/**
-	 * Validação do projeto.
-	 * 
-	 * @deprecated As regras de validação serão baseadas nas definições do modelo.
-	 * @param projeto
-	 * @return {@link Map}
-	 */
-	@Deprecated
-	private Map<String, String> validarSubmissao(Projeto projeto) {
-		Map<String, String> resultado = new HashMap<String, String>();
-
-		if (projeto.getNome() == null || projeto.getNome().isEmpty()) {
-			resultado.put("nome", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		if (projeto.getDescricao() == null || projeto.getDescricao().isEmpty()) {
-			resultado.put("descricao", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		if (projeto.getInicio() == null) {
-			resultado.put("inicio", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		if (!projeto.isPeriodoValido()) {
-			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
-		}
-
-		if (projeto.getTermino() == null) {
-			resultado.put("termino", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		if (!projeto.isDataTerminoFutura()) {
-			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
-		}
-		
-		if (projeto.getParticipacoes().isEmpty()){
-			resultado.put("participacoes", MENSAGEM_SEM_PARTICIPANTES);
-		} else {
-			boolean ehParticipante = false;
-			for(Participacao p : projeto.getParticipacoes()){
-				ehParticipante = ehParticipante || p.getParticipante().equals(projeto.getAutor()); 
-			}
-			if(!ehParticipante) resultado.put("participacoes", MENSAGEM_AUTOR_NAO_PARTICIPANTE);
-		}
-
-		if (projeto.getLocal() == null || projeto.getLocal().isEmpty()) {
-			resultado.put("local", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		if (projeto.getAtividades() == null
-				|| projeto.getAtividades().isEmpty()) {
-			resultado.put("atividades", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		if (projeto.getDocumentos() == null
-				|| projeto.getDocumentos().isEmpty()) {
-			resultado.put("documentos", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-
-		return resultado;
-	}
-
 	@Override
-	public Map<String, String> submeter(Projeto projeto) {
-		Map<String, String> resultadoValidacao = this.validarSubmissao(projeto);
-		
+	public void submeter(Projeto projeto) {		
 		projeto.setStatus(StatusProjeto.SUBMETIDO);
 		projeto.setSubmissao(new Date());
 		projetoRepository.update(projeto);
-	
-		return resultadoValidacao;
 	}
 
 	@Override
