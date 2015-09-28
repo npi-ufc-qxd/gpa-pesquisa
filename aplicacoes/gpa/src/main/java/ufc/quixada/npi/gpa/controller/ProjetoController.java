@@ -402,7 +402,6 @@ public class ProjetoController {
 		projetoValidator.validateSubmissao(projeto, result);
 
 		if (result.hasErrors()) {
-			System.out.println("--> Entrou no erro.");
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
 			return PAGINA_SUBMETER_PROJETO;
