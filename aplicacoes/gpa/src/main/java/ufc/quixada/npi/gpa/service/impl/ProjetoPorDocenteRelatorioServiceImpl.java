@@ -48,7 +48,7 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 		List<ProjetoPorDocenteRelatorio> projetos = new ArrayList<ProjetoPorDocenteRelatorio>();
 		List<Projeto> projetoParticipante = projetoService
 				.getProjetosByParticipante(id);
-		List<Projeto> projetoAutor = projetoService.getProjetosByUsuario(id);
+		List<Projeto> projetoAutor = projetoService.getProjetos(id);
 		
 		Calendar calen = Calendar.getInstance();
 
@@ -96,7 +96,7 @@ public class ProjetoPorDocenteRelatorioServiceImpl implements
 
 		List<ProjetoPorDocenteRelatorio> projetos = getProjetos(id, ano);
 
-		relatorio.setNomeDoDocente(pessoaService.getPessoaById(id).getNome());
+		relatorio.setNomeDoDocente(pessoaService.getPessoa(id).getNome());
 		relatorio.setProjetos(projetos);
 		relatorio.setAnoDeConsulta(ano);
 		relatorio.setCargaHorariaTotal(getCargaHorariaTotal(projetos));

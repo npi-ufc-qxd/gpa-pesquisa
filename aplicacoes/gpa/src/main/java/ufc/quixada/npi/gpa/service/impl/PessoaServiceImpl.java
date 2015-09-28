@@ -24,19 +24,17 @@ public class PessoaServiceImpl implements PessoaService {
 	private GenericRepository<Papel> papelRepository;
 
 	@Override
-	public Pessoa getPessoaByCpf(String cpf) {
+	public Pessoa getPessoa(String cpf) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", cpf);
-		return pessoaRepository.find(QueryType.JPQL,
-				"from Pessoa where cpf = :cpf", params).get(0);
+		return pessoaRepository.findFirst(QueryType.JPQL, "from Pessoa where cpf = :cpf", params, 0);
 	}
 
 	@Override
 	public List<Pessoa> getPareceristas(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return pessoaRepository.find(QueryType.JPQL,
-				"from Pessoa u where u.id != :id", params);
+		return pessoaRepository.find(QueryType.JPQL, "from Pessoa where id != :id", params);
 	}
 
 	@Override
@@ -45,7 +43,6 @@ public class PessoaServiceImpl implements PessoaService {
 		params.put("papel", Constants.PAPEL_DIRECAO);
 		return pessoaRepository.findFirst(QueryType.JPQL, "select pe from Pessoa pe, Papel pa where pa.nome = :papel and pa member of pe.papeis", params, 0);
 	}
-
 	
 	@Deprecated 
 	@Override
@@ -56,10 +53,11 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 	
 	@Override
-	public List<Pessoa> getPessoas() {
+	public List<Pessoa> getAll() {
 		return pessoaRepository.find(Pessoa.class);
 	}
 
+	@Deprecated 
 	@Override
 	public List<Pessoa> getParticipantesProjetos() {
 		List<Pessoa> participantes = pessoaRepository.find(QueryType.JPQL,
@@ -68,7 +66,7 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public Pessoa getPessoaById(Long id) {
+	public Pessoa getPessoa(Long id) {
 		return pessoaRepository.find(Pessoa.class, id);
 	}
 

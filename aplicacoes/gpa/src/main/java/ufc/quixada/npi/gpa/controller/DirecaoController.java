@@ -61,7 +61,7 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "/atribuir-parecerista/{id-projeto}", method = RequestMethod.GET)
 	public String atribuirPareceristaForm(@PathVariable("id-projeto") Long projetoId, Model model, RedirectAttributes redirectAttributes) {
-		Projeto projeto = projetoService.getProjetoById(projetoId);
+		Projeto projeto = projetoService.getProjeto(projetoId);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
@@ -80,8 +80,8 @@ public class DirecaoController {
 	public String atribuirParecerista(@RequestParam("prazo") @DateTimeFormat(pattern = "dd/MM/yyyy") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
 			@RequestParam("pareceristaId") Long pareceristaId, Model model, RedirectAttributes redirectAttributes) {
 
-		Projeto projeto = projetoService.getProjetoById(projetoId);
-		Pessoa parecerista = pessoaService.getPessoaById(pareceristaId);
+		Projeto projeto = projetoService.getProjeto(projetoId);
+		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
 		
 		Parecer parecer = new Parecer();
 		parecer.setDataAtribuicao(new Date());
@@ -106,7 +106,7 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "/avaliar/{id}", method = RequestMethod.GET)
 	public String avaliarForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
-		Projeto projeto = projetoService.getProjetoById(id);
+		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null || !projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
 			redirect.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
@@ -139,7 +139,7 @@ public class DirecaoController {
 			return PAGINA_AVALIAR_PROJETO;
 		}
 		
-		Projeto projeto = projetoService.getProjetoById(id);
+		Projeto projeto = projetoService.getProjeto(id);
 		projeto.setStatus(avaliacao);
 		projeto.setAta(ataDocumento);
 		projeto.setOficio(oficioDocumento);
