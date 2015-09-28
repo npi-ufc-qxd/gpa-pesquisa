@@ -1,15 +1,9 @@
 package ufc.quixada.npi.gpa.service.impl;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_AUTOR_NAO_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_INICIO_TERMINO;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_TERMINO_FUTURA;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_SEM_PARTICIPANTES;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,13 +25,12 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
 	private GenericRepository<Projeto> projetoRepository;
-	
+
 	@Inject
 	private GenericRepository<Participacao> participacaoRepository;
 
 	@Inject
 	private GenericRepository<Parecer> parecerRepository;
-
 
 	@Override
 	public void cadastrar(Projeto projeto) {
@@ -56,120 +49,14 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public void remover(Projeto projeto) {
-		projetoRepository.delete(projeto);
-	}
-
-	@Override
-	public List<Projeto> getProjetosSubmetidos() {
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"from Projeto as p where p.status = 'SUBMETIDO' or p.status = 'AGUARDANDO_PARECER' or p.status = 'AGUARDANDO_AVALIACAO'",
-						null);
-	}
-
-	@Override
-	public List<Projeto> getProjetosAtribuidos() {
-		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto as p where p.status = 'AGUARDANDO_PARECER' ",
-				null);
-	}
-
-	@Override
-	public List<Projeto> getProjetosByUsuario(Long id) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where autor.id = :id", params);
-	}
-
-	@Override
-	public List<Projeto> getProjetosByParticipante(Long id) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status != 'NOVO'",
-						params);
-	}
-	
-	@Override
-	public Participacao getParticipacaoById(Long id) {
-		return participacaoRepository.find(Participacao.class, id);
-	}
-	
-	@Override
-	public List<Participacao> getParticipacoesDePessoa(Long idPessoa) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", idPessoa);
-		List<Participacao> lista = participacaoRepository
-				.find(QueryType.JPQL,
-						  "select distinct part FROM Participacao as part "
-						+ "WHERE part.participante.id = :id ",
-						params);
-		return lista;
-	}
-	
-	@Override
-	public List<Participacao> getParticipacoesDoProjeto(Long idProjeto) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", idProjeto);
-		List<Participacao> lista = participacaoRepository
-				.find(QueryType.JPQL,
-						  "select distinct part FROM Participacao as part "
-						+ "WHERE part.projeto.id = :id ",
-						params);
-		return lista;
-	}
-
-	@Override
-	public List<Projeto> getProjetosAvaliadosDoUsuario(Long id) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"from Projeto as p where ((p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')) AND (autor.id = :id)",
-						params);
-	}
-
-	@Override
-	public List<Projeto> getProjetosAvaliados() {
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"from Projeto as p where (p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')",
-						null);
-	}
-
-	@Override
-	public List<Projeto> getProjetosAguardandoParecer(Long id) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"select p from Projeto as p where p.parecer.parecerista.id = :id and p.status = 'AGUARDANDO_PARECER'",
-						params);
-	}
-
-	@Override
-	public Projeto getProjetoById(Long id) {
-		return projetoRepository.find(Projeto.class, id);
-	}
-
-	private String geraCodigoProjeto(Long id) {
-		NumberFormat formatador = new DecimalFormat("#0000");
-		return "PESQ" + formatador.format(id);
-	}
-
-	@Override
-	public void submeter(Projeto projeto) {		
+	public void submeter(Projeto projeto) {
 		projeto.setStatus(StatusProjeto.SUBMETIDO);
 		projeto.setSubmissao(new Date());
 		projetoRepository.update(projeto);
 	}
 
 	@Override
-	public Map<String, String> atribuirParecerista(Projeto projeto,
-			Parecer parecer) {
+	public Map<String, String> atribuirParecerista(Projeto projeto, Parecer parecer) {
 		Map<String, String> resultado = new HashMap<String, String>();
 		if (parecer.getPrazo() == null) {
 			resultado.put("prazo", MENSAGEM_CAMPO_OBRIGATORIO);
@@ -187,8 +74,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public Map<String, String> emitirParecer(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		if (projeto.getParecer().getParecer() == null
-				|| projeto.getParecer().getParecer().isEmpty()) {
+		if (projeto.getParecer().getParecer() == null || projeto.getParecer().getParecer().isEmpty()) {
 			resultado.put("parecer", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
 		if (resultado.isEmpty()) {
@@ -217,67 +103,123 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public List<Projeto> getProjetosAprovados() {
-		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto as p where (p.status = 'APROVADO')", null);
+	public void remover(Projeto projeto) {
+		projetoRepository.delete(projeto);
 	}
 
 	@Override
-	public List<Projeto> getProjetosReprovadosByUsuario(Long id) {
+	public List<Projeto> getProjetosSubmetidos() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"from Projeto as p where ((p.status = 'REPROVADO') and (autor.id = :id))",
-						params);
+		params.put("submetido", StatusProjeto.SUBMETIDO);
+		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where status = :submetido or status = :aguardando_parecer or status = :aguardando_avaliacao",
+				params);
 	}
 
 	@Override
-	public List<Projeto> getProjetosByUsuarioCoordenou(Long id) {
-		List<Projeto> projetos = new ArrayList<Projeto>();
-		Date data = new Date();
-		Calendar dataAtual = Calendar.getInstance();
-		Calendar dataTermino = Calendar.getInstance();
-
-		dataAtual.setTimeInMillis(data.getTime());
-
-		for (Projeto projeto : getProjetosByUsuario(id)) {
-			if (projeto.getTermino() != null) {
-				dataTermino.setTimeInMillis(projeto.getTermino().getTime());
-				if (dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()) {
-					projetos.add(projeto);
-				}
-			}
-		}
-		return projetos;
+	public List<Projeto> getProjetosAvaliados() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("aprovado", StatusProjeto.APROVADO);
+		params.put("reprovado", StatusProjeto.REPROVADO);
+		params.put("aprovado_restricao", StatusProjeto.APROVADO_COM_RESTRICAO);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where status = :aprovado OR status = :reprovado OR status = :aprovado_restricao", params);
 	}
 
 	@Override
-	public List<Projeto> getProjetosByUsuarioParticipou(Long id) {
+	public List<Projeto> getProjetosAvaliados(Long idAutor) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idAutor);
+		params.put("aprovado", StatusProjeto.APROVADO);
+		params.put("reprovado", StatusProjeto.REPROVADO);
+		params.put("aprovado_restricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 
-		List<Projeto> projetos = new ArrayList<Projeto>();
-		Date data = new Date();
-		Calendar dataAtual = Calendar.getInstance();
-		Calendar dataTermino = Calendar.getInstance();
-
-		dataAtual.setTimeInMillis(data.getTime());
-
-		for (Projeto projeto : getProjetosByParticipante(id)) {
-			if (projeto.getTermino() != null) {
-				dataTermino.setTimeInMillis(projeto.getTermino().getTime());
-				if (dataAtual.getTimeInMillis() > dataTermino.getTimeInMillis()) {
-					projetos.add(projeto);
-				}
-			}
-		}
-		return projetos;
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where ((status = :aprovado) OR (status = :reprovado) OR (status = :aprovado_restricao)) AND (autor.id = :id)",
+				params);
 	}
 
 	@Override
-	public void removerParticipacao(Projeto projeto,	Participacao participacao) {
-		if(projeto.getParticipacoes().contains(participacao)) {
+	public Projeto getProjeto(Long id) {
+		return projetoRepository.find(Projeto.class, id);
+	}
+
+	@Override
+	public List<Projeto> getProjetos(Long idAutor) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idAutor);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id", params);
+	}
+
+	@Override
+	public List<Projeto> getProjetosByParticipante(Long idParticipante) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idParticipante);
+		return projetoRepository.find(QueryType.JPQL,
+				"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status != 'NOVO'",
+				params);
+	}
+
+	@Override
+	public List<Projeto> getProjetos(StatusProjeto status) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", status);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where status = :status", params);
+	}
+
+	@Override
+	public List<Projeto> getProjetos(Long idAutor, StatusProjeto status) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idAutor);
+		params.put("status", status);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id and status = :status", params);
+	}
+
+	@Override
+	public List<Projeto> getProjetosAguardandoParecer(Long idParecerista) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idParecerista);
+		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where parecer.parecerista.id = :id and status = :aguardando_parecer", params);
+	}
+
+	@Override
+	public List<Participacao> getParticipacoes(Long idPessoa) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idPessoa);
+		List<Participacao> lista = participacaoRepository.find(QueryType.JPQL,
+				"select distinct part FROM Participacao as part " + "WHERE part.participante.id = :id ", params);
+		return lista;
+	}
+
+	@Override
+	public void removerParticipacao(Projeto projeto, Participacao participacao) {
+		if (projeto.getParticipacoes().contains(participacao)) {
 			projeto.removerParticipacao(participacao);
 			participacaoRepository.delete(participacao);
 		}
 	}
+
+	@Override
+	public Participacao getParticipacao(Long id) {
+		return participacaoRepository.find(Participacao.class, id);
+	}
+
+	@Override
+	public List<Participacao> getParticipacoesByProjeto(Long idProjeto) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idProjeto);
+		List<Participacao> lista = participacaoRepository.find(QueryType.JPQL,
+				"select distinct part FROM Participacao as part " + "WHERE part.projeto.id = :id ", params);
+		return lista;
+	}
+
+	private String geraCodigoProjeto(Long id) {
+		NumberFormat formatador = new DecimalFormat("#0000");
+		return "PESQ" + formatador.format(id);
+	}
+
 }
