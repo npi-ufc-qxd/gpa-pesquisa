@@ -7,9 +7,9 @@ import ufc.quixada.npi.gpa.model.Pessoa;
 
 public interface PessoaService {
 
-	Pessoa getPessoaByCpf(String cpf);
+	Pessoa getPessoa(String cpf);
 	
-	Pessoa getPessoaById(Long id);
+	Pessoa getPessoa(Long id);
 
 	List<Pessoa> getPareceristas(Long id);
 
@@ -21,6 +21,6 @@ public interface PessoaService {
 	
 	List<Papel> getPapeis(String cpf);
 	
-	List<Pessoa> getPessoas();
+	List<Pessoa> getAll();
 	
 }

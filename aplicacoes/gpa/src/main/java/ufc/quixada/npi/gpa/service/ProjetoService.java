@@ -6,6 +6,7 @@ import java.util.Map;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Projeto;
+import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 
 public interface ProjetoService {
 	
@@ -13,46 +14,40 @@ public interface ProjetoService {
 	
 	Map<String, String> atualizar(Projeto projeto);
 	
-	void remover(Projeto projeto);
-	
 	Map<String, String> submeter(Projeto projeto);
 	
-	Projeto getProjetoById(Long id);
-
-	List<Projeto> getProjetosSubmetidos();
-
-	List<Projeto> getProjetosAtribuidos();
-
-	List<Projeto> getProjetosByUsuario(Long id);
-	
-	List<Projeto> getProjetosByParticipante(Long id);
-
-	List<Projeto> getProjetosAvaliadosDoUsuario(Long id);
-
-	List<Projeto> getProjetosAvaliados();
-	
-	List<Projeto> getProjetosAprovados();
-	
-	List<Projeto> getProjetosReprovadosByUsuario(Long id);
-	
-	List<Projeto> getProjetosByUsuarioCoordenou(Long id);
-	
-	List<Projeto> getProjetosByUsuarioParticipou(Long id);
-
-	List<Projeto> getProjetosAguardandoParecer(Long id);
-
 	Map<String, String> atribuirParecerista(Projeto projeto, Parecer parecer);
 	
 	Map<String, String> emitirParecer(Projeto projeto);
 	
 	Map<String, String> avaliar(Projeto projeto);
+	
+	void remover(Projeto projeto);
+	
+	List<Projeto> getProjetosSubmetidos();
+	
+	List<Projeto> getProjetosAvaliados();
+	
+	List<Projeto> getProjetosAvaliados(Long idAutor);
 
-	List<Participacao> getParticipacoesDePessoa(Long idPessoa);
+	Projeto getProjeto(Long id);
+
+	List<Projeto> getProjetos(Long idAutor);
+	
+	List<Projeto> getProjetosByParticipante(Long idParticipante);
+	
+	List<Projeto> getProjetos(StatusProjeto status);
+	
+	List<Projeto> getProjetos(Long idAutor, StatusProjeto status);
+	
+	List<Projeto> getProjetosAguardandoParecer(Long idParecerista);
+
+	List<Participacao> getParticipacoes(Long idPessoa);
 
 	void removerParticipacao(Projeto projeto, Participacao participacao);
 
-	Participacao getParticipacaoById(Long idParticipacao);
+	Participacao getParticipacao(Long idParticipacao);
 
-	List<Participacao> getParticipacoesDoProjeto(Long idProjeto);
+	List<Participacao> getParticipacoesByProjeto(Long idProjeto);
 	
 }
