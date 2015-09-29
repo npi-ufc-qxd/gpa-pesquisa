@@ -93,7 +93,6 @@ public class ProjetoController {
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
 
 		return PAGINA_LISTAR_PROJETO;
-
 	}
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
@@ -109,7 +108,6 @@ public class ProjetoController {
 
 		model.addAttribute("action", "cadastrar");
 
-		// Spring Validation
 		projetoValidator.validate(projeto, result);
 
 		if (result.hasErrors()) {
@@ -194,8 +192,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.GET)
-	public String listarParticipacoes(@PathVariable("id") Long id, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+	public String listarParticipacoes(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjeto(id);
 		Pessoa usuario = getUsuarioLogado(session);
 
@@ -243,8 +240,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/participacoes/{idProjeto}/excluir/{idParticipacao}")
 	public String excluirParticipacao(@PathVariable("idProjeto") Long idProjeto,
-			@PathVariable("idParticipacao") Long idParticipacao, HttpSession session, Model model,
-			RedirectAttributes redirectAttributes) {
+			@PathVariable("idParticipacao") Long idParticipacao, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 
 		if (projeto == null) {
@@ -277,7 +273,6 @@ public class ProjetoController {
 
 		model.addAttribute("action", "editar");
 
-		// Validação
 		projetoValidator.validate(projeto, result);
 
 		if (result.hasErrors()) {
@@ -345,7 +340,6 @@ public class ProjetoController {
 
 		Pessoa usuario = getUsuarioLogado(session);
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
-			// Validação
 			projetoValidator.validateSubmissao(projeto, result);
 
 			if (result.hasErrors()) {
@@ -398,7 +392,6 @@ public class ProjetoController {
 		List<Participacao> participacoes = projetoService.getParticipacoesByProjeto(projeto.getId());
 		projeto.setParticipacoes(participacoes);
 
-		// Spring Validation
 		projetoValidator.validateSubmissao(projeto, result);
 
 		if (result.hasErrors()) {
@@ -478,7 +471,6 @@ public class ProjetoController {
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
 		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
-
 	}
 
 	@RequestMapping(value = "/comentar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -505,24 +497,11 @@ public class ProjetoController {
 		return model;
 	}
 
-	/*
-	 * private void buildValidacoesBindingResult(Map<String, String> resultado,
-	 * BindingResult result) { Set<String> keys = resultado.keySet(); for
-	 * (String key : keys) { result.rejectValue(key, "Repeat.titulo." + key,
-	 * resultado.get(key)); } }
-	 * 
-	 * private void buildValidacoesModel(Map<String, String> resultado, Model
-	 * model) { Set<String> keys = resultado.keySet(); for (String key : keys) {
-	 * model.addAttribute("erro_" + key, resultado.get(key)); } }
-	 */
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Pessoa usuario = pessoaService
-
-			.getPessoa(SecurityContextHolder.getContext().getAuthentication().getName());
+			Pessoa usuario = pessoaService.getPessoa(SecurityContextHolder.getContext().getAuthentication().getName());
 			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
 		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
 	}
-
 }

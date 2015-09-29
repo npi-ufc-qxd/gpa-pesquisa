@@ -80,7 +80,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 		if (resultado.isEmpty()) {
 			projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
 			projetoRepository.update(projeto);
-
 		}
 		return resultado;
 	}
