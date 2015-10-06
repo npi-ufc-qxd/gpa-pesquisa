@@ -108,11 +108,11 @@ public class ProjetoValidator implements Validator {
 	 * - ByPass em campos nulos, Valida se a data de Início antecede a data de Término.
 	 * 
 	 * @param campos {@link HashMap} Index[0] = Inicio, Index[1] = Término.
-	 * @param byPass {@link Boolean} True = Permite campos nulos, False = Valida campos nulos.
+	 * @param nullPass {@link Boolean} True = Permite campos nulos, False = Valida campos nulos.
 	 * @param errors {@link Errors}
 	 */
-	private void validaCampoData(Map<String, Date> campos, Boolean byPass, Errors errors){
-		if(!byPass){
+	private void validaCampoData(Map<String, Date> campos, Boolean nullPass, Errors errors){
+		if(!nullPass){
 			if(campos.get("inicio") == null){
 				ValidationUtils.rejectIfEmpty(errors, campos.keySet().toArray()[0].toString(), "projeto.campoNulo");
 			}

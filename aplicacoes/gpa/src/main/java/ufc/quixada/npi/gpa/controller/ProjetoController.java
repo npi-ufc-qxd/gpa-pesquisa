@@ -59,6 +59,7 @@ import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
+import ufc.quixada.npi.gpa.service.impl.ParticipacaoValidator;
 import ufc.quixada.npi.gpa.service.impl.ProjetoValidator;
 import ufc.quixada.npi.gpa.utils.Constants;
 
@@ -77,6 +78,9 @@ public class ProjetoController {
 
 	@Inject
 	private ProjetoValidator projetoValidator;
+	
+	@Inject
+	private ParticipacaoValidator participacaoValidator;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -214,7 +218,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("id") Long id,
 			@RequestParam(value = "participanteSelecionado", required = true) String idParticipanteSelecionado,
-			Participacao participacao, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+			Participacao participacao, HttpSession session, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjeto(id);
 		Pessoa usuario = getUsuarioLogado(session);
 
@@ -225,6 +229,13 @@ public class ProjetoController {
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		
+		participacaoValidator.validate(participacao, result);
+		if(result.hasErrors()){			
+			model.addAttribute("projeto", projeto);
+			model.addAttribute("pessoas", pessoaService.getAll());
+			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 
 		participacao.setParticipante(pessoaService.getPessoa(new Long(idParticipanteSelecionado)));
