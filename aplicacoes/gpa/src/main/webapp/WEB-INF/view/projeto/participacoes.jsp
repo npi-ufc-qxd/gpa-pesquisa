@@ -33,8 +33,7 @@
 		<h3>${projeto.codigo }- ${projeto.nome }</h3>
 		<div class="content">
 			<c:if test="${empty projeto.participacoes}">
-				<div class="alert alert-warning" role="alert">Não há
-					participantes vinculados.</div>
+				<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>
 			</c:if>
 			<c:if test="${not empty projeto.participacoes}">
 
@@ -73,15 +72,13 @@
 		<div class="formulario">
 			<form:form id="adicionarParticipacaoForm" role="form" commandName="participacao" enctype="multipart/form-data" servletRelativeAction="/projeto/participacoes/${projeto.id}" method="POST" cssClass="form-horizontal">
 				<div class="form-group form-item">
-					<label for="idParticipantes" class="col-sm-2 control-label">Novo
-						participante:</label>
+					<label for="idParticipantes" class="col-sm-2 control-label">Novo participante:</label>
 					<div class="col-sm-10">
 						<select name="participanteSelecionado" class="form-control">
 							<c:set var="part" value="${pessoas }"></c:set>
 							<c:forEach items="${pessoas }" var="participante">
 								<c:set var="selected" value=""></c:set>
-								<c:set var="participanteSelecionado"
-									value="id=${participante.id }"></c:set>
+								<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
 
 								<c:if test="${fn:contains(part, participanteSelecionado)}">
 									<c:set var="selected" value="selected=\"selected\""></c:set>
@@ -92,13 +89,10 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label"><span
-						class="required">*</span> Mês/Ano início:</label>
+					<label class="col-sm-2 control-label"><span class="required">*</span> Mês/Ano início:</label>
 					<div class="form-item">
 						<div class="col-sm-2">
-							<form:input id="mesInicio" name="mesInicio" type="number"
-								placeholder="1" min="1" max="12" path="mesInicio"
-								cssClass="form-control" required="required" />
+							<form:input id="mesInicio" name="mesInicio" type="number" placeholder="1" min="1" max="12" path="mesInicio" cssClass="form-control" required="required" />
 							<div class="error-validation">
 								<form:errors path="mesInicio"></form:errors>
 							</div>
@@ -106,9 +100,7 @@
 					</div>
 					<div class="form-item">
 						<div class="col-sm-2">
-							<form:input id="anoInicio" name="anoInicio" type="number"
-								placeholder="2015" path="anoInicio" cssClass="form-control"
-								required="required" />
+							<form:input id="anoInicio" name="anoInicio" type="number" placeholder="2015" path="anoInicio" cssClass="form-control" required="required" />
 							<div class="error-validation">
 								<form:errors path="anoInicio"></form:errors>
 							</div>
@@ -117,9 +109,7 @@
 					<label class="col-sm-2 control-label">Mês/Ano término:</label>
 					<div class="form-item">
 						<div class="col-sm-2">
-							<form:input name="mesTermino" type="number" placeholder="1"
-								min="1" max="12" path="mesTermino" cssClass="form-control"
-								required="required" />
+							<form:input name="mesTermino" type="number" placeholder="1" min="1" max="12" path="mesTermino" cssClass="form-control" required="required" />
 							<div class="error-validation">
 								<form:errors path="mesTermino"></form:errors>
 							</div>
@@ -127,8 +117,7 @@
 					</div>
 					<div class="form-item">
 						<div class="col-sm-2">
-							<form:input name="anoTermino" type="number" placeholder="2015"
-								path="anoTermino" cssClass="form-control" required="required" />
+							<form:input name="anoTermino" type="number" placeholder="2015" path="anoTermino" cssClass="form-control" required="required" />
 							<div class="error-validation">
 								<form:errors path="anoTermino"></form:errors>
 							</div>
@@ -140,9 +129,7 @@
 						<label for="cargaHorariaMensal" class="col-sm-2 control-label">Carga
 							horária mensal (em horas):</label>
 						<div class="col-sm-2">
-							<form:input id="cargaHorariaMensal" name="cargaHorariaMensal"
-								type="number" placeholder="0" path="cargaHorariaMensal"
-								cssClass="form-control" min="1" required="required" />
+							<form:input id="cargaHorariaMensal" name="cargaHorariaMensal" type="number" placeholder="0" path="cargaHorariaMensal" cssClass="form-control" min="1" required="required" />
 							<div class="error-validation">
 								<form:errors path="cargaHorariaMensal"></form:errors>
 							</div>
@@ -152,10 +139,7 @@
 						<label for="bolsa" class="col-sm-2 control-label">Valor da
 							bolsa (R$):</label>
 						<div class="col-sm-2">
-							<form:input id="bolsaValorMensal" name="bolsaValorMensal"
-								type="number" path="bolsaValorMensal" placeholder="0.00"
-								step="100.00" min="0.00" required="required"
-								class="form-control" />
+							<form:input id="bolsaValorMensal" name="bolsaValorMensal" type="number" path="bolsaValorMensal" placeholder="0.00" step="100.00" min="0.00" required="required" class="form-control" />
 							<div class="error-validation">
 								<form:errors path="bolsaValorMensal"></form:errors>
 							</div>
@@ -165,23 +149,18 @@
 				<div class="form-group">
 					<div class="col-sm-2"></div>
 					<div class="col-sm-2">
-						<span class="campo-obrigatorio"><span class="required">*</span>
-							Campos obrigatórios</span>
+						<span class="campo-obrigatorio"><span class="required">*</span> Campos obrigatórios</span>
 					</div>
 				</div>
 				<div class="controls">
-					<input name="adicionar" type="submit" class="btn btn-primary"
-						value="Adicionar" />
+					<input name="adicionar" type="submit" class="btn btn-primary" value="Adicionar" />
 				</div>
 			</form:form>
-		</div>
-		<!-- /formulario -->
-	</div>
-	<!-- /container -->
+		</div><!-- /formulario -->
+	</div><!-- /container -->
 
 	<!-- Modal Excluir Projeto -->
-	<div class="modal fade" id="confirm-delete-participacao" tabindex="-1"
-		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="confirm-delete-participacao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">

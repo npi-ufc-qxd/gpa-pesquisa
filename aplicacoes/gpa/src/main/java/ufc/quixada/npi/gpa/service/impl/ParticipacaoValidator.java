@@ -9,7 +9,14 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import ufc.quixada.npi.gpa.model.Participacao;
+import ufc.quixada.npi.gpa.model.Projeto;
 
+/**
+ * Validação da entidade {@link Participacao} com a interface {@link Validator}.<br>
+ * *Mensagens de validação com suporte a internacionalização em "resources/WEB-INF/messages..."
+ * 
+ * @author 00056726198
+ */
 @Named
 public class ParticipacaoValidator implements Validator {
 
@@ -18,6 +25,11 @@ public class ParticipacaoValidator implements Validator {
 		return Participacao.class.equals(clazz);
 	}
 
+	/**
+	 * Valida formulário de cadastro de {@link Participacao}
+	 * @param projeto {@link Participacao}
+	 * @param errors {@link Errors}
+	 */
 	@Override
 	public void validate(Object target, Errors errors) {
 		Participacao p = (Participacao) target;
@@ -35,6 +47,13 @@ public class ParticipacaoValidator implements Validator {
 	}
 
 
+	/**
+	 * Valida se o campo Mês é nulo e se o valor informado {@link Integer} está entre os intervalos possíveis do meses no ano (1/12).
+	 * 
+	 * @param campo {@link String}
+	 * @param valor {@link Integer}
+	 * @param errors {@link Errors}
+	 */
 	private void validaMes(String campo, Integer valor, Errors errors) {
 		if (valor == null) {
 			ValidationUtils.rejectIfEmpty(errors, campo, "projeto.campoNulo");
@@ -45,6 +64,14 @@ public class ParticipacaoValidator implements Validator {
 		}
 	}
 
+	
+	/**
+	 * Valida se campo Ano é Nulo e se o valor informado é inferior ao ano atual do {@link Calendar}.
+	 * 
+	 * @param campo {@link String}
+	 * @param valor {@link Integer}
+	 * @param errors {@link Errors}
+	 */
 	private void validaAno(String campo, Integer valor, Errors errors) {
 		if (valor == null) {
 			ValidationUtils.rejectIfEmpty(errors, campo, "projeto.campoNulo");
@@ -56,6 +83,16 @@ public class ParticipacaoValidator implements Validator {
 		}
 	}
 
+	/**
+	 * Valida intervalo entre (Mês/Ano) informados como {@link Integer}.
+	 * 
+	 * @param inicioMes {@link String}
+	 * @param inicioAno {@link String}
+	 * @param terminoMes {@link String}
+	 * @param terminoAno {@link String}
+	 * @param participacao {@link Participacao}
+	 * @param errors {@link Errors}
+	 */
 	private void checaIntervaloDadas(String inicioMes, String inicioAno, String terminoMes, String terminoAno, Participacao participacao, Errors errors) {
 		if (participacao.getMesInicio() == null || participacao.getAnoInicio() == null || participacao.getMesTermino() == null || participacao.getAnoTermino() == null) {
 			return;
