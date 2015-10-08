@@ -48,6 +48,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -59,6 +60,7 @@ import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
+import ufc.quixada.npi.gpa.service.impl.ParecerValidation;
 import ufc.quixada.npi.gpa.service.impl.ParticipacaoValidator;
 import ufc.quixada.npi.gpa.service.impl.ProjetoValidator;
 import ufc.quixada.npi.gpa.utils.Constants;
@@ -81,6 +83,9 @@ public class ProjetoController {
 	
 	@Inject
 	private ParticipacaoValidator participacaoValidator;
+	
+	@Inject
+	private ParecerValidation parecerValidator;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -439,23 +444,25 @@ public class ProjetoController {
 		}
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("posicionamento", StatusPosicionamento.values());
+		model.addAttribute("parecer", new Parecer());
 		return PAGINA_EMITIR_PARECER;
 	}
 
 	@RequestMapping(value = "/emitir-parecer", method = RequestMethod.POST)
-	public String emitirParecer(@RequestParam("id-projeto") Long idProjeto,
-			@RequestParam("parecer") String parecerTexto, @RequestParam("anexo") MultipartFile anexo,
+	public String emitirParecer(@RequestParam("id-projeto") Long idProjeto, 
+			@RequestParam("anexo") MultipartFile anexo,
 			@RequestParam("posicionamento") StatusPosicionamento posicionamento, Model model,
-			RedirectAttributes redirectAttributes) {
+			@Valid Parecer parecer, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		
 		projeto.getParecer().setDataRealizacao(new Date());
 		projeto.getParecer().setStatus(posicionamento);
-		projeto.getParecer().setParecer(parecerTexto);
+		projeto.getParecer().setParecer(parecer.getParecer());
 		if (anexo != null) {
 			try {
 				Documento documento = new Documento();
@@ -469,15 +476,15 @@ public class ProjetoController {
 				return PAGINA_EMITIR_PARECER;
 			}
 		}
-
-		// TODO: criar validador de emissão de parecer
-		Map<String, String> resultado = projetoService.emitirParecer(projeto);
-		if (!resultado.isEmpty()) {
-			// buildValidacoesModel(resultado, model);
+				
+		parecerValidator.validate(projeto.getParecer(), result);
+		if(result.hasErrors()){
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("posicionamento", StatusPosicionamento.values());
 			return PAGINA_EMITIR_PARECER;
 		}
+		
+		projetoService.emitirParecer(projeto);
 
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
 		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER);

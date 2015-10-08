@@ -20,7 +20,7 @@ public interface ProjetoService {
 
 	Map<String, String> atribuirParecerista(Projeto projeto, Parecer parecer);
 
-	Map<String, String> emitirParecer(Projeto projeto);
+	void emitirParecer(Projeto projeto);
 
 	Map<String, String> avaliar(Projeto projeto);
 

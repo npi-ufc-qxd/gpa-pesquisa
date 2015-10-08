@@ -39,7 +39,6 @@ public class ParticipacaoValidator implements Validator {
 		if (valor == null) {
 			ValidationUtils.rejectIfEmpty(errors, campo, "projeto.campoNulo");
 		} else {
-
 			if (valor < 1 || valor > 12) {
 				errors.rejectValue(campo, "participacao.campoIntervaloMes");
 			}
@@ -62,16 +61,14 @@ public class ParticipacaoValidator implements Validator {
 			return;
 		}
 
-		if (participacao.getAnoInicio().intValue() < participacao.getAnoTermino().intValue()) {
-			// Ano OK
+		if (participacao.getAnoInicio().intValue() > participacao.getAnoTermino().intValue()) {
+			errors.rejectValue(inicioAno, "participacao.campoAnoInferior");
+			errors.rejectValue(terminoAno, "participacao.campoAnoSuperior");
 		} else if (participacao.getAnoInicio().equals(participacao.getAnoTermino())) {
 			if (participacao.getMesInicio().intValue() > participacao.getMesTermino().intValue()) {
 				errors.rejectValue(inicioMes, "participacao.campoMesInferior");
 				errors.rejectValue(terminoMes, "participacao.campoMesSuperior");
 			}
-		} else {
-			errors.rejectValue(inicioAno, "participacao.campoAnoInferior");
-			errors.rejectValue(terminoAno, "participacao.campoAnoSuperior");
 		}
 	}
 }

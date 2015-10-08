@@ -72,16 +72,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public Map<String, String> emitirParecer(Projeto projeto) {
-		Map<String, String> resultado = new HashMap<String, String>();
-		if (projeto.getParecer().getParecer() == null || projeto.getParecer().getParecer().isEmpty()) {
-			resultado.put("parecer", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-		if (resultado.isEmpty()) {
-			projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
-			projetoRepository.update(projeto);
-		}
-		return resultado;
+	public void emitirParecer(Projeto projeto) {		
+		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
+		projetoRepository.update(projeto);
 	}
 
 	@Override
