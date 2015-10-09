@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -69,13 +68,9 @@
 					<div class="form-group form-item">
 						<label for="parecer" class="col-sm-2 control-label"><span class="required">*</span> Parecer:</label>
 						<div class="col-sm-10">
-							<textarea id="parecer" name="parecer" class="form-control" rows="8" placeholder="Parecer" required="required"></textarea>
+							<form:textarea path="parecer" cssClass="form-control" rows="8" placeholder="Parecer" required="required" />
+							<form:errors path="parecer" cssClass="error-validation"></form:errors>		
 						</div>
-						<c:if test="${not empty erro_parecer}">
-							<div class="error-validation">
-								<span>${erro_parecer}</span>
-							</div>
-						</c:if>
 					</div>
 	
 					<div class="form-group">

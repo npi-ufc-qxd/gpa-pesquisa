@@ -16,37 +16,37 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Parecer {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Enumerated(EnumType.STRING)
 	private StatusPosicionamento status;
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String observacao;
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String parecer;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataAtribuicao;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataRealizacao;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date prazo;
-	
+
 	@ManyToOne
-	@JoinColumn(name="documento_id")
+	@JoinColumn(name = "documento_id")
 	private Documento documento;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "parecerista_id")
 	private Pessoa parecerista;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -121,16 +121,13 @@ public class Parecer {
 
 	@Override
 	public String toString() {
-		return "Parecer [id=" + id + ", status=" + status + ", comentario="
-				+ observacao
-				+ ", dataAtribuicao=" + dataAtribuicao + ", dataRealizacao="
-				+ dataRealizacao + ", prazo=" + prazo + "]";
+		return "Parecer [id=" + id + ", status=" + status + ", comentario=" + observacao + ", dataAtribuicao="
+				+ dataAtribuicao + ", dataRealizacao=" + dataRealizacao + ", prazo=" + prazo + "]";
 	}
 
-
 	public enum StatusPosicionamento {
-		FAVORAVEL("FAVORÁVEL") , NAO_FAVORAVEL("NÃO FAVORÁVEL");
-		
+		FAVORAVEL("FAVORÁVEL"), NAO_FAVORAVEL("NÃO FAVORÁVEL");
+
 		private String descricao;
 
 		private StatusPosicionamento(String descricao) {
@@ -142,5 +139,3 @@ public class Parecer {
 		}
 	}
 }
-
-

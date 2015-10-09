@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -20,7 +19,7 @@
 				<h3 class="panel-title">Avaliar</h3>
 			</div>
 			<div class="panel-body">
-				<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/direcao/avaliar" method="POST" cssClass="form-horizontal">
+				<form:form id="avaliarProjetoForm" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="/direcao/avaliar" method="POST" cssClass="form-horizontal">
 					<input type="hidden" name="id" value="${projeto.id }"/>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
@@ -59,7 +58,7 @@
 					<div class="form-group form-item">
 						<label class="col-sm-2 control-label">Status:</label>
 						<div class="col-sm-4">
-							<select id="avaliacao" name="avaliacao" class="form-control">
+							<select id="avaliacao" name="avaliacaoParam" class="form-control">
 								<option value="APROVADO">APROVADO</option>
 								<option value="APROVADO_COM_RESTRICAO">APROVADO COM RESTRIÇÃO</option>
 								<option value="REPROVADO">REPROVADO</option>
@@ -70,24 +69,16 @@
 					<div class="form-group form-item">
 						<label for="ata" class="col-sm-2 control-label"><span class="required">*</span> Ata de reunião:</label>
 						<div class="col-sm-10">
-							<input type="file" id="ata" name="ata" class="anexo file-loading" required="required"></input>
-							<c:if test="${not empty erro_ata}">
-								<div class="error-validation">
-									<span>${erro_ata}</span>
-								</div>
-							</c:if>
+							<input type="file" id="ataParam" name="ataParam" class="anexo file-loading" required="required" />
+							<form:errors path="ata" cssClass="error-validation"></form:errors>
 						</div>
 					</div>
 					
 					<div class="form-group form-item">
 						<label for="oficio" class="col-sm-2 control-label"><span class="required">*</span> Ofício de aceitação:</label>
 						<div class="col-sm-10">
-							<input type="file" id="oficio" name="oficio" class="anexo file-loading" required="required"></input>
-							<c:if test="${not empty erro_oficio}">
-								<div class="error-validation">
-									<span>${erro_oficio}</span>
-								</div>
-							</c:if>
+							<input type="file" id="oficioParam" name="oficioParam" class="anexo file-loading" required="required" />
+							<form:errors path="oficio" cssClass="error-validation"></form:errors>
 						</div>
 					</div>
 	

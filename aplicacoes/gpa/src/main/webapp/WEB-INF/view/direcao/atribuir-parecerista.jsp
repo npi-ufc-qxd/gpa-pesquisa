@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -20,7 +19,7 @@
 				<h3 class="panel-title">Atribuir Parecerista</h3>
 			</div>
 			<div class="panel-body">
-				<form:form id="atribuirPareceristaForm" servletRelativeAction="/direcao/atribuir-parecerista" method="POST" cssClass="form-horizontal">
+				<form:form id="atribuirPareceristaForm" commandName="parecer" servletRelativeAction="/direcao/atribuir-parecerista" method="POST" cssClass="form-horizontal">
 					<input type="hidden" name="projetoId" value="${projeto.id}">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
@@ -42,30 +41,22 @@
 									<option value="${usuario.id}">${usuario.nome}</option>
 								</c:forEach>
 							</select>
-							<c:if test="${not empty erro_parecerista}">
-								<div class="error-validation">
-									<span>${erro_parecerista}</span>
-								</div>
-							</c:if>
+							<form:errors path="parecerista"></form:errors>
 						</div>
 					</div>
 					
 					<div class="form-group form-item">
 						<label for="prazo" class="col-sm-2 control-label"><span class="required">*</span> Prazo:</label>
 						<div class="col-sm-2">
-							<input id="prazo" type="text" name="prazo" value="${prazo}" class="form-control data" placeholder="Prazo" required="required"/>
-							<c:if test="${not empty erro_prazo}">
-								<div class="error-validation">
-									<span>${erro_prazo}</span>
-								</div>
-							</c:if>
+							<form:input id="prazo" path="prazo" cssClass="form-control data" placeholder="Prazo" required="required" />
+							<form:errors path="prazo" cssClass="error-validation"></form:errors>
 						</div>
 					</div>
 					
 					<div class="form-group form-item">
 						<label for="observacao" class="col-sm-2 control-label">Observações:</label>
 						<div class="col-sm-10">
-							<textarea id="observacao" name="observacao" class="form-control" rows="5" placeholder="Observações" ></textarea>
+							<form:textarea id="observacao" path="observacao" cssClass="form-control" rows="5" placeholder="Observações" />
 						</div>
 					</div>
 					
@@ -90,7 +81,6 @@
 	<script type="text/javascript">
 		$('#menu-projetos').addClass('active');
 	</script>
-
 </body>
 
 </html>

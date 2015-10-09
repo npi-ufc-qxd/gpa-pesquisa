@@ -279,6 +279,7 @@ public class Projeto {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
 	}
 	
+	@Deprecated
 	public boolean isDataTerminoFutura() {
 		if (this.termino != null && comparaDatas(new Date(), this.termino) > 0) {
 			return false;
@@ -286,6 +287,7 @@ public class Projeto {
 		return true;
 	}
 	
+	@Deprecated
 	public boolean isPeriodoValido() {
 		if (this.termino != null && this.inicio != null && comparaDatas(this.inicio, this.termino) > 0) {
 			return false;
@@ -293,6 +295,7 @@ public class Projeto {
 		return true;
 	}
 	
+	@Deprecated
 	private int comparaDatas(Date date1, Date date2) {
 		Calendar calendar1 = Calendar.getInstance();
 		calendar1.setTime(date1);
