@@ -30,7 +30,7 @@
 				<c:out value="${info}"></c:out>
 			</div>
 		</c:if>
-		<h3>${projeto.codigo }- ${projeto.nome }</h3>
+		<h3>${projeto.codigo } - ${projeto.nome }</h3>
 		<div class="content">
 			<c:if test="${empty projeto.participacoes}">
 				<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>

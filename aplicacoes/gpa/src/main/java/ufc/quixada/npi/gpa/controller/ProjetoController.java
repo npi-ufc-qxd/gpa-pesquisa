@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -360,7 +359,6 @@ public class ProjetoController {
 
 			if (result.hasErrors()) {
 				model.addAttribute("projeto", projeto);
-				model.addAttribute("alert", MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
 				return PAGINA_SUBMETER_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
@@ -399,17 +397,18 @@ public class ProjetoController {
 				}
 			}
 		}
-
 		if (!documentos.isEmpty()) {
 			documentoService.salvar(documentos);
 		}
 
-		// Executado após validação: projetoService.atualizar(projeto);
 		List<Participacao> participacoes = projetoService.getParticipacoesByProjeto(projeto.getId());
 		projeto.setParticipacoes(participacoes);
 
+		// Recupera os anexos já cadastrados para realizar validação
+		Projeto projetoAtualizado = projetoService.getProjeto(projeto.getId());
+		projeto.setDocumentos(projetoAtualizado.getDocumentos());
+		
 		projetoValidator.validateSubmissao(projeto, result);
-
 		if (result.hasErrors()) {
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
