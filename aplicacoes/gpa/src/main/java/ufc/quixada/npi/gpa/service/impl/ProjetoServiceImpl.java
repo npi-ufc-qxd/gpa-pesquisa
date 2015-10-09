@@ -70,20 +70,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public Map<String, String> avaliar(Projeto projeto) {
-		Map<String, String> resultado = new HashMap<String, String>();
-		if (projeto.getAta() == null) {
-			resultado.put("ata", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-		if (projeto.getOficio() == null) {
-			resultado.put("oficio", MENSAGEM_CAMPO_OBRIGATORIO);
-		}
-		if (resultado.isEmpty()) {
-			projeto.setAvaliacao(new Date());
-			projetoRepository.update(projeto);
-			projetoRepository.update(projeto);
-		}
-		return resultado;
+	public void avaliar(Projeto projeto) {			
+		projeto.setAvaliacao(new Date());
+		projetoRepository.update(projeto);
 	}
 
 	@Override

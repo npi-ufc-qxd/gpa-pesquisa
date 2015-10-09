@@ -20,7 +20,7 @@ import ufc.quixada.npi.gpa.model.Projeto;
  */
 @Named
 public class ProjetoValidator implements Validator {
-
+	
 	/**
 	 * Valida apenas instâncias de {@link Projeto}.
 	 * @param classe {@link Class}
@@ -53,7 +53,6 @@ public class ProjetoValidator implements Validator {
 		validaCampoData(datas, true, errors);
 	}
 	
-	
 	/**
 	 * Valida submissão do formulário de {@link Projeto}.
 	 * @param projeto {@link Projeto}
@@ -71,6 +70,20 @@ public class ProjetoValidator implements Validator {
 		datas.put("inicio", projeto.getInicio());
 		datas.put("termino", projeto.getTermino());
 		validaCampoData(datas, false, errors);
+	}
+	
+	/**
+	 * Valida submissão do formulário de Avaliação.
+	 * @param target
+	 * @param errors
+	 */
+	public void validateAvaliacao(Object target, Errors errors){
+		Projeto p = (Projeto) target;
+		
+		if(p.getAta() == null)
+			errors.rejectValue("ata", "projeto.campoNulo");
+		if(p.getOficio() == null)
+			errors.rejectValue("oficio", "projeto.campoNulo");
 	}
 	
 	

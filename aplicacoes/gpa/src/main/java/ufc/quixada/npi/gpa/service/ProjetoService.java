@@ -1,7 +1,6 @@
 package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
-import java.util.Map;
 
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
@@ -22,7 +21,7 @@ public interface ProjetoService {
 
 	void emitirParecer(Projeto projeto);
 
-	Map<String, String> avaliar(Projeto projeto);
+	void avaliar(Projeto projeto);
 
 	List<Projeto> getProjetosSubmetidos();
 

@@ -12,7 +12,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_DIRECA
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -39,6 +38,7 @@ import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
 import ufc.quixada.npi.gpa.service.impl.ParecerValidation;
+import ufc.quixada.npi.gpa.service.impl.ProjetoValidator;
 
 @Controller
 @RequestMapping("direcao")
@@ -55,6 +55,10 @@ public class DirecaoController {
 	
 	@Inject
 	private ParecerValidation parecerValidator;
+	
+	@Inject
+	private ProjetoValidator projetoValidator;
+	
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {
@@ -121,45 +125,47 @@ public class DirecaoController {
 	}
 	
 	@RequestMapping(value = "/avaliar", method = RequestMethod.POST)
-	public String avaliar(@RequestParam("id") Long id, @RequestParam("avaliacao") StatusProjeto avaliacao, 
-			@RequestParam("ata") MultipartFile ata, @RequestParam("oficio") MultipartFile oficio, 
-			@RequestParam("observacao")String observacao, Model model, RedirectAttributes redirect) {
+	public String avaliar(@RequestParam("id") Long id, @RequestParam("avaliacaoParam") StatusProjeto avaliacao, 
+			@RequestParam("ataParam") MultipartFile ataParam, @RequestParam("oficioParam") MultipartFile oficioParam, 
+			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect) {
+				
 		Documento ataDocumento = null;
 		Documento oficioDocumento = null;
+		
 		try {
-			if (ata != null && ata.getBytes() != null && ata.getBytes().length != 0) {
+			if (ataParam != null && ataParam.getBytes() != null && ataParam.getBytes().length != 0) {
 				ataDocumento = new Documento();
-				ataDocumento.setArquivo(ata.getBytes());
-				ataDocumento.setNome(ata.getOriginalFilename());
-				ataDocumento.setExtensao(ata.getContentType());
+				ataDocumento.setArquivo(ataParam.getBytes());
+				ataDocumento.setNome(ataParam.getOriginalFilename());
+				ataDocumento.setExtensao(ataParam.getContentType());
 			}
-			if (oficio != null && oficio.getBytes() != null && oficio.getBytes().length != 0) {
+			if (oficioParam != null && oficioParam.getBytes() != null && oficioParam.getBytes().length != 0) {
 				oficioDocumento = new Documento();
-				oficioDocumento.setArquivo(oficio.getBytes());
-				oficioDocumento.setNome(oficio.getOriginalFilename());
-				oficioDocumento.setExtensao(oficio.getContentType());
+				oficioDocumento.setArquivo(oficioParam.getBytes());
+				oficioDocumento.setNome(oficioParam.getOriginalFilename());
+				oficioDocumento.setExtensao(oficioParam.getContentType());
 			}
 		} catch (IOException e) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_AVALIAR_PROJETO;
 		}
 		
-		Projeto projeto = projetoService.getProjeto(id);
+		projeto = projetoService.getProjeto(id);
 		projeto.setStatus(avaliacao);
 		projeto.setAta(ataDocumento);
 		projeto.setOficio(oficioDocumento);
 		projeto.setObservacaoAvaliacao(observacao);
-		Map<String, String> resultado = projetoService.avaliar(projeto);
-		if(resultado.isEmpty()) {
-			redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
-			notificacaoService.notificar(projeto, Evento.AVALIACAO);
-			return REDIRECT_PAGINA_INICIAL_DIRECAO;
-		}
-		model.addAttribute("projeto", projeto);
 		
-		// TODO: criar validação de avaliação de projeto
-		//buildValidacoesModel(resultado, model);
-		return PAGINA_AVALIAR_PROJETO;
+		projetoValidator.validateAvaliacao(projeto, result);
+		if(result.hasErrors()){			
+			model.addAttribute("projeto", projeto);
+			return PAGINA_AVALIAR_PROJETO;
+		}
+		
+		projetoService.avaliar(projeto);
+		
+		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
+		notificacaoService.notificar(projeto, Evento.AVALIACAO);
+		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
-
 }
