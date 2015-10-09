@@ -16,10 +16,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +38,7 @@ import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
+import ufc.quixada.npi.gpa.service.impl.ParecerValidation;
 
 @Controller
 @RequestMapping("direcao")
@@ -49,6 +52,9 @@ public class DirecaoController {
 	
 	@Inject
 	private NotificacaoService notificacaoService;
+	
+	@Inject
+	private ParecerValidation parecerValidator;
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {
@@ -71,6 +77,7 @@ public class DirecaoController {
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 
+		model.addAttribute("parecer", new Parecer());
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto.getAutor().getId()));
 		return PAGINA_ATRIBUIR_PARECERISTA;
@@ -78,30 +85,28 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "/atribuir-parecerista", method = RequestMethod.POST)
 	public String atribuirParecerista(@RequestParam("prazo") @DateTimeFormat(pattern = "dd/MM/yyyy") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("pareceristaId") Long pareceristaId, Model model, RedirectAttributes redirectAttributes) {
+			@RequestParam("pareceristaId") Long pareceristaId, Model model, @Valid Parecer parecer, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
 		
-		Parecer parecer = new Parecer();
 		parecer.setDataAtribuicao(new Date());
 		parecer.setObservacao(observacao);
 		parecer.setParecerista(parecerista);
 		parecer.setPrazo(prazo);
 		
-		Map<String, String> resultado = projetoService.atribuirParecerista(projeto, parecer);
-		if(!resultado.isEmpty()) {
-			// TODO: criar validador de atribuição de parecerista
-			//buildValidacoesModel(resultado, model);
+		parecerValidator.validateAtribuirParecerista(parecer, result);
+		if(result.hasErrors()){
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto.getAutor().getId()));
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		
+		projetoService.atribuirParecerista(projeto, parecer);
+		
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
 		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
-
 	}
 	
 	@RequestMapping(value = "/avaliar/{id}", method = RequestMethod.GET)

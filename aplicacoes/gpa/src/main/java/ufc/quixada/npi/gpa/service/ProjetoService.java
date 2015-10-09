@@ -18,7 +18,7 @@ public interface ProjetoService {
 
 	void submeter(Projeto projeto);
 
-	Map<String, String> atribuirParecerista(Projeto projeto, Parecer parecer);
+	void atribuirParecerista(Projeto projeto, Parecer parecer);
 
 	void emitirParecer(Projeto projeto);
 

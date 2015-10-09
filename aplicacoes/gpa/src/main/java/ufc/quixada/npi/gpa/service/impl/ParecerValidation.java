@@ -1,5 +1,7 @@
 package ufc.quixada.npi.gpa.service.impl;
 
+import java.util.Date;
+
 import javax.inject.Named;
 
 import org.springframework.validation.Errors;
@@ -10,8 +12,7 @@ import ufc.quixada.npi.gpa.model.Parecer;
 
 /**
  * Validação da classe {@link Parecer} com a interface {@link Validator}.<br>
- * *Mensagens de validação com suporte a internacionalização em
- * "resources/WEB-INF/messages..."
+ * *Mensagens de validação com suporte a internacionalização em "resources/WEB-INF/messages..."
  * 
  * @author 00056726198
  */
@@ -35,6 +36,13 @@ public class ParecerValidation implements Validator {
 
 		validaCampoMin("parecer", p.getParecer(), 5, errors);
 	}
+	
+	public void validateAtribuirParecerista(Object target, Errors errors){
+		Parecer p = (Parecer) target;
+		
+		ValidationUtils.rejectIfEmpty(errors, "parecerista", "projeto.campoNulo");
+		validaData("prazo", p.getPrazo(), errors);
+	}
 
 	/**
 	 * Regra de validação para campos com as seguintes restrições:<br>
@@ -50,6 +58,23 @@ public class ParecerValidation implements Validator {
 
 		if (valor.length() < min) {
 			errors.rejectValue(campo, "projeto.campoMinimo", new Object[]{min}, "projeto.campoMinimo");
+		}
+	}
+	
+	/**
+	 * Valida se o campo {@link Date} não é null ou se antecede a data atual.
+	 * 
+	 * @param campo {@link String}
+	 * @param valor {@link Integer}
+	 * @param errors {@link Errors}
+	 */
+	private void validaData(String campo, Date valor, Errors errors) {
+		if (valor == null) {
+			ValidationUtils.rejectIfEmpty(errors, campo, "projeto.campoNulo");
+		} else {
+			if(valor.before(new Date())){
+				errors.rejectValue(campo, "participacao.campoDataAtual");
+			}
 		}
 	}
 }
