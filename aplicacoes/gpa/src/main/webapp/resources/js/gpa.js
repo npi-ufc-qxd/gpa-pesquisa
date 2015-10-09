@@ -81,13 +81,7 @@ $(document).ready(function() {
         $('#atribuirPareceristaForm').bootstrapValidator('revalidateField', 'prazo');
     });
 	
-	// Máscaras
-    $('[name="bolsa"]').maskMoney({prefix:'R$ ', showSymbol:true, thousands:'.', decimal:','});
-    if($('[name="bolsa"]').val() != '') {
-    	$('[name="bolsa"]').maskMoney('mask');
-    }
-    
-    $(".anexo").fileinput({
+	$(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",
     	showUpload:false,
     	showRemove: false,
@@ -150,7 +144,7 @@ $(document).ready(function() {
 		});
 	});
 	
-	$("#participantes, #parecerista, #posicionamento, #avaliacao").select2({
+	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante").select2({
    	 	placeholder: "Buscar...",
    	 	dropdownCssClass: "bigdrop"
     });
@@ -249,7 +243,7 @@ $(document).ready(function() {
         }
     });
 	
-	$('#atribuirPareceristaForm, #emitirParecerForm, #avaliarProjetoForm').bootstrapValidator({
+	$('#atribuirPareceristaForm, #emitirParecerForm, #avaliarProjetoForm, #adicionarParticipacaoForm').bootstrapValidator({
 		group: '.form-item',
 		excluded: ':disabled',
         feedbackIcons: {
