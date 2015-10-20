@@ -77,8 +77,7 @@ $(document).ready(function() {
 		todayHighlight : true,
 	}).on('changeDate', function(e) {
 		$(this).datepicker('hide');
-        $('#adicionarProjetoForm, #submeterProjetoForm').bootstrapValidator('revalidateField', 'inicio');
-        $('#atribuirPareceristaForm').bootstrapValidator('revalidateField', 'prazo');
+        $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
 	
 	$(".anexo").fileinput({
@@ -97,8 +96,6 @@ $(document).ready(function() {
     	}
     });
     
-    // Verificando se há anexos para proceder com a validação do formulário via js.
-    // Verifica se ocorre alteração no input do anexo para confirmar validação.
     if($('.anexoSubmeter').length){
     	if($('#table-anexos').find('tr').length){
     		$('#anexos').removeAttr('required');
@@ -150,7 +147,6 @@ $(document).ready(function() {
     });
 	
 	// Validações de formulários
-	
 	$('#adicionarProjetoForm').bootstrapValidator({
 		group: '.form-item',
         feedbackIcons: {
@@ -258,7 +254,7 @@ $(document).ready(function() {
 			comentario: {
                 validators: {
                 	notEmpty: {
-                        message: 'Escreva o seu comentário',
+                        message: 'Escreva o seu comentário'
                     }
                 }
             }

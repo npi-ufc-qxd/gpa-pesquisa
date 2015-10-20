@@ -45,7 +45,7 @@
 						</div>
 						<label class="col-sm-3 control-label">Autor:</label>
 						<div class="col-sm-3 value-label">
-							<a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a>
+							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 						</div>
 					</div>
 			
@@ -142,7 +142,7 @@
 							</c:if>
 							<c:if test="${not empty projeto.participacoes }">
 								<c:forEach items="${projeto.participacoes }" var="participacao">
-									<label><a href="<c:url value="/pessoa/${participacao.participante.id}" ></c:url>">${participacao.participante.nome};</a></label><br>
+									<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" ></c:url>">${participacao.participante.nome};</a></label><br>
 								</c:forEach>
 							</c:if>
 						</div>
@@ -179,7 +179,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Parecerista:</label>
 								<div class="col-sm-4 value-label">
-									<a href="<c:url value="/pessoa/detalhes/${projeto.parecer.parecerista.id}" ></c:url>">${projeto.parecer.parecerista.nome}</a>
+									<label><a href="<c:url value="/pessoa/detalhes/${projeto.parecer.parecerista.id}" ></c:url>">${projeto.parecer.parecerista.nome}</a></label>
 								</div>
 								
 								<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
