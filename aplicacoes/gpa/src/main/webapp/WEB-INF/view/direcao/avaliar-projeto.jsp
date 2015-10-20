@@ -52,7 +52,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Anexo:</label>
 						<div class="col-sm-10 value-label">
-							<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="margin-top: 5px;">${projeto.parecer.documento.nome }</a>
+							<label><a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12">${projeto.parecer.documento.nome }</a></label>
 						</div>
 					</div>
 					<div class="form-group form-item">
@@ -91,7 +91,7 @@
 					
 					<div class="controls">
 						<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
-						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
+						<a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
 					</div>
 				</form:form>
 			</div><!-- /panel-body -->
