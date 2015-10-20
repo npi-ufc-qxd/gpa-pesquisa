@@ -131,7 +131,7 @@ $(document).ready(function() {
 		var id = $(this).attr('data-id');
 		$.ajax({
 			type: "POST",
-			url: "/gpa-pesquisa/documento/ajax/remover/" + id
+			url: "/gpa-pesquisa/documento/excluir/" + id
 		})
 		.success(function( result ) {
 			if(result.result == 'ok') {
