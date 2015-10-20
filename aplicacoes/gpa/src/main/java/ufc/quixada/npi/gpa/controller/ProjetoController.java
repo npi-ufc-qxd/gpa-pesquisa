@@ -1,6 +1,5 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECER_EMITIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARTICIPACAO_REMOVIDA;
@@ -359,6 +358,7 @@ public class ProjetoController {
 
 			if (result.hasErrors()) {
 				model.addAttribute("projeto", projeto);
+				model.addAttribute("alert", Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
 				return PAGINA_SUBMETER_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
