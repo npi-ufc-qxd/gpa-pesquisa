@@ -5,6 +5,7 @@ $(document).ready(function() {
 	$('#meus-projetos').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0, 3,]},            
             {"targets" : 3, "orderable" : false},
             {"targets" : 4, "orderable" : false}
 		],
@@ -12,10 +13,11 @@ $(document).ready(function() {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         }
 	});
-	
+		
 	$('#minhas-participacoes').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0, 1, 4, 5, 6, 7]},
             {"targets" : 4, "orderable" : false},
             {"targets" : 5, "orderable" : false},
             {"targets" : 6, "orderable" : false},
@@ -29,6 +31,19 @@ $(document).ready(function() {
 	$('#projetos-avaliados').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0, 3, 4]},            
+            {"targets" : 2, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
+	$('#projetos-avaliados-diretor').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0, 3]},            
             {"targets" : 2, "orderable" : false}
 		],
 		"bAutoWidth": false,
@@ -48,6 +63,7 @@ $(document).ready(function() {
 	$('#projetos-aguardando-parecer').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [0, 1, 3, 4]}, 
             {"targets" : 2, "orderable" : false},
             {"targets" : 3, "orderable" : false},
             {"targets" : 4, "orderable" : false}
@@ -61,6 +77,7 @@ $(document).ready(function() {
 	$('#projetos-em-tramitacao').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [0, 3]},             
             {"targets" : 3, "orderable" : false},
             {"targets" : 6, "orderable" : false}
 		],

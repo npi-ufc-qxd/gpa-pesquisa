@@ -645,7 +645,7 @@
 				oCol.sWidthOrig = t[1];
 			}
 		}
-	
+		
 		/* User specified column options */
 		if ( oOptions !== undefined && oOptions !== null )
 		{
