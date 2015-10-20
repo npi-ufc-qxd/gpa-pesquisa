@@ -29,7 +29,7 @@ $(document).ready(function() {
 	$('#projetos-avaliados').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
-            {"targets" : 2, "orderable" : false}
+            {"targets" : 3, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
