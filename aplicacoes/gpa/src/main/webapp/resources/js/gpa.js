@@ -77,8 +77,7 @@ $(document).ready(function() {
 		todayHighlight : true,
 	}).on('changeDate', function(e) {
 		$(this).datepicker('hide');
-        $('#adicionarProjetoForm, #submeterProjetoForm').bootstrapValidator('revalidateField', 'inicio');
-        $('#atribuirPareceristaForm').bootstrapValidator('revalidateField', 'prazo');
+        $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
 	
 	$(".anexo").fileinput({
@@ -97,8 +96,6 @@ $(document).ready(function() {
     	}
     });
     
-    // Verificando se há anexos para proceder com a validação do formulário via js.
-    // Verifica se ocorre alteração no input do anexo para confirmar validação.
     if($('.anexoSubmeter').length){
     	if($('#table-anexos').find('tr').length){
     		$('#anexos').removeAttr('required');
@@ -150,7 +147,6 @@ $(document).ready(function() {
     });
 	
 	// Validações de formulários
-	
 	$('#adicionarProjetoForm').bootstrapValidator({
 		group: '.form-item',
         feedbackIcons: {
@@ -265,39 +261,39 @@ $(document).ready(function() {
 		}
 	});
 	
-	
 	// Comentários
-	
 	$('#comentar').click(function(e){
 		e.preventDefault();
 		var texto = $('#comentario').val();
 	    var projetoId = $('#projetoId').val();
-	    $('#comentarForm').bootstrapValidator('validate');
-    	$.ajax({
-	    	type: "POST",
-	        url: '/gpa-pesquisa/projeto/comentar',
-	        data : {
-	        	texto : texto,
-	        	projetoId : projetoId
-			}
-	    })
-	    .success(function(result) {
-	    	if(result.comentario.id) {
-	    		var data = moment(result.comentario.data).format('DD/MM/YYYY');
-	    		var hora = moment(result.comentario.data).format('HH:mm');
-	    		$('#comentario').val('');
-	    		$('#comentarForm').bootstrapValidator('resetForm');
-	    		$('#comentarios').append(
-    				'<div class="panel panel-default">' +
-						'<div class="panel-heading">' + result.autor +
-							'<span class="date-comment">' + data + ' - ' +
-							hora + '</span>' +
-						'</div>' +
-						'<div class="panel-body">' + result.comentario.texto + '</div>' +
-					'</div>'
-	    		);
-	    	}
-	    });
+	    
+	    $('#comentarForm').bootstrapValidator('validate')
+	    
+	    if(texto.length){
+	    	$.ajax({
+		    	type: "POST",
+		        url: '/gpa-pesquisa/projeto/comentar',
+		        data : {
+		        	texto : texto,
+		        	projetoId : projetoId
+				}
+		    })
+		    .success(function(result) {
+		    	if(result.comentario.id) {
+		    		var data = moment(result.comentario.data).format('DD/MM/YYYY');
+		    		var hora = moment(result.comentario.data).format('HH:mm');
+		    		$('#comentario').val('');
+		    		$('#comentarForm').bootstrapValidator('resetForm');
+		    		$('#comentarios').append(
+	    				'<div class="panel panel-default">' +
+							'<div class="panel-heading">' + result.autor +
+								'<span class="date-comment">' + data + ' - ' + hora + '</span>' +
+							'</div>' +
+							'<div class="panel-body">' + result.comentario.texto + '</div>' +
+						'</div>'
+		    		);
+		    	}
+		    });
+	    }
 	});
-	
 });
