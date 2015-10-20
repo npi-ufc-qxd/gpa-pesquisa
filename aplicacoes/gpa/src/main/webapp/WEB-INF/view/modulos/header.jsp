@@ -20,9 +20,18 @@
 	       	</li>
        	</sec:authorize>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="<c:url value="/j_spring_security_logout" />" title="Sair">Sair</a></li>
-      </ul>
+
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-expanded="false">${usuario.nome }
+						<span class="caret"></span>
+				</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="<c:url value="/j_spring_security_logout" />"
+							title="Sair">Sair</a></li>
+					</ul></li>
+			</ul>
     </div>
   </div>
 </nav>
