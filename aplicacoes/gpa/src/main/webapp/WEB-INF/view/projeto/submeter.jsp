@@ -167,7 +167,7 @@
 
 					<div class="controls">
 						<input name="salvar" type="submit" class="btn btn-primary" value="Submeter" />
-						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
+						<a href="<c:url value="/projeto/"></c:url>" class="btn btn-default">Cancelar</a>
 					</div>
 				</form:form>
 			</div>

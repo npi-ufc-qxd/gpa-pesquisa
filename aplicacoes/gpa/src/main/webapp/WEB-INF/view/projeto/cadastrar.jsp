@@ -151,7 +151,7 @@
 			
 						<div class="controls">
 							<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
-							<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
+							<a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
 						</div>
 					</form:form>
 				</div>
@@ -169,7 +169,7 @@
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<a id="button-delete-file" href="#" class="btn btn-danger">Excluir</a>
+					<button id="button-delete-file" class="btn btn-danger">Excluir</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
