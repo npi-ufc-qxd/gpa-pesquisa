@@ -29,7 +29,19 @@ $(document).ready(function() {
 	$('#projetos-avaliados').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
-            {"targets" : 3, "orderable" : false}
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 4, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
+	$('#projetos-avaliados-direcao').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+            {"targets" : 3, "orderable" : false},
 		],
 		"bAutoWidth": false,
 		"language": {
@@ -48,7 +60,6 @@ $(document).ready(function() {
 	$('#projetos-aguardando-parecer').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
-            {"targets" : 2, "orderable" : false},
             {"targets" : 3, "orderable" : false},
             {"targets" : 4, "orderable" : false}
 		],

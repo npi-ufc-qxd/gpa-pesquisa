@@ -94,7 +94,7 @@
 							</c:if>
 							<c:if test="${not empty projetosAvaliados}">
 								<input type="hidden" name="parecerId" value="${parecerId}">
-								<table id="projetos-avaliados" class="display">
+								<table id="projetos-avaliados-direcao" class="display">
 									<thead>
 										<tr>
 											<th>Código</th>
