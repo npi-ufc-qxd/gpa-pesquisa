@@ -78,7 +78,11 @@
 						<label class="col-sm-2 control-label field">Participantes:</label>
 						<div class="col-sm-10 field-value">
 							<c:if test="${empty projeto.participacoes }">
-								<label>-</label>
+								<label> <!-- testar nova aba -->
+								<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-default">
+								<i class="fa fa-users"></i>
+													</a>
+								</label>
 							</c:if>
 							<ul class="list-inline" style="line-height:2.7em">
 								<c:if test="${not empty projeto.participacoes }">
