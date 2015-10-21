@@ -99,35 +99,34 @@
 						<div class="alert alert-warning" role="alert">Não há participações em projetos.</div>
 						</c:if>
 						<c:if test="${not empty participacoesEmProjetos}">
-								<p>Participações em Projetos</p>
-								<table id="minhas-participacoes" class="display">
-									<thead>
+							<table id="minhas-participacoes" class="display">
+								<thead>
+									<tr>
+										<th class="col-md-1 col-md-offset-1">Código</th>
+										<th>Projeto</th>
+										<th>Coordenador(a)</th>
+										<th>Status</th>
+										<th>Mês início</th>	
+										<th>Mês término</th>									
+										<th class="col-md-1 col-md-offset-1">Carga horária mensal</th>
+										<th>Valor bolsa mensal</th>										
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="participacao" items="${participacoesEmProjetos}">
 										<tr>
-											<th>Código</th>
-											<th>Projeto</th>
-											<th>Coordenador(a)</th>
-											<th>Status</th>
-											<th>Mês início</th>	
-											<th>Mês término</th>									
-											<th>Carga horária mensal</th>
-											<th>Valor bolsa mensal</th>										
+											<td>${participacao.projeto.codigo}</td>
+											<td><a href="<c:url value="/projeto/detalhes/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
+											<td>${participacao.projeto.status.descricao}</td>
+											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+											<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
+											<td><fmt:formatNumber type="CURRENCY" currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
 										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="participacao" items="${participacoesEmProjetos}">
-											<tr>
-												<td>${participacao.projeto.codigo}</td>
-												<td><a href="<c:url value="/projeto/detalhes/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
-												<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
-												<td>${participacao.projeto.status.descricao}</td>
-												<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
-												<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
-												<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
-												<td><fmt:formatNumber type="CURRENCY" currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
+									</c:forEach>
+								</tbody>
+							</table>
 						</c:if>
 		        	</div><!-- tab-em-participacao -->
 		        	
