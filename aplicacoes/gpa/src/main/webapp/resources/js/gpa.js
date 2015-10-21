@@ -87,6 +87,24 @@ $(document).ready(function() {
         }
 	});
 	
+	// Página Vincular Participantes
+	$('#participacoes-projeto').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0]},
+            {"targets" : 1, "orderable" : false},
+            {"targets" : 2, "orderable" : false},
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 4, "orderable" : false},
+            {"targets" : 5, "orderable" : false}
+		],
+		"searching":false,
+		"paging":false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$("#inicio, #termino, #prazo").datepicker({
 		format : "dd/mm/yyyy",
 		todayBtn : "linked",
