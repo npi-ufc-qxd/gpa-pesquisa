@@ -210,6 +210,15 @@
 						</c:if>
 					</sec:authorize>								
 					
+					<c:if test="${projeto.status == 'NOVO'}">
+					
+					<h4 class="subtitle">Ações</h4>
+					<span class="line"></span>
+					<!-- Botões de ações -->
+						
+
+					</c:if>
+					
 					<h4 class="subtitle">Comentários</h4>
 					<span class="line"></span>
 					<div id="comentarios" class="col-sm-12">
