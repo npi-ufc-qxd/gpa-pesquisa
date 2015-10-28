@@ -1,4 +1,4 @@
-package ufc.quixada.npi.gpa.service.impl;
+package ufc.quixada.npi.gpa.service.validation;
 
 import java.util.Calendar;
 
@@ -9,7 +9,6 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import ufc.quixada.npi.gpa.model.Participacao;
-import ufc.quixada.npi.gpa.model.Projeto;
 
 /**
  * Validação da entidade {@link Participacao} com a interface {@link Validator}.<br>

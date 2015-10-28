@@ -59,9 +59,9 @@ import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
-import ufc.quixada.npi.gpa.service.impl.ParecerValidation;
-import ufc.quixada.npi.gpa.service.impl.ParticipacaoValidator;
-import ufc.quixada.npi.gpa.service.impl.ProjetoValidator;
+import ufc.quixada.npi.gpa.service.validation.ParecerValidation;
+import ufc.quixada.npi.gpa.service.validation.ParticipacaoValidator;
+import ufc.quixada.npi.gpa.service.validation.ProjetoValidator;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
