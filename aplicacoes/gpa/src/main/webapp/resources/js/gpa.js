@@ -32,7 +32,8 @@ $(document).ready(function() {
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3, 4]},            
-            {"targets" : 2, "orderable" : false}
+            {"targets" : 3, "orderable" : false},
+		    {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
@@ -44,7 +45,7 @@ $(document).ready(function() {
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3]},            
-            {"targets" : 2, "orderable" : false}
+            {"targets" : 3, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
@@ -63,8 +64,7 @@ $(document).ready(function() {
 	$('#projetos-aguardando-parecer').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
-		    {className: "dt-center", "targets": [0, 1, 3, 4]}, 
-            {"targets" : 2, "orderable" : false},
+		    {className: "dt-center", "targets": [0, 1, 3, 4]},
             {"targets" : 3, "orderable" : false},
             {"targets" : 4, "orderable" : false}
 		],
@@ -82,6 +82,24 @@ $(document).ready(function() {
             {"targets" : 6, "orderable" : false}
 		],
 		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
+	// Página Vincular Participantes
+	$('#participacoes-projeto').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0]},
+            {"targets" : 1, "orderable" : false},
+            {"targets" : 2, "orderable" : false},
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 4, "orderable" : false},
+            {"targets" : 5, "orderable" : false}
+		],
+		"searching":false,
+		"paging":false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         }
