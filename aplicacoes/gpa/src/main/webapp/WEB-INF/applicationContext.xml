@@ -59,6 +59,11 @@
 		<property name="base" ref="ldapBase" />
 		<property name="userDn" ref="ldapUserDn" />
 		<property name="password" ref="ldapPassword" />
+		<property name="baseEnvironmentProperties">
+			<map>
+				<entry key="com.sun.jndi.ldap.connect.timeout" value="4000" />          
+			</map>  
+		</property>
 	</bean>
 
 	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
