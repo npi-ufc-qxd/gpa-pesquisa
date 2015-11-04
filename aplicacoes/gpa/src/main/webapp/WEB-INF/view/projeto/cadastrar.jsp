@@ -233,8 +233,8 @@
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<button id="button-delete-file" class="btn btn-danger">Excluir</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<button id="button-delete-file" class="btn btn-danger btn-sm">Excluir</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
