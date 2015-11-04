@@ -58,4 +58,11 @@ public class GPAController {
 		model.addAttribute("message", "Ops, o site teve um erro técnico.");
 		return "500";
 	}
+		
+	
+	@RequestMapping(value = "/500", method = RequestMethod.POST)
+	public String erroServidorPost(ModelMap model, Principal user) {
+		model.addAttribute("erro", "Ocorreu um erro, contate o administrador do sistema");
+		return "login";
+	}
 }

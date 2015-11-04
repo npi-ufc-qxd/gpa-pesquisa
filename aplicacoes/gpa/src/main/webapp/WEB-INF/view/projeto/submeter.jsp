@@ -75,16 +75,53 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label field">Participantes:</label>
+						<label class="col-sm-2 control-label field"><!-- Vincular participantes: --></label>
 						<div class="col-sm-10 field-value">
 							<c:if test="${empty projeto.participacoes }">
-								<label>-</label>
+								<label> 
+								Vincular participantes: <a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-primary">
+								<i class="fa fa-users"></i>
+													</a>
+								</label>
 							</c:if>
 							<ul class="list-inline" style="line-height:2.7em">
 								<c:if test="${not empty projeto.participacoes }">
-								<c:forEach items="${projeto.participacoes }" var="participacao">
-									<li><strong>${participacao.participante.nome}</strong></li>
+								
+								<label> 
+								Vincular participantes: <a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-primary">
+								<i class="fa fa-users"></i>
+													</a>
+								</label>
+								
+								<table id="minhas-participacoes" class="display">
+							<thead>
+								<tr>
+									<th>Participante</th>
+									<th>Início</th>
+									<th>Término</th>
+									<th>Carga Horária Mensal</th>
+									<th>Valor da Bolsa</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="participacao" items="${projeto.participacoes}">
+									<tr>
+										<td>${participacao.participante.nome }</td>
+										<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+										<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+										<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
+										<td><fmt:formatNumber type="CURRENCY" currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+										<td class="acoes"><a id="excluir" data-toggle="modal"
+											data-target="#confirm-delete-participacao" href="#"
+											data-href="<c:url value="/projeto/participacoes/${projeto.id}/excluir/${participacao.id }"></c:url>"
+											data-name="${participacao.participante.nome }">
+												
+										</a></td>
+									</tr>
 								</c:forEach>
+							</tbody>
+						</table>
 							</c:if>
 							</ul>
 						</div>
@@ -184,8 +221,8 @@
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<a id="button-delete-file" href="#" class="btn btn-danger">Excluir</a>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<a id="button-delete-file" href="#" class="btn btn-danger btn-sm">Excluir</a>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
