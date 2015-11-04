@@ -215,8 +215,8 @@
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<a href="#" class="btn btn-danger">Excluir</a>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<a href="#" class="btn btn-danger btn-sm">Excluir</a>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
@@ -232,8 +232,8 @@
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<a href="#" class="btn btn-primary">Submeter</a>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<a href="#" class="btn btn-primary btn-sm">Submeter</a>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
