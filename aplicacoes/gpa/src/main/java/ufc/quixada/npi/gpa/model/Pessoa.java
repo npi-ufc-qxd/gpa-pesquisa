@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -18,6 +19,10 @@ import ufc.quixada.npi.gpa.utils.Constants;
 @Entity
 @EntityListeners(PessoaEntityListener.class)
 public class Pessoa {
+	
+	public Pessoa() {
+		papeis = new ArrayList<Papel>();
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,6 +89,12 @@ public class Pessoa {
 
 	public void setPapeis(List<Papel> papeis) {
 		this.papeis = papeis;
+	}
+	
+	public void addPapel(Papel papel){
+		if(!getPapeis().contains(papel)){
+			getPapeis().add(papel);
+		}
 	}
 
 	@Override

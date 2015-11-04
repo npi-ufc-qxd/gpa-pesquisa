@@ -30,6 +30,9 @@ public class Constants {
 	
 	public static final String PAGINA_RELATORIOS = "direcao/relatorios";
 	
+	public static final String PAGINA_ADMINISTRACAO = "administracao/index";
+	
+	public static final String PAGINA_ADMINISTRACAO_VINCULAR_PAPEL = "administracao/vincularPapel";
 	
 	/** Redirecionamentos */
 	

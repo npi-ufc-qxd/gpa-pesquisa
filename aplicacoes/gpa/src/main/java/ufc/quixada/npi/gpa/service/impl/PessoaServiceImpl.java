@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,11 @@ import javax.inject.Named;
 
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.service.PapelService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.utils.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
+import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
@@ -22,12 +25,19 @@ public class PessoaServiceImpl implements PessoaService {
 	
 	@Inject
 	private GenericRepository<Papel> papelRepository;
+	
+	@Inject 
+	private PapelService papelService;
 
 	@Override
 	public Pessoa getPessoa(String cpf) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", cpf);
-		return pessoaRepository.findFirst(QueryType.JPQL, "from Pessoa where cpf = :cpf", params, 0);
+		List<Pessoa> pessoas = pessoaRepository.find(QueryType.JPQL, "from Pessoa where cpf = :cpf",params);
+		if(pessoas !=null && !pessoas.isEmpty()){
+			return pessoas.get(0);
+		}
+		return null;
 	}
 
 	@Override
@@ -75,6 +85,44 @@ public class PessoaServiceImpl implements PessoaService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", cpf);
 		return papelRepository.find(QueryType.JPQL, "select p.papeis FROM Pessoa p WHERE p.cpf = :cpf", params);
+	}
+
+	@Override
+	public List<Pessoa> getPessoasByUsuarios(List<Usuario> usuarios) {
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		for (Usuario usuario : usuarios) {
+			if(usuario.getCpf() != null){
+				pessoas.add(getPessoa(usuario.getCpf()));
+			}
+		}
+		return pessoas;
+	}
+
+	@Override
+	public void update(Pessoa pessoa) {
+		pessoaRepository.update(pessoa);
+	}
+
+	@Override
+	public void save(Pessoa pessoa) {
+		pessoaRepository.save(pessoa);
+	}
+
+	@Override
+	public Pessoa vincularPapeis(Pessoa pessoa, Pessoa oldPessoa) {
+		Papel papelCoordenador = papelService.find("COORDENADOR");
+		oldPessoa.setPapeis(new ArrayList<Papel>());;
+		oldPessoa.addPapel(papelCoordenador);
+		
+		if(pessoa.getPapeis()!= null){
+			for (Papel papel : pessoa.getPapeis()) {
+				if(papel.getId() != null){
+					papel = papelService.find(papel.getId());
+					oldPessoa.addPapel(papel);
+				}
+			}
+		}
+		return oldPessoa;
 	}
 
 }

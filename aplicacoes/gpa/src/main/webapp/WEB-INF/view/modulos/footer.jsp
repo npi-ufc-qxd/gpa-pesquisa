@@ -17,6 +17,7 @@
 <script src="<c:url value="/resources/js/select2_locale_pt-BR.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput_locale_pt-BR.js" />"></script>
+<script src="<c:url value="/resources/js/gpa-adm.js" />"></script>
 
 <footer>
 	<img id="logo-npi" alt="Núcleo de Práticas em Informática - Campus da UFC em Quixadá" 

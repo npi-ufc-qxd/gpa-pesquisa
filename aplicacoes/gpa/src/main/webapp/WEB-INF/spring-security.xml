@@ -26,7 +26,8 @@
 	<http access-decision-manager-ref="accessDecisionManager" auto-config="true">
 		<access-denied-handler error-page="/403" />
  		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
- 		<intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
+ 		<intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+ 		<intercept-url pattern="/*/administracao/**" access="ADMINISTRACAO" /> 		
  		<intercept-url pattern="/*/direcao/**" access="DIRECAO" />
  		<intercept-url pattern="/**" access="COORDENADOR,DIRECAO" />	
 
