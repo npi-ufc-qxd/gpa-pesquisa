@@ -23,7 +23,30 @@
 			<div class="panel-body">
 				<input id="projetoId" type="hidden" value="${projeto.id }"/>
 				<div class="form-horizontal">
+				
+				<c:if test="${projeto.status == 'NOVO'}">
+						<label style="width: 100%; text-align: right;"> <a id="submeter" data-toggle="modal"
+							data-target="#confirm-submit" href="#" title="Submeter"
+							data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>"
+							data-name="${projeto.nome }" class="btn btn-primary"> <i
+								class="fa fa-cloud-upload"></i>
+						</a> <a id="editar"
+							href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>"
+							title="Editar projeto" class="btn btn-primary"> <i
+								class="fa fa-edit"></i>
+						</a> <a id="excluir" data-toggle="modal" data-target="#confirm-delete"
+							href="#" title="Excluir"
+							data-href="<c:url value="/projeto/excluir/${projeto.id}"></c:url>"
+							data-name="${projeto.nome }" class="btn btn-danger"> <i
+								class="fa fa-trash-o"></i>
+						</a>
+						</label>
+
+					</c:if>
+				
 					<h4>Dados Gerais</h4>
+
+					
 					<span class="line"></span>
 			
 					<div class="form-group">
@@ -210,6 +233,15 @@
 						</c:if>
 					</sec:authorize>								
 					
+					<c:if test="${projeto.status == 'NOVO'}">
+					
+					<h4 class="subtitle">Ações</h4>
+					<span class="line"></span>
+					<!-- Botões de ações -->
+						
+
+					</c:if>
+					
 					<h4 class="subtitle">Comentários</h4>
 					<span class="line"></span>
 					<div id="comentarios" class="col-sm-12">
@@ -239,6 +271,40 @@
 			</div> <!-- /panel-body -->
 		</div> <!-- /panel -->
 	</div> <!-- /container -->
+	
+	<!-- Modal Excluir Projeto -->
+	<div class="modal fade" id="confirm-delete">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;<span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">Excluir</h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-danger btn-sm">Excluir</a>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal Submeter Projeto -->
+	<div class="modal fade" id="confirm-submit">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+	       			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;<span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">Submeter</h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-primary btn-sm">Submeter</a>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	
 	<jsp:include page="../modulos/footer.jsp" />
 	
