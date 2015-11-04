@@ -222,7 +222,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("id") Long id,
-			@RequestParam(value = "participanteSelecionado", required = true) String idParticipanteSelecionado,
+			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
 			Participacao participacao, HttpSession session, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjeto(id);
 		Pessoa usuario = getUsuarioLogado(session);
@@ -236,20 +236,23 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
+		// Atualiza Participação, para realizar validação
+		participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
+		participacao.setProjeto(projeto);
+		
 		participacaoValidator.validate(participacao, result);
 		if(result.hasErrors()){			
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("pessoas", pessoaService.getAll());
+			model.addAttribute("validacao", result);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
-
-		participacao.setParticipante(pessoaService.getPessoa(new Long(idParticipanteSelecionado)));
 
 		projeto.adicionarParticipacao(participacao);
 		projetoService.atualizar(projeto);
 
 		model.addAttribute("projeto", projeto);
-		model.addAttribute("participacao", new Participacao());
+		model.addAttribute("participacao", new Participacao()); // Limpa formulario
 		model.addAttribute("pessoas", pessoaService.getAll());
 		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 	}

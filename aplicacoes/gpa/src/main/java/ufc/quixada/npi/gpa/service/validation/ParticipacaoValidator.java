@@ -1,6 +1,8 @@
 package ufc.quixada.npi.gpa.service.validation;
 
+import java.time.YearMonth;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Named;
 
@@ -11,7 +13,7 @@ import org.springframework.validation.Validator;
 import ufc.quixada.npi.gpa.model.Participacao;
 
 /**
- * Validação da entidade {@link Participacao} com a interface {@link Validator}.<br>
+ * Validação da entidade {@link Participacao} com a interface {@link Validator}. <br>
  * *Mensagens de validação com suporte a internacionalização em "resources/WEB-INF/messages..."
  * 
  * @author 00056726198
@@ -25,7 +27,8 @@ public class ParticipacaoValidator implements Validator {
 	}
 
 	/**
-	 * Valida formulário de cadastro de {@link Participacao}
+	 * Valida cadastro de {@link Participacao}
+	 * 
 	 * @param projeto {@link Participacao}
 	 * @param errors {@link Errors}
 	 */
@@ -43,8 +46,10 @@ public class ParticipacaoValidator implements Validator {
 
 		ValidationUtils.rejectIfEmpty(errors, "cargaHorariaMensal", "projeto.campoNulo");
 		ValidationUtils.rejectIfEmpty(errors, "bolsaValorMensal", "projeto.campoNulo");
-	}
 
+		// Desenvolvimento #2368
+		verificaParticipacaoDentroLimiteProjeto(p, errors);
+	}
 
 	/**
 	 * Valida se o campo Mês é nulo e se o valor informado {@link Integer} está entre os intervalos possíveis do meses no ano (1/12).
@@ -63,7 +68,6 @@ public class ParticipacaoValidator implements Validator {
 		}
 	}
 
-	
 	/**
 	 * Valida se campo Ano é Nulo e se o valor informado é inferior ao ano atual do {@link Calendar}.
 	 * 
@@ -92,8 +96,10 @@ public class ParticipacaoValidator implements Validator {
 	 * @param participacao {@link Participacao}
 	 * @param errors {@link Errors}
 	 */
-	private void checaIntervaloDadas(String inicioMes, String inicioAno, String terminoMes, String terminoAno, Participacao participacao, Errors errors) {
-		if (participacao.getMesInicio() == null || participacao.getAnoInicio() == null || participacao.getMesTermino() == null || participacao.getAnoTermino() == null) {
+	private void checaIntervaloDadas(String inicioMes, String inicioAno, String terminoMes, String terminoAno, Participacao participacao,
+			Errors errors) {
+		if (participacao.getMesInicio() == null || participacao.getAnoInicio() == null || participacao.getMesTermino() == null
+				|| participacao.getAnoTermino() == null) {
 			return;
 		}
 
@@ -104,6 +110,51 @@ public class ParticipacaoValidator implements Validator {
 			if (participacao.getMesInicio().intValue() > participacao.getMesTermino().intValue()) {
 				errors.rejectValue(inicioMes, "participacao.campoMesInferior");
 				errors.rejectValue(terminoMes, "participacao.campoMesSuperior");
+			}
+		}
+	}
+
+	/**
+	 * Valida intervalo de participação dentro dos limites do projeto.
+	 * 
+	 * @param participacao {@link Participacao}
+	 * @param errors {@link Errors}
+	 */
+	private void verificaParticipacaoDentroLimiteProjeto(Participacao participacao, Errors errors) {
+		Date inicioProjeto = participacao.getProjeto().getInicio();
+		Date terminoProjeto = participacao.getProjeto().getTermino();
+		
+		if (inicioProjeto == null || terminoProjeto == null) {
+			errors.reject("participacao.definirInicioTermino", "participacao.definirInicioTermino");
+		} else {
+			Calendar inicioProjetoCal = Calendar.getInstance();
+			Calendar terminoProjetoCal = Calendar.getInstance();
+			inicioProjetoCal.setTime(inicioProjeto);
+			terminoProjetoCal.setTime(terminoProjeto);
+
+			YearMonth inicioParticipa = YearMonth.of(participacao.getAnoInicio(), participacao.getMesInicio());
+			YearMonth terminoParticipa = YearMonth.of(participacao.getAnoTermino(), participacao.getMesTermino());
+
+			// Atenção: Calendar.MONTH, indice começa em 0.
+			YearMonth inicioProj = YearMonth.of(inicioProjetoCal.get(Calendar.YEAR), (inicioProjetoCal.get(Calendar.MONTH) + 1));
+			YearMonth terminoProj = YearMonth.of(terminoProjetoCal.get(Calendar.YEAR), (terminoProjetoCal.get(Calendar.MONTH) + 1));
+			
+			// Inicio da participação não está entre inicio do projeto
+			if (!inicioParticipa.isAfter(inicioProj)) {
+				if(!inicioParticipa.equals(inicioProj)){
+					errors.rejectValue("mesInicio", "participacao.campoInicioAntesInicioProjeto");
+				}
+			} else if (!inicioParticipa.isBefore(terminoProj)) {
+				errors.rejectValue("mesInicio", "participacao.campoInicioAntesInicioProjeto");
+			}
+
+			// Termino da participação não está entre termino do projeto
+			if (!terminoParticipa.isBefore(terminoProj)) {
+				if(!terminoParticipa.equals(terminoProj)){
+					errors.rejectValue("mesTermino", "participacao.campoTerminoPosteriorTerminoProjeto");
+				}
+			} else if (!terminoParticipa.isAfter(inicioProj)) {
+				errors.rejectValue("mesTermino", "participacao.campoTerminoPosteriorTerminoProjeto");
 			}
 		}
 	}

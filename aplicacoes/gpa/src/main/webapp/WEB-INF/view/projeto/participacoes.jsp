@@ -5,11 +5,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Participantes do Projeto</title>
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Participantes do Projeto</title>
 </head>
 <body>
 	<jsp:include page="../modulos/header.jsp" />
@@ -36,23 +36,29 @@
 						<c:out value="${info}"></c:out>
 					</div>
 				</c:if>
+				
+				<c:if test="${not empty validacao.globalErrors }">
+					<div class="alert alert-dismissible alert-info" role="alert">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+						<c:forEach items="${validacao.globalErrors}" var="vg">
+							<p><spring:message code="${vg.defaultMessage}"></spring:message> </p>
+						</c:forEach>
+						<a href='<c:url value="/projeto/editar/${projeto.id}"></c:url>' class="btn btn-default btn-sm">Editar Início/Término</a>
+					</div>
+				</c:if>
+				
 				<!-- Formulario -->
 				<div class="formulario">
-					<form:form id="adicionarParticipacaoForm" role="form"
-						commandName="participacao" enctype="multipart/form-data"
-						servletRelativeAction="/projeto/participacoes/${projeto.id}"
-						method="POST" cssClass="form-horizontal">
+					<form:form id="adicionarParticipacaoForm" role="form" commandName="participacao" enctype="multipart/form-data"
+						servletRelativeAction="/projeto/participacoes/${projeto.id}" method="POST" cssClass="form-horizontal">
 						<div class="form-group form-item">
-							<label for="idParticipantes" class="col-sm-2 control-label">Novo
-								participante:</label>
+							<label for="idParticipantes" class="col-sm-2 control-label">Novo participante:</label>
 							<div class="col-sm-10">
-								<select id="participante" name="participanteSelecionado"
-									class="form-control">
+								<select id="participante" name="participanteSelecionado" class="form-control">
 									<c:set var="part" value="${pessoas }"></c:set>
 									<c:forEach items="${pessoas }" var="participante">
 										<c:set var="selected" value=""></c:set>
-										<c:set var="participanteSelecionado"
-											value="id=${participante.id }"></c:set>
+										<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
 										<c:if test="${fn:contains(part, participanteSelecionado)}">
 											<c:set var="selected" value="selected=\"selected\""></c:set>
 										</c:if>
@@ -134,15 +140,6 @@
 										<form:errors path="bolsaValorMensal"></form:errors>
 									</div>
 								</div>
-							</div>
-						</div>
-
-
-						<div class="form-group">
-							<div class="col-sm-2"></div>
-							<div class="col-sm-2">
-								<span class="campo-obrigatorio"><span class="required">*</span>
-									Campos obrigatórios</span>
 							</div>
 						</div>
 
