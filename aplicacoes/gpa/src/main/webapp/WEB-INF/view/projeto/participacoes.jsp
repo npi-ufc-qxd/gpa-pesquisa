@@ -43,7 +43,7 @@
 						<c:forEach items="${validacao.globalErrors}" var="vg">
 							<p><spring:message code="${vg.defaultMessage}"></spring:message> </p>
 						</c:forEach>
-						<a href='<c:url value="/projeto/editar/${projeto.id}"></c:url>' class="btn btn-default btn-sm">Editar Início/Término</a>
+						<a href='<c:url value="/projeto/editar/${projeto.id}"></c:url>' class="btn btn-default btn-xs">Editar Início/Término</a>
 					</div>
 				</c:if>
 				

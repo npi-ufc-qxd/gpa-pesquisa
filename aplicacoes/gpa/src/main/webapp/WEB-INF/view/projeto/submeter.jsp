@@ -32,6 +32,17 @@
 						<c:out value="${erro }"></c:out>
 					</div>
 				</c:if>
+				
+				<c:if test="${not empty validacao.globalErrors }">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<c:forEach items="${validacao.globalErrors}" var="vg">
+							<p><spring:message code="${vg.defaultMessage}"></spring:message></p>
+						</c:forEach>
+						<a href='<c:url value="/projeto/participacoes/${projeto.id}"></c:url>' class="btn btn-default btn-xs">Vincular Participantes</a>
+					</div>
+				</c:if>
+					
 				<form:form id="submeterProjetoForm" role="form" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="/projeto/submeter" method="POST" cssClass="form-horizontal">
 					<input type="hidden" id="id" name="id" value="${projeto.id }"/>
 					<input type="hidden" id="codigo" name="codigo" value="${projeto.codigo }"/>

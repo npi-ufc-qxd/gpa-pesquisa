@@ -364,6 +364,7 @@ public class ProjetoController {
 			if (result.hasErrors()) {
 				model.addAttribute("projeto", projeto);
 				model.addAttribute("alert", Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
+				model.addAttribute("validacao", result);
 				return PAGINA_SUBMETER_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
@@ -417,6 +418,7 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
+			model.addAttribute("validacao", result);
 			return PAGINA_SUBMETER_PROJETO;
 
 		} else {
