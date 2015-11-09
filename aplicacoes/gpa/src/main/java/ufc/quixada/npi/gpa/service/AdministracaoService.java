@@ -10,6 +10,4 @@ public interface AdministracaoService {
 
 	public abstract List<Usuario> getUsuariosByNomeOuCpf(String nome);
 
-	public abstract List<Usuario> removeUsuario(List<Usuario> usuarios,
-			Usuario usuario);
 }

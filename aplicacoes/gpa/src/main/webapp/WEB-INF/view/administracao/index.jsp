@@ -63,7 +63,7 @@
 							                <td>${pessoa.email}</td>
 							                <td align="right">
 							                	<a data-toggle="modal" data-target="#confirm-vincular" href="#"
-							                	data-href="<c:url value="/administracao/pessoa/${pessoa.cpf }/vincular"></c:url>"
+							                	data-href="<c:url value="/administracao/pessoa/vincular/${pessoa.cpf }"></c:url>"
 							                	title="Vincular papel ao usuário"
 							                	data-name="${pessoa.nome }" data-id="${pessoa.cpf }"  
 							                	class="btn btn-primary btn-sm"> Vincular papel</a>
