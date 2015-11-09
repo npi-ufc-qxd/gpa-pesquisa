@@ -110,7 +110,7 @@ public class PessoaServiceImpl implements PessoaService {
 
 	@Override
 	public Pessoa vincularPapeis(Pessoa pessoa, Pessoa oldPessoa) {
-		Papel papelCoordenador = papelService.find("COORDENADOR");
+		Papel papelCoordenador = papelService.find(Constants.PAPEL_COORDENACAO);
 		oldPessoa.setPapeis(new ArrayList<Papel>());;
 		oldPessoa.addPapel(papelCoordenador);
 		
