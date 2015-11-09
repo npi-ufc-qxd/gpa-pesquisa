@@ -28,16 +28,21 @@
 						<label style="width: 100%; text-align: right;"> <a id="submeter" data-toggle="modal"
 							data-target="#confirm-submit" href="#" title="Submeter"
 							data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>"
-							data-name="${projeto.nome }" class="btn btn-primary"> <i
+							data-name="${projeto.nome }" class="btn btn-primary btn-sm"> <i
 								class="fa fa-cloud-upload"></i>
+						</a>
+						<a id="vincular"
+							href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
+							target="_blank" title="Vincular participantes"
+							class="btn btn-primary btn-sm"> <i class="fa fa-users"></i>
 						</a> <a id="editar"
 							href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>"
-							title="Editar projeto" class="btn btn-primary"> <i
+							title="Editar projeto" class="btn btn-primary btn-sm"> <i
 								class="fa fa-edit"></i>
 						</a> <a id="excluir" data-toggle="modal" data-target="#confirm-delete"
 							href="#" title="Excluir"
 							data-href="<c:url value="/projeto/excluir/${projeto.id}"></c:url>"
-							data-name="${projeto.nome }" class="btn btn-danger"> <i
+							data-name="${projeto.nome }" class="btn btn-danger btn-sm"> <i
 								class="fa fa-trash-o"></i>
 						</a>
 						</label>
