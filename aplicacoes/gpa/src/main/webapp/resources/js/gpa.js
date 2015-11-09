@@ -105,6 +105,15 @@ $(document).ready(function() {
         }
 	});
 	
+	$('#participantes-table').DataTable({
+		
+		"searching":false,
+		"paging":false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$("#inicio, #termino, #prazo").datepicker({
 		format : "dd/mm/yyyy",
 		todayBtn : "linked",

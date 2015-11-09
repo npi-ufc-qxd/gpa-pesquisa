@@ -74,59 +74,6 @@
 						</div>
 					</div>
 
-					<div class="form-group">
-								<label class="col-sm-2 control-label field">
-									<!-- Participantes: -->
-								</label>
-								<div class="col-sm-10 field-value">
-									<c:if test="${empty projeto.participacoes }">
-										<label> Vincular participantes: <a id="vincular"
-											href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
-											target="_blank" title="Vincular participantes"
-											class="btn btn-primary"> <i class="fa fa-users"></i>
-										</a>
-										</label>
-									</c:if>
-									<ul class="list-inline" style="line-height: 2.7em">
-										<c:if test="${not empty projeto.participacoes }">
-
-											<label>Vincular participantes: <a id="vincular"
-												href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
-												target="_blank" title="Vincular participantes"
-												class="btn btn-primary"> <i class="fa fa-users"></i>
-											</a>
-											</label>
-
-											<table class="table table-striped table-hover ">
-												<thead>
-													<tr>
-														<th>Participante</th>
-														<th>Início</th>
-														<th>Término</th>
-														<th>Carga Horária Mensal</th>
-														<th>Valor da Bolsa</th>
-
-													</tr>
-												</thead>
-												<tbody>
-													<c:forEach var="participacao"
-														items="${projeto.participacoes}">
-														<tr>
-															<td>${participacao.participante.nome }</td>
-															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
-															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
-															<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
-															<td><fmt:formatNumber type="CURRENCY"
-																	currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
-
-														</tr>
-													</c:forEach>
-												</tbody>
-											</table>
-										</c:if>
-									</ul>
-								</div>
-							</div>
 					
 					<div class="form-group">
 						<div class="form-item">
@@ -195,6 +142,65 @@
 							</c:if>
 						</div>
 					</div>
+					
+					<div class="form-group form-item">
+					
+								<label class="col-sm-2 control-label">Vincular participantes:</label>
+								
+								<div class="col-sm-10 field-value">
+									<c:if test="${empty projeto.participacoes }">
+										<label>  <a id="vincular"
+											href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
+											target="_blank" title="Vincular participantes"
+											class="btn btn-primary"> <i class="fa fa-users"></i>
+										</a>
+										</label>
+										
+									</c:if>
+									<ul class="list-inline" style="line-height: 2.7em">
+										<c:if test="${not empty projeto.participacoes }">
+
+											<label> <a id="vincular"
+												href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
+												target="_blank" title="Vincular participantes"
+												class="btn btn-primary"> <i class="fa fa-users"></i>
+											</a>
+											</label>
+
+											<table id="participantes-table" class="table table-striped table-hover ">
+												<thead>
+													<tr>
+														<th>Participante</th>
+														<th>Início</th>
+														<th>Término</th>
+														<th>Carga Horária Mensal</th>
+														<th>Valor da Bolsa</th>
+
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach var="participacao"
+														items="${projeto.participacoes}">
+														<tr>
+															<td>${participacao.participante.nome }</td>
+															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+															<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
+															<td><fmt:formatNumber type="CURRENCY"
+																	currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</c:if>
+									</ul>
+								</div>
+							</div>
+							<c:if test="${empty projeto.participacoes }">
+								<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>
+							</c:if>
+					
 					
 					<div class="form-group">
 						<div class="col-sm-2"></div>
