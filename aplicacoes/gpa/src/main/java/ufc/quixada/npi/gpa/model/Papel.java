@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,9 @@ public class Papel implements GrantedAuthority {
 
 	@Column(nullable = false)
 	private String nome;
+	
+	@Transient
+	private boolean status;
 
 	public Papel() {
 		super();
@@ -49,9 +53,39 @@ public class Papel implements GrantedAuthority {
 		this.nome = nome;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	@Override
 	public String getAuthority() {
 		return this.nome;
+	}
+	
+	@Override
+	public String toString() {
+		return "Id: "+getId()+" nome: "+ getNome();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Papel other = (Papel) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

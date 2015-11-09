@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
+import br.ufc.quixada.npi.ldap.model.Usuario;
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
 
@@ -22,5 +23,13 @@ public interface PessoaService {
 	List<Papel> getPapeis(String cpf);
 	
 	List<Pessoa> getAll();
+
+	List<Pessoa> getPessoasByUsuarios(List<Usuario> usuarios);
+
+	void update(Pessoa oldPessoa);
+
+	void save(Pessoa pessoa);
+
+	Pessoa vincularPapeis(Pessoa pessoa, Pessoa oldPessoa);
 	
 }
