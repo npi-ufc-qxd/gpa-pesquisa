@@ -10,7 +10,7 @@
 
 	<properties>
 		<!-- Jackson JSON Mapper -->
-		<jackson.version>1.9.13</jackson.version>
+		<jackson.version>2.6.3</jackson.version>
 
 		<!-- Generic properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,7 +63,6 @@
 	</repositories>
 
 	<dependencies>
-
 		<!-- Dependência Jasper Reports -->
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
@@ -73,15 +72,14 @@
 
 		<!-- Jackson JSON Mapper -->
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.6.3</version>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 
 
