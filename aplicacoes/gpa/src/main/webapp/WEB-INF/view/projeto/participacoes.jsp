@@ -69,9 +69,10 @@
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-2 control-label"><span
-								class="required">*</span> Mês/Ano início:</label>
 							<div class="form-item">
+								<label class="col-sm-2 control-label"><span
+									class="required">*</span> Mês/Ano início:
+								</label>
 								<div class="col-sm-2">
 									<form:input id="mesInicio" name="mesInicio" type="number"
 										placeholder="1" min="1" max="12" path="mesInicio"
@@ -91,8 +92,10 @@
 									</div>
 								</div>
 							</div>
-							<label class="col-sm-2 control-label">Mês/Ano término:</label>
 							<div class="form-item">
+								<label class="col-sm-2 control-label"><span
+									class="required">*</span> Mês/Ano término:
+								</label>
 								<div class="col-sm-2">
 									<form:input name="mesTermino" type="number" placeholder="1"
 										min="1" max="12" path="mesTermino" cssClass="form-control"
@@ -116,8 +119,8 @@
 
 						<div class="form-group">
 							<div class="form-item">
-								<label for="cargaHorariaMensal" class="col-sm-2 control-label">Carga
-									horária mensal (em horas):</label>
+								<label for="cargaHorariaMensal" class="col-sm-2 control-label"><span
+									class="required">*</span> Carga horária mensal (em horas):</label>
 								<div class="col-sm-2">
 									<form:input id="cargaHorariaMensal" name="cargaHorariaMensal"
 										type="number" placeholder="1" path="cargaHorariaMensal"
@@ -129,8 +132,8 @@
 							</div>
 							<div class="col-sm-2"></div>
 							<div class="form-item">
-								<label for="bolsa" class="col-sm-2 control-label">Valor
-									da bolsa (R$):</label>
+								<label for="bolsa" class="col-sm-2 control-label"><span
+									class="required">*</span> Valor da bolsa (R$):</label>
 								<div class="col-sm-2">
 									<form:input id="bolsaValorMensal" name="bolsaValorMensal"
 										type="number" path="bolsaValorMensal" placeholder="1"
