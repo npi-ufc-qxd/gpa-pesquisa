@@ -4,6 +4,7 @@
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/avaliar-projeto-validator.js" />"></script>
 <script src="<c:url value="/resources/js/gpa.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrapValidator.min.js" />"></script>
 <script src="<c:url value="/resources/js/language/pt_BR.js" />"></script>
