@@ -283,7 +283,7 @@ $(document).ready(function() {
         }
     });
 	
-	$('#atribuirPareceristaForm, #emitirParecerForm, #avaliarProjetoForm, #adicionarParticipacaoForm').bootstrapValidator({
+	$('#atribuirPareceristaForm, #emitirParecerForm, #adicionarParticipacaoForm').bootstrapValidator({
 		group: '.form-item',
 		excluded: ':disabled',
         feedbackIcons: {
@@ -291,6 +291,30 @@ $(document).ready(function() {
             validating: 'glyphicon glyphicon-refresh'
         }
     });
+	
+	//Avaliar projeto
+	$('#avaliarProjetoForm').bootstrapValidator({
+		feedbackIcons: {
+        	valid: 'glyphicon glyphicon-ok',
+            validating: 'glyphicon glyphicon-refresh'
+	    },
+		fields: {
+			ataParam: {
+                validators: {
+                	notEmpty: {
+                        message: 'Por favor, insira um arquivo.'
+                    }
+                }
+            },
+            oficioParam: {
+                validators: {
+                	notEmpty: {
+                        message: 'Por favor, insira um arquivo.'
+                    }
+                }
+            }
+		}
+	});
 	
 	$('#comentarForm').bootstrapValidator({
 		group: '.form-item',
