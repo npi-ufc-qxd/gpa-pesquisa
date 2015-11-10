@@ -143,12 +143,6 @@
 					</div>
 					<hr />
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Descrição:</label>
-						<div class="col-sm-10 value-label">
-							<label>${projeto.descricao }</label>
-						</div>						
-					</div>
-					<div class="form-group">
 						<label class="col-sm-2 control-label">Atividades Gerais:</label>
 						<div class="col-sm-10 value-label">
 							<c:if test="${empty projeto.atividades }">
