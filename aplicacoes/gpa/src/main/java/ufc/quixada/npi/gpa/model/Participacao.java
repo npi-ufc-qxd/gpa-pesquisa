@@ -102,17 +102,11 @@ public class Participacao {
 	public void setParticipante(Pessoa participante) {
 		this.participante = participante;
 	}
-	
+
 	@Override
-	public String toString(){
-		return (this.participante != null ? this.participante.getNome() : "Sem Participante") + ";"
-				+ (this.projeto != null ? this.projeto.getNome() : "Sem Projeto") + ";"
-				+ mesInicio + ";"
-				+ anoInicio + ";"
-				+ mesTermino + ";"
-				+ anoTermino + ";"
-				+ bolsaValorMensal + ";"
-				+ cargaHorariaMensal;
+	public String toString() {
+		return "Participacao [id=" + id + ", projeto=" + projeto + ", participante=" + participante + ", mesInicio=" + mesInicio
+				+ ", anoInicio=" + anoInicio + ", mesTermino=" + mesTermino + ", anoTermino=" + anoTermino + ", bolsaValorMensal="
+				+ bolsaValorMensal + ", cargaHorariaMensal=" + cargaHorariaMensal + "]";
 	}
-	
 }

@@ -1,4 +1,4 @@
-package ufc.quixada.npi.gpa.service.impl;
+package ufc.quixada.npi.gpa.service.validation;
 
 import java.util.Date;
 
