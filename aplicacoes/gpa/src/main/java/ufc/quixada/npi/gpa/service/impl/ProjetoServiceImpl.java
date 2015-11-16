@@ -102,6 +102,19 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
+	public List<Projeto> getProjetosNaoAvaliados(Long idAutor) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idAutor);
+		params.put("novo", StatusProjeto.NOVO);
+		params.put("submetido", StatusProjeto.SUBMETIDO);
+		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where ((status = :novo) OR (status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (autor.id = :id)",
+				params);
+	}
+	
+	@Override
 	public List<Projeto> getProjetosAvaliados() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("aprovado", StatusProjeto.APROVADO);

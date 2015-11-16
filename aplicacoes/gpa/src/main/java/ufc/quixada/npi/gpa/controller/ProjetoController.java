@@ -95,7 +95,7 @@ public class ProjetoController {
 	public String listar(Model model, HttpSession session) {
 		Long idUsuarioLogado = getUsuarioLogado(session).getId();
 		model.addAttribute("projetos", projetoService.getProjetos(idUsuarioLogado));
-		model.addAttribute("projetosSubmetidos", projetoService.getProjetosSubmetidos(idUsuarioLogado));
+		model.addAttribute("projetosNaoAvaliados", projetoService.getProjetosNaoAvaliados(idUsuarioLogado));
 		model.addAttribute("participacoesEmProjetos", projetoService.getParticipacoes(idUsuarioLogado));
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));

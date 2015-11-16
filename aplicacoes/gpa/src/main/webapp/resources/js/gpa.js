@@ -97,10 +97,9 @@ $(document).ready(function() {
     });
 	
 	$("#inicioRelatorio, #terminoRelatorio").datepicker({
-		format: "01-mm-yyyy",
+		format: "yyyy-mm",
 	    viewMode: "months", 
 	    minViewMode: "months",
-		language : "pt-BR",
 	});
 	
 	$(".anexo").fileinput({

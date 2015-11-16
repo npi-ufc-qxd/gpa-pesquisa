@@ -30,7 +30,6 @@ public class RelatorioServiceImpl implements
 
 	@Inject
 	private PessoaService pessoaService;
-	//fazer os 3 metodos pra cada caso dos intervalos
 	
 	@Inject
 	private GenericRepository<Projeto> projetoRepository;
@@ -39,53 +38,25 @@ public class RelatorioServiceImpl implements
 	public List<Projeto> getProjetosIntervalosAprovados(StatusProjeto status, String inicio, String termino){
 		Map<String, Object> params = new HashMap<String, Object>();
 		
-		System.out.println(inicio);
-		System.out.println(termino);
+		if(!inicio.isEmpty() && !termino.isEmpty()){
+			params.put("status", status);
+			params.put("ini", inicio);
+			params.put("ter", termino);
+			return projetoRepository.find(QueryType.JPQL,
+					"from Projeto where status = :status and ((inicio between TO_DATE (:ini, 'yyyy/mm') and TO_DATE (:ter, 'yyyy/mm')) or (termino between TO_DATE (:ini, 'yyyy/mm') and TO_DATE (:ter, 'yyyy/mm') or (inicio < TO_DATE (:ini, 'yyyy/mm') and termino > TO_DATE (:ter, 'yyyy/mm'))))", params);
+		}
+		if(inicio.isEmpty() && !termino.isEmpty()){
+			params.put("status", status);	
+			params.put("ter", termino);
+			return projetoRepository.find(QueryType.JPQL,
+					"from Projeto where status = :status and (inicio between TO_DATE (:ini, 'yyyy/mm') and TO_DATE (:ter, 'yyyy/mm'))", params);
+		}
 		
-		params.put("status", status);
-		params.put("ini", inicio);
-		params.put("ter", termino);
-		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where status = :status and (inicio between TO_DATE (:ini, 'yyyy/mm') and TO_DATE (:ter, 'yyyy/mm'))", params);
-		
-		/*if(inicio.isEmpty() && !termino.isEmpty()){
-			Integer mesTermino = Integer.valueOf(termino.substring(0, 2));
-			Integer anoTermino = Integer.valueOf(termino.substring(3, 7));
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("status", status);
-			params.put("mesTermino", mesTermino);
-			params.put("anoTermino", anoTermino);
-			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and (:mesTermino <= month (termino) and :anoTermino <= year(termino))", params);
-		}
-		else if(!inicio.toString().isEmpty() && termino.isEmpty()){
-			Integer mes = Integer.valueOf(inicio.substring(0, 2));
-			Integer ano = Integer.valueOf(inicio.substring(3, 7));
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("status", status);
-			params.put("mesInicio", mes);
-			params.put("anoInicio", ano);
-			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and (:mesInicio >= month (inicio) and :anoInicio >= year(inicio))", params);
-		}
-		else if(!inicio.isEmpty() && !termino.isEmpty()){
-			Integer mesI = Integer.valueOf(inicio.substring(0, 2));
-			Integer anoI = Integer.valueOf(inicio.substring(3, 7));
-			Integer mesT = Integer.valueOf(termino.substring(0, 2));
-			Integer anoT = Integer.valueOf(termino.substring(3, 7));
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("status", status);
-			params.put("mesInicio", mesI);
-			params.put("anoInicio", anoI);
-			params.put("mesTermino", mesT);
-			params.put("anoTermino", anoT);
-			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and ((month (inicio) between :mesInicio  and :mesTermino) and (year( termino) between :anoInicio and :anoTermino))", params);
-		}
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
-		projetosBusca = projetoService.getProjetos(StatusProjeto.APROVADO);
+		projetosBusca = projetoService.getProjetos(status);
 		List<Projeto> projetos = projetosBusca;
-		return projetos;*/
+		return projetos;
+		
 	}
 	
 	
@@ -130,14 +101,11 @@ public class RelatorioServiceImpl implements
 	@Override
 	public List<Projeto> getProjetosIntervaloReprovados(StatusProjeto status, String submissao){
 		if(!submissao.isEmpty()){
-			String mes = submissao.substring(0, 1);
-			String ano = submissao.substring(3, 6);
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("status", status);
-			params.put("mes", mes);
-			params.put("ano", ano);
+			params.put("submissao", submissao);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and (ano == FUNC('YEAR', submissao) and mes == FUNC('MONTH', submissao))", params);
+					"from Projeto where status = :status and submissao = TO_DATE (:submissao, 'yyyy/mm')", params);
 		}
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
 		projetosBusca = projetoService.getProjetos(status);
@@ -169,7 +137,8 @@ public class RelatorioServiceImpl implements
 			params.put("id", id);
 			params.put("ano", ano);
 			return projetoRepository.find(QueryType.JPQL,
-					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status != 'NOVO' and ( ano >= FUNC('YEAR', proj.inicio) and ano <= FUNC('YEAR', proj.termino))", params);
+					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status != 'NOVO' and ( inicio = TO_DATE (:ano, 'yyyy') or termino = TO_DATE (:ano, 'yyyy/mm') or (inicio < TO_DATE (:ano, 'yyyy') and termino > TO_DATE (:ano, 'yyyy')))"
+					, params);
 		}
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
 		projetosBusca = projetoService.getProjetos(id);
