@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+ 	<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -8,12 +7,79 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
-<head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Visualizar Relatórios</title>
-</head>
+	<head>
+		<jsp:include page="../modulos/header-estrutura.jsp" />
+		<title>Relatorios</title>
+	</head>
 <body>
+	<jsp:include page="../modulos/header.jsp" />
 	<div class="container">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Relatorios</h3>
+			</div>
+		</div>
+		<div class="panel-body">
+				<label class="col-sm-2 control-label">Tipo de Relatorio:</label>
+					<select id="relatorio" name="relatorioParam" class="form-control">
+						<option value = ""></option>
+						<option value="APROVADOS">PROJETOS APROVADOS</option>
+						<option value="REPROVADOS">PROJETOS REPROVADOS</option>
+						<option value="POR_USUARIO">PROJETOS POR USUÁRIO</option>
+					</select>
+				<%-- tornaro visivel de acordo com a opção selecionada acima--%>
+			<form:form id="relatoriosAprovadosForm"  enctype="multipart/form-data" servletRelativeAction="relatorios/aprovados" method="GET" cssClass="form-horizontal">
+				<label>Início do Intervalo:</label><br>
+				<input   type="text" name = "inicio" id = "inicioRelatorio" class = "form-control data"><br>
+				<label>Terminno do Intervalo:</label><br>
+				<input type = "text" name = "termino" id="terminoRelatorio" class = "form-control data">
+				<input name="gerar" type="submit" class="btn btn-primary" value="gerar" />
+			</form:form >
+				
+			<div class="tab-content">
+		        <div class="tab-pane fade active in" id="tab-meus-projetos">
+		        	<c:if test="${empty relatorio}">
+						<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
+					</c:if>
+					<c:if test="${not empty relatorio}">
+						<table id="meus-projetos" class="display">
+							<thead>
+								<tr>
+									<th>Coordenador do Projeto</th>
+										<th>Nome do Projeto</th>
+										<th>Início</th>
+										<th>Término</th>
+										<th>Quantidade de Bolsas</th>
+										<th>Valor total de Bolsas</th>
+										<!-- <th>Link</th> -->
+										<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetosAprovados}">
+									<tr>
+										<td>${projeto.nomeCoordenador}</td>
+										<td>${projeto.nomeProjeto}</td>
+										<td>${projeto.dataInicio}</td>
+										<td>${projeto.dataTermino}</td>
+										<td>${projeto.qtdBolsas}</td>
+										<td>${projeto.valorTotalBolsas}</td>
+										<td></td>
+											<%-- <td>
+												<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projetoSubmetido.nome}</a>
+											</td> --%>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:if>
+	        	</div>
+			</div>
+		</div>
+	</div>
+	<jsp:include page="../modulos/footer.jsp" />
+</body>	
+	<%-- <div class="container">
 		<jsp:include page="../modulos/header.jsp" />
 		<c:if test="${not empty erro}">
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -80,6 +146,6 @@
 				</div>
 			</div>
 		</div>		
-		<jsp:include page="../modulos/footer.jsp" />
-</body>
+		
+</body> --%>
 </html>

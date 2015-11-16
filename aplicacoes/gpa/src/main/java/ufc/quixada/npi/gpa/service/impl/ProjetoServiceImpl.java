@@ -1,7 +1,5 @@
 package ufc.quixada.npi.gpa.service.impl;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
@@ -12,13 +10,13 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.ufc.quixada.npi.enumeration.QueryType;
-import br.ufc.quixada.npi.repository.GenericRepository;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
+import br.ufc.quixada.npi.enumeration.QueryType;
+import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
 public class ProjetoServiceImpl implements ProjetoService {
@@ -88,6 +86,18 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
 		return projetoRepository.find(QueryType.JPQL,
 				"from Projeto where status = :submetido or status = :aguardando_parecer or status = :aguardando_avaliacao",
+				params);
+	}
+	
+	@Override
+	public List<Projeto> getProjetosSubmetidos(Long idAutor) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idAutor);
+		params.put("submetido", StatusProjeto.SUBMETIDO);
+		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where ((status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (autor.id = :id)",
 				params);
 	}
 

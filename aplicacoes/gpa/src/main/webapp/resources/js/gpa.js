@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	
 	// Página Listar Projetos (Diretor)
-	
 	$('#meus-projetos').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
@@ -96,6 +95,13 @@ $(document).ready(function() {
 		$(this).datepicker('hide');
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
+	
+	$("#inicioRelatorio, #terminoRelatorio").datepicker({
+		format: "01-mm-yyyy",
+	    viewMode: "months", 
+	    minViewMode: "months",
+		language : "pt-BR",
+	});
 	
 	$(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",

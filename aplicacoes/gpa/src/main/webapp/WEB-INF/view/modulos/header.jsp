@@ -18,6 +18,9 @@
       		<li id="menu-direcao" class="">
 	           	<a href="<c:url value="/direcao" />" title="Direção">Direção</a>
 	       	</li>
+	       	<li id="menu-relatorio" class="">
+	           	<a href="<c:url value="/direcao/relatorios" />" title="Direção">Relatorios</a>
+	       	</li>
        	</sec:authorize>
       </ul>
       

@@ -1,13 +1,10 @@
 package ufc.quixada.npi.gpa.controller;
 
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_RELATORIOS;
+import static ufc.quixada.npi.gpa.utils.Constants.USUARIO_LOGADO;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
-
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,25 +15,46 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
-import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
-import ufc.quixada.npi.gpa.model.Relatorio;
 import ufc.quixada.npi.gpa.service.PessoaService;
-import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
-import ufc.quixada.npi.gpa.service.ProjetoService;
-import ufc.quixada.npi.gpa.utils.Constants;
+import ufc.quixada.npi.gpa.service.RelatorioService;
 
 @Controller
-@RequestMapping("direcao/relatorio")
+@RequestMapping("direcao/relatorios")
 public class RelatorioController {
 	
 	@Inject
+	private RelatorioService projetoService;
+	
+	@Inject
+	private PessoaService pessoaService;
+	
+	@RequestMapping(value = "/aprovados", method = RequestMethod.GET)
+	public String Aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String inicio, 
+			@RequestParam(value = "termino", required = false) String termino, HttpSession session) {
+		model.addAttribute("projetosAprovados", projetoService.getProjetosAprovadosRelatorio(inicio, termino).getProjetosAprovados());
+		model.addAttribute("relatorio", projetoService.getProjetosAprovadosRelatorio(inicio, termino));
+		return PAGINA_RELATORIOS;
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String visualizarRelatorios(Model model, HttpSession session) {
+		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
+		return PAGINA_RELATORIOS;
+	}
+	
+	/*@RequestMapping(value = "/reprovados", method = RequestMethod.GET)
+	public String Aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String submissao, HttpSession session){
+		
+	}*/
+	
+	
+	/*@Inject
 	private ProjetoPorDocenteRelatorioService projetoPorDocenteRelatorioService;
 	
 	@Inject
 	private ProjetoService projetoService;
 	
-	@Inject
-	private PessoaService pessoaService;
+	
 	
 	@RequestMapping(value = "/aprovados", method = RequestMethod.GET)
 	public String aprovados(ModelMap model, @RequestParam(value = "iniInterInicio", required = false) String iniInterInicio,
@@ -56,7 +74,6 @@ public class RelatorioController {
 	public String reprovados(ModelMap model, @RequestParam(value = "iniInter", required = false) String iniInter, 
 			@RequestParam(value = "fimInter", required = false) String fimInter) throws JRException{
 		
-		//**//
 		
 		return "projetosReprovados";
 		
@@ -86,18 +103,17 @@ public class RelatorioController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String visualizarRelatorios(Model model, HttpSession session) {
 		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
-		
 		return PAGINA_RELATORIOS;
 	}
-	
+	*/
 	private Pessoa getUsuarioLogado(HttpSession session) {
-		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
+		if (session.getAttribute(USUARIO_LOGADO) == null) {
 			Pessoa usuario = pessoaService
 					.getPessoa(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
-			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
+			session.setAttribute(USUARIO_LOGADO, usuario);
 		}
-		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
+		return (Pessoa) session.getAttribute(USUARIO_LOGADO);
 	}
 
 }
