@@ -162,8 +162,36 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa pessoa = getUsuarioLogado(session);
-		if (pessoa.getId() == projeto.getAutor().getId() || pessoa.isDirecao()
-				|| (projeto.getParecer() != null && projeto.getParecer().getParecerista().getId() == pessoa.getId())) {
+		if (pessoa.equals(projeto.getAutor()) || pessoa.isDirecao()
+				|| (projeto.getParecer() != null && 
+				projeto.getParecer().getParecerista().equals(pessoa))) {
+			
+			if(pessoa.equals(projeto.getAutor()) || pessoa.isDirecao()){
+				model.addAttribute("permissaoComentario", true);
+			}else{
+				model.addAttribute("permissaoComentario", false);
+			}
+			if(!projeto.getStatus().equals( StatusProjeto.NOVO) 
+				&& (pessoa.equals(projeto.getParecer().getParecerista()) 
+				|| pessoa.isDirecao()) && (projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER))){
+				model.addAttribute("permissaoParecer", true);
+			}else{
+				model.addAttribute("permissaoParecer", false);
+			}
+			if(pessoa.isDirecao() || (projeto.getParecer() != null 
+					&& pessoa.equals(projeto.getParecer().getParecerista()))){
+				model.addAttribute("permissaoObservacao", true);
+			}else{
+				model.addAttribute("permissaoObservacao", false);
+			}
+			if(projeto.getAutor().equals(pessoa) || (projeto.getParecer() != null 
+					&& pessoa.equals(projeto.getParecer().getParecerista())) 
+					|| pessoa.isDirecao() || projetoService.isParticipante(pessoa, projeto)){
+				model.addAttribute("permissaoArquivo", true);
+			}else{
+				model.addAttribute("permissaoArquivo", false);
+			}
+			
 			List<Comentario> comentarios = projeto.getComentarios();
 			Collections.sort(comentarios, new Comparator<Comentario>() {
 				@Override

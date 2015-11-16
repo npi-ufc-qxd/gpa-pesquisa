@@ -4,6 +4,7 @@ import java.util.List;
 
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
+import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 
@@ -48,4 +49,6 @@ public interface ProjetoService {
 	Participacao getParticipacao(Long idParticipacao);
 
 	List<Participacao> getParticipacoesByProjeto(Long idProjeto);
+
+	boolean isParticipante(Pessoa pessoa, Projeto projeto);
 }
