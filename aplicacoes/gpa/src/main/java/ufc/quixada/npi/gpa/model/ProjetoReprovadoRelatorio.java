@@ -3,6 +3,7 @@ package ufc.quixada.npi.gpa.model;
 import java.util.Date;
 
 public class ProjetoReprovadoRelatorio {
+	private Long id;
 	private String nomeProjeto;
 	private String nomeCoordenador;
 	private Date dataDeSubimissao;
@@ -38,6 +39,14 @@ public class ProjetoReprovadoRelatorio {
 
 	public void setDataDeAvaliacao(Date dataDeAvaliacao) {
 		this.dataDeAvaliacao = dataDeAvaliacao;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	

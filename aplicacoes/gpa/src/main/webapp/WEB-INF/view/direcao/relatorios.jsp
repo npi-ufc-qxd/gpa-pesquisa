@@ -20,24 +20,66 @@
 			</div>
 		</div>
 		<div class="panel-body">
+			<div class="row">
 				<label class="col-sm-2 control-label">Tipo de Relatorio:</label>
+				<div class="col-sm-6">
 					<select id="relatorio" name="relatorioParam" class="form-control">
-						<option value = ""></option>
+						<option value=""></option>
 						<option value="APROVADOS">PROJETOS APROVADOS</option>
 						<option value="REPROVADOS">PROJETOS REPROVADOS</option>
 						<option value="POR_USUARIO">PROJETOS POR USUÁRIO</option>
 					</select>
-				<%-- tornaro visivel de acordo com a opção selecionada acima--%>
-			<form:form id="relatoriosAprovadosForm"  enctype="multipart/form-data" servletRelativeAction="relatorios/aprovados" method="GET" cssClass="form-horizontal">
-				<label>Início do Intervalo:</label><br>
-				<input   type="text" name = "inicio" id = "inicioRelatorio" class = "form-control data"><br>
-				<label>Terminno do Intervalo:</label><br>
-				<input type = "text" name = "termino" id="terminoRelatorio" class = "form-control data">
-				<input name="gerar" type="submit" class="btn btn-primary" value="gerar" />
-			</form:form >
+				</div>
 				
+			</div>
+
+			<br />
+					<br />
+			<%-- tornaro visivel de acordo com a opção selecionada acima--%>
+			<div id="form_aprovados">
+		
+				<form:form id="relatoriosAprovadosForm"
+					enctype="multipart/form-data"
+					servletRelativeAction= "relatorios/aprovados" method="GET"
+					cssClass="form-horizontal">
+					
+				
+					<label class ="col-sm-2 control-label" >Início do Intervalo:</label>
+					<div class="col-sm-2">
+					<input type="text" name="inicio" id="inicioRelatorio"
+						class="form-control data"></div>
+					<label class ="col-sm-2 control-label">Terminno do Intervalo:</label>
+					<div class ="col-sm-2">
+					<input type="text" name="termino" id="terminoRelatorio"
+						class="form-control data"></div>
+					<input name="gerar" type="submit" class="btn btn-primary"
+						value="gerar" />
+				</form:form>
+			</div>
+			<%-- tornaro visivel de acordo com a opção selecionada acima--%>
+			<div id="form_reprovados">
+				<form:form id="relatoriosRerovadosForm"
+					enctype="multipart/form-data"
+					servletRelativeAction="relatorios/reprovados" method="GET"
+					cssClass="form-horizontal">
+					<label class ="col-sm-2 control-label" >Data da submissao:</label>
+					<div class="col-sm-2">
+					<input type="text" name="submissao" id="inicioRelatorio"
+						class="form-control data"></div>
+					<!-- <label class ="col-sm-2 control-label">Terminno do Intervalo:</label>
+					<div class ="col-sm-2">
+					<input type="text" name="termino" id="terminoRelatorio"
+						class="form-control data"></div> -->
+					<input name="gerar" type="submit" class="btn btn-primary"
+						value="gerar" />
+				</form:form>
+			</div>
+			<%-- tornaro visivel de acordo com a opção selecionada acima--%>
+			<div id="form_p-pessoa">
+				FORM BUSCA P/ USUARIO
+			</div>
 			<div class="tab-content">
-		        <div class="tab-pane fade active in" id="tab-meus-projetos">
+		        <div class="tab-pane fade active in" id="tab-projetos-aprovados">
 		        	<c:if test="${empty relatorio}">
 						<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
 					</c:if>
@@ -51,7 +93,6 @@
 										<th>Término</th>
 										<th>Quantidade de Bolsas</th>
 										<th>Valor total de Bolsas</th>
-										<!-- <th>Link</th> -->
 										<th></th>
 								</tr>
 							</thead>
@@ -64,20 +105,79 @@
 										<td>${projeto.dataTermino}</td>
 										<td>${projeto.qtdBolsas}</td>
 										<td>${projeto.valorTotalBolsas}</td>
-										<td></td>
-											<%-- <td>
-												<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projetoSubmetido.nome}</a>
-											</td> --%>
+										<td>
+											<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+											</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
 					</c:if>
 	        	</div>
+	        	
+	        	<div class="tab-pane fade active in" id="tab-projetos-reprovados">
+		        	<c:if test="${empty relatorio}">
+						<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
+					</c:if>
+					<c:if test="${not empty relatorio}">
+						<table id="meus-projetos" class="display">
+							<thead>
+								<tr>
+									<th>Coordenador do Projeto</th>
+									<th>Nome do Projeto</th>
+									<th>Submissão</th>
+									<th>Avaliação</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetosReprovados}">
+									<tr>
+										<td>${projeto.nomeCoordenador}</td>
+										<td>${projeto.nomeProjeto}</td>
+										<td>${projeto.dataDeSubimissao}</td>
+										<td>${projeto.dataDeAvaliacao}</td>
+										<td>
+											<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:if>
+	        	</div>
+	        	
 			</div>
 		</div>
 	</div>
 	<jsp:include page="../modulos/footer.jsp" />
+	<script type="text/javascript">
+
+	// checa se o documento foi carregado
+	$(document).ready(function () {
+		//PROJETOS APROVADOS
+		$("#form_aprovados").hide();
+		$("#form_reprovados").hide();
+		$("#form_p-pessoa").hide();
+		
+	$("#relatorio").change(function() {
+		$("#form_aprovados").hide();
+		$("#form_reprovados").hide();
+		$("#form_p-pessoa").hide();
+
+			var opcao_select = $("#relatorio option:selected").text();
+			if (opcao_select == "PROJETOS APROVADOS") {
+				$("#form_aprovados").slideToggle("slow");
+			}
+			if (opcao_select == "PROJETOS REPROVADOS") {
+				$("#form_reprovados").slideToggle("slow");
+			}if (opcao_select == "PROJETOS POR USUÁRIO") {
+				$("#form_p-pessoa").slideToggle("slow");
+			}
+		});
+
+	});
+</script>
 </body>	
 	<%-- <div class="container">
 		<jsp:include page="../modulos/header.jsp" />

@@ -48,8 +48,14 @@ public class RelatorioServiceImpl implements
 		if(inicio.isEmpty() && !termino.isEmpty()){
 			params.put("status", status);	
 			params.put("ter", termino);
+			return projetoRepository.find(QueryType.JPQL, "from Projeto where status = :status and (inicio <= TO_DATE (:ter, 'yyyy/mm') or termino <= TO_DATE (:ter, 'yyyy/mm'))"
+					, params);
+		}
+		if(!inicio.isEmpty() && termino.isEmpty()){
+			params.put("status", status);	
+			params.put("ini", inicio);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and (inicio between TO_DATE (:ini, 'yyyy/mm') and TO_DATE (:ter, 'yyyy/mm'))", params);
+					"from Projeto where status = :status and (inicio >= TO_DATE (:ini, 'yyyy/mm') or termino >= TO_DATE (:ini, 'yyyy/mm'))", params);
 		}
 		
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
@@ -67,6 +73,7 @@ public class RelatorioServiceImpl implements
 		
 		for(Projeto p:projetos){
 			ProjetoAprovadoRelatorio projetoAprovado = new ProjetoAprovadoRelatorio();
+			projetoAprovado.setId(p.getId());
 			projetoAprovado.setNomeCoordenador(p.getAutor().getNome());
 			projetoAprovado.setNomeProjeto(p.getNome());
 			projetoAprovado.setDataInicio(p.getInicio());
@@ -104,6 +111,8 @@ public class RelatorioServiceImpl implements
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("status", status);
 			params.put("submissao", submissao);
+			System.out.println(submissao);
+			System.out.println(status);
 			return projetoRepository.find(QueryType.JPQL,
 					"from Projeto where status = :status and submissao = TO_DATE (:submissao, 'yyyy/mm')", params);
 		}
@@ -119,6 +128,7 @@ public class RelatorioServiceImpl implements
 		List <Projeto> projetos = this.getProjetosIntervaloReprovados(StatusProjeto.REPROVADO, submissao);
 		for(Projeto p:projetos){
 			ProjetoReprovadoRelatorio projetoReprovado = new ProjetoReprovadoRelatorio();
+			projetoReprovado.setId(p.getId());
 			projetoReprovado.setNome(p.getNome());
 			projetoReprovado.setNomeCoordenador(p.getAutor().getNome());
 			projetoReprovado.setDataDeSubimissao(p.getSubmissao());
@@ -156,6 +166,7 @@ public class RelatorioServiceImpl implements
 		BigDecimal valorTotal = new BigDecimal(0);
 		for(Projeto p : projetos){
 			ProjetoPorPessoaRelatorio projetoPorPessoa = new ProjetoPorPessoaRelatorio();
+			projetoPorPessoa.setId(p.getId());
 			projetoPorPessoa.setNomeProjeto(p.getNome());
 			if(p.getAutor().getId() == id)
 				projetoPorPessoa.setVinculo("COORDENADOR");

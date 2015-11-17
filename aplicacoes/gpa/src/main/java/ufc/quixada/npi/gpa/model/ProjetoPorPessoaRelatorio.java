@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class ProjetoPorPessoaRelatorio {
 
+	private Long id;
 	private String nomeProjeto;
 	private String vinculo;
 	private Integer cargaHoraria;
@@ -31,6 +32,12 @@ public class ProjetoPorPessoaRelatorio {
 	}
 	public void setValorBolsa(BigDecimal valorTotalBolsa) {
 		this.valorBolsa = valorTotalBolsa;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 }
