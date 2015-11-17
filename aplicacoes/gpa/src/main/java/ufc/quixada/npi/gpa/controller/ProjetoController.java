@@ -360,12 +360,12 @@ public class ProjetoController {
 		Pessoa usuario = getUsuarioLogado(session);
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			
-			// Adicionando o @ModelAttribute preenchido ao BindingResult
-			model.addAttribute("projeto", projeto);
+			// Adicionando o @ModelAttribute ao BindingResult
 		    BindingResult result = new BeanPropertyBindingResult(projeto, "projeto");
 			projetoValidator.validateSubmissao(projeto, result);
 
 			if (result.hasErrors()) {
+				model.addAttribute("projeto", projeto);
 				model.addAttribute("alert", Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
 				
 				if(result.hasGlobalErrors()){
