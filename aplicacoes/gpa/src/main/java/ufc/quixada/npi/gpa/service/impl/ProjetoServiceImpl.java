@@ -1,7 +1,5 @@
 package ufc.quixada.npi.gpa.service.impl;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;

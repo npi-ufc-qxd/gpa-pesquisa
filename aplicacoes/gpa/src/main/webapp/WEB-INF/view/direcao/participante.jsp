@@ -27,7 +27,6 @@
 						<li class=""><a aria-expanded="false" href="#aba_participa" data-toggle="tab"><span class="visible-md-inline visible-lg-inline">Projetos que </span>Participa</a></li>
 						<li class=""><a aria-expanded="false" href="#aba_coordenou" data-toggle="tab"><span class="visible-md-inline visible-lg-inline">Projetos que </span>Coordenou</a></li>
 						<li class=""><a aria-expanded="false" href="#aba_participou" data-toggle="tab"><span class="visible-md-inline visible-lg-inline">Projetos que </span>Participou</a></li>
-						<li class="disabled"><a aria-expanded="false" href="#aba_reprovados" data-toggle="tab">Reprovados</a></li>
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						<div class="tab-pane fade active in" id="aba_coordena">
@@ -44,11 +43,10 @@
 
 							<div class="list-group">
 								<c:forEach items="${pessoa.projetos }" var="projeto">
-									<a href="<c:url value="/projeto/detalhes/${projeto.id }" />"
-										class="list-group-item">
+									<span class="list-group-item">
 										<h4 class="list-group-item-heading">${projeto.nome }</h4>
 										<p class="list-group-item-text">${fn:substring(projeto.descricao, 0, 200)}...</p>
-									</a>
+									</span>
 								</c:forEach>
 							</div>
 						</div>
@@ -67,11 +65,10 @@
 
 							<div class="list-group">
 								<c:forEach items="${projetos }" var="projeto">
-									<a href="<c:url value="/projeto/detalhes/${projeto.id }" />"
-										class="list-group-item">
+									<span class="list-group-item">
 										<h4 class="list-group-item-heading">${projeto.nome }</h4>
 										<p class="list-group-item-text">${fn:substring(projeto.descricao, 0, 200)}...</p>
-									</a>
+									</span>
 								</c:forEach>
 							</div>
 						</div>
@@ -90,11 +87,10 @@
 
 							<div class="list-group">
 								<c:forEach items="${coordenou }" var="projeto">
-									<a href="<c:url value="/projeto/detalhes/${projeto.id }" />"
-										class="list-group-item">
+									<span class="list-group-item">
 										<h4 class="list-group-item-heading">${projeto.nome }</h4>
 										<p class="list-group-item-text">${fn:substring(projeto.descricao, 0, 200)}...</p>
-									</a>
+									</span>
 								</c:forEach>
 							</div>
 						</div>
@@ -113,34 +109,10 @@
 
 							<div class="list-group">
 								<c:forEach items="${participou }" var="projeto">
-									<a href="<c:url value="/projeto/detalhes/${projeto.id }" />"
-										class="list-group-item">
+									<span class="list-group-item">
 										<h4 class="list-group-item-heading">${projeto.nome }</h4>
 										<p class="list-group-item-text">${fn:substring(projeto.descricao, 0, 200)}...</p>
-									</a>
-								</c:forEach>
-							</div>
-						</div>
-
-						<div class="tab-pane fade" id="aba_reprovados">
-							<h5>
-								Projetos <b>reprovados</b> que este usuário <b>participa</b>.
-							</h5>
-							<br>
-							<c:if test="${empty reprovados }">
-								<div class="alert alert-warning">
-									<h4>Atenção!</h4>
-									<p>Não há projetos cadastrados.</p>
-								</div>
-							</c:if>
-
-							<div class="list-group">
-								<c:forEach items="${reprovados }" var="projeto">
-									<a href="<c:url value="/projeto/detalhes/${projeto.id }" />"
-										class="list-group-item">
-										<h4 class="list-group-item-heading">${projeto.nome }</h4>
-										<p class="list-group-item-text">${fn:substring(projeto.descricao, 0, 200)}...</p>
-									</a>
+									</span>
 								</c:forEach>
 							</div>
 						</div>
