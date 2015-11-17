@@ -39,6 +39,7 @@ public class RelatorioController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String visualizarRelatorios(Model model, HttpSession session) {
 		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
+		model.addAttribute("pessoas", pessoaService.getAll());
 		return PAGINA_RELATORIOS;
 	}
 	

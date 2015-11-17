@@ -35,7 +35,7 @@
 
 			<br />
 					<br />
-			<%-- tornaro visivel de acordo com a opção selecionada acima--%>
+			<%-- Form dos projetos aprovados--%>
 			<div id="form_aprovados">
 		
 				<form:form id="relatoriosAprovadosForm"
@@ -56,7 +56,7 @@
 						value="gerar" />
 				</form:form>
 			</div>
-			<%-- tornaro visivel de acordo com a opção selecionada acima--%>
+			<%-- form dos projetos reprovados--%>
 			<div id="form_reprovados">
 				<form:form id="relatoriosRerovadosForm"
 					enctype="multipart/form-data"
@@ -74,9 +74,50 @@
 						value="gerar" />
 				</form:form>
 			</div>
-			<%-- tornaro visivel de acordo com a opção selecionada acima--%>
+			<%-- form por pessoa--%>
 			<div id="form_p-pessoa">
-				FORM BUSCA P/ USUARIO
+				<div class="row">
+					<form:form id="relatoriosPPessoaForm"
+						enctype="multipart/form-data"
+						servletRelativeAction="relatorios/p-pessoa" method="GET"
+						cssClass="form-horizontal">
+
+						<div class="form-group form-item">
+							<label for="idParticipantes" class="col-sm-1 control-label">Nome:</label>
+							<div class="col-sm-5">
+								<select id="participante" name="participanteSelecionado"
+									class="form-control">
+									<c:set var="part" value="${pessoas }"></c:set>
+									<c:forEach items="${pessoas }" var="participante">
+										<c:set var="selected" value=""></c:set>
+										<c:set var="participanteSelecionado"
+											value="id=${participante.id }"></c:set>
+										<c:if test="${fn:contains(part, participanteSelecionado)}">
+											<c:set var="selected" value="selected=\"selected\""></c:set>
+										</c:if>
+										<option value="${participante.id }" ${selected }>${participante.nome }</option>
+									</c:forEach>
+								</select>
+
+							</div>
+							<!-- div select -->
+							<label class="col-sm-1 control-label">Data da submissao:</label>
+							<div class="col-sm-2">
+								<input type="text" name="submissao" id="anoRelatorio"
+									class="form-control data">
+
+							</div>
+							<div class="col-sm-1">
+								<input name="gerar" type="submit" class="btn btn-primary"
+									value="gerar" />
+							</div>
+
+						</div>
+					</form:form>
+				</div>
+				<!-- div row -->
+				
+				<br /> <br />
 			</div>
 			<div class="tab-content">
 		        <div class="tab-pane fade active in" id="tab-projetos-aprovados">

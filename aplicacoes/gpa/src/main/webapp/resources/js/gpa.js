@@ -129,6 +129,12 @@ $(document).ready(function() {
 	    minViewMode: "months",
 	});
 	
+	$("#anoRelatorio").datepicker({
+		format: "yyyy",
+	    viewMode: "years", 
+	    minViewMode: "years",
+	});
+	
 	$(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",
     	showUpload:false,
