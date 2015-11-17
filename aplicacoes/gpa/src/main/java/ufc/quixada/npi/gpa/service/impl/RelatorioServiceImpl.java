@@ -112,9 +112,8 @@ public class RelatorioServiceImpl implements
 			params.put("status", status);
 			params.put("submissao", submissao);
 			System.out.println(submissao);
-			System.out.println(status);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and submissao = TO_DATE (:submissao, 'yyyy/mm')", params);
+					"from Projeto where status = :status and to_char(submissao, 'yyyy-mm') = :submissao", params);
 		}
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
 		projetosBusca = projetoService.getProjetos(status);
@@ -129,7 +128,7 @@ public class RelatorioServiceImpl implements
 		for(Projeto p:projetos){
 			ProjetoReprovadoRelatorio projetoReprovado = new ProjetoReprovadoRelatorio();
 			projetoReprovado.setId(p.getId());
-			projetoReprovado.setNome(p.getNome());
+			projetoReprovado.setNomeProjeto(p.getNome());
 			projetoReprovado.setNomeCoordenador(p.getAutor().getNome());
 			projetoReprovado.setDataDeSubimissao(p.getSubmissao());
 			projetoReprovado.setDataDeAvaliacao(p.getAvaliacao());

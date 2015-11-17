@@ -9,11 +9,11 @@ public class ProjetoReprovadoRelatorio {
 	private Date dataDeSubimissao;
 	private Date dataDeAvaliacao;
 
-	public String getNome() {
+	public String getNomeProjeto() {
 		return nomeProjeto;
 	}
 
-	public void setNome(String nome) {
+	public void setNomeProjeto(String nome) {
 		this.nomeProjeto = nome;
 	}
 
