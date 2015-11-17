@@ -151,30 +151,5 @@
 	</div>
 
 	<jsp:include page="../modulos/footer.jsp" />
-	
-	<script>
-		$(function(){
-			// Permite acessar uma aba específica informando seu ID na URL.
-			// Ex: [URI]/gpa-pesquisa/pessoa/detalhes/7#aba_participa
-		
-			var abaAtual = $('.nav-tabs');
-			abaAtual.on('click', 'a', function(e){
-				var $this = $(this);
-				e.preventDefault();
-				window.location.hash = $this.attr('href');
-				$this.tab('show');
-			});
-			
-			// Tab baseada no Hash
-			function atualizaHash() {
-				abaAtual.find('a[href="'+ window.location.hash +'"]').tab('show');
-			}
-			
-			$(window).bind('hashchange', atualizaHash);
-			if(window.location.hash){
-				atualizaHash();
-			}
-		});
-	</script>
 </body>
 </html>

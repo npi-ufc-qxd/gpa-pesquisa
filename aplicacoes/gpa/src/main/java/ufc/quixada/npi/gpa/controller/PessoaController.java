@@ -1,6 +1,8 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.*;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PARTICIPANTE;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import javax.inject.Inject;
 
@@ -12,16 +14,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
-import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
+import ufc.quixada.npi.gpa.service.ProjetoService;
 
 @Controller
 @RequestMapping("pessoa")
 public class PessoaController {
-	
+
 	@Inject
 	private PessoaService pessoaService;
-	
+
 	@Inject
 	private ProjetoService projetoService;
 
@@ -31,17 +33,13 @@ public class PessoaController {
 		if (pessoa == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
-
 		} else {
 			model.addAttribute("pessoa", pessoa);
 			model.addAttribute("reprovados", projetoService.getProjetos(pessoa.getId(), StatusProjeto.REPROVADO));
 			model.addAttribute("projetos", projetoService.getProjetosByParticipante(pessoa.getId()));
 			model.addAttribute("coordenou", projetoService.getProjetos(pessoa.getId()));
 			model.addAttribute("participou", projetoService.getProjetosByParticipante(pessoa.getId()));
-			
 			return PAGINA_DETALHES_PARTICIPANTE;
 		}
-
 	}
-
 }
