@@ -30,6 +30,9 @@ public class Constants {
 	
 	public static final String PAGINA_RELATORIOS = "direcao/relatorios";
 	
+	public static final String PAGINA_ADMINISTRACAO = "administracao/index";
+	
+	public static final String PAGINA_ADMINISTRACAO_VINCULAR_PAPEL = "administracao/vincularPapel";
 	
 	/** Redirecionamentos */
 	
@@ -38,6 +41,8 @@ public class Constants {
 	public static final String REDIRECT_PAGINA_RELATORIOS = "redirect:/direcao/relatorio";
 	
 	public static final String REDIRECT_PAGINA_INICIAL_DIRECAO = "redirect:/direcao";
+	
+	public static final String REDIRECT_PAGINA_INICIAL_ADMINISTRACAO = "redirect:/administracao";
 	
 	
 	/** Mensagens */
@@ -85,9 +90,18 @@ public class Constants {
 	
 	public static final String MENSAGEM_USUARIO_NAO_ENCONTRADO = "Usuário não encontrado";
 	
+	public static final String MENSAGEM_ERRO_PERSISTIR_USUARIO = "Ocorreu um erro ao persistir o usuário.";
 	
+	public static final String MENSAGEM_ERRO_VINCULAR_PAPEIS = "Ocorreu um erro ao vincular papéis ao usuário.";
+	
+	public static final String MENSAGEM_ERRO_ATUALIZAR_PAPEIS = "Ocorreu um erro ao atualizar papéis";
+	
+	public static final String MENSAGEM_SUCESSO_VINCULAR_PAPEIS = "Papéis vinculados com sucesso!";
 	
 	public static final String PAPEL_DIRECAO = "DIRECAO";
 	
+	public static final String PAPEL_ADMINISTRACAO = "ADMINISTRACAO";
+
+	public static final String PAPEL_COORDENACAO = "COORDENADOR";
 	
 }

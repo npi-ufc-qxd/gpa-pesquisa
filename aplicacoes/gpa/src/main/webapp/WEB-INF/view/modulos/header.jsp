@@ -22,6 +22,11 @@
 	           	<a href="<c:url value="/direcao/relatorios" />" title="Direção">Relatorios</a>
 	       	</li>
        	</sec:authorize>
+       	<sec:authorize ifAnyGranted="ADMINISTRACAO">
+      		<li id="menu-direcao" class="">
+	           	<a href="<c:url value="/administracao" />" title="Administração">Administração</a>
+	       	</li>
+       	</sec:authorize>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">

@@ -34,7 +34,7 @@
 						</div>
 						<label for="autor" class="col-sm-2 control-label">Autor:</label>
 						<div class="col-sm-4 value-label">
-							<label><a href="<c:url value="/pessoa/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></label>
+							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 						</div>
 					</div>
 					<div class="form-group">

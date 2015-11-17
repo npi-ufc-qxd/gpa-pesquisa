@@ -89,30 +89,9 @@
 	
 					<div class="controls">
 						<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
-						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
+						<a href="<c:url value="/projeto"></c:url>" class="btn btn-default">Cancelar</a>
 					</div>
 					
-					<!-- <!-- Modal de confirmação e emição do parecer
-					<div class="modal fade" id="confirm-parecer" tabindex="-1"
-						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-									<h4 class="modal-title" id="confirm-parecerLabel">Emitir Parecer</h4>
-								</div>
-								<div class="modal-body"></div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">Close</button>
-									<button type="submit" class="btn btn-primary">Save</button>
-								</div>
-							</div>
-						</div>
-					</div> -->
 				</form:form>
 			</div><!-- /panel-body -->
 		</div><!-- /panel -->

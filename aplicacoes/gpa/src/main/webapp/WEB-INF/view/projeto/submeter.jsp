@@ -32,6 +32,17 @@
 						<c:out value="${erro }"></c:out>
 					</div>
 				</c:if>
+				
+				<c:if test="${not empty validacao.globalErrors }">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<c:forEach items="${validacao.globalErrors}" var="vg">
+							<p><spring:message code="${vg.defaultMessage}"></spring:message></p>
+						</c:forEach>
+						<a href='<c:url value="/projeto/participacoes/${projeto.id}"></c:url>' class="btn btn-default btn-xs">Vincular Participantes</a>
+					</div>
+				</c:if>
+					
 				<form:form id="submeterProjetoForm" role="form" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="/projeto/submeter" method="POST" cssClass="form-horizontal">
 					<input type="hidden" id="id" name="id" value="${projeto.id }"/>
 					<input type="hidden" id="codigo" name="codigo" value="${projeto.codigo }"/>
@@ -74,21 +85,6 @@
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label class="col-sm-2 control-label field">Participantes:</label>
-						<div class="col-sm-10 field-value">
-							<c:if test="${empty projeto.participacoes }">
-								<label>-</label>
-							</c:if>
-							<ul class="list-inline" style="line-height:2.7em">
-								<c:if test="${not empty projeto.participacoes }">
-								<c:forEach items="${projeto.participacoes }" var="participacao">
-									<li><strong>${participacao.participante.nome}</strong></li>
-								</c:forEach>
-							</c:if>
-							</ul>
-						</div>
-					</div>
 					
 					<div class="form-group">
 						<div class="form-item">
@@ -158,6 +154,65 @@
 						</div>
 					</div>
 					
+					<div class="form-group form-item">
+					
+								<label class="col-sm-2 control-label">Vincular participantes:</label>
+								
+								<div class="col-sm-10 field-value">
+									<c:if test="${empty projeto.participacoes }">
+										<label>  <a id="vincular"
+											href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
+											target="_blank" title="Vincular participantes"
+											class="btn btn-primary"> <i class="fa fa-users"></i>
+										</a>
+										</label>
+										
+									</c:if>
+									<ul class="list-inline" style="line-height: 2.7em">
+										<c:if test="${not empty projeto.participacoes }">
+
+											<label> <a id="vincular"
+												href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
+												target="_blank" title="Vincular participantes"
+												class="btn btn-primary"> <i class="fa fa-users"></i>
+											</a>
+											</label>
+
+											<table id="participantes-table" class="table table-striped table-hover ">
+												<thead>
+													<tr>
+														<th>Participante</th>
+														<th>Início</th>
+														<th>Término</th>
+														<th>Carga Horária Mensal</th>
+														<th>Valor da Bolsa</th>
+
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach var="participacao"
+														items="${projeto.participacoes}">
+														<tr>
+															<td>${participacao.participante.nome }</td>
+															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+															<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
+															<td><fmt:formatNumber type="CURRENCY"
+																	currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</c:if>
+									</ul>
+								</div>
+							</div>
+							<c:if test="${empty projeto.participacoes }">
+								<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>
+							</c:if>
+					
+					
 					<div class="form-group">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-2">
@@ -184,8 +239,8 @@
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
-					<a id="button-delete-file" href="#" class="btn btn-danger">Excluir</a>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					<a id="button-delete-file" href="#" class="btn btn-danger btn-sm">Excluir</a>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
