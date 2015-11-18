@@ -92,7 +92,7 @@ public class ProjetoController {
 
 	@Autowired
 	private DocumentoService documentoService;
-
+	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {
 		Long idUsuarioLogado = getUsuarioLogado(session).getId();
@@ -251,12 +251,12 @@ public class ProjetoController {
 		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 	}
 
-	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.POST)
-	public String adicionarParticipacao(@PathVariable("id") Long id,
+	@RequestMapping(value = "/participacoes/{idProjeto}", method = RequestMethod.POST)
+	public String adicionarParticipacao(@PathVariable("idProjeto") Long idProjeto,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
-		Projeto projeto = projetoService.getProjeto(id);
+		Projeto projeto = projetoService.getProjeto(idProjeto);
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 
 		if (projeto == null) {
@@ -278,13 +278,8 @@ public class ProjetoController {
 			model.addAttribute("validacao", result);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
-		
 		projeto.adicionarParticipacao(participacao);
-		try {
-			projetoService.atualizar(projeto);	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		projetoService.atualizar(projeto);	
 		
 		Calendar calendario = Calendar.getInstance();
 		model.addAttribute("ano", calendario.get(Calendar.YEAR));
