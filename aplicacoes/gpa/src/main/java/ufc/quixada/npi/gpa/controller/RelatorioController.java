@@ -5,11 +5,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_RELATORIOS;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,13 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.model.Relatorio;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoPorDocenteRelatorioService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
-import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
 @RequestMapping("direcao/relatorio")
@@ -84,20 +82,11 @@ public class RelatorioController {
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String visualizarRelatorios(Model model, HttpSession session) {
-		model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
+	public String visualizarRelatorios(Model model, HttpSession session, Authentication authentication) {
+		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
+		model.addAttribute("participantes", pessoaService.getParticipantes(pessoa));
 		
 		return PAGINA_RELATORIOS;
 	}
 	
-	private Pessoa getUsuarioLogado(HttpSession session) {
-		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Pessoa usuario = pessoaService
-					.getPessoa(SecurityContextHolder.getContext()
-							.getAuthentication().getName());
-			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
-		}
-		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
-	}
-
 }
