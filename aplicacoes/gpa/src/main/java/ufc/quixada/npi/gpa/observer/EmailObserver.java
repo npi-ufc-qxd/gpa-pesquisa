@@ -7,7 +7,6 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 
-import org.apache.poi.util.SystemOutLogger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
