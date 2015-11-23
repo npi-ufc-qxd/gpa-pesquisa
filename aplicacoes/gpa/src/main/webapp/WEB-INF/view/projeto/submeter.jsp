@@ -26,12 +26,6 @@
 						<c:out value="${alert }"></c:out>
 					</div>
 				</c:if>
-				<c:if test="${not empty erro}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<c:out value="${erro }"></c:out>
-					</div>
-				</c:if>
 				
 				<c:if test="${not empty validacao.globalErrors }">
 					<div class="alert alert-danger alert-dismissible" role="alert">
@@ -91,15 +85,8 @@
 							<label for="local" class="col-sm-2 control-label"><span class="required">*</span> Local de execução:</label>
 							<div class="col-sm-10">
 								<form:input id="local" path="local" cssClass="form-control" placeholder="Local do projeto" required="required"/>
-								<div class="error-validation">
-									<form:errors path="local"></form:errors>
-								</div>
+								<form:errors path="local" cssClass="error-validation"></form:errors>
 							</div>
-							<c:if test="${not empty erro_local}">
-								<div class="error-validation">
-									<span>${erro_local}</span>
-								</div>
-							</c:if>
 						</div>
 					</div>
 
@@ -108,16 +95,8 @@
 							<label for="atividades" class="col-sm-2 control-label"><span class="required">*</span> Atividades gerais:</label>
 							<div class="col-sm-10">
 								<form:textarea id="atividades" path="atividades" name="atividades" class="form-control" rows="5" placeholder="Atividades" required="required"></form:textarea>
-								<div class="error-validation">
-									<form:errors path="atividades"></form:errors>
-								</div>
+								<form:errors path="atividades" cssClass="error-validation"></form:errors>
 							</div>
-							<c:if test="${not empty erro_atividades}">
-								<div class="error-validation">
-									<span>${erro_atividades}</span>
-								</div>
-							</c:if>
-							
 						</div>
 					</div>
 					
@@ -155,7 +134,6 @@
 					</div>
 					
 					<div class="form-group form-item">
-					
 								<label class="col-sm-2 control-label">Vincular participantes:</label>
 								
 								<div class="col-sm-10 field-value">
