@@ -32,7 +32,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -93,8 +93,8 @@ public class ProjetoController {
 	private DocumentoService documentoService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String listar(Model model, HttpSession session) {
-		Long idUsuarioLogado = getUsuarioLogado(session).getId();
+	public String listar(Model model, Authentication authentication) {
+		Long idUsuarioLogado = pessoaService.getPessoa(authentication.getName()).getId();
 		model.addAttribute("projetos", projetoService.getProjetos(idUsuarioLogado));
 		model.addAttribute("participacoesEmProjetos", projetoService.getParticipacoes(idUsuarioLogado));
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
@@ -112,7 +112,8 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String cadastrar(@RequestParam("anexos") MultipartFile[] anexos, @Valid Projeto projeto,
-			BindingResult result, HttpSession session, RedirectAttributes redirect, Model model) {
+			BindingResult result, HttpSession session, RedirectAttributes redirect, 
+			Authentication authentication, Model model) {
 
 		model.addAttribute("action", "cadastrar");
 
@@ -122,7 +123,7 @@ public class ProjetoController {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
-		projeto.setAutor(getUsuarioLogado(session));
+		projeto.setAutor(pessoaService.getPessoa(authentication.getName()));
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && anexos.length != 0) {
@@ -155,13 +156,13 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/detalhes/{id}")
 	public String verDetalhes(@PathVariable("id") Long id, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa pessoa = getUsuarioLogado(session);
+		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		if (pessoa.getId() == projeto.getAutor().getId() || pessoa.isDirecao()
 				|| (projeto.getParecer() != null && projeto.getParecer().getParecerista().getId() == pessoa.getId())) {
 			List<Comentario> comentarios = projeto.getComentarios();
@@ -182,13 +183,13 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
 	public String editarForm(@PathVariable("id") Long id, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = getUsuarioLogado(session);
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("action", "editar");
@@ -200,14 +201,15 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.GET)
-	public String listarParticipacoes(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String listarParticipacoes(@PathVariable("id") Long id, Model model, 
+			HttpSession session, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
-		Pessoa usuario = getUsuarioLogado(session);
-
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -223,14 +225,14 @@ public class ProjetoController {
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("id") Long id,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
-			Participacao participacao, HttpSession session, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
+			Participacao participacao, HttpSession session, Model model, 
+			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
-		Pessoa usuario = getUsuarioLogado(session);
-
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -259,14 +261,15 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/participacoes/{idProjeto}/excluir/{idParticipacao}")
 	public String excluirParticipacao(@PathVariable("idProjeto") Long idProjeto,
-			@PathVariable("idParticipacao") Long idParticipacao, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+			@PathVariable("idParticipacao") Long idParticipacao, HttpSession session, 
+			Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = getUsuarioLogado(session);
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
@@ -288,7 +291,8 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public String editar(@RequestParam("anexos") List<MultipartFile> anexos, @Valid Projeto projeto,
-			BindingResult result, Model model, HttpSession session, RedirectAttributes redirect) {
+			BindingResult result, Model model, HttpSession session, RedirectAttributes redirect,
+			Authentication authentication) {
 
 		model.addAttribute("action", "editar");
 
@@ -297,8 +301,8 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
-
-		projeto.setAutor(getUsuarioLogado(session));
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		projeto.setAutor(usuario);
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
@@ -330,13 +334,14 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes,
+			Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = getUsuarioLogado(session);
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			projetoService.remover(projeto);
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_REMOVIDO);
@@ -349,7 +354,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/submeter/{id}", method = RequestMethod.GET)
 	public String submeterForm(HttpSession session, @PathVariable("id") Long id, @ModelAttribute Projeto projeto,
-			BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+			BindingResult result, RedirectAttributes redirectAttributes, Model model, Authentication authentication) {
 		projeto = projetoService.getProjeto(id);
 
 		if (projeto == null) {
@@ -357,7 +362,7 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 
-		Pessoa usuario = getUsuarioLogado(session);
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			projetoValidator.validateSubmissao(projeto, result);
 
@@ -381,9 +386,10 @@ public class ProjetoController {
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam("anexos") List<MultipartFile> anexos, @Valid Projeto projeto,
-			BindingResult result, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-
-		projeto.setAutor(getUsuarioLogado(session));
+			BindingResult result, Model model, HttpSession session, RedirectAttributes redirectAttributes,
+			Authentication authentication) {
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		projeto.setAutor(usuario);
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
@@ -417,7 +423,7 @@ public class ProjetoController {
 		projetoValidator.validateSubmissao(projeto, result);
 		if (result.hasErrors()) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes", pessoaService.getParticipantes(getUsuarioLogado(session)));
+			model.addAttribute("participantes", pessoaService.getParticipantes(usuario));
 			model.addAttribute("validacao", result);
 			return PAGINA_SUBMETER_PROJETO;
 
@@ -433,7 +439,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/emitir-parecer/{id-projeto}", method = RequestMethod.GET)
 	public String emitirParecerForm(@PathVariable("id-projeto") long idProjeto, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 
 		if (projeto == null) {
@@ -444,7 +450,8 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		if (!getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())) {
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		if (usuario.equals(projeto.getParecer().getParecerista())) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
@@ -498,13 +505,14 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/comentar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Model comentar(HttpServletRequest request, HttpSession session, Model model) {
+	public @ResponseBody Model comentar(HttpServletRequest request, HttpSession session, Model model,
+			Authentication authentication) {
 		Comentario comentario = new Comentario();
 		comentario.setTexto(request.getParameter("texto"));
 		comentario.setData(new Date());
 		Long id = Long.parseLong(request.getParameter("projetoId"));
 		Projeto projeto = projetoService.getProjeto(id);
-		Pessoa autor = getUsuarioLogado(session);
+		Pessoa autor = pessoaService.getPessoa(authentication.getName());
 		if (projeto == null || autor == null) {
 			return null;
 		}
@@ -521,11 +529,4 @@ public class ProjetoController {
 		return model;
 	}
 
-	private Pessoa getUsuarioLogado(HttpSession session) {
-		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Pessoa usuario = pessoaService.getPessoa(SecurityContextHolder.getContext().getAuthentication().getName());
-			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
-		}
-		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
-	}
 }
