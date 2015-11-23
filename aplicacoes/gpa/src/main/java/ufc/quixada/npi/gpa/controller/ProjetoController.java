@@ -38,7 +38,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -164,51 +163,61 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		if (pessoa.equals(projeto.getAutor()) || (pessoa.isDirecao() 
-				&& !projeto.getStatus().equals( StatusProjeto.NOVO))
-				|| (projeto.getParecer() != null && 
-				projeto.getParecer().getParecerista().equals(pessoa))) {
-			
-			if(pessoa.equals(projeto.getAutor()) || pessoa.isDirecao()){
+		/**AUTOR*/
+		if(pessoa.equals(projeto.getAutor())){
+			if(!projeto.getStatus().equals( StatusProjeto.NOVO)){
 				model.addAttribute("permissaoComentario", true);
+				List<Comentario> comentarios = projeto.getComentarios();
+				Collections.sort(comentarios, new Comparator<Comentario>() {
+					@Override
+					public int compare(Comentario comentario1, Comentario comentario2) {
+						return comentario1.getData().compareTo(comentario2.getData());
+					}
+				});
+				projeto.setComentarios(comentarios);
 			}else{
 				model.addAttribute("permissaoComentario", false);
 			}
-			if(!projeto.getStatus().equals( StatusProjeto.NOVO) 
-				&& (projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista()) 
-				|| pessoa.isDirecao()) && (projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER))){
+			model.addAttribute("permissaoArquivo", true);
+			
+		/**DIRETOR*/	
+		}else if(pessoa.isDirecao()){
+			if(!projeto.getStatus().equals( StatusProjeto.NOVO)){
+				model.addAttribute("permissaoComentario", true);
+				List<Comentario> comentarios = projeto.getComentarios();
+				Collections.sort(comentarios, new Comparator<Comentario>() {
+					@Override
+					public int compare(Comentario comentario1, Comentario comentario2) {
+						return comentario1.getData().compareTo(comentario2.getData());
+					}
+				});
+				projeto.setComentarios(comentarios);
+			}else{
+				model.addAttribute("permissaoComentario", false);
+			}
+			if(projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){
 				model.addAttribute("permissaoParecer", true);
 			}else{
 				model.addAttribute("permissaoParecer", false);
 			}
-			if(pessoa.isDirecao() || (projeto.getParecer() != null 
-					&& pessoa.equals(projeto.getParecer().getParecerista()))){
-				model.addAttribute("permissaoObservacao", true);
-			}else{
-				model.addAttribute("permissaoObservacao", false);
-			}
-			if(projeto.getAutor().equals(pessoa) || (projeto.getParecer() != null 
-					&& pessoa.equals(projeto.getParecer().getParecerista())) 
-					|| pessoa.isDirecao() || projetoService.isParticipante(pessoa, projeto)){
-				model.addAttribute("permissaoArquivo", true);
-			}else{
-				model.addAttribute("permissaoArquivo", false);
-			}
+			model.addAttribute("permissaoObservacao", true);
+			model.addAttribute("permissaoArquivo", true);
 			
-			List<Comentario> comentarios = projeto.getComentarios();
-			Collections.sort(comentarios, new Comparator<Comentario>() {
-				@Override
-				public int compare(Comentario comentario1, Comentario comentario2) {
-					return comentario1.getData().compareTo(comentario2.getData());
-				}
-			});
-			projeto.setComentarios(comentarios);
-			model.addAttribute("projeto", projeto);
-			return PAGINA_DETALHES_PROJETO;
-		} else {
+		/**PARECERISTA*/	
+		}else if(projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista())){
+			if(!projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){	
+				model.addAttribute("permissaoParecer", true);
+			}else{
+				model.addAttribute("permissaoParecer", false);
+			}		
+			model.addAttribute("permissaoObservacao", true);
+			model.addAttribute("permissaoArquivo", true);
+		}else{
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		model.addAttribute("projeto", projeto);
+		return PAGINA_DETALHES_PROJETO;
 	}
 
 	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)

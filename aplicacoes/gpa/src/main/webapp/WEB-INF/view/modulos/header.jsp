@@ -43,7 +43,7 @@
 				</li>
 			</ul>
 			<p class="navbar-right navbar-text">
-				${usuario.nome}
+				${sessionScope.usuario.nome}
 			</p>
 		</div>
 	</div>
