@@ -32,12 +32,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -92,7 +92,7 @@ public class ProjetoController {
 
 	@Autowired
 	private DocumentoService documentoService;
-
+	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {
 		Long idUsuarioLogado = getUsuarioLogado(session).getId();
@@ -156,29 +156,68 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/detalhes/{id}")
 	public String verDetalhes(@PathVariable("id") Long id, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa pessoa = getUsuarioLogado(session);
-		if (pessoa.getId() == projeto.getAutor().getId() || pessoa.isDirecao()
-				|| (projeto.getParecer() != null && projeto.getParecer().getParecerista().getId() == pessoa.getId())) {
-			List<Comentario> comentarios = projeto.getComentarios();
-			Collections.sort(comentarios, new Comparator<Comentario>() {
-				@Override
-				public int compare(Comentario comentario1, Comentario comentario2) {
-					return comentario1.getData().compareTo(comentario2.getData());
-				}
-			});
-			projeto.setComentarios(comentarios);
-			model.addAttribute("projeto", projeto);
-			return PAGINA_DETALHES_PROJETO;
-		} else {
+		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
+		/**AUTOR*/
+		if(pessoa.equals(projeto.getAutor())){
+			if(!projeto.getStatus().equals( StatusProjeto.NOVO)){
+				model.addAttribute("permissaoComentario", true);
+				List<Comentario> comentarios = projeto.getComentarios();
+				Collections.sort(comentarios, new Comparator<Comentario>() {
+					@Override
+					public int compare(Comentario comentario1, Comentario comentario2) {
+						return comentario1.getData().compareTo(comentario2.getData());
+					}
+				});
+				projeto.setComentarios(comentarios);
+			}else{
+				model.addAttribute("permissaoComentario", false);
+			}
+			model.addAttribute("permissaoArquivo", true);
+			
+		/**DIRETOR*/	
+		}else if(pessoa.isDirecao()){
+			if(!projeto.getStatus().equals( StatusProjeto.NOVO)){
+				model.addAttribute("permissaoComentario", true);
+				List<Comentario> comentarios = projeto.getComentarios();
+				Collections.sort(comentarios, new Comparator<Comentario>() {
+					@Override
+					public int compare(Comentario comentario1, Comentario comentario2) {
+						return comentario1.getData().compareTo(comentario2.getData());
+					}
+				});
+				projeto.setComentarios(comentarios);
+			}else{
+				model.addAttribute("permissaoComentario", false);
+			}
+			if(projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){
+				model.addAttribute("permissaoParecer", true);
+			}else{
+				model.addAttribute("permissaoParecer", false);
+			}
+			model.addAttribute("permissaoObservacao", true);
+			model.addAttribute("permissaoArquivo", true);
+			
+		/**PARECERISTA*/	
+		}else if(projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista())){
+			if(!projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){	
+				model.addAttribute("permissaoParecer", true);
+			}else{
+				model.addAttribute("permissaoParecer", false);
+			}		
+			model.addAttribute("permissaoObservacao", true);
+			model.addAttribute("permissaoArquivo", true);
+		}else{
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		model.addAttribute("projeto", projeto);
+		return PAGINA_DETALHES_PROJETO;
 	}
 
 	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
@@ -201,9 +240,10 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.GET)
-	public String listarParticipacoes(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String listarParticipacoes(@PathVariable("id") Long id, Model model, 
+			HttpSession session, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
-		Pessoa usuario = getUsuarioLogado(session);
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
@@ -221,12 +261,13 @@ public class ProjetoController {
 		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 	}
 
-	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.POST)
-	public String adicionarParticipacao(@PathVariable("id") Long id,
+	@RequestMapping(value = "/participacoes/{idProjeto}", method = RequestMethod.POST)
+	public String adicionarParticipacao(@PathVariable("idProjeto") Long idProjeto,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
-			Participacao participacao, HttpSession session, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
-		Projeto projeto = projetoService.getProjeto(id);
-		Pessoa usuario = getUsuarioLogado(session);
+			Participacao participacao, HttpSession session, Model model, 
+			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
+		Projeto projeto = projetoService.getProjeto(idProjeto);
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
@@ -237,7 +278,6 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
-		// Atualiza Participação, para realizar validação
 		participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
 		participacao.setProjeto(projeto);
 		
@@ -248,12 +288,14 @@ public class ProjetoController {
 			model.addAttribute("validacao", result);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
-
 		projeto.adicionarParticipacao(participacao);
-		projetoService.atualizar(projeto);
-
+		projetoService.atualizar(projeto);	
+		
+		Calendar calendario = Calendar.getInstance();
+		model.addAttribute("ano", calendario.get(Calendar.YEAR));
+		model.addAttribute("usuario", usuario);
 		model.addAttribute("projeto", projeto);
-		model.addAttribute("participacao", new Participacao()); // Limpa formulario
+		model.addAttribute("participacao", new Participacao()); 
 		model.addAttribute("pessoas", pessoaService.getAll());
 		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 	}

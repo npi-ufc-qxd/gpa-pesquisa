@@ -10,13 +10,14 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.ufc.quixada.npi.enumeration.QueryType;
-import br.ufc.quixada.npi.repository.GenericRepository;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
+import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
+import br.ufc.quixada.npi.enumeration.QueryType;
+import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
 public class ProjetoServiceImpl implements ProjetoService {
@@ -191,6 +192,16 @@ public class ProjetoServiceImpl implements ProjetoService {
 	private String geraCodigoProjeto(Long id) {
 		NumberFormat formatador = new DecimalFormat("#0000");
 		return "PESQ" + formatador.format(id);
+	}
+
+	@Override
+	public boolean isParticipante(Pessoa pessoa, Projeto projeto) {
+		for (Participacao participacao : projeto.getParticipacoes()) {
+			if (participacao.getParticipante().equals(pessoa)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

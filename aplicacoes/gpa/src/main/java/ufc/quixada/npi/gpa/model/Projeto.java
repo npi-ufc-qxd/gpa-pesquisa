@@ -149,14 +149,6 @@ public class Projeto {
 		this.status = status;
 	}
 
-//	public List<Pessoa> getParticipantes() {
-//		return participantes;
-//	}
-//
-//	public void setParticipantes(List<Pessoa> participantes) {
-//		this.participantes = participantes;
-//	}
-
 	public List<Documento> getDocumentos() {
 		return documentos;
 	}
@@ -326,8 +318,9 @@ public class Projeto {
 	}
 
 	public void adicionarParticipacao(Participacao participacao) {
-		participacoes.add(participacao);
-		participacao.setProjeto(this);
+        if (!getParticipacoes().contains(participacao)) {
+            getParticipacoes().add(participacao);
+        }
 	}
 
 	public void removerParticipacao(Participacao participacao) {

@@ -98,6 +98,7 @@ public class Constants {
 	
 	public static final String MENSAGEM_SUCESSO_VINCULAR_PAPEIS = "Papéis vinculados com sucesso!";
 	
+	/*Papeis*/
 	public static final String PAPEL_DIRECAO = "DIRECAO";
 	
 	public static final String PAPEL_ADMINISTRACAO = "ADMINISTRACAO";
