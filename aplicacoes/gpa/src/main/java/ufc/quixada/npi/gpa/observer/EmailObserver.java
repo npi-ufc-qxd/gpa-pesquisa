@@ -7,6 +7,7 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -52,30 +53,24 @@ public class EmailObserver implements Observer {
 				final Evento eventoCopy = evento;
 				final String emailDiretor = pessoaService.getDirecao().getEmail();
 				final String emailCoordenador = projeto.getAutor().getEmail();
-				final String emailParecerista = projeto.getParecer() != null
-						? projeto.getParecer().getParecerista().getEmail() : "";
+				final String emailParecerista = projeto.getParecer() != null ? projeto.getParecer().getParecerista().getEmail() : "";
 				final String nomeCoordenador = projeto.getAutor().getNome();
-				final String nomeParecerista = projeto.getParecer() != null
-						? projeto.getParecer().getParecerista().getNome() : "";
-				final String nomeProjeto = new StringBuilder().append(projeto.getCodigo()).append(" - ")
-						.append(projeto.getNome()).toString();
+				final String nomeParecerista = projeto.getParecer() != null ? projeto.getParecer().getParecerista().getNome() : "";
+				final String nomeProjeto = new StringBuilder().append(projeto.getCodigo()).append(" - ") .append(projeto.getNome()).toString();
 				final String subject = properties.getProperty(ASSUNTO).replace(NOME_PROJETO, nomeProjeto);
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				final String prazo = projeto.getParecer() != null ? dateFormat.format(projeto.getParecer().getPrazo())
-						: "";
+				final String prazo = projeto.getParecer() != null ? dateFormat.format(projeto.getParecer().getPrazo()) : "";
 
 				Runnable enviarEmail = new Runnable() {
-
 					@Override
 					public void run() {
-
+						String body = null;
 						Email email = new Email();
-
 						String emailGPA = "naoresponda@gpapesquisa.com";
 
 						switch (eventoCopy) {
 						case SUBMISSAO:
-							String body = properties.getProperty(CORPO_SUBMISSAO).replaceAll(NOME_PROJETO, nomeProjeto)
+							body = properties.getProperty(CORPO_SUBMISSAO).replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(NOME_COORDENADOR, nomeCoordenador);
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
@@ -91,7 +86,6 @@ public class EmailObserver implements Observer {
 						case ATRIBUICAO_PARECERISTA:
 							body = properties.getProperty(CORPO_ATRIBUICAO_PARECERISTA_COORDENADOR)
 									.replaceAll(NOME_PROJETO, nomeProjeto);
-
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
@@ -183,18 +177,14 @@ public class EmailObserver implements Observer {
 							}
 							break;
 						}
-
 					}
 				};
 
 				Thread threadEnviarEmail = new Thread(enviarEmail);
 				threadEnviarEmail.start();
-
 			}
 		} catch (IOException ex) {
-
+			System.out.println(ex);
 		}
-
 	}
-
 }
