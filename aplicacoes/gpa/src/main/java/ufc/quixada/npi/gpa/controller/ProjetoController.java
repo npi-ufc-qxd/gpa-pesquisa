@@ -35,6 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -348,9 +349,8 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/submeter/{id}", method = RequestMethod.GET)
-	public String submeterForm(HttpSession session, @PathVariable("id") Long id, @ModelAttribute Projeto projeto,
-			BindingResult result, RedirectAttributes redirectAttributes, Model model) {
-		projeto = projetoService.getProjeto(id);
+	public String submeterForm(HttpSession session, @PathVariable("id") Long id, RedirectAttributes redirectAttributes, Model model) {
+		Projeto projeto = projetoService.getProjeto(id);
 
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
@@ -359,12 +359,18 @@ public class ProjetoController {
 
 		Pessoa usuario = getUsuarioLogado(session);
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
+			
+			// Adicionando o @ModelAttribute ao BindingResult
+		    BindingResult result = new BeanPropertyBindingResult(projeto, "projeto");
 			projetoValidator.validateSubmissao(projeto, result);
 
 			if (result.hasErrors()) {
 				model.addAttribute("projeto", projeto);
 				model.addAttribute("alert", Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
-				model.addAttribute("validacao", result);
+				
+				if(result.hasGlobalErrors()){
+					model.addAttribute("validacao", result);
+				}
 				return PAGINA_SUBMETER_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
