@@ -112,3 +112,6 @@ footer img {
 	display: block;
 	margin-top: 5px;
 }
+.navbar-default .navbar-text {
+    color: #fff;
+}

@@ -46,8 +46,10 @@ public class DocumentoController {
 		try {
 			Projeto projeto = projetoService.getProjeto(idProjeto);
 			Documento documento = documentoService.getDocumento(idArquivo);
-			if(documento != null && projeto != null && (getUsuarioLogado(session).equals(projeto.getAutor()) || 
-					getUsuarioLogado(session).isDirecao() || (projeto.getParecer() != null && getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())))) {
+			if(documento != null && projeto != null && (getUsuarioLogado(session).equals(projeto.getAutor()) 
+				||getUsuarioLogado(session).isDirecao() 
+				|| (projeto.getParecer() != null && getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())))
+				&& projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)) {
 				InputStream is = new ByteArrayInputStream(documento.getArquivo());
 				response.setContentType(documento.getExtensao());
 				response.setHeader("Content-Disposition", "attachment; filename=" + documento.getNome());

@@ -109,4 +109,13 @@ public class Participacao {
 				+ ", anoInicio=" + anoInicio + ", mesTermino=" + mesTermino + ", anoTermino=" + anoTermino + ", bolsaValorMensal="
 				+ bolsaValorMensal + ", cargaHorariaMensal=" + cargaHorariaMensal + "]";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Participacao)){
+			return false;
+		}
+		Participacao participacao = (Participacao) obj;
+		return toString().equals(participacao.toString());
+	}
 }

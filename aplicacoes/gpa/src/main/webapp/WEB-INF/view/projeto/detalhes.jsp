@@ -67,14 +67,22 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Status:</label>
-						<div class="col-sm-4 value-label">
-							<label>${projeto.status.descricao }</label>
-						</div>
-						<label class="col-sm-3 control-label">Autor:</label>
-						<div class="col-sm-3 value-label">
-							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
-						</div>
+						<c:if test="${permissaoParecer == true }">
+							<label class="col-sm-2 control-label">Status:</label>
+							<div class="col-sm-4 value-label">
+								<label>${projeto.status.descricao }</label>
+							</div>
+							<label class="col-sm-3 control-label">Autor:</label>
+							<div class="col-sm-3 value-label">
+								<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
+							</div>
+						</c:if>
+						<c:if test="${permissaoParecer == false }">
+							<label class="col-sm-2 control-label">Autor:</label>
+							<div class="col-sm-3 value-label">
+								<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
+							</div>
+						</c:if>
 					</div>
 			
 					<div class="form-group">
@@ -105,18 +113,20 @@
 								</label>
 							</c:if>
 						</div>
-						<div class="col-sm-3 control-label">
-							<c:if test="${not empty projeto.parecer.dataRealizacao }">
-								<label>Data de emissão do parecer:</label>
-							</c:if>
-						</div>
-						<div class="col-sm-3 value-label">
-							<c:if test="${not empty projeto.parecer.dataRealizacao }">
-								<label>
-									<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" />
-								</label>
-							</c:if>
-						</div>
+						<c:if test="${permissaoParecer == true }">
+							<div class="col-sm-3 control-label">
+								<c:if test="${not empty projeto.parecer.dataRealizacao }">
+									<label>Data de emissão do parecer:</label>
+								</c:if>
+							</div>
+							<div class="col-sm-3 value-label">
+								<c:if test="${not empty projeto.parecer.dataRealizacao }">
+									<label>
+										<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" />
+									</label>
+								</c:if>
+							</div>
+						</c:if>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Local de execução:</label>
@@ -169,22 +179,23 @@
 							</c:if>
 						</div>
 					</div>
-					
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Anexos:</label>
-						<div class="col-sm-10 value-label">
-							<c:if test="${empty projeto.documentos }">
-								<label>-</label>						
-							</c:if>				
-							<c:if test="${not empty projeto.documentos }">
-								<c:forEach items="${projeto.documentos }" var="documento">
-									<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label><br>							
-								</c:forEach>
-							</c:if>
+					<c:if test="${permissaoArquivo == true }">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Anexos:</label>
+							<div class="col-sm-10 value-label">
+								<c:if test="${empty projeto.documentos }">
+									<label>-</label>						
+								</c:if>				
+								<c:if test="${not empty projeto.documentos }">
+									<c:forEach items="${projeto.documentos }" var="documento">
+										<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label><br>							
+									</c:forEach>
+								</c:if>
+							</div>
 						</div>
-					</div>
+					</c:if>
 							
-					<sec:authorize ifAnyGranted="DIRETOR">
+					<c:if test="${permissaoObservacao == true }">
 						<h4 class="subtitle">Observações do Diretor</h4>
 						<span class="line"></span>
 						<div class="form-group">
@@ -192,7 +203,7 @@
 								<p class="value-label">${projeto.parecer.observacao}</p>				
 							</div>				   		
 						</div>
-					</sec:authorize>
+					</c:if>
 								
 					<sec:authorize ifAnyGranted="DIRETOR">
 						<c:if test="${projeto.parecer != null}">
@@ -232,40 +243,33 @@
 						</c:if>
 					</sec:authorize>								
 					
-					<c:if test="${projeto.status == 'NOVO'}">
-					
-					<h4 class="subtitle">Ações</h4>
-					<span class="line"></span>
-					<!-- Botões de ações -->
-						
-
-					</c:if>
-					
-					<h4 class="subtitle">Comentários</h4>
-					<span class="line"></span>
-					<div id="comentarios" class="col-sm-12">
-						<c:forEach items="${projeto.comentarios }" var="comentario">
-							<div class="panel panel-default">
-								<div class="panel-heading">${comentario.autor.nome } 
-									<span class="date-comment"><fmt:formatDate pattern="dd/MM/yyyy" value="${comentario.data }"/> - 
-									<fmt:formatDate pattern="HH:mm" value="${comentario.data }" /></span>
+					<c:if test="${permissaoComentario == true }">
+						<h4 class="subtitle">Comentários</h4>
+						<span class="line"></span>
+						<div id="comentarios" class="col-sm-12">
+							<c:forEach items="${projeto.comentarios }" var="comentario">
+								<div class="panel panel-default">
+									<div class="panel-heading">${comentario.autor.nome } 
+										<span class="date-comment"><fmt:formatDate pattern="dd/MM/yyyy" value="${comentario.data }"/> - 
+										<fmt:formatDate pattern="HH:mm" value="${comentario.data }" /></span>
+									</div>
+									<div class="panel-body">${comentario.texto }</div>
 								</div>
-								<div class="panel-body">${comentario.texto }</div>
-							</div>
-						</c:forEach>
-					</div>
-					
-					<form id="comentarForm">
-						<div id="div-comentario" class="col-sm-12 form-item">
-							<div id="campo-comentario" class="col-sm-12">
-								<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário" required="required"></textarea>
-							</div>
+							</c:forEach>
 						</div>
-						<br>
-						<div class="controls">
-							<input id="comentar" name="comentar" type="submit" class="btn btn-primary" value="Enviar" />
-						</div>
-					</form>
+						
+						<form id="comentarForm">
+							<div id="div-comentario" class="col-sm-12 form-item">
+								<div id="campo-comentario" class="col-sm-12">
+									<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário" required="required"></textarea>
+								</div>
+							</div>
+							<br>
+							<div class="controls">
+								<input id="comentar" name="comentar" type="submit" class="btn btn-primary" value="Enviar" />
+							</div>
+						</form>
+					</c:if>
 				</div> <!-- form-horizontal -->
 			</div> <!-- /panel-body -->
 		</div> <!-- /panel -->
