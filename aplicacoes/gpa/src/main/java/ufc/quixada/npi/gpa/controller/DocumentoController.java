@@ -1,6 +1,7 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.*;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DOCUMENTO_INEXISTENTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +25,8 @@ import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
-import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
-import ufc.quixada.npi.gpa.utils.Constants;
+import ufc.quixada.npi.gpa.service.ProjetoService;
 
 @Controller
 @RequestMapping("documento")
@@ -42,13 +42,16 @@ public class DocumentoController {
 	private PessoaService pessoaService;
 	
 	@RequestMapping(value = "/{id-projeto}/{id-arquivo}", method = RequestMethod.GET)
-	public void getArquivo(@PathVariable("id-projeto") Long idProjeto, @PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, HttpSession session) {
+	public void getArquivo(@PathVariable("id-projeto") Long idProjeto, 
+			@PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, 
+			HttpSession session, Authentication authentication) {
 		try {
 			Projeto projeto = projetoService.getProjeto(idProjeto);
 			Documento documento = documentoService.getDocumento(idArquivo);
-			if(documento != null && projeto != null && (getUsuarioLogado(session).equals(projeto.getAutor()) 
-				||getUsuarioLogado(session).isDirecao() 
-				|| (projeto.getParecer() != null && getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())))
+			Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
+			if(documento != null && projeto != null && (pessoa.equals(projeto.getAutor()) 
+				||pessoa.isDirecao() 
+				|| (projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista())))
 				&& projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)) {
 				InputStream is = new ByteArrayInputStream(documento.getArquivo());
 				response.setContentType(documento.getExtensao());
@@ -61,7 +64,7 @@ public class DocumentoController {
 	}
 	
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
-	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, HttpSession session) {
+	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, HttpSession session, Authentication authentication) {
 		ModelMap model = new ModelMap();
 		Documento documento = documentoService.getDocumento(id);
 		if(documento == null) {
@@ -69,7 +72,8 @@ public class DocumentoController {
 			model.addAttribute("mensagem", MENSAGEM_DOCUMENTO_INEXISTENTE);
 			return model;
 		}
-		if(!getUsuarioLogado(session).equals(documento.getProjeto().getAutor()) || !documento.getProjeto().getStatus().equals(StatusProjeto.NOVO)) {
+		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
+		if(!pessoa.equals(documento.getProjeto().getAutor()) || !documento.getProjeto().getStatus().equals(StatusProjeto.NOVO)) {
 			model.addAttribute("result", "erro");
 			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
 			return model;
@@ -78,15 +82,4 @@ public class DocumentoController {
 		model.addAttribute("result", "ok");
 		return model;
 	}
-	
-	private Pessoa getUsuarioLogado(HttpSession session) {
-		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Pessoa usuario = pessoaService
-					.getPessoa(SecurityContextHolder.getContext()
-							.getAuthentication().getName());
-			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
-		}
-		return (Pessoa) session.getAttribute(Constants.USUARIO_LOGADO);
-	}
-
 }
