@@ -23,6 +23,8 @@
 				<sec:authorize ifAnyGranted="DIRECAO">
 					<li id="menu-direcao" class=""><a
 						href="<c:url value="/direcao" />" title="Direção">Direção</a></li>
+					<li id="menu-direcao" class=""><a
+						href="<c:url value="/direcao/buscar" />" title="Buscar Participantes">Buscar Participantes</a></li>
 				</sec:authorize>
 				<sec:authorize ifAnyGranted="ADMINISTRACAO">
 					<li id="menu-administracao" class=""><a
