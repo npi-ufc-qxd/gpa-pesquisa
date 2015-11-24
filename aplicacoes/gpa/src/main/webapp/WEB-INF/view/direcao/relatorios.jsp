@@ -38,7 +38,8 @@
 			</div>
 
 			<br />
-					<br />
+			<br />
+			<c:if test="${empty relatorio}">
 			<%-- Form dos projetos aprovados--%>
 			<div id="form_aprovados">
 		
@@ -123,6 +124,7 @@
 				
 				<br /> <br />
 			</div>
+			</c:if>
 			<!-- TAB APROVADOS -->
 			<div class="tab-content">
 		        <div class="tab-pane fade active in" id="tab-projetos-aprovados">
@@ -204,8 +206,8 @@
 								<tr>
 									<th>Nome do Projeto</th>
 									<th>Vínculo</th>
-									<th>Carga Horária</th>
-									<th>Valor da Bolsa</th>
+									<!-- <th>Carga Horária</th>
+									<th>Valor da Bolsa</th> -->
 									<th></th>
 								</tr>
 							</thead>
@@ -214,8 +216,8 @@
 									<tr>
 										<td>${projeto.nomeProjeto}</td>
 										<td>${projeto.vinculo}</td>
-										<td>${projeto.cargaHoraria}</td>
-										<td>${projeto.valorBolsa}</td>
+										<%-- <td>${projeto.cargaHoraria}</td>
+										<td>${projeto.valorBolsa}</td> --%>
 										<td><a
 											href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 										</td>
