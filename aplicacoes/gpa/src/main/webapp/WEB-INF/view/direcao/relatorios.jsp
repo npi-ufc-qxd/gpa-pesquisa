@@ -21,6 +21,7 @@
 		</div>
 		<div class="panel-body">
 			<div class="row">
+				<c:if test="${empty relatorio}">
 				<label class="col-sm-2 control-label">Tipo de Relatorio:</label>
 				<div class="col-sm-6">
 					<select id="relatorio" name="relatorioParam" class="form-control">
@@ -30,11 +31,15 @@
 						<option value="POR_USUARIO">PROJETOS POR USUÁRIO</option>
 					</select>
 				</div>
-				
+				</c:if>
+				<c:if test="${not empty relatorio}">
+				<a href="<c:url value="/direcao/relatorios" />" title="Direção" class="btn btn-primary">Nova consulta</a>
+				</c:if>
 			</div>
 
 			<br />
-					<br />
+			<br />
+			<c:if test="${empty relatorio}">
 			<%-- Form dos projetos aprovados--%>
 			<div id="form_aprovados">
 		
@@ -83,19 +88,20 @@
 						cssClass="form-horizontal">
 
 						<div class="form-group form-item">
-							<label for="idParticipantes" class="col-sm-1 control-label">Nome:</label>
+							<label class="col-sm-1 control-label">Nome:</label>
 							<div class="col-sm-5">
-								<select id="participante" name="participanteSelecionado"
-									class="form-control">
+								<select id="select_pessoaRelatorio" name="id"
+									class="form-control" required>
 									<c:set var="part" value="${pessoas }"></c:set>
-									<c:forEach items="${pessoas }" var="participante">
+									<option value=""></option>
+									<c:forEach items="${pessoas }" var="pessoa">
 										<c:set var="selected" value=""></c:set>
 										<c:set var="participanteSelecionado"
-											value="id=${participante.id }"></c:set>
+											value="id=${pessoa.id }"></c:set>
 										<c:if test="${fn:contains(part, participanteSelecionado)}">
 											<c:set var="selected" value="selected=\"selected\""></c:set>
 										</c:if>
-										<option value="${participante.id }" ${selected }>${participante.nome }</option>
+										<option value="${pessoa.id }">${pessoa.nome }</option>
 									</c:forEach>
 								</select>
 
@@ -103,11 +109,11 @@
 							<!-- div select -->
 							<label class="col-sm-1 control-label">Data da submissao:</label>
 							<div class="col-sm-2">
-								<input type="text" name="submissao" id="anoRelatorio"
+								<input type="text" name="ano" id="anoRelatorio"
 									class="form-control data">
 
 							</div>
-							<div class="col-sm-1">
+							<div class="col-sm-1" id="submit-p-pessoa">
 								<input name="gerar" type="submit" class="btn btn-primary"
 									value="gerar" />
 							</div>
@@ -115,16 +121,19 @@
 						</div>
 					</form:form>
 				</div>
-				<!-- div row -->
 				
 				<br /> <br />
 			</div>
+			</c:if>
+			<!-- TAB APROVADOS -->
 			<div class="tab-content">
 		        <div class="tab-pane fade active in" id="tab-projetos-aprovados">
-		        	<c:if test="${empty relatorio}">
-						<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
+		        	<c:if test="${not empty relatorio}">
+						<c:if test="${empty relatorio.projetosAprovados}"><c:if test="${empty relatorio.projetosReprovados}"><c:if test="${empty relatorio.projetosPorPessoa}">
+							<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
+						</c:if></c:if></c:if>
 					</c:if>
-					<c:if test="${not empty relatorio}">
+					<c:if test="${not empty relatorio.projetosAprovados}">
 						<table id="meus-projetos" class="display">
 							<thead>
 								<tr>
@@ -155,12 +164,11 @@
 						</table>
 					</c:if>
 	        	</div>
-	        	
-	        	<div class="tab-pane fade active in" id="tab-projetos-reprovados">
-		        	<c:if test="${empty relatorio}">
-						<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
-					</c:if>
-					<c:if test="${not empty relatorio}">
+	        	</div>
+	        	<!-- TAB REPROVADOS -->
+	        	<div class="tab-content">
+	        	<div class="tab-pane fade active in" id="tab-projetos-aprovados">
+					<c:if test="${not empty relatorio.projetosReprovados}">
 						<table id="meus-projetos" class="display">
 							<thead>
 								<tr>
@@ -189,6 +197,37 @@
 	        	</div>
 	        	
 			</div>
+			<!-- TAB P/ PESSOA -->
+			<div calss="tab-content">
+				<div class="tab-pane fade active in" id="tab-p-pessoa">
+					<c:if test="${not empty relatorio.projetosPorPessoa}">
+						<table id="meus-projetos" class="display">
+							<thead>
+								<tr>
+									<th>Nome do Projeto</th>
+									<th>Vínculo</th>
+									<!-- <th>Carga Horária</th>
+									<th>Valor da Bolsa</th> -->
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetosPorPessoa}">
+									<tr>
+										<td>${projeto.nomeProjeto}</td>
+										<td>${projeto.vinculo}</td>
+										<%-- <td>${projeto.cargaHoraria}</td>
+										<td>${projeto.valorBolsa}</td> --%>
+										<td><a
+											href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:if>
+				</div>
+			</div>
 		</div>
 	</div>
 	<jsp:include page="../modulos/footer.jsp" />
@@ -200,6 +239,7 @@
 		$("#form_aprovados").hide();
 		$("#form_reprovados").hide();
 		$("#form_p-pessoa").hide();
+	
 		
 	$("#relatorio").change(function() {
 		$("#form_aprovados").hide();
@@ -216,77 +256,10 @@
 				$("#form_p-pessoa").slideToggle("slow");
 			}
 		});
-
+	
+	
 	});
 </script>
 </body>	
-	<%-- <div class="container">
-		<jsp:include page="../modulos/header.jsp" />
-		<c:if test="${not empty erro}">
-			<div class="alert alert-danger alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<c:out value="${erro}"></c:out>
-			</div>
-		</c:if>
 
-		<div class="formulario">
-			<h2>Relatórios</h2>
-			
-			<!-- Forma de visualização opcional -->
-			<div  class="col-sm-6 control-label">
-
-				<div class="formulario">
-				<h3>Projetos Aprovados</h3>
-							<form:form method="GET" action="/gpa-pesquisa/projeto/relatorio-aprovados" cssClass="form-horizontal">
-								<h5>Intervalo de Início</h5>
-								<input data-provide="datepicker" name="iniInterInicio" type="text">
-								<input data-provide="datepicker" name="fimInterInicio" type="text">
-								<h5>Intervalo de Término</h5>
-								<input data-provide="datepicker" name="iniInterTermino"type="text">
-								<input data-provide="datepicker" name="fimInterTermino"type="text"><br>
-								<button type="submit" class="btn btn-default">Gerar</button>
-							</form:form>
-
-							<a href="<c:url value="/projeto/relatorio-aprovados" />"
-								title="Visualizar Relatorios Reprovados">Visualizar Relatórios
-								Aprovados</a>
-				</div>
-				
-				<div class="formulario">
-							<h3>Projetos Reprovados</h3>
-					<form:form method = "GET" action="/gpa-pesquisa/projeto/relatorio-reprovados" cssClass = "form-horizontal">
-							<h5>Intervalo da Submissão</h5>
-							<input data-provide="datepicker" name="iniInter" type="text">
-							<input data-provide="datepicker" name="fimInter" type="text"><br>
-							<button type="submit" class="btn btn-default">Gerar</button>
-					</form:form>
-				</div>
-				
-				<div class="formulario">
-							<h3>Projetos por docente</h3><br>
-							<form:form method ="GET" action="/gpa-pesquisa/projeto/relatorio-projeto-por-docente"  cssClass = "form-horizontal">
-								<h4>Participantes:</h4>
-									<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple">
-										<c:set var="part" value="${projeto.participantes }"></c:set>
-										<c:forEach items="${participantes }" var="participante">
-											<c:set var="selected" value=""></c:set>
-											<c:set var="idParticipante" value="id=${participante.id }"></c:set>
-											<option value="${participante.id }" ${selected }>${participante.nome }</option>
-										</c:forEach>
-									</select>
-									<span class="campo-obrigatorio"><span class="required">*</span> Campo obrigatório</span>
-									<h5>Ano</h5>
-									<input id="pickerYear" type="text" name="ano" />
-									<span class="add-on"><i class="icon-th"></i></span> <br>     
-									<button type="submit" class="btn btn-default">Gerar</button>
-							</form:form>
-						
-					</div>
-				</div>
-			</div>
-		</div>		
-		
-</body> --%>
 </html>
