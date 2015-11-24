@@ -21,10 +21,20 @@
 					href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto">Novo
 						Projeto</a></li>
 				<sec:authorize ifAnyGranted="DIRECAO">
-					<li id="menu-direcao" class=""><a
-						href="<c:url value="/direcao" />" title="Direção">Direção</a></li>
-					<li id="menu-direcao" class=""><a
-						href="<c:url value="/direcao/buscar" />" title="Buscar Participantes">Buscar Participantes</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" 
+							data-toggle="dropdown" role="button" 
+		              		aria-haspopup="true" aria-expanded="false">
+		              		Direção <span class="caret"></span>
+		              	</a>
+						<ul class="dropdown-menu " role="menu">
+							<li id="menu-direcao" class=""><a
+								href="<c:url value="/direcao" />" title="Direção">Direção</a></li>
+							<li role="separator" class="divider"></li>
+							<li id="menu-direcao" class=""><a
+								href="<c:url value="/direcao/buscar" />" title="Buscar Participantes">Buscar Participantes</a></li>
+						</ul>
+					</li>
 				</sec:authorize>
 				<sec:authorize ifAnyGranted="ADMINISTRACAO">
 					<li id="menu-administracao" class=""><a

@@ -115,3 +115,6 @@ footer img {
 .navbar-default .navbar-text {
     color: #fff;
 }
+.dropdown-menu > li > a {
+	color:#000;
+}
