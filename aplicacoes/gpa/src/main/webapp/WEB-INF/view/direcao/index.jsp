@@ -36,7 +36,6 @@
 					<ul class="nav nav-tabs">
 						<li class="active"><a aria-expanded="true" href="#tab-em-tramitacao" data-toggle="tab">Em tramitação <span class="badge">${projetosSubmetidos.size() }</span></a></li>
 						<li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
-						<li class=""><a aria-expanded="false" href="#tab-participantes" data-toggle="tab">Participantes <span class="badge">${participantes.size() }</span></a></li>
 					</ul>
 				    <div class="tab-content">
 				       	<div  class="tab-pane fade active in" id="tab-em-tramitacao">
@@ -113,29 +112,6 @@
 												<td>${projeto.status.descricao}</td>
 												<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.avaliacao }" /></td>
 												<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</c:if>
-				       	</div>
-				       	<div  class="tab-pane fade" id="tab-participantes">
-					       	<c:if test="${empty participantes}">
-								<div class="alert alert-warning" role="alert">Não há participantes em projetos.</div>
-							</c:if>
-							<c:if test="${not empty participantes}">
-								<table id="participantes-projetos" class="display">
-									<thead>
-										<tr>
-											<th>Nome</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="participante" items="${participantes}">
-											<tr>
-												<td>
-													<a href="<c:url value="/pessoa/detalhes/${participante.id}" ></c:url>">${participante.nome}</a>
-												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
