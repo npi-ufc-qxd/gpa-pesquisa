@@ -15,6 +15,7 @@ import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.utils.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.ldap.model.Usuario;
+import br.ufc.quixada.npi.ldap.service.UsuarioService;
 import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
@@ -28,6 +29,9 @@ public class PessoaServiceImpl implements PessoaService {
 	
 	@Inject 
 	private PapelService papelService;
+	
+	@Inject 
+	private UsuarioService usuarioService;
 
 	@Override
 	public Pessoa getPessoa(String cpf) {
@@ -123,6 +127,21 @@ public class PessoaServiceImpl implements PessoaService {
 			}
 		}
 		return oldPessoa;
+	}
+
+	@Override
+	public List<Pessoa> getUsuariosByNomeOuCpf(String busca) {
+		List<Usuario> usuarios = usuarioService.getByCpfOrNome(busca);
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		for (Usuario usuario : usuarios) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("cpf", usuario.getCpf());
+			Pessoa pessoa = pessoaRepository.findFirst(QueryType.JPQL, "from Pessoa where cpf = :cpf",params, 0);
+			if(pessoa !=null && !pessoas.contains(pessoa) ){
+				pessoas.add(pessoa);
+			}
+		}
+		return pessoas;
 	}
 
 }

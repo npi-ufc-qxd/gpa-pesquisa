@@ -31,5 +31,7 @@ public interface PessoaService {
 	void save(Pessoa pessoa);
 
 	Pessoa vincularPapeis(Pessoa pessoa, Pessoa oldPessoa);
+
+	List<Pessoa> getUsuariosByNomeOuCpf(String busca);
 	
 }

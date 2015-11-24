@@ -21,8 +21,24 @@
 					href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto">Novo
 						Projeto</a></li>
 				<sec:authorize ifAnyGranted="DIRECAO">
-					<li id="menu-direcao" class=""><a
-						href="<c:url value="/direcao" />" title="Direção">Direção</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" 
+							data-toggle="dropdown" role="button" 
+		              		aria-haspopup="true" aria-expanded="false">
+		              		Direção <span class="caret"></span>
+		              	</a>
+						<ul class="dropdown-menu " role="menu">
+							<li id="menu-direcao" class=""><a
+								href="<c:url value="/direcao" />" title="Projetos">
+								<i class="glyphicon glyphicon-briefcase"></i> Projetos</a>
+							</li>
+							<li role="separator" class="divider"></li>
+							<li id="menu-direcao" class=""><a
+								href="<c:url value="/direcao/buscar" />" title="Buscar Participantes">
+								<i class="glyphicon glyphicon-search"></i> Buscar Participantes</a>
+							</li>
+						</ul>
+					</li>
 				</sec:authorize>
 				<sec:authorize ifAnyGranted="ADMINISTRACAO">
 					<li id="menu-administracao" class=""><a
@@ -38,7 +54,7 @@
 	              	aria-haspopup="true" aria-expanded="false"></a>
 					<ul class="dropdown-menu " role="menu">
 						<li><a href="<c:url value="/j_spring_security_logout" />"
-							title="Sair">Sair</a></li>
+							title="Sair"><i class="glyphicon glyphicon-log-out"></i> Sair</a></li>
 					</ul>
 				</li>
 			</ul>

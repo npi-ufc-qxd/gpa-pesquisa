@@ -20,6 +20,8 @@ public class Constants {
 	
 	public static final String PAGINA_INICIAL_DIRECAO = "direcao/index";
 	
+	public static final String PAGINA_DIRECAO_BUSCAR_PESSOA = "direcao/buscar-participante";
+	
 	public static final String PAGINA_EMITIR_PARECER = "projeto/emitir-parecer";
 	
 	public static final String PAGINA_ATRIBUIR_PARECERISTA = "direcao/atribuir-parecerista";
@@ -44,6 +46,7 @@ public class Constants {
 	
 	public static final String REDIRECT_PAGINA_INICIAL_ADMINISTRACAO = "redirect:/administracao";
 	
+	public static final String REDIRECT_PAGINA_BUSCAR_PARTICIPANTE = "redirect:/direcao/buscar";
 	
 	/** Mensagens */
 	public static final String MENSAGEM_PERMISSAO_NEGADA = "Permissão negada";

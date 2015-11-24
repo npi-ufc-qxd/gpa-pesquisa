@@ -5,19 +5,24 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECERISTA_ATRIBUIDO
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_AVALIADO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_AVALIAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DIRECAO_BUSCAR_PESSOA;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_INICIAL_DIRECAO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_DIRECAO;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -167,5 +172,24 @@ public class DirecaoController {
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
 		notificacaoService.notificar(projeto, Evento.AVALIACAO);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
+	}
+	@RequestMapping(value = "/buscar", method = RequestMethod.GET)
+	public String paginaInicial(Model model, Authentication authentication) {
+		return PAGINA_DIRECAO_BUSCAR_PESSOA;
+	}
+	
+	@RequestMapping(value = "/buscar", method = RequestMethod.POST)
+	public String buscarPessoa(@RequestParam("busca") String busca, Model model,
+			RedirectAttributes redirectAttributes) {
+		
+		model.addAttribute("busca", busca);
+		List<Pessoa> pessoas = pessoaService.getUsuariosByNomeOuCpf(busca);
+		if (!pessoas.isEmpty()) {
+			model.addAttribute("pessoas", pessoas);
+		} else {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
+			return REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
+		}
+		return PAGINA_DIRECAO_BUSCAR_PESSOA;
 	}
 }

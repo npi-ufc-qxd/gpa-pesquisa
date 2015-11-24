@@ -40,9 +40,7 @@ public class AdministracaoController {
 	private PapelService papelService;
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String paginaInicial(Model model, Authentication authentication) {
-		Usuario usuario = administracaoService.getUsuariosByCpf(authentication.getName());
-		model.addAttribute("usuario", usuario);
+	public String paginaInicial(Model model) {
 		return PAGINA_ADMINISTRACAO;
 	}
 	
@@ -53,22 +51,18 @@ public class AdministracaoController {
 		map.addAttribute("busca", busca);
 		
 		List<Usuario> usuarios = administracaoService.getUsuariosByNomeOuCpf(busca);
-		Usuario usuario = administracaoService.getUsuariosByCpf(authentication.getName());
 		if (!usuarios.isEmpty()) {
 			map.addAttribute("pessoas", usuarios);
 		} else {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_INICIAL_ADMINISTRACAO;
 		}
-		
-		map.addAttribute("usuario", usuario);
 		return PAGINA_ADMINISTRACAO;
 	}
 	
 	@RequestMapping(value = "/pessoa/vincular/{cpf}", method = RequestMethod.GET)
 	public String vincularPapel(@PathVariable("cpf") String cpf, Model model,
 			RedirectAttributes redirect, Authentication authentication) {
-		Usuario usuarioLogado = administracaoService.getUsuariosByCpf(authentication.getName());
 		Usuario usuario = administracaoService.getUsuariosByCpf(cpf);
 		if(usuario == null){
 			redirect.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
@@ -91,7 +85,6 @@ public class AdministracaoController {
 			model.addAttribute("pessoa", pessoa);
 			model.addAttribute("papeis", papelService.atualizaStatus(pessoa.getPapeis()));
 		}
-		model.addAttribute("usuario", usuarioLogado);
 		return PAGINA_ADMINISTRACAO_VINCULAR_PAPEL;
 	}
 	@RequestMapping(value = "/pessoa/vincular", method = RequestMethod.POST)
