@@ -190,7 +190,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	private String geraCodigoProjeto(Long id) {
-		NumberFormat formatador = new DecimalFormat("#0000");
+		NumberFormat formatador = new DecimalFormat("#000");
 		return "PESQ" + formatador.format(id);
 	}
 
