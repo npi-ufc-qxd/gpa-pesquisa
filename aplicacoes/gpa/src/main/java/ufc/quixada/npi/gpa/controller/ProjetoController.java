@@ -498,7 +498,7 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		if (usuario.equals(projeto.getParecer().getParecerista())) {
+		if (!usuario.equals(projeto.getParecer().getParecerista())) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}

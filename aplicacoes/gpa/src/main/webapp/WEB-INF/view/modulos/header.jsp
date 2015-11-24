@@ -29,10 +29,14 @@
 		              	</a>
 						<ul class="dropdown-menu " role="menu">
 							<li id="menu-direcao" class=""><a
-								href="<c:url value="/direcao" />" title="Direção">Direção</a></li>
+								href="<c:url value="/direcao" />" title="Projetos">
+								<i class="glyphicon glyphicon-briefcase"></i> Projetos</a>
+							</li>
 							<li role="separator" class="divider"></li>
 							<li id="menu-direcao" class=""><a
-								href="<c:url value="/direcao/buscar" />" title="Buscar Participantes">Buscar Participantes</a></li>
+								href="<c:url value="/direcao/buscar" />" title="Buscar Participantes">
+								<i class="glyphicon glyphicon-search"></i> Buscar Participantes</a>
+							</li>
 						</ul>
 					</li>
 				</sec:authorize>
@@ -50,7 +54,7 @@
 	              	aria-haspopup="true" aria-expanded="false"></a>
 					<ul class="dropdown-menu " role="menu">
 						<li><a href="<c:url value="/j_spring_security_logout" />"
-							title="Sair">Sair</a></li>
+							title="Sair"><i class="glyphicon glyphicon-log-out"></i> Sair</a></li>
 					</ul>
 				</li>
 			</ul>
