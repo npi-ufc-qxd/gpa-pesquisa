@@ -15,7 +15,7 @@
 
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Informações do Usuário</h3>
+				<h3 class="panel-title">Informações do usuário</h3>
 			</div>
 			<div class="panel-body">
 				<div class="bs-component">
@@ -31,7 +31,7 @@
 						</li>
 						<li class="">
 							<a aria-expanded="false" href="#aba_participa" data-toggle="tab">
-								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Participa <span class="badge">${projetos.size()}</span>
+								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Participa <span class="badge">${projetosParticipa.size()}</span>
 							</a>
 						</li>
 						<li class="">
@@ -41,7 +41,7 @@
 						</li>
 						<li class="">
 							<a aria-expanded="false" href="#aba_participou" data-toggle="tab">
-								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Participou <span class="badge">${participou.size()}</span>
+								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Participou <span class="badge">${projetosParticipou.size()}</span>
 							</a>
 						</li>
 					</ul>
@@ -81,14 +81,7 @@
 								Projetos <b>em andamento</b> que este usuário <b>participa</b>
 							</div>
 							
-							<c:if test="${empty projetos }">
-								<div class="alert alert-warning">
-									<h4>Atenção!</h4>
-									<p>Não há projetos cadastrados.</p>
-								</div>
-							</c:if>
-							
-							<table class="table table-striped table-hover">
+							<table class="participanteParticipa display">
 								<thead>
 									<tr>
 										<th>Código</th>
@@ -99,12 +92,12 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${projetos }" var="projeto">
+									<c:forEach items="${projetosParticipa }" var="projeto">
 									<tr>
 										<td class="center" style="vertical-align:middle;">${projeto.codigo }</td>
 										<td>
 											${projeto.nome }<br>
-											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 290)}...</small>
+											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 280)}...</small>
 										</td>
 										<td style="vertical-align:middle;"><span style="white-space: nowrap;">${projeto.autor.nome }</span></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.inicio }" /></td>
@@ -135,7 +128,7 @@
 										<td class="center" style="vertical-align:middle;">${projeto.codigo }</td>
 										<td>
 											${projeto.nome }<br>
-											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 270)}...</small>
+											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 370)}...</small>
 										</td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.inicio }" /></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></td>
@@ -149,15 +142,8 @@
 							<div class="well well-sm">
 								Projetos <b>concluídos</b> que este usuário <b>participou</b>
 							</div>
-
-							<c:if test="${empty participou }">
-								<div class="alert alert-warning">
-									<h4>Atenção!</h4>
-									<p>Não há projetos cadastrados.</p>
-								</div>
-							</c:if>
 							
-							<table class="table table-striped table-hover">
+							<table class="participanteParticipa display">
 								<thead>
 									<tr>
 										<th>Código</th>
@@ -168,12 +154,12 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${participou }" var="projeto">
+									<c:forEach items="${projetosParticipou }" var="projeto">
 									<tr>
 										<td class="center" style="vertical-align:middle;">${projeto.codigo }</td>
 										<td>
 											${projeto.nome }<br>
-											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 290)}...</small>
+											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 270)}...</small>
 										</td>
 										<td style="vertical-align:middle;"><span style="white-space: nowrap;">${projeto.autor.nome }</span></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.inicio }" /></td>

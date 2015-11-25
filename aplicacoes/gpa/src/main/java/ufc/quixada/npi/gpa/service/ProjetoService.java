@@ -69,4 +69,22 @@ public interface ProjetoService {
 	 * @return {@link List} {@link Projeto}
 	 */
 	List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idAutor);
+	
+	/**
+	 * Exibe lista de {@link Projeto} que o usuário participa mas não é autor, com status APROVADO e APROVADO_COM_RESTRICAO.
+	 * <p>São exibidos registros com "termino >= now()".
+	 * 
+	 * @param idAutor {@link Long}
+	 * @return {@link List} {@link Projeto}
+	 */
+	List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idAutor);
+	
+	/**
+	 * Exibe lista de {@link Projeto} que o usuário participou mas não é autor, com status APROVADO e APROVADO_COM_RESTRICAO.
+	 * <p>São exibidos registros com "termino < now()".
+	 * 
+	 * @param idAutor {@link Long}
+	 * @return {@link List} {@link Projeto}
+	 */
+	List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idAutor);
 }

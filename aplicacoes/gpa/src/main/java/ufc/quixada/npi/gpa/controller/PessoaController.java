@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
-import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 
@@ -35,14 +34,12 @@ public class PessoaController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		} else {
 			model.addAttribute("pessoa", pessoa);
-						
-			model.addAttribute("projetos", projetoService.getProjetosByParticipante(pessoa.getId()));
-			model.addAttribute("coordenou", projetoService.getProjetos(pessoa.getId()));
-			model.addAttribute("participou", projetoService.getProjetosByParticipante(pessoa.getId()));
-			
+
 			model.addAttribute("projetosCoordena", projetoService.getProjetosCoordenaAprovadosAtualmente(pessoa.getId()));
 			model.addAttribute("projetosCoordenou", projetoService.getProjetosCoordenouAprovadosAtualmente(pessoa.getId()));
-			
+			model.addAttribute("projetosParticipa", projetoService.getProjetosParticipaAprovadosAtualmente(pessoa.getId()));
+			model.addAttribute("projetosParticipou", projetoService.getProjetosParticipouAprovadosAtualmente(pessoa.getId()));
+
 			return PAGINA_DETALHES_PARTICIPANTE;
 		}
 	}
