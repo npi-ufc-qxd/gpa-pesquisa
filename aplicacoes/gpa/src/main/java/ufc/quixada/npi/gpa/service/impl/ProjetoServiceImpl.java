@@ -218,9 +218,25 @@ public class ProjetoServiceImpl implements ProjetoService {
 				+ "AND "
 				+ "termino >= now() "
 				+ "AND "
-				+ "(status = :statusAprovado OR status = :statusAprovadoRestricao) "
-				+ "ORDER BY "
-				+ "inicio ASC", 
+				+ "(status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
+				params);
+	}
+	
+	public List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idAutor) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("idAutor", idAutor);
+		params.put("statusAprovado", Projeto.StatusProjeto.APROVADO);
+		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
+		
+		return projetoRepository.find(QueryType.JPQL, 
+				"FROM "
+				+ "Projeto "
+				+ "WHERE "
+				+ "autor_id = :idAutor "
+				+ "AND "
+				+ "termino < now() "
+				+ "AND "
+				+ "(status = :statusAprovado OR status = :statusAprovadoRestricao)", 
 				params);
 	}
 }

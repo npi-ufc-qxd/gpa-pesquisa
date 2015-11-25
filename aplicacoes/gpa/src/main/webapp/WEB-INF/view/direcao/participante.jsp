@@ -36,7 +36,7 @@
 						</li>
 						<li class="">
 							<a aria-expanded="false" href="#aba_coordenou" data-toggle="tab">
-								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Coordenou <span class="badge">${coordenou.size()}</span>
+								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Coordenou <span class="badge">${projetosCoordenou.size()}</span>
 							</a>
 						</li>
 						<li class="">
@@ -130,7 +130,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${coordenou }" var="projeto">
+									<c:forEach items="${projetosCoordenou }" var="projeto">
 									<tr>
 										<td class="center" style="vertical-align:middle;">${projeto.codigo }</td>
 										<td>
