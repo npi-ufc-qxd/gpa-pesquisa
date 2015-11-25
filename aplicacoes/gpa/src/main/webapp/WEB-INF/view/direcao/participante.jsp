@@ -26,7 +26,7 @@
 					<ul class="nav nav-tabs">
 						<li class="active">
 							<a aria-expanded="false" href="#aba_coordena" data-toggle="tab">
-								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Coordena <span class="badge">${pessoa.projetos.size()}</span>
+								<span class="visible-md-inline visible-lg-inline">Projetos que </span>Coordena <span class="badge">${projetosCoordena.size()}</span>
 							</a>
 						</li>
 						<li class="">
@@ -50,15 +50,8 @@
 							<div class="well well-sm">
 								Projetos <b>em andamento</b> que este usuário <b>coordena</b>
 							</div>
-
-							<c:if test="${empty pessoa.projetos }">
-								<div class="alert alert-warning">
-									<h4>Atenção!</h4>
-									<p>Não há projetos cadastrados.</p>
-								</div>
-							</c:if>
 							
-							<table class="table table-striped table-hover">
+							<table class="participanteCoordena display">
 								<thead>
 									<tr>
 										<th>Código</th>
@@ -68,12 +61,12 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${pessoa.projetos }" var="projeto">
+									<c:forEach items="${projetosCoordena}" var="projeto">
 									<tr>
 										<td class="center" style="vertical-align:middle;">${projeto.codigo }</td>
 										<td>
 											${projeto.nome }<br>
-											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 270)}...</small>
+											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 250)}...</small>
 										</td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.inicio }" /></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></td>
@@ -126,15 +119,8 @@
 							<div class="well well-sm">
 								Projetos <b>concluídos</b> que este usuário <b>coordenou</b>
 							</div>
-
-							<c:if test="${empty coordenou }">
-								<div class="alert alert-warning">
-									<h4>Atenção!</h4>
-									<p>Não há projetos cadastrados.</p>
-								</div>
-							</c:if>
 							
-							<table class="table table-striped table-hover">
+							<table class="participanteCoordena display">
 								<thead>
 									<tr>
 										<th>Código</th>

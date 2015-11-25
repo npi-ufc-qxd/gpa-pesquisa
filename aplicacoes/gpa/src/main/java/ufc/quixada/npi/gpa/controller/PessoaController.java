@@ -35,10 +35,14 @@ public class PessoaController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		} else {
 			model.addAttribute("pessoa", pessoa);
+			
 			model.addAttribute("reprovados", projetoService.getProjetos(pessoa.getId(), StatusProjeto.REPROVADO));
 			model.addAttribute("projetos", projetoService.getProjetosByParticipante(pessoa.getId()));
 			model.addAttribute("coordenou", projetoService.getProjetos(pessoa.getId()));
 			model.addAttribute("participou", projetoService.getProjetosByParticipante(pessoa.getId()));
+			
+			model.addAttribute("projetosCoordena", projetoService.getProjetosCoordenaAprovadosAtualmente(pessoa.getId()));
+			
 			return PAGINA_DETALHES_PARTICIPANTE;
 		}
 	}

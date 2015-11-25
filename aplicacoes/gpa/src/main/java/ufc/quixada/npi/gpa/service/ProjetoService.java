@@ -51,4 +51,7 @@ public interface ProjetoService {
 	List<Participacao> getParticipacoesByProjeto(Long idProjeto);
 
 	boolean isParticipante(Pessoa pessoa, Projeto projeto);
+	
+	// Testes Thiago
+	List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idAutor);
 }
