@@ -11,7 +11,6 @@
 				alt="GPA-Pesquisa"
 				src="<c:url value="/resources/images/gpa-logo.jpg"/>"></a>
 		</div>
-
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
@@ -32,11 +31,16 @@
 								href="<c:url value="/direcao" />" title="Projetos">
 								<i class="glyphicon glyphicon-briefcase"></i> Projetos</a>
 							</li>
+							<li id="menu-relatorio" class="">
+					           	<a href="<c:url value="/direcao/relatorios" />" title="Direção">
+					           	<i class="glyphicon glyphicon-book"></i> Relatórios</a>
+					       	</li>
 							<li role="separator" class="divider"></li>
 							<li id="menu-direcao" class=""><a
 								href="<c:url value="/direcao/buscar" />" title="Buscar Participantes">
 								<i class="glyphicon glyphicon-search"></i> Buscar Participantes</a>
 							</li>
+							
 						</ul>
 					</li>
 				</sec:authorize>
@@ -46,7 +50,6 @@
 					</li>
 				</sec:authorize>
 			</ul>
-
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle glyphicon glyphicon-menu-down btn-lg" 

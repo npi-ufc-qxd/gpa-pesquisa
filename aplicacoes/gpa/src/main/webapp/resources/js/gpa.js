@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	
 	// Página Listar Projetos (Diretor)
-	
 	$('#meus-projetos').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
@@ -123,6 +122,18 @@ $(document).ready(function() {
 		$(this).datepicker('hide');
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
+	
+	$("#inicioRelatorio, #terminoRelatorio").datepicker({
+		format: "yyyy-mm",
+	    viewMode: "months", 
+	    minViewMode: "months",
+	});
+	
+	$("#anoRelatorio").datepicker({
+		format: "yyyy",
+	    viewMode: "years", 
+	    minViewMode: "years",
+	});
 	
 	$(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",
@@ -380,4 +391,26 @@ $(document).ready(function() {
 	if(window.location.hash){
 		atualizaHash();
 	}
+
+	//RELATORIOS
+	$("#form_aprovados").hide();
+	$("#form_reprovados").hide();
+	$("#form_p-pessoa").hide();
+		
+	$("#relatorio").change(function() {
+		$("#form_aprovados").hide();
+		$("#form_reprovados").hide();
+		$("#form_p-pessoa").hide();
+		var opcao_select = $("#relatorio option:selected").text();
+		if (opcao_select == "PROJETOS APROVADOS") {
+			$("#form_aprovados").slideToggle("slow");
+		}
+		if (opcao_select == "PROJETOS REPROVADOS") {
+			$("#form_reprovados").slideToggle("slow");
+		}
+		if (opcao_select == "PROJETOS POR USUÁRIO") {
+			$("#form_p-pessoa").slideToggle("slow");
+		}
+	});
+	
 });

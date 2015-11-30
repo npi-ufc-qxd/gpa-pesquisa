@@ -1,53 +1,73 @@
 package ufc.quixada.npi.gpa.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Relatorio {
+	
+	private String nomeUsuario;
+	private Integer anoConsulta;
+	private Integer cargaHorariaTotalUsuario;
+	private BigDecimal valorTotalBolsasUsuario;
+	
+	private List<ProjetoAprovadoRelatorio> projetosAprovados;
+	private List<ProjetoReprovadoRelatorio> projetosReprovados;
+	private List<ProjetoPorPessoaRelatorio> projetosPorPessoa;
 
-	private String nomeDoDocente;
-	private Integer anoDeConsulta;
-	private Integer cargaHorariaTotal;
-	private Double valorTotalDaBolsa;
-	private List<ProjetoPorDocenteRelatorio> projetos;
-
-	public String getNomeDoDocente() {
-		return nomeDoDocente;
+	public List<ProjetoAprovadoRelatorio> getProjetosAprovados() {
+		return projetosAprovados;
 	}
 
-	public void setNomeDoDocente(String nomeDoDocente) {
-		this.nomeDoDocente = nomeDoDocente;
+	public void setProjetosAprovados(List<ProjetoAprovadoRelatorio> projetos) {
+		this.projetosAprovados = projetos;
 	}
 
-	public Integer getAnoDeConsulta() {
-		return anoDeConsulta;
+	public List<ProjetoReprovadoRelatorio> getProjetosReprovados() {
+		return projetosReprovados;
 	}
 
-	public void setAnoDeConsulta(Integer anoDeConsulta) {
-		this.anoDeConsulta = anoDeConsulta;
+	public void setProjetosReprovados(List<ProjetoReprovadoRelatorio> projetosReprovados) {
+		this.projetosReprovados = projetosReprovados;
+	}
+	
+	public List<ProjetoPorPessoaRelatorio> getProjetosPorPessoa() {
+		return projetosPorPessoa;
 	}
 
-	public Integer getCargaHorariaTotal() {
-		return cargaHorariaTotal;
+	public void setProjetosPorPessoa(List<ProjetoPorPessoaRelatorio> projetosPorPessoa) {
+		this.projetosPorPessoa = projetosPorPessoa;
+	} 
+	
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+	public Integer getAnoConsulta() {
+		return anoConsulta;
+	}
+	public void setAnoConssulta(Integer ano) {
+		this.anoConsulta = ano;
+	}
+	public Integer getCargaHorariaTotalUsuario() {
+		return cargaHorariaTotalUsuario;
+	}
+	public void setCargaHorariaTotalUsuario(Integer cargaHorariaTotal) {
+		this.cargaHorariaTotalUsuario = cargaHorariaTotal;
+	}
+	public BigDecimal getValorTotalBolsasUsuario() {
+		return valorTotalBolsasUsuario;
+	}
+	public void setValorTotalBolsasUsuario(BigDecimal valorTotalBolsas) {
+		this.valorTotalBolsasUsuario = valorTotalBolsas;
 	}
 
-	public void setCargaHorariaTotal(Integer cargaHorariaTotal) {
-		this.cargaHorariaTotal = cargaHorariaTotal;
+	public void setAnoConsulta(Integer ano) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public Double getValorTotalDaBolsa() {
-		return valorTotalDaBolsa;
-	}
-
-	public void setValorTotalDaBolsa(Double valorTotalDaBolsa) {
-		this.valorTotalDaBolsa = valorTotalDaBolsa;
-	}
-
-	public List<ProjetoPorDocenteRelatorio> getProjetos() {
-		return projetos;
-	}
-
-	public void setProjetos(List<ProjetoPorDocenteRelatorio> projetos) {
-		this.projetos = projetos;
-	}
+	
 
 }
