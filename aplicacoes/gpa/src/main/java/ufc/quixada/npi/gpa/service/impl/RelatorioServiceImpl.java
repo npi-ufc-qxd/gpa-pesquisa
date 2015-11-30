@@ -162,7 +162,8 @@ public class RelatorioServiceImpl implements
 		List<Projeto> projetos = this.getProjetosIntervaloPorPessoa(id, ano);
 		Relatorio r = new Relatorio();
 		r.setNomeUsuario(pessoaService.getPessoa(id).getNome());
-		r.setAnoConsulta(Integer.parseInt(ano));
+		if(!ano.isEmpty())
+			r.setAnoConsulta(Integer.parseInt(ano));
 		BigDecimal valorTotal = new BigDecimal(0);
 		for(Projeto p:projetos){
 			ProjetoPorPessoaRelatorio projetoPorPessoa = new ProjetoPorPessoaRelatorio();
