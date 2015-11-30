@@ -8,7 +8,7 @@
 
 <html>
 	<head>
-		<title>Relatorios</title>
+		<title>Relatórios</title>
 		<jsp:include page="../modulos/header-estrutura.jsp" />
 	</head>
 <body>
@@ -61,8 +61,8 @@
 										<input type="text" name="termino" id="terminoRelatorio"
 										class="form-control data">
 									</div>
+									<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 								</div>
-								<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 							</div>
 							
 						</form:form>
