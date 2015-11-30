@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.service.impl;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.springframework.format.datetime.joda.LocalDateParser;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
@@ -211,14 +214,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"FROM "
-				+ "Projeto "
-				+ "WHERE "
-				+ "autor_id = :idAutor "
-				+ "AND "
-				+ "termino >= now() "
-				+ "AND "
-				+ "(status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
+				"FROM Projeto WHERE autor_id = :idAutor AND termino >= current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
 				params);
 	}
 	
@@ -229,14 +225,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"FROM "
-				+ "Projeto "
-				+ "WHERE "
-				+ "autor_id = :idAutor "
-				+ "AND "
-				+ "termino < now() "
-				+ "AND "
-				+ "(status = :statusAprovado OR status = :statusAprovadoRestricao)", 
+				"FROM Projeto WHERE autor_id = :idAutor AND termino < current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao)", 
 				params);
 	}
 	
@@ -247,18 +236,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"SELECT proj FROM "
-				+ "Projeto AS proj "
-				+ "JOIN "
-				+ "proj.participacoes part "
-				+ "WHERE "
-				+ "part.participante.id = :idAutor "
-				+ "AND "
-				+ "proj.autor.id <> :idAutor "
-				+ "AND "
-				+ "(proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) "
-				+ "AND "
-				+ "termino >= now()",
+				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino >= current_date()",
 				params);
 	}
 	
@@ -268,19 +246,8 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("statusAprovado", Projeto.StatusProjeto.APROVADO);
 		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
 		
-		return projetoRepository.find(QueryType.JPQL, 
-				"SELECT proj FROM "
-				+ "Projeto AS proj "
-				+ "JOIN "
-				+ "proj.participacoes part "
-				+ "WHERE "
-				+ "part.participante.id = :idAutor "
-				+ "AND "
-				+ "proj.autor.id <> :idAutor "
-				+ "AND "
-				+ "(proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) "
-				+ "AND "
-				+ "termino < now()",
+		return projetoRepository.find(QueryType.JPQL,
+				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino < current_date()",
 				params);
-	}
+	}	
 }
