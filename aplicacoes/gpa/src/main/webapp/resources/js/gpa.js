@@ -412,5 +412,72 @@ $(document).ready(function() {
 			$("#form_p-pessoa").slideToggle("slow");
 		}
 	});
-	
+	$('#relatoriosAprovadosForm').bootstrapValidator({
+        feedbackIcons: {
+        	valid: 'glyphicon glyphicon-ok',
+        	invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	inicio :{
+            	validators: {
+            		callback: {
+                        message: 'A data de início deve ser anterior à data de término',
+                        callback: function(value, validator) {
+                        	var termino = validator.getFieldElements('termino').val();
+                        	if(value != "" && termino != "") {
+                        		termino = moment(termino, "YYYY-MM").format("YYYY-MM");
+	                        	var inicio = moment(value, "YYYY-MM").format("YYYY-MM");
+	                        	if(moment(termino, "YYYY-MM").isBefore(moment(inicio, "YYYY-MM"))) {
+	                        		return false;
+	                        	}
+                        	}
+                        	return true;
+                        }
+                    }
+            	}
+        	},
+	        termino: {
+	        	validators:{
+	        		callback: {
+	                    message: 'A data de término deve ser posterior à data de início',
+	                    callback: function(value, validator) {
+	                    	var inicio = validator.getFieldElements('inicio').val();
+	                    	if(value != "" && inicio != "") {
+	                    		inicio = moment(inicio, "YYYY-MM").format("YYYY-MM");
+	                        	var termino = moment(value, "YYYY-MM").format("YYYY-MM");
+	                        	if(moment(inicio, "YYYY-MM").isAfter(moment(termino, "YYYY-MM"))) {
+	                        		return false;
+	                        	}
+	                    	}
+	                    	return true;
+	                    }
+	                }
+	        	}
+	        }
+        }
+	});
+	 $("#inicioRelatorio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			todayHighlight : true,
+			startDate: new Date()
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
+	    });
+	 
+	 $("#terminoRelatorio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			todayHighlight : true,
+			startDate: new Date()
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
+	    });
 });
