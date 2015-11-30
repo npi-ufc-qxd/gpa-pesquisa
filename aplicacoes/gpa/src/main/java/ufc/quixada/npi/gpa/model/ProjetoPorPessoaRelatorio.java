@@ -27,7 +27,7 @@ public class ProjetoPorPessoaRelatorio {
 	public void setCargaHoraria(Integer cargaHorariaTotal) {
 		this.cargaHoraria = cargaHorariaTotal;
 	}
-	public BigDecimal getValorTotalBolsa() {
+	public BigDecimal getValorBolsa() {
 		return valorBolsa;
 	}
 	public void setValorBolsa(BigDecimal valorTotalBolsa) {

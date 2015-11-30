@@ -123,6 +123,11 @@ $(document).ready(function() {
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
 	
+	$('#tab-relatorios').DataTable( {
+		"searching":false,
+		"paging":false
+	} );
+	
 	$("#inicioRelatorio, #terminoRelatorio").datepicker({
 		format: "yyyy-mm",
 	    viewMode: "months", 
