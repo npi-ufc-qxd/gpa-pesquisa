@@ -2,7 +2,6 @@ package ufc.quixada.npi.gpa.service.impl;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +9,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.springframework.format.datetime.joda.LocalDateParser;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
