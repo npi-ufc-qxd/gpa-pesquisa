@@ -380,4 +380,26 @@ $(document).ready(function() {
 	if(window.location.hash){
 		atualizaHash();
 	}
+	
+	$('.participanteCoordena').DataTable({
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        },
+        "columnDefs": [ 
+            {"targets": 2, "orderable": false},
+            {"targets": 3, "orderable": false}
+		],
+		"autoWidth": false
+	});
+	
+	$('.participanteParticipa').DataTable({
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        },
+        "columnDefs": [ 
+            {"targets": 3, "orderable": false},
+            {"targets": 4, "orderable": false}
+		],
+		"autoWidth": false
+	});
 });
