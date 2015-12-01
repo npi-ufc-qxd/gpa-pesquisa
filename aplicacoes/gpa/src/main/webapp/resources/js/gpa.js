@@ -5,12 +5,12 @@ $(document).ready(function() {
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3,]},            
-            {"targets" : 3, "orderable" : false},
-            {"targets" : 4, "orderable" : false}
+	        {"targets" : 3, "orderable" : false},
+	        {"targets" : 4, "orderable" : false}
 		],
 		"language": {
-            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+	        "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+	    }
 	});
 		
 	$('#minhas-participacoes').DataTable({

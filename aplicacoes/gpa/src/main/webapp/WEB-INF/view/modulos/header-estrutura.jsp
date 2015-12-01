@@ -13,5 +13,6 @@
 	<link href="<c:url value="/resources/css/fileinput.min.css"/>" rel="stylesheet"/>
 	<link href="<c:url value="/resources/css/dropzone.css"/>" rel="stylesheet"/>
 	<link href="<c:url value="/resources/css/adm.css"/>" rel="stylesheet"/>
+	<link href="<c:url value="/resources/css/buttons.dataTables.min.css"/>" rel="stylesheet"/>
 	
-	<link rel="shortcut icon" href="<c:url value="/resources/images/gpa-icone.jpg" />" />
+	<link rel="shortcut icon" href="<c:url value="/resources/images/gpa-icone.jpg" />" />	
