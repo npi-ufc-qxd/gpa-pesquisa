@@ -78,10 +78,6 @@
 								<input type="text" name="submissao" id="inicioRelatorio"
 								class="form-control data">
 							</div>
-							<!-- <label class ="col-sm-2 control-label">Terminno do Intervalo:</label>
-							<div class ="col-sm-2">
-							<input type="text" name="termino" id="terminoRelatorio"
-								class="form-control data"></div> -->
 							<input name="gerar" type="submit" class="btn btn-primary"
 								value="gerar" />
 						</form:form>
@@ -200,8 +196,9 @@
 								<tr>
 									<th>Nome do Projeto</th>
 									<th>Vínculo</th>
-									<!-- <th>Carga Horária</th>
-									<th>Valor da Bolsa</th> -->
+									<th>Carga Horária</th>
+									<th>Valor da Bolsa</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -211,8 +208,11 @@
 											<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 										</td>
 										<td>${projeto.vinculo}</td>
-										<%-- <td>${projeto.cargaHoraria}</td>
-										<td>${projeto.valorBolsa}</td> --%>
+										<td>${projeto.cargaHoraria}</td>
+										<td>${projeto.valorBolsa}</td>
+										<td><a
+											href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
