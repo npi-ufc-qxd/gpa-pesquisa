@@ -12,7 +12,7 @@
 <link href="<c:url value="/resources/css/fileinput.min.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/resources/css/dropzone.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/resources/css/adm.css"/>" rel="stylesheet"/>
-<link href="<c:url value="/resources/css/buttons.dataTables.css"/>" rel="stylesheet"/>
+<link href="<c:url value="/resources/css/buttons.dataTables.min.css"/>" rel="stylesheet"/>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
