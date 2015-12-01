@@ -10,14 +10,14 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.ufc.quixada.npi.enumeration.QueryType;
+import br.ufc.quixada.npi.repository.GenericRepository;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
-import br.ufc.quixada.npi.enumeration.QueryType;
-import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
 public class ProjetoServiceImpl implements ProjetoService {
@@ -228,5 +228,48 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 		return false;
 	}
-
+	
+	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idAutor) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("idAutor", idAutor);
+		params.put("statusAprovado", Projeto.StatusProjeto.APROVADO);
+		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
+		
+		return projetoRepository.find(QueryType.JPQL, 
+				"FROM Projeto WHERE autor_id = :idAutor AND termino >= current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
+				params);
+	}
+	
+	public List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idAutor) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("idAutor", idAutor);
+		params.put("statusAprovado", Projeto.StatusProjeto.APROVADO);
+		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
+		
+		return projetoRepository.find(QueryType.JPQL, 
+				"FROM Projeto WHERE autor_id = :idAutor AND termino < current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao)", 
+				params);
+	}
+	
+	public List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idAutor) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("idAutor", idAutor);
+		params.put("statusAprovado", Projeto.StatusProjeto.APROVADO);
+		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
+		
+		return projetoRepository.find(QueryType.JPQL, 
+				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino >= current_date()",
+				params);
+	}
+	
+	public List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idAutor) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("idAutor", idAutor);
+		params.put("statusAprovado", Projeto.StatusProjeto.APROVADO);
+		params.put("statusAprovadoRestricao", Projeto.StatusProjeto.APROVADO_COM_RESTRICAO);
+		
+		return projetoRepository.find(QueryType.JPQL,
+				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino < current_date()",
+				params);
+	}	
 }
