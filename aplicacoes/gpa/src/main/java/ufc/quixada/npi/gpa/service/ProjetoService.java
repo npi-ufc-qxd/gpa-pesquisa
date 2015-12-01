@@ -25,6 +25,10 @@ public interface ProjetoService {
 	void avaliar(Projeto projeto);
 
 	List<Projeto> getProjetosSubmetidos();
+	
+	List<Projeto> getProjetosSubmetidos(Long idAutor);
+	
+	List<Projeto> getProjetosNaoAvaliados(Long idAutor);
 
 	List<Projeto> getProjetosAvaliados();
 

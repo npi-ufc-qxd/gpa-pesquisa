@@ -96,6 +96,7 @@ public class ProjetoController {
 	public String listar(Model model, Authentication authentication) {
 		Long idUsuarioLogado = pessoaService.getPessoa(authentication.getName()).getId();
 		model.addAttribute("projetos", projetoService.getProjetos(idUsuarioLogado));
+		model.addAttribute("projetosNaoAvaliados", projetoService.getProjetosNaoAvaliados(idUsuarioLogado));
 		model.addAttribute("participacoesEmProjetos", projetoService.getParticipacoes(idUsuarioLogado));
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));

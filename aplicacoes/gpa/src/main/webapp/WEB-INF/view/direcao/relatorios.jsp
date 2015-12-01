@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+ 	<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -8,78 +7,225 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
-<head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Visualizar Relatórios</title>
-</head>
+	<head>
+		<title>Relatorios</title>
+		<jsp:include page="../modulos/header-estrutura.jsp" />
+	</head>
 <body>
+	<jsp:include page="../modulos/header.jsp" />
 	<div class="container">
-		<jsp:include page="../modulos/header.jsp" />
-		<c:if test="${not empty erro}">
-			<div class="alert alert-danger alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<c:out value="${erro}"></c:out>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Relatórios</h3>
 			</div>
-		</c:if>
-
-		<div class="formulario">
-			<h2>Relatórios</h2>
-			
-			<!-- Forma de visualização opcional -->
-			<div  class="col-sm-6 control-label">
-
-				<div class="formulario">
-				<h3>Projetos Aprovados</h3>
-							<form:form method="GET" action="/gpa-pesquisa/projeto/relatorio-aprovados" cssClass="form-horizontal">
-								<h5>Intervalo de Início</h5>
-								<input data-provide="datepicker" name="iniInterInicio" type="text">
-								<input data-provide="datepicker" name="fimInterInicio" type="text">
-								<h5>Intervalo de Término</h5>
-								<input data-provide="datepicker" name="iniInterTermino"type="text">
-								<input data-provide="datepicker" name="fimInterTermino"type="text"><br>
-								<button type="submit" class="btn btn-default">Gerar</button>
-							</form:form>
-
-							<a href="<c:url value="/projeto/relatorio-aprovados" />"
-								title="Visualizar Relatorios Reprovados">Visualizar Relatórios
-								Aprovados</a>
+			<div class="panel-body">
+				<div class="row">
+					<c:if test="${empty relatorio}">
+						<h5><label class="col-sm-2 control-label">Tipo de Relatório:</label></h5>
+						<div class="col-sm-6">
+							<select id="relatorio" name="relatorioParam" class="form-control">
+								<option value=""></option>
+								<option value="APROVADOS">PROJETOS APROVADOS</option>
+								<option value="REPROVADOS">PROJETOS REPROVADOS</option>
+								<option value="POR_USUARIO">PROJETOS POR USUÁRIO</option>
+							</select>
+						</div>
+					</c:if>
+					<c:if test="${not empty relatorio}">
+					<div class="controls">
+						<a href="<c:url value="/direcao/relatorios" />" title="Direção" 
+						class="btn btn-primary btn-sm">Nova consulta</a>
+					</div>
+					</c:if>
 				</div>
+				<hr>
+				<c:if test="${empty relatorio}">
+					<%-- Form dos projetos aprovados--%>
+					<div id="form_aprovados">
 				
-				<div class="formulario">
-							<h3>Projetos Reprovados</h3>
-					<form:form method = "GET" action="/gpa-pesquisa/projeto/relatorio-reprovados" cssClass = "form-horizontal">
-							<h5>Intervalo da Submissão</h5>
-							<input data-provide="datepicker" name="iniInter" type="text">
-							<input data-provide="datepicker" name="fimInter" type="text"><br>
-							<button type="submit" class="btn btn-default">Gerar</button>
-					</form:form>
-				</div>
-				
-				<div class="formulario">
-							<h3>Projetos por docente</h3><br>
-							<form:form method ="GET" action="/gpa-pesquisa/projeto/relatorio-projeto-por-docente"  cssClass = "form-horizontal">
-								<h4>Participantes:</h4>
-									<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple">
-										<c:set var="part" value="${projeto.participantes }"></c:set>
-										<c:forEach items="${participantes }" var="participante">
+						<form:form id="relatoriosAprovadosForm"
+							enctype="multipart/form-data"
+							servletRelativeAction= "relatorios/aprovados" method="GET"
+							cssClass="form-horizontal">
+							<div class="form-group">
+								<div class="form-item">
+									<label class ="col-sm-2 control-label" >Início do Intervalo:</label>
+									<div class="col-sm-2">
+										<input type="text" name="inicio" id="inicioRelatorio"
+										class="form-control data">
+									</div>
+								</div>
+								<div class="form-item">
+									<label class ="col-sm-2 control-label">Término do Intervalo:</label>
+									<div class ="col-sm-2">
+										<input type="text" name="termino" id="terminoRelatorio"
+										class="form-control data">
+									</div>
+								</div>
+								<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
+							</div>
+							
+						</form:form>
+					</div>
+					<%-- form dos projetos reprovados--%>
+					<div id="form_reprovados">
+						<form:form id="relatoriosRerovadosForm"
+							enctype="multipart/form-data"
+							servletRelativeAction="relatorios/reprovados" method="GET"
+							cssClass="form-horizontal">
+							<label class ="col-sm-2 control-label" >Data da submissão:</label>
+							<div class="col-sm-2">
+								<input type="text" name="submissao" id="submissaoRelatorio"
+								class="form-control data">
+							</div>
+							<!-- <label class ="col-sm-2 control-label">Terminno do Intervalo:</label>
+							<div class ="col-sm-2">
+							<input type="text" name="termino" id="terminoRelatorio"
+								class="form-control data"></div> -->
+							<input name="gerar" type="submit" class="btn btn-primary"
+								value="gerar" />
+						</form:form>
+					</div>
+					<%-- form por pessoa--%>
+					<div id="form_p-pessoa">
+						<form:form id="relatoriosPPessoaForm"
+							enctype="multipart/form-data"
+							servletRelativeAction="relatorios/p-pessoa" method="GET"
+							cssClass="form-horizontal">
+	
+							<div class="form-group form-item">
+								<label class="col-sm-1 control-label">Nome:</label>
+								<div class="col-sm-5">
+									<select id="select_pessoaRelatorio" name="id"
+										class="form-control" required>
+										<c:set var="part" value="${pessoas }"></c:set>
+										<option value=""></option>
+										<c:forEach items="${pessoas }" var="pessoa">
 											<c:set var="selected" value=""></c:set>
-											<c:set var="idParticipante" value="id=${participante.id }"></c:set>
-											<option value="${participante.id }" ${selected }>${participante.nome }</option>
+											<c:set var="participanteSelecionado"
+												value="id=${pessoa.id }"></c:set>
+											<c:if test="${fn:contains(part, participanteSelecionado)}">
+												<c:set var="selected" value="selected=\"selected\""></c:set>
+											</c:if>
+											<option value="${pessoa.id }">${pessoa.nome }</option>
 										</c:forEach>
 									</select>
-									<span class="campo-obrigatorio"><span class="required">*</span> Campo obrigatório</span>
-									<h5>Ano</h5>
-									<input id="pickerYear" type="text" name="ano" />
-									<span class="add-on"><i class="icon-th"></i></span> <br>     
-									<button type="submit" class="btn btn-default">Gerar</button>
-							</form:form>
-						
+	
+								</div>
+								<!-- div select -->
+								<label class="col-sm-1 control-label">Data da submissao:</label>
+								<div class="col-sm-2">
+									<input type="text" name="ano" id="anoRelatorio"
+										class="form-control data">
+	
+								</div>
+								<div class="col-sm-1" id="submit-p-pessoa">
+									<input name="gerar" type="submit" class="btn btn-primary"
+										value="gerar" />
+								</div>
+							</div>
+						</form:form>
+						<br /> <br />
 					</div>
+				</c:if>
+				<!-- TAB APROVADOS -->
+	        	<c:if test="${not empty relatorio}">
+					<c:if test="${empty relatorio.projetosAprovados 
+						&& empty relatorio.projetosReprovados 
+						&& empty relatorio.projetosPorPessoa}">
+								<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
+					</c:if>
+				</c:if>
+				<c:if test="${not empty relatorio.projetosAprovados}">
+					<table id="meus-projetos" class="display">
+						<thead>
+							<tr>
+								<th>Coordenador do Projeto</th>
+									<th>Nome do Projeto</th>
+									<th>Início</th>
+									<th>Término</th>
+									<th>Quantidade de Bolsas</th>
+									<th>Valor total de Bolsas</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="projeto" items="${projetosAprovados}">
+								<tr>
+									<td>${projeto.nomeCoordenador}</td>
+									<td>
+										<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+									</td>
+									<td>${projeto.dataInicio}</td>
+									<td>${projeto.dataTermino}</td>
+									<td>${projeto.qtdBolsas}</td>
+									<td>${projeto.valorTotalBolsas}</td>
+									
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</c:if>
+	        	<!-- TAB REPROVADOS -->
+	        	<div id="tab-projetos-aprovados">
+					<c:if test="${not empty relatorio.projetosReprovados}">
+						<table id="meus-projetos" class="display">
+							<thead>
+								<tr>
+									<th>Coordenador do Projeto</th>
+									<th>Nome do Projeto</th>
+									<th>Submissão</th>
+									<th>Avaliação</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetosReprovados}">
+									<tr>
+										<td>${projeto.nomeCoordenador}</td>
+										<td>
+											<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+										</td>
+										<td>${projeto.dataDeSubimissao}</td>
+										<td>${projeto.dataDeAvaliacao}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:if>
+	        	</div>
+				<!-- TAB P/ PESSOA -->
+				<div id="tab-p-pessoa">
+					<c:if test="${not empty relatorio.projetosPorPessoa}">
+						<table id="meus-projetos" class="display">
+							<thead>
+								<tr>
+									<th>Nome do Projeto</th>
+									<th>Vínculo</th>
+									<!-- <th>Carga Horária</th>
+									<th>Valor da Bolsa</th> -->
+									<!-- <th></th> -->
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetosPorPessoa}">
+									<tr>
+										<td>
+											<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+										</td>
+										<td>${projeto.vinculo}</td>
+										<%-- <td>${projeto.cargaHoraria}</td>
+										<td>${projeto.valorBolsa}</td> --%>
+										<%-- <td><a
+											href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
+										</td> --%>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:if>
 				</div>
-			</div>
-		</div>		
-		<jsp:include page="../modulos/footer.jsp" />
-</body>
+			</div><!-- /panel-body -->
+		</div><!--/panel  -->
+	</div><!-- /container -->
+	<jsp:include page="../modulos/footer.jsp" />
+</body>	
 </html>

@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	
 	// Página Listar Projetos (Diretor)
-	
 	$('#meus-projetos').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
@@ -380,6 +379,7 @@ $(document).ready(function() {
 	if(window.location.hash){
 		atualizaHash();
 	}
+//<<<<<<< HEAD
 	
 	$('.participanteCoordena').DataTable({
 		"language": {
@@ -402,4 +402,116 @@ $(document).ready(function() {
 		],
 		"autoWidth": false
 	});
+
+	//RELATORIOS
+	$("#form_aprovados").hide();
+	$("#form_reprovados").hide();
+	$("#form_p-pessoa").hide();
+		
+	$("#relatorio").change(function() {
+		$("#form_aprovados").hide();
+		$("#form_reprovados").hide();
+		$("#form_p-pessoa").hide();
+		var opcao_select = $("#relatorio option:selected").text();
+		if (opcao_select == "PROJETOS APROVADOS") {
+			$("#form_aprovados").slideToggle("slow");
+		}
+		if (opcao_select == "PROJETOS REPROVADOS") {
+			$("#form_reprovados").slideToggle("slow");
+		}
+		if (opcao_select == "PROJETOS POR USUÁRIO") {
+			$("#form_p-pessoa").slideToggle("slow");
+		}
+	});
+	$('#relatoriosAprovadosForm').bootstrapValidator({
+        feedbackIcons: {
+        	valid: 'glyphicon glyphicon-ok',
+        	invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	inicio :{
+            	validators: {
+            		callback: {
+                        message: 'A data de início deve ser anterior à data de término',
+                        callback: function(value, validator) {
+                        	var termino = validator.getFieldElements('termino').val();
+                        	if(value != "" && termino != "") {
+                        		termino = moment(termino, "YYYY-MM").format("YYYY-MM");
+	                        	var inicio = moment(value, "YYYY-MM").format("YYYY-MM");
+	                        	if(moment(termino, "YYYY-MM").isBefore(moment(inicio, "YYYY-MM"))) {
+	                        		return false;
+	                        	}
+                        	}
+                        	return true;
+                        }
+                    }
+            	}
+        	},
+	        termino: {
+	        	validators:{
+	        		callback: {
+	                    message: 'A data de término deve ser posterior à data de início',
+	                    callback: function(value, validator) {
+	                    	var inicio = validator.getFieldElements('inicio').val();
+	                    	if(value != "" && inicio != "") {
+	                    		inicio = moment(inicio, "YYYY-MM").format("YYYY-MM");
+	                        	var termino = moment(value, "YYYY-MM").format("YYYY-MM");
+	                        	if(moment(inicio, "YYYY-MM").isAfter(moment(termino, "YYYY-MM"))) {
+	                        		return false;
+	                        	}
+	                    	}
+	                    	return true;
+	                    }
+	                }
+	        	}
+	        }
+        }
+	});
+	 $("#inicioRelatorio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
+	    });
+	 
+	 $("#submissaoRelatorio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+	    });
+	 
+	 $("#terminoRelatorio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
+	    });
+	 $("#anoRelatorio").datepicker({
+			format : "yyyy",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "years", 
+		    minViewMode: "years",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+	    });
 });
