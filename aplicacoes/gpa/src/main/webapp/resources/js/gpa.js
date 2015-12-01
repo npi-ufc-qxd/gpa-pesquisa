@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	
-	// Página Listar Projetos (Diretor)
 	$('#meus-projetos').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
