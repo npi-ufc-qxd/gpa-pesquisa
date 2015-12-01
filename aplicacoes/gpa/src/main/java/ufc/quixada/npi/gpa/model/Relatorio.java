@@ -47,7 +47,7 @@ public class Relatorio {
 	public Integer getAnoConsulta() {
 		return anoConsulta;
 	}
-	public void setAnoConssulta(Integer ano) {
+	public void setAnoConsulta(Integer ano) {
 		this.anoConsulta = ano;
 	}
 	public Integer getCargaHorariaTotalUsuario() {
@@ -63,10 +63,7 @@ public class Relatorio {
 		this.valorTotalBolsasUsuario = valorTotalBolsas;
 	}
 
-	public void setAnoConsulta(Integer ano) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	
 

@@ -43,19 +43,19 @@ public class RelatorioServiceImpl implements
 			params.put("ini", inicio);
 			params.put("ter", termino);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and ((inicio between TO_DATE (:ini, 'yyyy/mm') and TO_DATE (:ter, 'yyyy/mm')) or (termino between TO_DATE (:ini, 'yyyy/mm') and TO_DATE (:ter, 'yyyy/mm') or (inicio < TO_DATE (:ini, 'yyyy/mm') and termino > TO_DATE (:ter, 'yyyy/mm'))))", params);
+					"from Projeto where status = :status and ((inicio between TO_DATE (:ini, 'yyyy-mm') and TO_DATE (:ter, 'yyyy-mm')) or (termino between TO_DATE (:ini, 'yyyy-mm') and TO_DATE (:ter, 'yyyy-mm') or (inicio < TO_DATE (:ini, 'yyyy-mm') and termino > TO_DATE (:ter, 'yyyy-mm'))))", params);
 		}
 		if(inicio.isEmpty() && !termino.isEmpty()){
 			params.put("status", status);	
 			params.put("ter", termino);
-			return projetoRepository.find(QueryType.JPQL, "from Projeto where status = :status and (inicio <= TO_DATE (:ter, 'yyyy/mm') or termino <= TO_DATE (:ter, 'yyyy/mm'))"
+			return projetoRepository.find(QueryType.JPQL, "from Projeto where status = :status and (inicio <= TO_DATE (:ter, 'yyyy-mm') or termino <= TO_DATE (:ter, 'yyyy-mm'))"
 					, params);
 		}
 		if(!inicio.isEmpty() && termino.isEmpty()){
 			params.put("status", status);	
 			params.put("ini", inicio);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and (inicio >= TO_DATE (:ini, 'yyyy/mm') or termino >= TO_DATE (:ini, 'yyyy/mm'))", params);
+					"from Projeto where status = :status and (inicio >= TO_DATE (:ini, 'yyyy-mm') or termino >= TO_DATE (:ini, 'yyyy-mm'))", params);
 		}
 		
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
@@ -82,19 +82,16 @@ public class RelatorioServiceImpl implements
 			BigDecimal valorTotal = new BigDecimal(0);
 			for(Participacao pt:p.getParticipacoes()){
 				int mesesParticipacao =0;
-				for(int i = pt.getAnoInicio(); i<pt.getAnoTermino(); i++){
-					if(i == pt.getAnoTermino())
-						mesesParticipacao += pt.getMesTermino() - pt.getMesInicio() +1;
-					else if(i == pt.getAnoInicio() && i != pt.getAnoTermino())
-						mesesParticipacao += 13 - pt.getMesInicio();
-					else
-						mesesParticipacao +=12;
-				}
+				if(pt.getAnoInicio().equals(pt.getAnoTermino()))
+					mesesParticipacao = pt.getMesTermino() - pt.getMesInicio() + 1;
+				else{
+					int anosCompletos = pt.getAnoTermino() - pt.getAnoInicio() -1;
+					mesesParticipacao = 13 - pt.getMesInicio()+ (anosCompletos * 12) + pt.getMesTermino();} 
 				BigDecimal valorDecimal = new BigDecimal(mesesParticipacao);
-				if(!pt.getBolsaValorMensal().equals(0))
+				if(!pt.getBolsaValorMensal().equals(0)){
 					qtdBolsas++;
-					valorDecimal.multiply(pt.getBolsaValorMensal());
-					valorTotal.add(valorDecimal);
+					valorDecimal = valorDecimal.multiply(pt.getBolsaValorMensal());
+					valorTotal = valorTotal.add(valorDecimal);}
 				}
 			projetoAprovado.setQtdBolsas(qtdBolsas);
 			projetoAprovado.setValorTotalBolsas(valorTotal);
@@ -144,15 +141,19 @@ public class RelatorioServiceImpl implements
 		if(!ano.isEmpty()){
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("id", id);
-			params.put("ano", ano);
+			params.put("ano", Integer.parseInt(ano));
 			return projetoRepository.find(QueryType.JPQL,
-					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status != 'NOVO' and ( inicio = TO_DATE (:ano, 'yyyy') or termino = TO_DATE (:ano, 'yyyy/mm') or (inicio < TO_DATE (:ano, 'yyyy') and termino > TO_DATE (:ano, 'yyyy')))"
+					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status = 'APROVADO' and year(proj.inicio) <= :ano and year(proj.termino) >= :ano)"
 					, params);
+			/*return projetoRepository.find(QueryType.JPQL,
+					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status == 'APROVADO' and ( inicio = TO_DATE (:ano, 'yyyy') or termino = TO_DATE (:ano, 'yyyy') or (inicio < TO_DATE (:ano, 'yyyy') and termino > TO_DATE (:ano, 'yyyy'))"
+					, params);*/
 		}
-		List<Projeto> projetosBusca = new ArrayList<Projeto>();
-		projetosBusca = projetoService.getProjetos(id);
-		List<Projeto> projetos = projetosBusca;
-		return projetos;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		return projetoRepository.find(QueryType.JPQL,
+					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status = 'APROVADO' "
+				, params);
 	}
 
 	@Override
@@ -161,9 +162,10 @@ public class RelatorioServiceImpl implements
 		List<Projeto> projetos = this.getProjetosIntervaloPorPessoa(id, ano);
 		Relatorio r = new Relatorio();
 		r.setNomeUsuario(pessoaService.getPessoa(id).getNome());
-		r.setAnoConsulta(Integer.getInteger(ano));
+		if(!ano.isEmpty())
+			r.setAnoConsulta(Integer.parseInt(ano));
 		BigDecimal valorTotal = new BigDecimal(0);
-		for(Projeto p : projetos){
+		for(Projeto p:projetos){
 			ProjetoPorPessoaRelatorio projetoPorPessoa = new ProjetoPorPessoaRelatorio();
 			projetoPorPessoa.setId(p.getId());
 			projetoPorPessoa.setNomeProjeto(p.getNome());
@@ -171,34 +173,32 @@ public class RelatorioServiceImpl implements
 				projetoPorPessoa.setVinculo("COORDENADOR");
 			else
 				projetoPorPessoa.setVinculo("PARTICIPANTE");
-			
 			for(Participacao pt:p.getParticipacoes()){
 				if(pt.getParticipante().getId().equals(id)){
-					projetoPorPessoa.setValorBolsa(pt.getBolsaValorMensal());
-					int mesesParticipacao = 0;
-					for(int i = pt.getAnoInicio(); i<pt.getAnoTermino(); i++){
-						if(i == pt.getAnoTermino())
-							mesesParticipacao += pt.getMesTermino() - pt.getMesInicio() +1;
-						else if(i == pt.getAnoInicio() && i != pt.getAnoTermino())
-							mesesParticipacao += 13 - pt.getMesInicio();
-						else
-							mesesParticipacao +=12;
-					}
-					projetoPorPessoa.setCargaHoraria(pt.getCargaHorariaMensal()*mesesParticipacao);
-					projetosPorPessoaRelatorio.add(projetoPorPessoa);
-					BigDecimal valorDecimal = new BigDecimal(mesesParticipacao);
-					valorDecimal.multiply(pt.getBolsaValorMensal());
-					valorTotal.add(valorDecimal);
+					int mesesParticiacao = 0;
+					if(pt.getAnoInicio().equals(pt.getAnoTermino()))
+						mesesParticiacao = pt.getMesTermino() - pt.getMesInicio() + 1;
+					else{
+						int anosCompletos = pt.getAnoTermino() - pt.getAnoInicio() -1;
+						mesesParticiacao = 13 - pt.getMesInicio()+ (anosCompletos * 12) + pt.getMesTermino(); 
+					} 
+					projetoPorPessoa.setCargaHoraria(pt.getCargaHorariaMensal()*mesesParticiacao);
+					BigDecimal valorDecimal = new BigDecimal(mesesParticiacao);
+					valorDecimal=valorDecimal.multiply(pt.getBolsaValorMensal());
+					valorTotal=valorTotal.add(valorDecimal);
+					projetoPorPessoa.setValorBolsa(valorDecimal);
+					break;
 				}
 			}
-			r.setValorTotalBolsasUsuario(valorTotal);
-			int cargaHorariaTotal = 0;
-			for(ProjetoPorPessoaRelatorio pp:projetosPorPessoaRelatorio){
-				cargaHorariaTotal += pp.getCargaHoraria();
-			}
-			r.setCargaHorariaTotalUsuario(cargaHorariaTotal);
-			r.setProjetosPorPessoa(projetosPorPessoaRelatorio);
+			projetosPorPessoaRelatorio.add(projetoPorPessoa);
 		}
+		r.setValorTotalBolsasUsuario(valorTotal);
+		int cargaHorariaTotal = 0;
+		for(ProjetoPorPessoaRelatorio pp:projetosPorPessoaRelatorio){
+			cargaHorariaTotal += pp.getCargaHoraria();
+		}
+		r.setCargaHorariaTotalUsuario(cargaHorariaTotal);
+		r.setProjetosPorPessoa(projetosPorPessoaRelatorio);
 		return r;
 	}
 }
