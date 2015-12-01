@@ -131,7 +131,11 @@
 					</c:if>
 				</c:if>
 				<c:if test="${not empty relatorio.projetosAprovados}">
-					<table id="meus-projetos" class="display">
+					<h4>Informações Gerais</h4>
+					<div class="form-group">
+					<label class="col-sm-4 control-label">Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}</label>
+					</div>
+					<table id="tab-relatorios" class="display">
 						<thead>
 							<tr>
 								<th>Coordenador do Projeto</th>
@@ -153,7 +157,6 @@
 									<td>${projeto.dataTermino}</td>
 									<td>${projeto.qtdBolsas}</td>
 									<td>${projeto.valorTotalBolsas}</td>
-									
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -162,7 +165,12 @@
 	        	<!-- TAB REPROVADOS -->
 	        	<div id="tab-projetos-aprovados">
 					<c:if test="${not empty relatorio.projetosReprovados}">
-						<table id="meus-projetos" class="display">
+						<h4>Informações Gerais</h4>
+						<div class="form-group">
+						<label class="col-sm-4 control-label">Quantidade de Projetos: ${fn:length(relatorio.projetosReprovados)}</label>
+						</div>
+						
+						<table id="tab-relatorios" class="display">
 							<thead>
 								<tr>
 									<th>Coordenador do Projeto</th>
@@ -172,7 +180,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="projeto" items="${projetosReprovados}">
+								<c:forEach var="projeto" items="${relatorio.projetosReprovados}">
 									<tr>
 										<td>${projeto.nomeCoordenador}</td>
 										<td>
@@ -189,28 +197,48 @@
 				<!-- TAB P/ PESSOA -->
 				<div id="tab-p-pessoa">
 					<c:if test="${not empty relatorio.projetosPorPessoa}">
-						<table id="meus-projetos" class="display">
+							<h4>Informações Gerais</h4>
+							<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Nome:</label>
+								<div class="col-sm-4 value-label">
+									<label>${relatorio.nomeUsuario}</label>
+								</div>
+								<label class="col-sm-2 control-label">Ano: </label>
+								<div class="col-sm-4 value-label">
+									<label>${relatorio.anoConsulta}</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Carga Horária Total: </label>
+								<div class="col-sm-4 value-label">
+									<label>${relatorio.cargaHorariaTotalUsuario}</label>
+								</div>
+								<label class="col-sm-2 control-label">Valor Total de Bolsas: </label>
+								<div class="col-sm-4 value-label">
+									<label>${relatorio.valorTotalBolsasUsuario}</label>
+								</div>
+							</div>
+							</div>
+						
+						<table id="tab-relatorios" class="display">
 							<thead>
 								<tr>
 									<th>Nome do Projeto</th>
 									<th>Vínculo</th>
-									<!-- <th>Carga Horária</th>
-									<th>Valor da Bolsa</th> -->
-									<!-- <th></th> -->
+									<th>Carga Horária</th>
+									<th>Valor da Bolsa</th> 
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="projeto" items="${projetosPorPessoa}">
+								<c:forEach var="projeto" items="${relatorio.projetosPorPessoa}">
 									<tr>
 										<td>
 											<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 										</td>
 										<td>${projeto.vinculo}</td>
-										<%-- <td>${projeto.cargaHoraria}</td>
-										<td>${projeto.valorBolsa}</td> --%>
-										<%-- <td><a
-											href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
-										</td> --%>
+										<td>${projeto.cargaHoraria}</td>
+										<td>${projeto.valorBolsa}</td>
 									</tr>
 								</c:forEach>
 							</tbody>

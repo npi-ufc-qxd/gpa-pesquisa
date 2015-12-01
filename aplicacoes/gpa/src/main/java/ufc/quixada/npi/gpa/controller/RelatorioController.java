@@ -30,7 +30,6 @@ public class RelatorioController {
 	@RequestMapping(value = "/aprovados", method = RequestMethod.GET)
 	public String Aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String inicio, 
 			@RequestParam(value = "termino", required = false) String termino, HttpSession session) {
-		model.addAttribute("projetosAprovados", relatorioService.getProjetosAprovadosRelatorio(inicio, termino).getProjetosAprovados());
 		model.addAttribute("relatorio", relatorioService.getProjetosAprovadosRelatorio(inicio, termino));
 		return PAGINA_RELATORIOS;
 	}
@@ -45,14 +44,12 @@ public class RelatorioController {
 	
 	@RequestMapping(value = "/reprovados", method = RequestMethod.GET)
 	public String Reprovados(ModelMap model, @RequestParam(value = "submissao", required = false) String submissao, HttpSession session){
-		model.addAttribute("projetosReprovados", relatorioService.getProjetosReprovadosRelatorio(submissao).getProjetosReprovados());
 		model.addAttribute("relatorio", relatorioService.getProjetosReprovadosRelatorio(submissao));
 		return PAGINA_RELATORIOS;
 	}
 	
 	@RequestMapping(value = "/p-pessoa", method = RequestMethod.GET)
 	public String PorPessoa(ModelMap model, @RequestParam(value = "id", required = true) Long id,@RequestParam(value = "ano", required = false) String ano, HttpSession session){
-		model.addAttribute("projetosPorPessoa", relatorioService.getProjetosPorPessoa(id, ano).getProjetosPorPessoa());
 		model.addAttribute("relatorio", relatorioService.getProjetosPorPessoa(id, ano));
 		return PAGINA_RELATORIOS;
 	}
