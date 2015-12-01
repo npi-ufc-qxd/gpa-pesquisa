@@ -122,6 +122,7 @@ $(document).ready(function() {
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
 	
+<<<<<<< HEAD
 	$('#tab-relatorios').DataTable( {
 		"searching":false,
 		"paging":false
@@ -139,6 +140,8 @@ $(document).ready(function() {
 	    minViewMode: "years",
 	});
 	
+=======
+>>>>>>> branch 'melhorias-diversas-pagina-relatorios' of https://github.com/npi-ufc-qxd/gpa-pesquisa.git
 	$(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",
     	showUpload:false,
@@ -395,6 +398,28 @@ $(document).ready(function() {
 	if(window.location.hash){
 		atualizaHash();
 	}
+	
+	$('.participanteCoordena').DataTable({
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        },
+        "columnDefs": [ 
+            {"targets": 2, "orderable": false},
+            {"targets": 3, "orderable": false}
+		],
+		"autoWidth": false
+	});
+	
+	$('.participanteParticipa').DataTable({
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        },
+        "columnDefs": [ 
+            {"targets": 3, "orderable": false},
+            {"targets": 4, "orderable": false}
+		],
+		"autoWidth": false
+	});
 
 	//RELATORIOS
 	$("#form_aprovados").hide();
@@ -465,45 +490,46 @@ $(document).ready(function() {
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",
-			todayHighlight : true,
-			startDate: new Date()
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
 	    });
 	 
+	 $("#submissaoRelatorio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+	    });
+	 
 	 $("#terminoRelatorio").datepicker({
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",
-			todayHighlight : true,
-			startDate: new Date()
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
 	    });
-	
-	$('.participanteCoordena').DataTable({
-		"language": {
-            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        },
-        "columnDefs": [ 
-            {"targets": 2, "orderable": false},
-            {"targets": 3, "orderable": false}
-		],
-		"autoWidth": false
-	});
-	
-	$('.participanteParticipa').DataTable({
-		"language": {
-            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        },
-        "columnDefs": [ 
-            {"targets": 3, "orderable": false},
-            {"targets": 4, "orderable": false}
-		],
-		"autoWidth": false
-	});
+	 $("#anoRelatorio").datepicker({
+			format : "yyyy",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "years", 
+		    minViewMode: "years",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+	    });
 });

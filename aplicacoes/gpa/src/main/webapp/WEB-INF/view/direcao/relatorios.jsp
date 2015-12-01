@@ -75,11 +75,10 @@
 							cssClass="form-horizontal">
 							<label class ="col-sm-2 control-label" >Data da submissão:</label>
 							<div class="col-sm-2">
-								<input type="text" name="submissao" id="inicioRelatorio"
+								<input type="text" name="submissao" id="submissaoRelatorio"
 								class="form-control data">
 							</div>
-							<input name="gerar" type="submit" class="btn btn-primary"
-								value="gerar" />
+							<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 						</form:form>
 					</div>
 					<%-- form por pessoa--%>
@@ -116,8 +115,7 @@
 	
 								</div>
 								<div class="col-sm-1" id="submit-p-pessoa">
-									<input name="gerar" type="submit" class="btn btn-primary"
-										value="gerar" />
+									<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 								</div>
 							</div>
 						</form:form>
@@ -233,6 +231,7 @@
 									<th>Vínculo</th>
 									<th>Carga Horária</th>
 									<th>Valor da Bolsa</th> 
+
 								</tr>
 							</thead>
 							<tbody>
@@ -244,6 +243,7 @@
 										<td>${projeto.vinculo}</td>
 										<td>${projeto.cargaHoraria}</td>
 										<td>${projeto.valorBolsa}</td> 
+
 									</tr>
 								</c:forEach>
 							</tbody>
