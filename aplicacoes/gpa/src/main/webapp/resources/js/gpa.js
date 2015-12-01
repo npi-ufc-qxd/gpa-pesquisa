@@ -123,18 +123,6 @@ $(document).ready(function() {
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
 	
-	$("#inicioRelatorio, #terminoRelatorio").datepicker({
-		format: "yyyy-mm",
-	    viewMode: "months", 
-	    minViewMode: "months",
-	});
-	
-	$("#anoRelatorio").datepicker({
-		format: "yyyy",
-	    viewMode: "years", 
-	    minViewMode: "years",
-	});
-	
 	$(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",
     	showUpload:false,
@@ -461,23 +449,46 @@ $(document).ready(function() {
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",
-			todayHighlight : true,
-			startDate: new Date()
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
 	    });
 	 
+	 $("#submissaoRelatorio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+	    });
+	 
 	 $("#terminoRelatorio").datepicker({
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",
-			todayHighlight : true,
-			startDate: new Date()
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
+	    });
+	 $("#anoRelatorio").datepicker({
+			format : "yyyy",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "years", 
+		    minViewMode: "years",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
 	    });
 });
