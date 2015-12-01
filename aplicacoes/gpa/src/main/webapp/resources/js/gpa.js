@@ -1,16 +1,15 @@
 $(document).ready(function() {
 	
-	// Página Listar Projetos (Diretor)
 	$('#meus-projetos').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3,]},            
-            {"targets" : 3, "orderable" : false},
-            {"targets" : 4, "orderable" : false}
+	        {"targets" : 3, "orderable" : false},
+	        {"targets" : 4, "orderable" : false}
 		],
 		"language": {
-            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+	        "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+	    }
 	});
 		
 	$('#minhas-participacoes').DataTable({
@@ -122,7 +121,7 @@ $(document).ready(function() {
 		$(this).datepicker('hide');
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
-	
+
 	$(".anexo").fileinput({
     	uploadUrl: "/file-upload-batch/2",
     	showUpload:false,

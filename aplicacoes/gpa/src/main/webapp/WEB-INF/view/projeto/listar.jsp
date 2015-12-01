@@ -43,6 +43,7 @@
 		        		<c:if test="${empty projetosNaoAvaliados}">
 							<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 						</c:if>
+						
 						<c:if test="${not empty projetosNaoAvaliados}">
 							<table id="meus-projetos" class="display">
 								<thead>
@@ -244,7 +245,6 @@
 	<script type="text/javascript">
 		$('#menu-projetos').addClass('active');
 	</script>
-
 </body>
 </html>
 
