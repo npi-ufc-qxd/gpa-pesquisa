@@ -20,15 +20,15 @@ import ufc.quixada.npi.gpa.service.RelatorioService;
 @Controller
 @RequestMapping("direcao/relatorios")
 public class RelatorioController {
-	
+
 	@Inject
 	private RelatorioService relatorioService;
-	
+
 	@Inject
 	private PessoaService pessoaService;
-	
+
 	@RequestMapping(value = "/aprovados", method = RequestMethod.GET)
-	public String Aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String inicio, 
+	public String aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String inicio,
 			@RequestParam(value = "termino", required = false) String termino, HttpSession session) {
 		model.addAttribute("relatorio", relatorioService.getProjetosAprovadosRelatorio(inicio, termino));
 		return PAGINA_RELATORIOS;
@@ -41,17 +41,18 @@ public class RelatorioController {
 		model.addAttribute("pessoas", pessoaService.getAll());
 		return PAGINA_RELATORIOS;
 	}
-	
+
 	@RequestMapping(value = "/reprovados", method = RequestMethod.GET)
-	public String Reprovados(ModelMap model, @RequestParam(value = "submissao", required = false) String submissao, HttpSession session){
+	public String reprovados(ModelMap model, @RequestParam(value = "submissao", required = false) String submissao,
+			HttpSession session) {
 		model.addAttribute("relatorio", relatorioService.getProjetosReprovadosRelatorio(submissao));
 		return PAGINA_RELATORIOS;
 	}
-	
-	@RequestMapping(value = "/p-pessoa", method = RequestMethod.GET)
-	public String PorPessoa(ModelMap model, @RequestParam(value = "id", required = true) Long id,@RequestParam(value = "ano", required = false) String ano, HttpSession session){
+
+	@RequestMapping(value = "/por-pessoa", method = RequestMethod.GET)
+	public String porPessoa(ModelMap model, @RequestParam(value = "id", required = true) Long id,
+			@RequestParam(value = "ano", required = false) String ano, HttpSession session) {
 		model.addAttribute("relatorio", relatorioService.getProjetosPorPessoa(id, ano));
 		return PAGINA_RELATORIOS;
 	}
-	
 }
