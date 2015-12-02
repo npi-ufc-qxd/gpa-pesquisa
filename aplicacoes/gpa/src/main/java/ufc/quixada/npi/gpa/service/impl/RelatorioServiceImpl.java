@@ -40,22 +40,22 @@ public class RelatorioServiceImpl implements
 		
 		if(!inicio.isEmpty() && !termino.isEmpty()){
 			params.put("status", status);
-			params.put("ini", inicio);
-			params.put("ter", termino);
+			params.put("inicio", inicio);
+			params.put("termino", termino);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and ((inicio between TO_DATE (:ini, 'yyyy-mm') and TO_DATE (:ter, 'yyyy-mm')) or (termino between TO_DATE (:ini, 'yyyy-mm') and TO_DATE (:ter, 'yyyy-mm') or (inicio < TO_DATE (:ini, 'yyyy-mm') and termino > TO_DATE (:ter, 'yyyy-mm'))))", params);
+					"from Projeto p where status = :status and ((p.inicio between TO_DATE (:inicio, 'yyyy-mm') and TO_DATE (:termino, 'yyyy-mm')) or (p.termino between TO_DATE (:inicio, 'yyyy-mm') and TO_DATE (:termino, 'yyyy-mm') or (p.inicio < TO_DATE (:inicio, 'yyyy-mm') and p.termino > TO_DATE (:termino, 'yyyy-mm'))))", params);
 		}
 		if(inicio.isEmpty() && !termino.isEmpty()){
 			params.put("status", status);	
-			params.put("ter", termino);
-			return projetoRepository.find(QueryType.JPQL, "from Projeto where status = :status and (inicio <= TO_DATE (:ter, 'yyyy-mm') or termino <= TO_DATE (:ter, 'yyyy-mm'))"
+			params.put("termino", termino);
+			return projetoRepository.find(QueryType.JPQL, "from Projeto p where status = :status and (p.inicio <= TO_DATE (:termino, 'yyyy-mm') or p.termino <= TO_DATE (:termino, 'yyyy-mm'))"
 					, params);
 		}
 		if(!inicio.isEmpty() && termino.isEmpty()){
-			params.put("status", status);	
-			params.put("ini", inicio);
+			params.put("status", status); 
+			params.put("inicio", inicio);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and (inicio >= TO_DATE (:ini, 'yyyy-mm') or termino >= TO_DATE (:ini, 'yyyy-mm'))", params);
+					"from Projeto p where status = :status and (p.inicio >= TO_DATE (:inicio, 'yyyy-mm') or p.termino >= TO_DATE (:inicio, 'yyyy-mm'))", params);
 		}
 		
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
@@ -110,7 +110,7 @@ public class RelatorioServiceImpl implements
 			params.put("submissao", submissao);
 			System.out.println(submissao);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto where status = :status and to_char(submissao, 'yyyy-mm') = :submissao", params);
+					"from Projeto p where status = :status and to_char(p.submissao, 'yyyy-mm') = :submissao", params);
 		}
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
 		projetosBusca = projetoService.getProjetos(status);
@@ -122,6 +122,7 @@ public class RelatorioServiceImpl implements
 	public Relatorio getProjetosReprovadosRelatorio(String submissao) {
 		List<ProjetoReprovadoRelatorio> projetosReprovadosRelatorio = new ArrayList<ProjetoReprovadoRelatorio>();
 		List <Projeto> projetos = this.getProjetosIntervaloReprovados(StatusProjeto.REPROVADO, submissao);
+		
 		for(Projeto p:projetos){
 			ProjetoReprovadoRelatorio projetoReprovado = new ProjetoReprovadoRelatorio();
 			projetoReprovado.setId(p.getId());
@@ -131,9 +132,10 @@ public class RelatorioServiceImpl implements
 			projetoReprovado.setDataDeAvaliacao(p.getAvaliacao());
 			projetosReprovadosRelatorio.add(projetoReprovado);
 		}
-		Relatorio r = new Relatorio();
-		r.setProjetosReprovados(projetosReprovadosRelatorio);
-		return r;
+		
+		Relatorio relatorio = new Relatorio();
+		relatorio.setProjetosReprovados(projetosReprovadosRelatorio);
+		return relatorio;
 	}
 	
 	@Override
@@ -143,11 +145,8 @@ public class RelatorioServiceImpl implements
 			params.put("id", id);
 			params.put("ano", Integer.parseInt(ano));
 			return projetoRepository.find(QueryType.JPQL,
-					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status = 'APROVADO' and year(proj.inicio) <= :ano and year(proj.termino) >= :ano)"
+					"select distinct proj FROM Projeto proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status = 'APROVADO' and (:ano between year(proj.inicio) and year(proj.termino))"
 					, params);
-			/*return projetoRepository.find(QueryType.JPQL,
-					"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and proj.status == 'APROVADO' and ( inicio = TO_DATE (:ano, 'yyyy') or termino = TO_DATE (:ano, 'yyyy') or (inicio < TO_DATE (:ano, 'yyyy') and termino > TO_DATE (:ano, 'yyyy'))"
-					, params);*/
 		}
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
