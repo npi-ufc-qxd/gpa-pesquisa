@@ -1,15 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <nav class="navbar navbar-default">
 	<div class="container-fluid container">
 		<div class="navbar-header">
-			<a href="<c:url value="/projeto/" />"><img id="logo"
-				alt="GPA-Pesquisa"
-				src="<c:url value="/resources/images/gpa-logo.jpg"/>"></a>
+			<a href="<c:url value="/projeto/" />">
+				<img id="logo" alt="GPA-Pesquisa" src="<c:url value="/resources/images/gpa-logo.jpg"/>">
+			</a>
 		</div>
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
@@ -17,8 +15,7 @@
 				<li id="menu-projetos" class=""><a
 					href="<c:url value="/projeto" />" title="Projetos">Projetos</a></li>
 				<li id="menu-novo-projeto" class=""><a
-					href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto">Novo
-						Projeto</a></li>
+					href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto">Novo Projeto</a></li>
 				<sec:authorize ifAnyGranted="DIRECAO">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" 

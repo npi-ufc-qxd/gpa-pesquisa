@@ -223,7 +223,7 @@
 									<dd>${relatorio.nomeUsuario}</dd>
 
 									<dt>Carga horária total</dt>
-									<dd>${relatorio.cargaHorariaTotalUsuario}hrs.</dd>
+									<dd>${relatorio.cargaHorariaTotalUsuario} hrs.</dd>
 								</dl>
 							</div>
 							<div class="col-md-6">
@@ -276,6 +276,7 @@
 			var text_export = 'Exportar para PDF';
 			var tabela_dom = 'Bfrtip';
 			var tabela_ext = 'pdfHtml5';
+			var img_align = 'center';
 
 			$('#relatorios-projetosAprovados').DataTable({
 				dom : tabela_dom,
@@ -283,17 +284,17 @@
 					extend : tabela_ext,
 					text : text_export,
 					title : 'Relatórios - Projetos Aprovados',
-					message : 'Quantidade de projetos: ${fn:length(relatorio.projetosAprovados)}',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}',
 					customize : function(doc) {
 						doc.content.splice(0, 0, {
 							margin : [ 0, 0, 0, 11 ],
-							alignment : 'center',
+							alignment : img_align,
 							image : logo_gpa
 						});
 					}
 				} ],
 				"language" : {
-					"url" : "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
 				}
 			});
 
@@ -303,17 +304,17 @@
 					extend : tabela_ext,
 					text : text_export,
 					title : 'Relatórios - Projetos Reprovados',
-					message : 'Quantidade de projetos: ${fn:length(relatorio.projetosReprovados)}',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)}',
 					customize : function(doc) {
 						doc.content.splice(0, 0, {
 							margin : [ 0, 0, 0, 11 ],
-							alignment : 'center',
+							alignment : img_align,
 							image : logo_gpa
 						});
 					}
 				} ],
 				"language" : {
-					"url" : "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
 				}
 			});
 
@@ -327,13 +328,13 @@
 					customize : function(doc) {
 						doc.content.splice(0, 0, {
 							margin : [ 0, 0, 0, 11 ],
-							alignment : 'center',
+							alignment : img_align,
 							image : logo_gpa
 						});
 					}
 				} ],
 				"language" : {
-					"url" : "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
 				}
 			});
 		});
