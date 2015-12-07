@@ -155,10 +155,11 @@
 									<td>${projeto.nomeCoordenador}</td>
 									<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 									</td>
-									<td>${projeto.dataInicio}</td>
-									<td>${projeto.dataTermino}</td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataInicio}"/> </td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataTermino}"/></td>
 									<td>${projeto.qtdBolsas}</td>
-									<td>${projeto.valorTotalBolsas}</td>
+									<td><fmt:formatNumber type="CURRENCY"
+												currencyCode="BRL">${projeto.valorTotalBolsas}</fmt:formatNumber></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -197,8 +198,8 @@
 										<td>${projeto.nomeCoordenador}</td>
 										<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 										</td>
-										<td>${projeto.dataDeSubimissao}</td>
-										<td>${projeto.dataDeAvaliacao}</td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataDeSubimissao}"/></td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataDeAvaliacao}"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -233,7 +234,8 @@
 									<dd>${relatorio.anoConsulta}</dd>
 
 									<dt>Valor total de bolsas</dt>
-									<dd>${relatorio.valorTotalBolsasUsuario}</dd>
+									<dd><fmt:formatNumber type="CURRENCY"
+												currencyCode="BRL">${relatorio.valorTotalBolsasUsuario}</fmt:formatNumber></dd>
 								</dl>
 							</div>
 						</div>
@@ -255,7 +257,8 @@
 										</td>
 										<td>${projeto.vinculo}</td>
 										<td>${projeto.cargaHoraria}</td>
-										<td>${projeto.valorBolsa}</td>
+										<td><fmt:formatNumber type="CURRENCY"
+												currencyCode="BRL">${projeto.valorBolsa}</fmt:formatNumber></td>
 									</tr>
 								</c:forEach>
 							</tbody>
