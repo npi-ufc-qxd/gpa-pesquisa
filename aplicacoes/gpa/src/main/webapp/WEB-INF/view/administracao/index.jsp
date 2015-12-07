@@ -48,7 +48,7 @@
 						</form:form>
 				
 						<c:if test="${not empty pessoas}">
-						    <table class="table table-striped">
+						    <table id="busca-adm" class="table table-striped display">
 						        <thead class="thead">
 						            <tr>
 						                <th>Usuário</th>

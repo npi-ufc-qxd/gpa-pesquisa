@@ -14,9 +14,9 @@ public interface RelatorioService {
 
 	Relatorio getProjetosPorPessoa(Long id, String ano);
 	
-	List<Projeto> getProjetosIntervalosAprovados(StatusProjeto status,String inicio, String termino);
+	List<Projeto> getProjetosIntervalosAprovados(String inicio, String termino);
 	
-	List<Projeto> getProjetosIntervaloReprovados(StatusProjeto status, String submissao);
+	List<Projeto> getProjetosIntervaloReprovados(String submissao);
 	
 	List<Projeto> getProjetosIntervaloPorPessoa(Long id, String ano);
 
