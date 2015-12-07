@@ -146,7 +146,6 @@
 			num;
 	};
 	
-	
 	var _isNumber = function ( d, decimalPoint, formatted ) {
 		var strType = typeof d === 'string';
 	

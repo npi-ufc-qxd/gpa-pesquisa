@@ -33,17 +33,18 @@
 					</div>
 				</c:if>
 		        <ul class="nav nav-tabs">
-		            <li class="active"><a aria-expanded="true" href="#tab-meus-projetos" data-toggle="tab">Meus projetos <span class="badge">${projetos.size() }</span></a></li>
+		            <li class="active"><a aria-expanded="true" href="#tab-meus-projetos" data-toggle="tab">Meus projetos <span class="badge">${projetosNaoAvaliados.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Em Participação <span class="badge">${participacoesEmProjetos.size() }</span></a></li>		            
 		            <li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
 		        </ul>
 		        <div class="tab-content">
 		        	<div class="tab-pane fade active in" id="tab-meus-projetos">
-		        		<c:if test="${empty projetos}">
+		        		<c:if test="${empty projetosNaoAvaliados}">
 							<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 						</c:if>
-						<c:if test="${not empty projetos}">
+						
+						<c:if test="${not empty projetosNaoAvaliados}">
 							<table id="meus-projetos" class="display">
 								<thead>
 									<tr>
@@ -55,34 +56,34 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="projeto" items="${projetos}">
+									<c:forEach var="projetoNaoAvaliado" items="${projetosNaoAvaliados}">
 										<tr>
-											<td>${projeto.codigo }</td>
+											<td>${projetoNaoAvaliado.codigo }</td>
 											<td>
-												<a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a>
+												<a href="<c:url value="/projeto/detalhes/${projetoNaoAvaliado.id}" ></c:url>">${projetoNaoAvaliado.nome}</a>
 											</td>
-											<td>${projeto.status.descricao}</td>
+											<td>${projetoNaoAvaliado.status.descricao}</td>
 											<td>
-												<c:if test="${empty projeto.submissao }">-</c:if>
-												<fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" />
+												<c:if test="${empty projetoNaoAvaliado.submissao }">-</c:if>
+												<fmt:formatDate pattern="dd/MM/yyyy" value="${projetoNaoAvaliado.submissao }" />
 											</td>
 											<td class="acoes">
-												<c:if test="${projeto.status == 'NOVO'}">
+												<c:if test="${projetoNaoAvaliado.status == 'NOVO'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
-														data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }">
+														data-href="<c:url value="/projeto/submeter/${projetoNaoAvaliado.id}" ></c:url>" data-name="${projetoNaoAvaliado.nome }">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>
 													</a>
 		
-													<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" title="Vincular participantes">
+													<a id="vincular" href="<c:url value="/projeto/participacoes/${projetoNaoAvaliado.id}" ></c:url>" title="Vincular participantes">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
 													</a>
 													
-													<a id="editar" href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>" title="Editar">
+													<a id="editar" href="<c:url value="/projeto/editar/${projetoNaoAvaliado.id}" ></c:url>" title="Editar">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 													</a>
 		
 													<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" title="Excluir"
-														data-href="<c:url value="/projeto/excluir/${projeto.id}"></c:url>" data-name="${projeto.nome }">
+														data-href="<c:url value="/projeto/excluir/${projetoNaoAvaliado.id}"></c:url>" data-name="${projetoNaoAvaliado.nome }">
 														<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
 													</a>
 												</c:if>
@@ -244,7 +245,6 @@
 	<script type="text/javascript">
 		$('#menu-projetos').addClass('active');
 	</script>
-
 </body>
 </html>
 
