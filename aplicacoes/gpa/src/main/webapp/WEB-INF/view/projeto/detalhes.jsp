@@ -72,7 +72,7 @@
 								<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 							</div>
 						</c:if>
-						<c:if test="${permissaoParecer == false }">
+						<c:if test="${permissaoParecer == true }">
 							<label class="col-sm-2 control-label">Autor:</label>
 							<div class="col-sm-3 value-label">
 								<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
@@ -108,7 +108,7 @@
 								</label>
 							</c:if>
 						</div>
-						<c:if test="${permissaoParecer == true }">
+						<c:if test="${permissaoDataParecer == true }">
 							<div class="col-sm-3 control-label">
 								<c:if test="${not empty projeto.parecer.dataRealizacao }">
 									<label>Data de emissão do parecer:</label>
