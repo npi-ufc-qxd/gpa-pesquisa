@@ -402,4 +402,24 @@ $(document).ready(function() {
 		],
 		"autoWidth": false
 	});
+	
+	$('#busca-adm').DataTable({
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        },
+        "columnDefs": [ 
+            {"targets": 1, "orderable": false},
+            {"targets": 2, "orderable": false}
+		],
+		"autoWidth": false
+	});
+	$('#busca-participante').DataTable({
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        },
+        "columnDefs": [ 
+            {"targets": 1, "orderable": false},
+		],
+		"autoWidth": false
+	});
 });

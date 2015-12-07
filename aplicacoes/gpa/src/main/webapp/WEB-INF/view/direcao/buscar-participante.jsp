@@ -48,12 +48,11 @@
 						</form:form>
 				
 						<c:if test="${not empty pessoas}">
-						    <table class="table table-striped">
+						    <table id="busca-participante" class="table table-striped">
 						        <thead class="thead">
 						            <tr>
 						                <th>Participante</th>
 						                <th>Email</th>
-						                <th></th>
 						            </tr>
 						        </thead>
 						        <tbody>
@@ -67,7 +66,6 @@
 							                	</strong>
 							                </td>
 							                <td>${pessoa.email}</td>
-							                
 							            </tr>
 									</c:forEach>
 						        </tbody>
