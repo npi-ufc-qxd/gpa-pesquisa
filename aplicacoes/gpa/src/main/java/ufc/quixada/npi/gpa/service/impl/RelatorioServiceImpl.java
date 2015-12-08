@@ -199,12 +199,4 @@ public class RelatorioServiceImpl implements RelatorioService {
 		return r;
 	}
 
-	@Override
-	public void verificaRelatoriosPeriodo(Relatorio relatorio) {
-		if((relatorio.getProjetosAprovados() == null ||relatorio.getProjetosAprovados().isEmpty()) 
-				&& (relatorio.getProjetosPorPessoa() == null || relatorio.getProjetosPorPessoa().isEmpty()) 
-				&& (relatorio.getProjetosReprovados()==null || relatorio.getProjetosReprovados().isEmpty())){
-			throw new IllegalArgumentException("Não há projetos no periodo informado.");
-		}
-	}
 }

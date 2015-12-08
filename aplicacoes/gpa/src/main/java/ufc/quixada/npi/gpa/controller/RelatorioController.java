@@ -1,6 +1,6 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.*;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_RELATORIOS;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -34,12 +34,7 @@ public class RelatorioController {
 			@RequestParam(value = "termino", required = false) String termino, RedirectAttributes redirectAttributes,
 			HttpSession session) {
 		Relatorio relatorio = relatorioService.getProjetosAprovadosRelatorio(inicio, termino);
-		try {
-			relatorioService.verificaRelatoriosPeriodo(relatorio);
-		} catch (IllegalArgumentException e) {
-			redirectAttributes.addFlashAttribute("erro", e.getMessage());
-			return REDIRECT_PAGINA_RELATORIOS;	
-		}
+		model.addAttribute("tipoRelatorio", "aprovados");
 		model.addAttribute("relatorio", relatorio);
 		model.addAttribute("data_de_inicio", inicio);
 		model.addAttribute("data_de_termino", termino);
@@ -58,12 +53,7 @@ public class RelatorioController {
 	public String reprovados(ModelMap model, @RequestParam(value = "submissao", required = false) String submissao,
 			RedirectAttributes redirectAttributes, HttpSession session) {
 		Relatorio relatorio = relatorioService.getProjetosReprovadosRelatorio(submissao);
-		try {
-			relatorioService.verificaRelatoriosPeriodo(relatorio);
-		} catch (IllegalArgumentException e) {
-			redirectAttributes.addFlashAttribute("erro", e.getMessage());
-			return REDIRECT_PAGINA_RELATORIOS;	
-		}
+		model.addAttribute("tipoRelatorio", "reprovados");
 		model.addAttribute("relatorio", relatorio);
 		model.addAttribute("data_de_submissao", submissao);
 		return PAGINA_RELATORIOS;
@@ -73,12 +63,7 @@ public class RelatorioController {
 	public String porPessoa(ModelMap model, @RequestParam(value = "id", required = true) Long id,
 			@RequestParam(value = "ano", required = false) String ano, RedirectAttributes redirectAttributes, HttpSession session) {
 		Relatorio relatorio = relatorioService.getProjetosPorPessoa(id, ano);
-		try {
-			relatorioService.verificaRelatoriosPeriodo(relatorio);
-		} catch (IllegalArgumentException e) {
-			redirectAttributes.addFlashAttribute("erro", e.getMessage());
-			return REDIRECT_PAGINA_RELATORIOS;	
-		}
+		model.addAttribute("tipoRelatorio", "por-pessoa");
 		model.addAttribute("relatorio", relatorio );
 		return PAGINA_RELATORIOS;
 	}

@@ -19,6 +19,4 @@ public interface RelatorioService {
 	
 	List<Projeto> getProjetosIntervaloPorPessoa(Long id, String ano);
 
-	void verificaRelatoriosPeriodo(Relatorio relatorio);
-	
 }

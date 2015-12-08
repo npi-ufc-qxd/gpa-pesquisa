@@ -19,14 +19,6 @@
 				<h3 class="panel-title">Relatórios</h3>
 			</div>
 			<div class="panel-body">
-				<c:if test="${not empty erro}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert">
-							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						<c:out value="${erro}"></c:out>
-					</div>
-				</c:if>
 				<div class="row">
 					<c:if test="${empty relatorio}">
 						<h5>
@@ -128,7 +120,7 @@
 					</div>
 				</c:if>
 				<!-- TAB APROVADOS -->
-				<c:if test="${not empty relatorio.projetosAprovados}">
+				<c:if test="${tipoRelatorio == 'aprovados'}">
 					<div class="row">
 						<div class="col-md-10">
 							<h4>Projetos Aprovados</h4>
@@ -180,7 +172,7 @@
 
 				<!-- TAB REPROVADOS -->
 				<div id="tab-projetos-aprovados">
-					<c:if test="${not empty relatorio.projetosReprovados}">
+					<c:if test="${tipoRelatorio == 'reprovados'}">
 						<div class="row">
 							<div class="col-md-10">
 								<h4>Projetos Reprovados</h4>
@@ -228,7 +220,7 @@
 				</div>
 				<!-- TAB P/ PESSOA -->
 				<div id="tab-p-pessoa">
-					<c:if test="${not empty relatorio.projetosPorPessoa}">
+					<c:if test="${tipoRelatorio == 'por-pessoa'}">
 						<div class="row">
 							<div class="col-md-10">
 								<h4>Projetos por usuário</h4>
