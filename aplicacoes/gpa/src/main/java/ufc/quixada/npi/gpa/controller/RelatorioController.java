@@ -31,6 +31,8 @@ public class RelatorioController {
 	public String aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String inicio,
 			@RequestParam(value = "termino", required = false) String termino, HttpSession session) {
 		model.addAttribute("relatorio", relatorioService.getProjetosAprovadosRelatorio(inicio, termino));
+		model.addAttribute("data_de_inicio", inicio);
+		model.addAttribute("data_de_termino", termino);
 		return PAGINA_RELATORIOS;
 	}
 
@@ -46,6 +48,7 @@ public class RelatorioController {
 	public String reprovados(ModelMap model, @RequestParam(value = "submissao", required = false) String submissao,
 			HttpSession session) {
 		model.addAttribute("relatorio", relatorioService.getProjetosReprovadosRelatorio(submissao));
+		model.addAttribute("data_de_submissao", submissao);
 		return PAGINA_RELATORIOS;
 	}
 

@@ -133,10 +133,12 @@
 						</div>
 					</div>
 
-					<div class="well well-sm">
+					<div class="col-md-6">
 						Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}
 					</div>
-
+					<div class="col-md-3">Data início: ${data_de_inicio}</div>
+					<div class="col-md-3">Data término: ${data_de_termino}</div>
+					
 					<table id="relatorios-projetosAprovados" class="display">
 						<thead>
 							<tr>
@@ -154,10 +156,11 @@
 									<td>${projeto.nomeCoordenador}</td>
 									<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 									</td>
-									<td>${projeto.dataInicio}</td>
-									<td>${projeto.dataTermino}</td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataInicio}"/> </td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataTermino}"/></td>
 									<td>${projeto.qtdBolsas}</td>
-									<td>${projeto.valorTotalBolsas}</td>
+									<td><fmt:formatNumber type="CURRENCY"
+												currencyCode="BRL">${projeto.valorTotalBolsas}</fmt:formatNumber></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -177,9 +180,9 @@
 							</div>
 						</div>
 
-						<div class="well well-sm">
-							Quantidade de Projetos: ${fn:length(relatorio.projetosReprovados)}
-						</div>
+						<div class="col-md-8">Quantidade de Projetos:
+							${fn:length(relatorio.projetosReprovados)}</div>
+						<div class="col-md-4">Data: ${data_de_submissao}</div>
 
 						<table id="relatorios-projetosReprovados" class="display">
 							<thead>
@@ -196,8 +199,8 @@
 										<td>${projeto.nomeCoordenador}</td>
 										<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 										</td>
-										<td>${projeto.dataDeSubimissao}</td>
-										<td>${projeto.dataDeAvaliacao}</td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataDeSubimissao}"/></td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataDeAvaliacao}"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -232,7 +235,8 @@
 									<dd>${relatorio.anoConsulta}</dd>
 
 									<dt>Valor total de bolsas</dt>
-									<dd>${relatorio.valorTotalBolsasUsuario}</dd>
+									<dd><fmt:formatNumber type="CURRENCY"
+												currencyCode="BRL">${relatorio.valorTotalBolsasUsuario}</fmt:formatNumber></dd>
 								</dl>
 							</div>
 						</div>
@@ -254,7 +258,8 @@
 										</td>
 										<td>${projeto.vinculo}</td>
 										<td>${projeto.cargaHoraria}</td>
-										<td>${projeto.valorBolsa}</td>
+										<td><fmt:formatNumber type="CURRENCY"
+												currencyCode="BRL">${projeto.valorBolsa}</fmt:formatNumber></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -284,7 +289,7 @@
 					extend : tabela_ext,
 					text : text_export,
 					title : 'Relatórios - Projetos Aprovados',
-					message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\nData início: ${data_de_inicio}\nData término: ${data_de_termino}',
 					customize : function(doc) {
 						doc.content.splice(0, 0, {
 							margin : [ 0, 0, 0, 11 ],
@@ -304,7 +309,7 @@
 					extend : tabela_ext,
 					text : text_export,
 					title : 'Relatórios - Projetos Reprovados',
-					message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)}',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \nData: ${data_de_submissao}',
 					customize : function(doc) {
 						doc.content.splice(0, 0, {
 							margin : [ 0, 0, 0, 11 ],
