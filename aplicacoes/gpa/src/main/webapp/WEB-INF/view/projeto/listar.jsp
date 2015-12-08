@@ -144,7 +144,6 @@
 										<th>Status</th>
 										<th>Data Submissão</th>
 										<th>Data Avaliação</th>
-										<th>Autor</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -155,7 +154,6 @@
 											<td>${projeto.status.descricao}</td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.avaliacao }" /></td>
-											<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
 										</tr>
 									</c:forEach>
 								</tbody>
