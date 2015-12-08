@@ -133,10 +133,12 @@
 						</div>
 					</div>
 
-					<div class="well well-sm">
+					<div class="col-md-6">
 						Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}
 					</div>
-
+					<div class="col-md-3">Data início: ${data_de_inicio}</div>
+					<div class="col-md-3">Data término: ${data_de_termino}</div>
+					
 					<table id="relatorios-projetosAprovados" class="display">
 						<thead>
 							<tr>
@@ -178,9 +180,9 @@
 							</div>
 						</div>
 
-						<div class="well well-sm">
-							Quantidade de Projetos: ${fn:length(relatorio.projetosReprovados)}
-						</div>
+						<div class="col-md-8">Quantidade de Projetos:
+							${fn:length(relatorio.projetosReprovados)}</div>
+						<div class="col-md-4">Data: ${data_de_submissao}</div>
 
 						<table id="relatorios-projetosReprovados" class="display">
 							<thead>
@@ -287,7 +289,7 @@
 					extend : tabela_ext,
 					text : text_export,
 					title : 'Relatórios - Projetos Aprovados',
-					message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\nData início: ${data_de_inicio}\nData término: ${data_de_termino}',
 					customize : function(doc) {
 						doc.content.splice(0, 0, {
 							margin : [ 0, 0, 0, 11 ],
@@ -307,7 +309,7 @@
 					extend : tabela_ext,
 					text : text_export,
 					title : 'Relatórios - Projetos Reprovados',
-					message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)}',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \nData: ${data_de_submissao}',
 					customize : function(doc) {
 						doc.content.splice(0, 0, {
 							margin : [ 0, 0, 0, 11 ],

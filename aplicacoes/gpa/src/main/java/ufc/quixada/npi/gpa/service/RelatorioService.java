@@ -3,7 +3,6 @@ package ufc.quixada.npi.gpa.service;
 import java.util.List;
 
 import ufc.quixada.npi.gpa.model.Projeto;
-import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.model.Relatorio;
 
 public interface RelatorioService {
@@ -19,7 +18,5 @@ public interface RelatorioService {
 	List<Projeto> getProjetosIntervaloReprovados(String submissao);
 	
 	List<Projeto> getProjetosIntervaloPorPessoa(Long id, String ano);
-
-	
 	
 }
