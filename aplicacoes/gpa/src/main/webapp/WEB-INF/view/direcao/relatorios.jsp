@@ -34,7 +34,7 @@
 						</h5>
 						<div class="col-sm-6">
 							<select id="relatorio" name="relatorioParam" class="form-control">
-								<option value=""></option>
+								<option></option>
 								<option value="APROVADOS">PROJETOS APROVADOS</option>
 								<option value="REPROVADOS">PROJETOS REPROVADOS</option>
 								<option value="POR_USUARIO">PROJETOS POR USUÁRIO</option>
@@ -90,31 +90,37 @@
 							servletRelativeAction="relatorios/por-pessoa" method="GET"
 							cssClass="form-horizontal">
 
-							<div class="form-group form-item">
-								<label class="col-sm-1 control-label">Nome:</label>
-								<div class="col-sm-5">
-									<select id="select_pessoaRelatorio" name="id"
-										class="form-control" required>
-										<c:set var="part" value="${pessoas }"></c:set>
-										<option value=""></option>
-										<c:forEach items="${pessoas }" var="pessoa">
-											<c:set var="selected" value=""></c:set>
-											<c:set var="participanteSelecionado" value="id=${pessoa.id }"></c:set>
-											<c:if test="${fn:contains(part, participanteSelecionado)}">
-												<c:set var="selected" value="selected=\"selected\""></c:set>
-											</c:if>
-											<option value="${pessoa.id }">${pessoa.nome }</option>
-										</c:forEach>
-									</select>
-
+							<div class="form-group col-sm-7">
+								<div class="form-item">
+									<label class="col-sm-1 control-label">Nome:</label>
+									<div class="col-sm-11">
+										<select id="select_pessoaRelatorio" name="id"
+											class="form-control" required>
+											<c:set var="part" value="${pessoas }"></c:set>
+											<option value=""></option>
+											<c:forEach items="${pessoas }" var="pessoa">
+												<c:set var="selected" value=""></c:set>
+												<c:set var="participanteSelecionado" value="id=${pessoa.id }"></c:set>
+												<c:if test="${fn:contains(part, participanteSelecionado)}">
+													<c:set var="selected" value="selected=\"selected\""></c:set>
+												</c:if>
+												<option value="${pessoa.id }">${pessoa.nome }</option>
+											</c:forEach>
+										</select>
+	
+									</div>
 								</div>
 								<!-- div select -->
-								<label class="col-sm-1 control-label">Data da submissao:</label>
-								<div class="col-sm-2">
-									<input type="text" name="ano" id="anoRelatorio" class="form-control data">
-								</div>
-								<div class="col-sm-1" id="submit-p-pessoa">
-									<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
+							</div>
+							<div class="form-group">
+								<div class="form-item">
+									<label class="col-sm-2 control-label">Data da submissão:</label>
+									<div class="col-sm-2">
+										<input type="text" name="ano" id="anoRelatorio" class="form-control data">
+									</div>
+									<div class="col-sm-1" id="submit-p-pessoa">
+										<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
+									</div>
 								</div>
 							</div>
 						</form:form>
