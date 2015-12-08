@@ -532,4 +532,17 @@ $(document).ready(function() {
 		],
 		"autoWidth": false
 	});
+	
+	//Relatórios por pessoa
+	$('#relatoriosPPessoaForm').bootstrapValidator({
+		fields: {
+			id: {
+                validators: {
+                	notEmpty: {
+                        message: 'Selecione um nome para efetuar a busca.'
+                    }
+                }
+            }
+		}
+	});
 });

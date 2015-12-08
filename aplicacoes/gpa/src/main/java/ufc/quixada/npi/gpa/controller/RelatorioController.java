@@ -12,8 +12,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.Relatorio;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.RelatorioService;
 
@@ -29,8 +31,11 @@ public class RelatorioController {
 
 	@RequestMapping(value = "/aprovados", method = RequestMethod.GET)
 	public String aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String inicio,
-			@RequestParam(value = "termino", required = false) String termino, HttpSession session) {
-		model.addAttribute("relatorio", relatorioService.getProjetosAprovadosRelatorio(inicio, termino));
+			@RequestParam(value = "termino", required = false) String termino, RedirectAttributes redirectAttributes,
+			HttpSession session) {
+		Relatorio relatorio = relatorioService.getProjetosAprovadosRelatorio(inicio, termino);
+		model.addAttribute("tipoRelatorio", "aprovados");
+		model.addAttribute("relatorio", relatorio);
 		model.addAttribute("data_de_inicio", inicio);
 		model.addAttribute("data_de_termino", termino);
 		return PAGINA_RELATORIOS;
@@ -46,16 +51,20 @@ public class RelatorioController {
 
 	@RequestMapping(value = "/reprovados", method = RequestMethod.GET)
 	public String reprovados(ModelMap model, @RequestParam(value = "submissao", required = false) String submissao,
-			HttpSession session) {
-		model.addAttribute("relatorio", relatorioService.getProjetosReprovadosRelatorio(submissao));
+			RedirectAttributes redirectAttributes, HttpSession session) {
+		Relatorio relatorio = relatorioService.getProjetosReprovadosRelatorio(submissao);
+		model.addAttribute("tipoRelatorio", "reprovados");
+		model.addAttribute("relatorio", relatorio);
 		model.addAttribute("data_de_submissao", submissao);
 		return PAGINA_RELATORIOS;
 	}
 
 	@RequestMapping(value = "/por-pessoa", method = RequestMethod.GET)
 	public String porPessoa(ModelMap model, @RequestParam(value = "id", required = true) Long id,
-			@RequestParam(value = "ano", required = false) String ano, HttpSession session) {
-		model.addAttribute("relatorio", relatorioService.getProjetosPorPessoa(id, ano));
+			@RequestParam(value = "ano", required = false) String ano, RedirectAttributes redirectAttributes, HttpSession session) {
+		Relatorio relatorio = relatorioService.getProjetosPorPessoa(id, ano);
+		model.addAttribute("tipoRelatorio", "por-pessoa");
+		model.addAttribute("relatorio", relatorio );
 		return PAGINA_RELATORIOS;
 	}
 }

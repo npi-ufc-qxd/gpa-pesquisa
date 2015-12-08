@@ -18,5 +18,5 @@ public interface RelatorioService {
 	List<Projeto> getProjetosIntervaloReprovados(String submissao);
 	
 	List<Projeto> getProjetosIntervaloPorPessoa(Long id, String ano);
-	
+
 }

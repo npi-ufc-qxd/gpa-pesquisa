@@ -40,7 +40,7 @@ public class Constants {
 	
 	public static final String REDIRECT_PAGINA_LISTAR_PROJETO = "redirect:/projeto";
 	
-	public static final String REDIRECT_PAGINA_RELATORIOS = "redirect:/direcao/relatorio";
+	public static final String REDIRECT_PAGINA_RELATORIOS = "redirect:/direcao/relatorios";
 	
 	public static final String REDIRECT_PAGINA_INICIAL_DIRECAO = "redirect:/direcao";
 	

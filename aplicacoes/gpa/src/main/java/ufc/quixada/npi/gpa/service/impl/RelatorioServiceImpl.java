@@ -198,4 +198,5 @@ public class RelatorioServiceImpl implements RelatorioService {
 		r.setProjetosPorPessoa(projetosPorPessoaRelatorio);
 		return r;
 	}
+
 }

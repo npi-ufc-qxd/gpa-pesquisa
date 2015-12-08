@@ -26,7 +26,7 @@
 						</h5>
 						<div class="col-sm-6">
 							<select id="relatorio" name="relatorioParam" class="form-control">
-								<option value=""></option>
+								<option></option>
 								<option value="APROVADOS">PROJETOS APROVADOS</option>
 								<option value="REPROVADOS">PROJETOS REPROVADOS</option>
 								<option value="POR_USUARIO">PROJETOS POR USUÁRIO</option>
@@ -82,31 +82,37 @@
 							servletRelativeAction="relatorios/por-pessoa" method="GET"
 							cssClass="form-horizontal">
 
-							<div class="form-group form-item">
-								<label class="col-sm-1 control-label">Nome:</label>
-								<div class="col-sm-5">
-									<select id="select_pessoaRelatorio" name="id"
-										class="form-control" required>
-										<c:set var="part" value="${pessoas }"></c:set>
-										<option value=""></option>
-										<c:forEach items="${pessoas }" var="pessoa">
-											<c:set var="selected" value=""></c:set>
-											<c:set var="participanteSelecionado" value="id=${pessoa.id }"></c:set>
-											<c:if test="${fn:contains(part, participanteSelecionado)}">
-												<c:set var="selected" value="selected=\"selected\""></c:set>
-											</c:if>
-											<option value="${pessoa.id }">${pessoa.nome }</option>
-										</c:forEach>
-									</select>
-
+							<div class="form-group col-sm-7">
+								<div class="form-item">
+									<label class="col-sm-1 control-label">Nome:</label>
+									<div class="col-sm-11">
+										<select id="select_pessoaRelatorio" name="id"
+											class="form-control" required>
+											<c:set var="part" value="${pessoas }"></c:set>
+											<option value=""></option>
+											<c:forEach items="${pessoas }" var="pessoa">
+												<c:set var="selected" value=""></c:set>
+												<c:set var="participanteSelecionado" value="id=${pessoa.id }"></c:set>
+												<c:if test="${fn:contains(part, participanteSelecionado)}">
+													<c:set var="selected" value="selected=\"selected\""></c:set>
+												</c:if>
+												<option value="${pessoa.id }">${pessoa.nome }</option>
+											</c:forEach>
+										</select>
+	
+									</div>
 								</div>
 								<!-- div select -->
-								<label class="col-sm-1 control-label">Data da submissao:</label>
-								<div class="col-sm-2">
-									<input type="text" name="ano" id="anoRelatorio" class="form-control data">
-								</div>
-								<div class="col-sm-1" id="submit-p-pessoa">
-									<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
+							</div>
+							<div class="form-group">
+								<div class="form-item">
+									<label class="col-sm-2 control-label">Data da submissão:</label>
+									<div class="col-sm-2">
+										<input type="text" name="ano" id="anoRelatorio" class="form-control data">
+									</div>
+									<div class="col-sm-1" id="submit-p-pessoa">
+										<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
+									</div>
 								</div>
 							</div>
 						</form:form>
@@ -114,16 +120,7 @@
 					</div>
 				</c:if>
 				<!-- TAB APROVADOS -->
-				<c:if test="${not empty relatorio}">
-					<c:if
-						test="${empty relatorio.projetosAprovados 
-						&& empty relatorio.projetosReprovados 
-						&& empty relatorio.projetosPorPessoa}">
-						<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
-					</c:if>
-				</c:if>
-
-				<c:if test="${not empty relatorio.projetosAprovados}">
+				<c:if test="${tipoRelatorio == 'aprovados'}">
 					<div class="row">
 						<div class="col-md-10">
 							<h4>Projetos Aprovados</h4>
@@ -132,13 +129,18 @@
 							<a href="<c:url value="/direcao/relatorios" />" class="btn btn-primary btn-sm">Nova consulta</a>
 						</div>
 					</div>
-
-					<div class="col-md-6">
-						Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}
+					<div class="row">
+						<div class="col-md-6">
+							<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}</strong>
+						</div>
+						<div class="col-md-3">
+							<strong>Data início: ${data_de_inicio}</strong>
+						</div>
+						<div class="col-md-3">
+							<strong>Data término: ${data_de_termino}</strong>
+						</div>
 					</div>
-					<div class="col-md-3">Data início: ${data_de_inicio}</div>
-					<div class="col-md-3">Data término: ${data_de_termino}</div>
-					
+					<br>
 					<table id="relatorios-projetosAprovados" class="display">
 						<thead>
 							<tr>
@@ -170,7 +172,7 @@
 
 				<!-- TAB REPROVADOS -->
 				<div id="tab-projetos-aprovados">
-					<c:if test="${not empty relatorio.projetosReprovados}">
+					<c:if test="${tipoRelatorio == 'reprovados'}">
 						<div class="row">
 							<div class="col-md-10">
 								<h4>Projetos Reprovados</h4>
@@ -179,11 +181,20 @@
 								<a href="<c:url value="/direcao/relatorios" />" class="btn btn-primary btn-sm">Nova consulta</a>
 							</div>
 						</div>
-
-						<div class="col-md-8">Quantidade de Projetos:
-							${fn:length(relatorio.projetosReprovados)}</div>
-						<div class="col-md-4">Data: ${data_de_submissao}</div>
-
+						<div class="row">
+							<div class="col-md-8">
+								<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosReprovados)}</strong>
+							</div>
+							<div class="col-md-4">
+								<c:if test="${not empty data_de_submissao}">
+									<strong>Data: ${data_de_submissao}</strong>
+								</c:if>
+								<c:if test="${empty data_de_submissao}">
+									<strong>Data: - - - </strong>
+								</c:if>
+							</div>
+						</div>
+						<br>
 						<table id="relatorios-projetosReprovados" class="display">
 							<thead>
 								<tr>
@@ -209,7 +220,7 @@
 				</div>
 				<!-- TAB P/ PESSOA -->
 				<div id="tab-p-pessoa">
-					<c:if test="${not empty relatorio.projetosPorPessoa}">
+					<c:if test="${tipoRelatorio == 'por-pessoa'}">
 						<div class="row">
 							<div class="col-md-10">
 								<h4>Projetos por usuário</h4>
