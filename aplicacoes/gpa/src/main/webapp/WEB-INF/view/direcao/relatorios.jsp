@@ -19,6 +19,14 @@
 				<h3 class="panel-title">Relatórios</h3>
 			</div>
 			<div class="panel-body">
+				<c:if test="${not empty erro}">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<c:out value="${erro}"></c:out>
+					</div>
+				</c:if>
 				<div class="row">
 					<c:if test="${empty relatorio}">
 						<h5>
@@ -114,15 +122,6 @@
 					</div>
 				</c:if>
 				<!-- TAB APROVADOS -->
-				<c:if test="${not empty relatorio}">
-					<c:if
-						test="${empty relatorio.projetosAprovados 
-						&& empty relatorio.projetosReprovados 
-						&& empty relatorio.projetosPorPessoa}">
-						<div class="alert alert-warning" role="alert">Não há projetos neste periodo informado.</div>
-					</c:if>
-				</c:if>
-
 				<c:if test="${not empty relatorio.projetosAprovados}">
 					<div class="row">
 						<div class="col-md-10">
@@ -132,13 +131,18 @@
 							<a href="<c:url value="/direcao/relatorios" />" class="btn btn-primary btn-sm">Nova consulta</a>
 						</div>
 					</div>
-
-					<div class="col-md-6">
-						Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}
+					<div class="row">
+						<div class="col-md-6">
+							<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}</strong>
+						</div>
+						<div class="col-md-3">
+							<strong>Data início: ${data_de_inicio}</strong>
+						</div>
+						<div class="col-md-3">
+							<strong>Data término: ${data_de_termino}</strong>
+						</div>
 					</div>
-					<div class="col-md-3">Data início: ${data_de_inicio}</div>
-					<div class="col-md-3">Data término: ${data_de_termino}</div>
-					
+					<br>
 					<table id="relatorios-projetosAprovados" class="display">
 						<thead>
 							<tr>
@@ -179,11 +183,20 @@
 								<a href="<c:url value="/direcao/relatorios" />" class="btn btn-primary btn-sm">Nova consulta</a>
 							</div>
 						</div>
-
-						<div class="col-md-8">Quantidade de Projetos:
-							${fn:length(relatorio.projetosReprovados)}</div>
-						<div class="col-md-4">Data: ${data_de_submissao}</div>
-
+						<div class="row">
+							<div class="col-md-8">
+								<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosReprovados)}</strong>
+							</div>
+							<div class="col-md-4">
+								<c:if test="${not empty data_de_submissao}">
+									<strong>Data: ${data_de_submissao}</strong>
+								</c:if>
+								<c:if test="${empty data_de_submissao}">
+									<strong>Data: - - - </strong>
+								</c:if>
+							</div>
+						</div>
+						<br>
 						<table id="relatorios-projetosReprovados" class="display">
 							<thead>
 								<tr>
