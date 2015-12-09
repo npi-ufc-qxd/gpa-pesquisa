@@ -15,11 +15,11 @@ $(document).ready(function() {
 	$('#minhas-participacoes').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
-		    {className: "dt-center", "targets": [ 0, 1, 4, 5, 6, 7]},
+		    {className: "dt-center", "targets": [ 0, 4, 5, 6]},
             {"targets" : 4, "orderable" : false},
             {"targets" : 5, "orderable" : false},
             {"targets" : 6, "orderable" : false},
-            {"targets" : 7, "orderable" : false}
+            { "width": "30%", "targets": [5,4]}
 		],
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
