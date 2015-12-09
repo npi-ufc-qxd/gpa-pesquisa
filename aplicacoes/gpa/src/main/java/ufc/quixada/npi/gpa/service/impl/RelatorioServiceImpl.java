@@ -155,48 +155,50 @@ public class RelatorioServiceImpl implements RelatorioService {
 	public Relatorio getProjetosPorPessoa(Long id, String ano) {
 		List<ProjetoPorPessoaRelatorio> projetosPorPessoaRelatorio = new ArrayList<ProjetoPorPessoaRelatorio>();
 		List<Projeto> projetos = this.getProjetosIntervaloPorPessoa(id, ano);
-		Relatorio r = new Relatorio();
-		r.setNomeUsuario(pessoaService.getPessoa(id).getNome());
+		Relatorio relatorio = new Relatorio();
+		relatorio.setNomeUsuario(pessoaService.getPessoa(id).getNome());
 		if (!ano.isEmpty())
-			r.setAnoConsulta(Integer.parseInt(ano));
+			relatorio.setAnoConsulta(Integer.parseInt(ano));
 		BigDecimal valorTotal = new BigDecimal(0);
-		for (Projeto p : projetos) {
+		for (Projeto projeto : projetos) {
 			ProjetoPorPessoaRelatorio projetoPorPessoa = new ProjetoPorPessoaRelatorio();
-			projetoPorPessoa.setId(p.getId());
-			projetoPorPessoa.setNomeProjeto(p.getNome());
-			if (p.getAutor().getId() == id)
+			projetoPorPessoa.setId(projeto.getId());
+			projetoPorPessoa.setNomeProjeto(projeto.getNome());
+			if (projeto.getAutor().getId() == id)
 				projetoPorPessoa.setVinculo("COORDENADOR");
 			else
 				projetoPorPessoa.setVinculo("PARTICIPANTE");
-			for (Participacao pt : p.getParticipacoes()) {
-				if (pt.getParticipante().getId().equals(id)) {
+			BigDecimal valorBolsa = new BigDecimal(0);
+			for (Participacao participacao : projeto.getParticipacoes()) {
+				if (participacao.getParticipante().getId().equals(id)) {
 					int mesesParticiacao = 0;
-					if (pt.getAnoInicio().equals(pt.getAnoTermino()))
-						mesesParticiacao = pt.getMesTermino() - pt.getMesInicio() + 1;
+					if (participacao.getAnoInicio().equals(participacao.getAnoTermino()))
+						mesesParticiacao = participacao.getMesTermino() - participacao.getMesInicio() + 1;
 					else {
-						int anosCompletos = pt.getAnoTermino() - pt.getAnoInicio() - 1;
-						mesesParticiacao = 13 - pt.getMesInicio() + (anosCompletos * 12) + pt.getMesTermino();
+						int anosCompletos = participacao.getAnoTermino() - participacao.getAnoInicio() - 1;
+						mesesParticiacao = 13 - participacao.getMesInicio() + (anosCompletos * 12) + participacao.getMesTermino();
 					}
-					projetoPorPessoa.setCargaHoraria(pt.getCargaHorariaMensal() * mesesParticiacao);
-					BigDecimal valorDecimal = new BigDecimal(mesesParticiacao);
-					valorDecimal = valorDecimal.multiply(pt.getBolsaValorMensal());
-					valorTotal = valorTotal.add(valorDecimal);
-					projetoPorPessoa.setValorBolsa(valorDecimal);
+					projetoPorPessoa.setCargaHoraria(participacao.getCargaHorariaMensal() * mesesParticiacao);
+					BigDecimal valorMesesParticipacao = new BigDecimal(mesesParticiacao);
+					valorMesesParticipacao = valorMesesParticipacao.multiply(participacao.getBolsaValorMensal());
+					valorBolsa = valorBolsa.add(valorMesesParticipacao);
 					break;
 				}
 			}
+			projetoPorPessoa.setValorBolsa(valorBolsa);
+			valorTotal = valorTotal.add(valorBolsa);
 			projetosPorPessoaRelatorio.add(projetoPorPessoa);
 		}
 		
-		r.setValorTotalBolsasUsuario(valorTotal);
+		relatorio.setValorTotalBolsasUsuario(valorTotal);
 		int cargaHorariaTotal = 0;
 		for (ProjetoPorPessoaRelatorio pp : projetosPorPessoaRelatorio) {
 			cargaHorariaTotal += pp.getCargaHoraria();
 		}
 		
-		r.setCargaHorariaTotalUsuario(cargaHorariaTotal);
-		r.setProjetosPorPessoa(projetosPorPessoaRelatorio);
-		return r;
+		relatorio.setCargaHorariaTotalUsuario(cargaHorariaTotal);
+		relatorio.setProjetosPorPessoa(projetosPorPessoaRelatorio);
+		return relatorio;
 	}
 
 }
