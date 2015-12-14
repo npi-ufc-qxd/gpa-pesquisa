@@ -134,10 +134,17 @@
 							<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}</strong>
 						</div>
 						<div class="col-md-3">
-							<strong>Data início: ${data_de_inicio}</strong>
+							<strong>Data início: <fmt:parseDate
+									value="${data_de_inicio}" pattern="yyyy-MM"
+									var="data_inicio_format" /> <fmt:formatDate
+									value="${data_inicio_format}" pattern="MM-yyyy" /></strong>
 						</div>
 						<div class="col-md-3">
-							<strong>Data término: ${data_de_termino}</strong>
+							<%-- <strong>Data término: ${data_de_termino}</strong> --%>
+							<strong>Data término: <fmt:parseDate
+									value="${data_de_termino}" pattern="yyyy-MM"
+									var="data_termino_format" /> <fmt:formatDate
+									value="${data_termino_format}" pattern="MM-yyyy" /></strong>
 						</div>
 					</div>
 					<br>
@@ -187,10 +194,12 @@
 							</div>
 							<div class="col-md-4">
 								<c:if test="${not empty data_de_submissao}">
-									<strong>Data: ${data_de_submissao}</strong>
+									<strong>Submissão: <fmt:parseDate value="${data_de_submissao}"
+											pattern="yyyy-MM" var="submissao_format" /> <fmt:formatDate
+											value="${submissao_format}" pattern="MM-yyyy" /></strong>
 								</c:if>
 								<c:if test="${empty data_de_submissao}">
-									<strong>Data: - - - </strong>
+									<strong>Data de submissão: - - - </strong>
 								</c:if>
 							</div>
 						</div>
@@ -294,65 +303,75 @@
 			var tabela_ext = 'pdfHtml5';
 			var img_align = 'center';
 
-			$('#relatorios-projetosAprovados').DataTable({
-				dom : tabela_dom,
-				buttons : [ {
-					extend : tabela_ext,
-					text : text_export,
-					title : 'Relatórios - Projetos Aprovados',
-					message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\nData início: ${data_de_inicio}\nData término: ${data_de_termino}',
-					customize : function(doc) {
-						doc.content.splice(0, 0, {
-							margin : [ 0, 0, 0, 11 ],
-							alignment : img_align,
-							image : logo_gpa
-						});
-					}
-				} ],
-				"language" : {
-					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
-				}
-			});
+			
+		$('#relatorios-projetosAprovados')
+					.DataTable(
+							{
+								dom : tabela_dom,
+								buttons : [ {
+									extend : tabela_ext,
+									text : text_export,
+									title : 'Relatórios - Projetos Aprovados',
+									message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\nData início: <fmt:formatDate
+						value="${data_inicio_format}" pattern="MM-yyyy" />\nData término: <fmt:formatDate
+						value="${data_termino_format}" pattern="MM-yyyy" />',
+									customize : function(doc) {
+										doc.content.splice(0, 0, {
+											margin : [ 0, 0, 0, 11 ],
+											alignment : img_align,
+											image : logo_gpa
+										});
+									}
+								} ],
+								"language" : {
+									"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
+								}
+							});
 
-			$('#relatorios-projetosReprovados').DataTable({
-				dom : tabela_dom,
-				buttons : [ {
-					extend : tabela_ext,
-					text : text_export,
-					title : 'Relatórios - Projetos Reprovados',
-					message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \nData: ${data_de_submissao}',
-					customize : function(doc) {
-						doc.content.splice(0, 0, {
-							margin : [ 0, 0, 0, 11 ],
-							alignment : img_align,
-							image : logo_gpa
-						});
-					}
-				} ],
-				"language" : {
-					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
-				}
-			});
+			$('#relatorios-projetosReprovados')
+					.DataTable(
+							{
+								dom : tabela_dom,
+								buttons : [ {
+									extend : tabela_ext,
+									text : text_export,
+									title : 'Relatórios - Projetos Reprovados',
+									message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \Submissão: <fmt:formatDate
+						value="${submissao_format}" pattern="MM-yyyy" />',
+									customize : function(doc) {
+										doc.content.splice(0, 0, {
+											margin : [ 0, 0, 0, 11 ],
+											alignment : img_align,
+											image : logo_gpa
+										});
+									}
+								} ],
+								"language" : {
+									"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
+								}
+							});
 
-			$('#relatorios-projetosPorUsuario').DataTable({
-				dom : tabela_dom,
-				buttons : [ {
-					extend : tabela_ext,
-					text : text_export,
-					title : 'Relatórios - Projetos por usuário',
-					message : 'Nome: ${relatorio.nomeUsuario} \nAno: ${relatorio.anoConsulta} \nCarga horária total: ${relatorio.cargaHorariaTotalUsuario} \nValor total de bolsas: ${relatorio.valorTotalBolsasUsuario}',
-					customize : function(doc) {
-						doc.content.splice(0, 0, {
-							margin : [ 0, 0, 0, 11 ],
-							alignment : img_align,
-							image : logo_gpa
-						});
-					}
-				} ],
-				"language" : {
-					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
-				}
-			});
+			$('#relatorios-projetosPorUsuario')
+					.DataTable(
+							{
+								dom : tabela_dom,
+								buttons : [ {
+									extend : tabela_ext,
+									text : text_export,
+									title : 'Relatórios - Projetos por usuário',
+									message : 'Nome: ${relatorio.nomeUsuario} \nAno: ${relatorio.anoConsulta} \nCarga horária total: ${relatorio.cargaHorariaTotalUsuario} \nValor total de bolsas: ${relatorio.valorTotalBolsasUsuario}',
+									customize : function(doc) {
+										doc.content.splice(0, 0, {
+											margin : [ 0, 0, 0, 11 ],
+											alignment : img_align,
+											image : logo_gpa
+										});
+									}
+								} ],
+								"language" : {
+									"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
+								}
+							});
 		});
 	</script>
 </body>
