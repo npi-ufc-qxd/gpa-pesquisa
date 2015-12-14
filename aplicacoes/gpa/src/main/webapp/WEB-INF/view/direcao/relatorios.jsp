@@ -68,9 +68,12 @@
 							enctype="multipart/form-data"
 							servletRelativeAction="relatorios/reprovados" method="GET"
 							cssClass="form-horizontal">
-							<label class="col-sm-2 control-label">Data da submissão:</label>
+							<label class="col-sm-2 control-label">Intervalo da submissão:</label>
 							<div class="col-sm-2">
-								<input type="text" name="submissao" id="submissaoRelatorio" class="form-control data">
+								<input type="text" name="submissao-inicio" id="submissaoRelatorio-inicio" class="form-control data">
+							</div>
+							<div class="col-sm-2">
+								<input type="text" name="submissao-termino" id="submissaoRelatorio-termino" class="form-control data">
 							</div>
 							<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 						</form:form>
