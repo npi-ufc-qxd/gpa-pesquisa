@@ -107,8 +107,7 @@
 										<th>Projeto</th>
 										<th>Coordenador(a)</th>
 										<th>Status</th>
-										<th>Mês início</th>	
-										<th>Mês término</th>									
+										<th>Duração</th>
 										<th class="col-md-1 col-md-offset-1">Carga horária mensal</th>
 										<th>Valor bolsa mensal</th>										
 									</tr>
@@ -120,8 +119,8 @@
 											<td><a href="<c:url value="/projeto/detalhes/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
 											<td>${participacao.projeto.status.descricao}</td>
-											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
-											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}
+											<fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
 											<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
 											<td><fmt:formatNumber type="CURRENCY" currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
 										</tr>
