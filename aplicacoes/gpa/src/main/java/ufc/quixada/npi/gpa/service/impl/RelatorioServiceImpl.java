@@ -101,12 +101,13 @@ public class RelatorioServiceImpl implements RelatorioService {
 	}
 
 	@Override
-	public List<Projeto> getProjetosIntervaloReprovados(String submissao) {
-		if (!submissao.isEmpty()) {
+	public List<Projeto> getProjetosIntervaloReprovados(String submissao_inicio, String submissao_termino) {
+		if (!submissao_inicio.isEmpty()) {
 			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("submissao", submissao);
+			params.put("submissao_inicio", submissao_inicio);
+			params.put("submissao_termino", submissao_termino);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto p where status = 'REPROVADO' and to_char(p.submissao, 'yyyy-mm') = :submissao", params);
+					"from Projeto p where status = 'REPROVADO' and p.submissao between TO_DATE (:submissao_inicio, 'yyyy-mm') and TO_DATE (:submissao_termino, 'yyyy-mm')", params);
 		}
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
 		projetosBusca = projetoService.getProjetos(StatusProjeto.REPROVADO);
@@ -115,9 +116,9 @@ public class RelatorioServiceImpl implements RelatorioService {
 	}
 
 	@Override
-	public Relatorio getProjetosReprovadosRelatorio(String submissao) {
+	public Relatorio getProjetosReprovadosRelatorio(String submissao_inicio,String submissao_termino) {
 		List<ProjetoReprovadoRelatorio> projetosReprovadosRelatorio = new ArrayList<ProjetoReprovadoRelatorio>();
-		List <Projeto> projetos = this.getProjetosIntervaloReprovados(submissao);
+		List <Projeto> projetos = this.getProjetosIntervaloReprovados(submissao_inicio, submissao_termino);
 		
 		for(Projeto p:projetos){
 			ProjetoReprovadoRelatorio projetoReprovado = new ProjetoReprovadoRelatorio();
