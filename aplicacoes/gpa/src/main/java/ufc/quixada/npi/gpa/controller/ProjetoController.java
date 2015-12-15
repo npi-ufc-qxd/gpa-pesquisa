@@ -207,9 +207,9 @@ public class ProjetoController {
 		/**PARECERISTA*/	
 		}else if(projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista())){
 			if(!projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){	
-				model.addAttribute("permissaoParecer", true);
-			}else{
 				model.addAttribute("permissaoParecer", false);
+			}else{
+				model.addAttribute("permissaoParecer", true);
 			}
 			if(projeto.getStatus().equals( StatusProjeto.APROVADO)
 					|| projeto.getStatus().equals( StatusProjeto.APROVADO_COM_RESTRICAO)
