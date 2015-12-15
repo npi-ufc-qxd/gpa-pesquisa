@@ -38,6 +38,7 @@ public class RelatorioController {
 		model.addAttribute("relatorio", relatorio);
 		model.addAttribute("data_de_inicio", inicio);
 		model.addAttribute("data_de_termino", termino);
+		model.addAttribute("data_pesquisa", relatorioService.getMomento());
 		return PAGINA_RELATORIOS;
 	}
 
@@ -57,6 +58,7 @@ public class RelatorioController {
 		model.addAttribute("tipoRelatorio", "reprovados");
 		model.addAttribute("relatorio", relatorio);
 		model.addAttribute("data_de_submissao", submissao_inicio);
+		model.addAttribute("data_pesquisa", relatorioService.getMomento());
 		return PAGINA_RELATORIOS;
 	}
 
@@ -66,6 +68,7 @@ public class RelatorioController {
 		Relatorio relatorio = relatorioService.getProjetosPorPessoa(id, ano);
 		model.addAttribute("tipoRelatorio", "por-pessoa");
 		model.addAttribute("relatorio", relatorio );
+		model.addAttribute("data_pesquisa", relatorioService.getMomento());
 		return PAGINA_RELATORIOS;
 	}
 }

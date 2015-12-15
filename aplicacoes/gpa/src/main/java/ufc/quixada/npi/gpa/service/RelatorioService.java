@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.service;
 
+import java.util.Date;
 import java.util.List;
 
 import ufc.quixada.npi.gpa.model.Projeto;
@@ -18,5 +19,7 @@ public interface RelatorioService {
 	List<Projeto> getProjetosIntervaloReprovados(String submissao_inicio, String submissao_termino);
 	
 	List<Projeto> getProjetosIntervaloPorPessoa(Long id, String ano);
+
+	Date getMomento();
 
 }

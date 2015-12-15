@@ -143,11 +143,15 @@
 									value="${data_inicio_format}" pattern="MM-yyyy" /></strong>
 						</div>
 						<div class="col-md-3">
-							<%-- <strong>Data término: ${data_de_termino}</strong> --%>
 							<strong>Data término: <fmt:parseDate
 									value="${data_de_termino}" pattern="yyyy-MM"
 									var="data_termino_format" /> <fmt:formatDate
 									value="${data_termino_format}" pattern="MM-yyyy" /></strong>
+						</div>
+						<div class="col-md-4">
+							<strong>
+								Gerado em: <fmt:formatDate value="${data_pesquisa}"	pattern="dd/MM/yyyy' às 'HH:mm:ss" />
+							</strong>
 						</div>
 					</div>
 					<br>
@@ -205,6 +209,11 @@
 									<strong>Data de submissão: - - - </strong>
 								</c:if>
 							</div>
+							<div class="col-md-4">
+								<strong>
+									Gerado em: <fmt:formatDate value="${data_pesquisa}"	pattern="dd/MM/yyyy' às 'HH:mm:ss" />
+								</strong>
+							</div>
 						</div>
 						<br>
 						<table id="relatorios-projetosReprovados" class="display">
@@ -245,21 +254,31 @@
 						<div class="row">
 							<div class="col-md-6">
 								<dl class="dl-horizontal">
-									<dt>Nome</dt>
+									<dt>Nome:</dt>
 									<dd>${relatorio.nomeUsuario}</dd>
 
-									<dt>Carga horária total</dt>
+									<dt>Carga horária total:</dt>
 									<dd>${relatorio.cargaHorariaTotalUsuario} hrs.</dd>
 								</dl>
 							</div>
 							<div class="col-md-6">
 								<dl class="dl-horizontal">
-									<dt>Ano</dt>
+									<dt>Ano:</dt>
 									<dd>${relatorio.anoConsulta}</dd>
 
-									<dt>Valor total de bolsas</dt>
+									<dt>Valor total de bolsas:</dt>
 									<dd><fmt:formatNumber type="CURRENCY"
 												currencyCode="BRL">${relatorio.valorTotalBolsasUsuario}</fmt:formatNumber></dd>
+								</dl>
+							</div>
+							<div class="col-md-4">
+								<dl class="dl-horizontal">
+									<dt>
+										<strong>Gerado em:</strong>
+									</dt>
+									<dd>
+										<fmt:formatDate value="${data_pesquisa}"	pattern="dd/MM/yyyy' às 'HH:mm:ss" />
+									</dd>
 								</dl>
 							</div>
 						</div>
@@ -314,10 +333,14 @@
 								buttons : [ {
 									extend : tabela_ext,
 									text : text_export,
+									orientation: 'landscape',
 									title : 'Relatórios - Projetos Aprovados',
-									message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\nData início: <fmt:formatDate
-						value="${data_inicio_format}" pattern="MM-yyyy" />\nData término: <fmt:formatDate
-						value="${data_termino_format}" pattern="MM-yyyy" />',
+									message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\t'+ 
+												'Data início: <c:if test="${empty data_inicio_format}">-\t</c:if>'+
+												'<fmt:formatDate value="${data_inicio_format}" pattern="MM-yyyy" />\t'+
+												'Data término: <c:if test="${empty data_inicio_format}">-\t</c:if>'+
+												'<fmt:formatDate value="${data_termino_format}" pattern="MM-yyyy" />\t'+
+												'Gerado em: <fmt:formatDate value="${data_pesquisa}" pattern="dd/MM/yyyy' às 'HH:mm:ss"/>',
 									customize : function(doc) {
 										doc.content.splice(0, 0, {
 											margin : [ 0, 0, 0, 11 ],
@@ -339,8 +362,9 @@
 									extend : tabela_ext,
 									text : text_export,
 									title : 'Relatórios - Projetos Reprovados',
-									message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \Submissão: <fmt:formatDate
-						value="${submissao_format}" pattern="MM-yyyy" />',
+									message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \t'+
+												'Submissão: <c:if test="${empty submissao_format}">-\t</c:if><fmt:formatDate value="${submissao_format}" pattern="MM-yyyy" /> \t'+
+												'Gerado em: <fmt:formatDate value="${data_pesquisa}" pattern="dd/MM/yyyy' às 'HH:mm:ss"/>',
 									customize : function(doc) {
 										doc.content.splice(0, 0, {
 											margin : [ 0, 0, 0, 11 ],
@@ -362,7 +386,9 @@
 									extend : tabela_ext,
 									text : text_export,
 									title : 'Relatórios - Projetos por usuário',
-									message : 'Nome: ${relatorio.nomeUsuario} \nAno: ${relatorio.anoConsulta} \nCarga horária total: ${relatorio.cargaHorariaTotalUsuario} \nValor total de bolsas: ${relatorio.valorTotalBolsasUsuario}',
+									message : 'Nome: ${relatorio.nomeUsuario} \t\t\t\t\t\t\t\t Ano: <c:if test="${empty relatorio.anoConsulta}">-\t</c:if>${relatorio.anoConsulta} \n'+
+												'Carga horária total: ${relatorio.cargaHorariaTotalUsuario} \t\t\t\t\t\t\t\t Valor total de bolsas: ${relatorio.valorTotalBolsasUsuario} \n'+
+												'Gerado em: <fmt:formatDate value="${data_pesquisa}" pattern="dd/MM/yyyy' às 'HH:mm:ss"/>',
 									customize : function(doc) {
 										doc.content.splice(0, 0, {
 											margin : [ 0, 0, 0, 11 ],
