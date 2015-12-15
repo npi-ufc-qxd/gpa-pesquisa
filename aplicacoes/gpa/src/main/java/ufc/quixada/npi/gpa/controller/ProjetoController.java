@@ -205,19 +205,11 @@ public class ProjetoController {
 			model.addAttribute("permissaoArquivo", true);
 			
 		/**PARECERISTA*/	
-		}else if(projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista())){
-			if(!projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){	
-				model.addAttribute("permissaoParecer", false);
-			}else{
-				model.addAttribute("permissaoParecer", true);
-			}
-			if(projeto.getStatus().equals( StatusProjeto.APROVADO)
-					|| projeto.getStatus().equals( StatusProjeto.APROVADO_COM_RESTRICAO)
-					|| projeto.getStatus().equals( StatusProjeto.REPROVADO)){
-				model.addAttribute("permissaoDataParecer", true);
-			}
+		}else if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER) && pessoa.equals(projeto.getParecer().getParecerista())){
+			model.addAttribute("permissaoParecer", true);
 			model.addAttribute("permissaoObservacao", true);
 			model.addAttribute("permissaoArquivo", true);
+			model.addAttribute("permissaoComentario", false);
 		} else {
 			if (projeto.getStatus().equals(StatusProjeto.APROVADO) || (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
 				for (Participacao participacao : projeto.getParticipacoes()) {
