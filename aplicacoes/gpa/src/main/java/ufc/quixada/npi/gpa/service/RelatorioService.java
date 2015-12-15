@@ -9,13 +9,13 @@ public interface RelatorioService {
 
 	Relatorio getProjetosAprovadosRelatorio(String iInterInicio, String fInterInicio, String iInterTermino, String fInterTermino);
 	
-	Relatorio getProjetosReprovadosRelatorio(String submissao);
+	Relatorio getProjetosReprovadosRelatorio(String submissao_inicio,String submissao_termino);
 
 	Relatorio getProjetosPorPessoa(Long id, String ano);
 	
 	List<Projeto> getProjetosIntervalosAprovados(String iInterInicio, String fInterInicio, String iInterTermino, String fInterTermino);
 	
-	List<Projeto> getProjetosIntervaloReprovados(String submissao);
+	List<Projeto> getProjetosIntervaloReprovados(String submissao_inicio, String submissao_termino);
 	
 	List<Projeto> getProjetosIntervaloPorPessoa(Long id, String ano);
 

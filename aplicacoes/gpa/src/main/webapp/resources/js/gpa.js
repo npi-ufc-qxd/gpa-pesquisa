@@ -570,7 +570,17 @@ $(document).ready(function() {
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'iInterTermino');
 	    });
 	 
-	 $("#submissaoRelatorio").datepicker({
+	 $("#submissaoRelatorio-inicio").datepicker({
+			format : "yyyy-mm",
+			todayBtn : "linked",
+			language : "pt-BR",
+			viewMode: "months", 
+		    minViewMode: "months",
+			todayHighlight : true
+		}).on('changeDate', function(e) {
+			$(this).datepicker('hide');
+	    });
+	 $("#submissaoRelatorio-termino").datepicker({
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",

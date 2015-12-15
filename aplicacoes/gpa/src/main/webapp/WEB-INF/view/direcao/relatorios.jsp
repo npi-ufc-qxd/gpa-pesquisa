@@ -80,9 +80,12 @@
 							enctype="multipart/form-data"
 							servletRelativeAction="relatorios/reprovados" method="GET"
 							cssClass="form-horizontal">
-							<label class="col-sm-2 control-label">Data da submissão:</label>
+							<label class="col-sm-2 control-label">Intervalo da submissão:</label>
 							<div class="col-sm-2">
-								<input type="text" name="submissao" id="submissaoRelatorio" class="form-control data">
+								<input type="text" name="submissao-inicio" id="submissaoRelatorio-inicio" class="form-control data">
+							</div>
+							<div class="col-sm-2">
+								<input type="text" name="submissao-termino" id="submissaoRelatorio-termino" class="form-control data">
 							</div>
 							<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 						</form:form>
@@ -150,7 +153,10 @@
 					<div class="row">	
 						<div class="col-md-6">
 							<c:if test="${not empty inicio_intervalo_inicio}">
-								<strong>Início do Intervalo de Início: ${inicio_intervalo_inicio}</strong>
+								<strong>Início do Intervalo de Início: <fmt:parseDate
+									value="${inicio_intervalo_inicio}" pattern="yyyy-MM"
+									var="data_inicio_Intervalo_I_format" /> <fmt:formatDate
+									value="${data_inicio_Intervalo_I_format}" pattern="MM-yyyy" /> </strong>
 							</c:if>
 							<c:if test="${empty inicio_intervalo_inicio}">
 								<strong>Início do Intervalo de Início: - - - </strong>
@@ -158,7 +164,10 @@
 						</div>
 						<div class="col-md-6">	
 							<c:if test="${not empty termino_intervalo_inicio}">
-								<strong>Termino do Intervalo de Início: ${termino_intervalo_inicio}</strong>
+								<strong>Termino do Intervalo de Início:<fmt:parseDate
+									value="${termino_intervalo_inicio}" pattern="yyyy-MM"
+									var="data_termino_Intervalo_I_format" /> <fmt:formatDate
+									value="${data_termino_Intervalo_I_format}" pattern="MM-yyyy" /> </strong>
 							</c:if>
 							<c:if test="${empty termino_intervalo_inicio}">
 								<strong>Termino do Intervalo de Início: - - - </strong>
@@ -170,7 +179,10 @@
 					<div class="row">	
 						<div class="col-md-6">
 							<c:if test="${not empty inicio_intervalo_termino}">
-								<strong>Início do Intervalo de Término: ${inicio_intervalo_termino}</strong>
+								<strong>Início do Intervalo de Término: <fmt:parseDate
+									value="${inicio_intervalo_termino}" pattern="yyyy-MM"
+									var="data_inicio_Intervalo_F_format" /> <fmt:formatDate
+									value="${data_inicio_Intervalo_F_format}" pattern="MM-yyyy" /> </strong>
 							</c:if>
 							<c:if test="${empty inicio_intervalo_termino}">
 								<strong>Início do Intervalo de Término: - - - </strong>
@@ -178,7 +190,10 @@
 						</div>
 						<div class="col-md-6">	
 							<c:if test="${not empty termino_intervalo_termino}">
-								<strong>Término do Intervalo de Término: ${termino_intervalo_termino}</strong>
+								<strong>Término do Intervalo de Término: <fmt:parseDate
+									value="${termino_intervalo_termino}" pattern="yyyy-MM"
+									var="data_termino_Intervalo_F_format" /> <fmt:formatDate
+									value="${data_termino_Intervalo_F_format}" pattern="MM-yyyy" /></strong>
 							</c:if>
 							<c:if test="${empty termino_intervalo_termino}">
 								<strong>Término do Intervalo de Término: - - - </strong>
