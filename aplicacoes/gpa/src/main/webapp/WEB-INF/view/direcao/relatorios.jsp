@@ -45,20 +45,32 @@
 							servletRelativeAction="relatorios/aprovados" method="GET"
 							cssClass="form-horizontal">
 							<div class="form-group">
+								<label class="col-sm-2 control-label">Intervalo de Início:</label>
 								<div class="form-item">
-									<label class="col-sm-2 control-label">Início do Intervalo:</label>
 									<div class="col-sm-2">
-										<input type="text" name="inicio" id="inicioRelatorio" class="form-control data">
+										<input type="text" name="iInterInicio" id="inicioRelatorioInicio" class="form-control data">
 									</div>
 								</div>
 								<div class="form-item">
-									<label class="col-sm-2 control-label">Término do Intervalo:</label>
 									<div class="col-sm-2">
-										<input type="text" name="termino" id="terminoRelatorio" class="form-control data">
+										<input type="text" name="fInterInicio" id="terminoRelatorioInicio" class="form-control data">
 									</div>
-									<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
+								</div>
+								<label class="col-sm-2 control-label">Intervalo de Término:</label>
+								<div class="form-item">
+									<div class="col-sm-2">
+										<input type="text" name="iInterTermino" id="inicioRelatorioTermino" class="form-control data">
+									</div>
+								</div>
+								<div class="form-item">
+									<div class="col-sm-2">
+										<input type="text" name="fInterTermino" id="terminoRelatorioTermino" class="form-control data">
+									</div>
 								</div>
 							</div>
+								<div class="controls">
+									<input name="gerar" type="submit" class="btn btn-primary" value="Gerar"/>
+								</div>
 
 						</form:form>
 					</div>
@@ -133,11 +145,45 @@
 						<div class="col-md-6">
 							<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}</strong>
 						</div>
-						<div class="col-md-3">
-							<strong>Data início: ${data_de_inicio}</strong>
+					</div>	
+					<br>
+					<div class="row">	
+						<div class="col-md-6">
+							<c:if test="${not empty inicio_intervalo_inicio}">
+								<strong>Início do Intervalo de Início: ${inicio_intervalo_inicio}</strong>
+							</c:if>
+							<c:if test="${empty inicio_intervalo_inicio}">
+								<strong>Início do Intervalo de Início: - - - </strong>
+							</c:if>
 						</div>
-						<div class="col-md-3">
-							<strong>Data término: ${data_de_termino}</strong>
+						<div class="col-md-6">	
+							<c:if test="${not empty termino_intervalo_inicio}">
+								<strong>Termino do Intervalo de Início: ${termino_intervalo_inicio}</strong>
+							</c:if>
+							<c:if test="${empty termino_intervalo_inicio}">
+								<strong>Termino do Intervalo de Início: - - - </strong>
+							</c:if>
+							
+						</div>
+					</div>
+					<br>
+					<div class="row">	
+						<div class="col-md-6">
+							<c:if test="${not empty inicio_intervalo_termino}">
+								<strong>Início do Intervalo de Término: ${inicio_intervalo_termino}</strong>
+							</c:if>
+							<c:if test="${empty inicio_intervalo_termino}">
+								<strong>Início do Intervalo de Término: - - - </strong>
+							</c:if>
+						</div>
+						<div class="col-md-6">	
+							<c:if test="${not empty termino_intervalo_termino}">
+								<strong>Término do Intervalo de Término: ${termino_intervalo_termino}</strong>
+							</c:if>
+							<c:if test="${empty termino_intervalo_termino}">
+								<strong>Término do Intervalo de Término: - - - </strong>
+							</c:if>
+							
 						</div>
 					</div>
 					<br>
