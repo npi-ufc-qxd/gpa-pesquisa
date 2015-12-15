@@ -197,31 +197,47 @@ public class ProjetoController {
 				model.addAttribute("permissaoComentario", false);
 			}
 			if(projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){
-				model.addAttribute("permissaoParecer", true);
+				model.addAttribute("permissaoParecer", false);
 			}else{
 				model.addAttribute("permissaoParecer", false);
 			}
-			model.addAttribute("permissaoObservacao", true);
+			model.addAttribute("permissaoObservacao", false);
 			model.addAttribute("permissaoArquivo", true);
 			
 		/**PARECERISTA*/	
 		}else if(projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista())){
 			if(!projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){	
-				model.addAttribute("permissaoParecer", false);
-			}else{
 				model.addAttribute("permissaoParecer", true);
+			}else{
+				model.addAttribute("permissaoParecer", false);
 			}
-			if(projeto.getStatus().equals( StatusProjeto.APROVADO) 
-					|| projeto.getStatus().equals( StatusProjeto.APROVADO_COM_RESTRICAO) 
-					|| projeto.getStatus().equals( StatusProjeto.REPROVADO)){
+			if(projeto.getStatus().equals( StatusProjeto.APROVADO)){
 				model.addAttribute("permissaoDataParecer", true);
+				return PAGINA_DETALHES_PROJETO;
 			}
 			model.addAttribute("permissaoObservacao", true);
 			model.addAttribute("permissaoArquivo", true);
-		}else{
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
-			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		} else {
+			if (projeto.getStatus().equals(StatusProjeto.APROVADO) || (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
+				for (Participacao participacao : projeto.getParticipacoes()) {
+					if (pessoa.equals(participacao.getParticipante())) {
+						model.addAttribute("permissaoObservacao", false);
+						model.addAttribute("permissaoArquivo", true);
+						model.addAttribute("permissaoParecer", false);
+						model.addAttribute("permissaoComentario", false);
+						model.addAttribute("permissaoDataParecer", false);
+						model.addAttribute("projeto", projeto);
+						return PAGINA_DETALHES_PROJETO;
+					}
+				}
+				redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+				return REDIRECT_PAGINA_LISTAR_PROJETO;
+			} else {
+				redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+				return REDIRECT_PAGINA_LISTAR_PROJETO;
+			}
 		}
+		
 		model.addAttribute("projeto", projeto);
 		return PAGINA_DETALHES_PROJETO;
 	}
