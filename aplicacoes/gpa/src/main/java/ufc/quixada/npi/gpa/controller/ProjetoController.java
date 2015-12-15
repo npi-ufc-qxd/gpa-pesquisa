@@ -197,11 +197,11 @@ public class ProjetoController {
 				model.addAttribute("permissaoComentario", false);
 			}
 			if(projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){
-				model.addAttribute("permissaoParecer", false);
+				model.addAttribute("permissaoParecer", true);
 			}else{
 				model.addAttribute("permissaoParecer", false);
 			}
-			model.addAttribute("permissaoObservacao", false);
+			model.addAttribute("permissaoObservacao", true);
 			model.addAttribute("permissaoArquivo", true);
 			
 		/**PARECERISTA*/	
@@ -211,9 +211,10 @@ public class ProjetoController {
 			}else{
 				model.addAttribute("permissaoParecer", false);
 			}
-			if(projeto.getStatus().equals( StatusProjeto.APROVADO)){
+			if(projeto.getStatus().equals( StatusProjeto.APROVADO)
+					|| projeto.getStatus().equals( StatusProjeto.APROVADO_COM_RESTRICAO)
+					|| projeto.getStatus().equals( StatusProjeto.REPROVADO)){
 				model.addAttribute("permissaoDataParecer", true);
-				return PAGINA_DETALHES_PROJETO;
 			}
 			model.addAttribute("permissaoObservacao", true);
 			model.addAttribute("permissaoArquivo", true);
