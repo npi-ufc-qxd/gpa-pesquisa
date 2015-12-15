@@ -421,44 +421,133 @@ $(document).ready(function() {
 			$("#form_p-pessoa").slideToggle("slow");
 		}
 	});
+	
 	$('#relatoriosAprovadosForm').bootstrapValidator({
-        feedbackIcons: {
-        	valid: 'glyphicon glyphicon-ok',
+		group: '.form-item',
+		feedbackIcons: {
         	invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	inicio :{
+        	iInterInicio :{
+        		validators:{
+        			callback:{
+        				callback: function(value, validator) {
+        					var fInterInicio = validator.getFieldElements('fInterInicio').val();
+	        				if(value != "" && fInterInicio != ""){
+	        					fInterInicio = moment(fInterInicio, "YYYY-MM").format("YYYY-MM");
+	        					var iInterInicio = moment(value, "YYYY-MM").format("YYYY-MM");
+	        					if(moment(iInterInicio, "YYYY-MM").isAfter(moment(fInterInicio, "YYYY-MM"))){
+	        						return {
+	        			                valid: false,    // or false
+	        			                message: 'A data de início deste intervalo deve ser anterior à data de termino'
+	        			            }
+	        					}
+	        				}
+	        				var iInterTermino = validator.getFieldElements('iInterTermino').val();
+	        				if(value != "" && iInterTermino != ""){
+        						iInterTermino = moment(iInterTermino, "YYYY-MM").format("YYYY-MM");
+        						var iInterInicio = moment(value, "YYYY-MM").format("YYYY-MM");
+        						if(moment(iInterInicio, "YYYY-MM").isAfter(moment(iInterTermino, "YYYY-MM"))) {
+        							return {
+	        			                valid: false,    
+	        			                message: 'Esta data deve ser anterior a data inicial do Intervalo de Termino'
+	        			            }
+        						}
+        					}
+	        				return true;
+        				}
+        			}
+        		}
+        	},
+        	fInterInicio :{
             	validators: {
             		callback: {
-                        message: 'A data de início deve ser anterior à data de término',
                         callback: function(value, validator) {
-                        	var termino = validator.getFieldElements('termino').val();
-                        	if(value != "" && termino != "") {
-                        		termino = moment(termino, "YYYY-MM").format("YYYY-MM");
-	                        	var inicio = moment(value, "YYYY-MM").format("YYYY-MM");
-	                        	if(moment(termino, "YYYY-MM").isBefore(moment(inicio, "YYYY-MM"))) {
-	                        		return false;
+                        	var iInterInicio = validator.getFieldElements('iInterInicio').val();
+                        	if(value != "" && iInterInicio != "") {
+                        		iInterInicio = moment(iInterInicio, "YYYY-MM").format("YYYY-MM");
+	                        	var fInterInicio = moment(value, "YYYY-MM").format("YYYY-MM");
+	                        	if(moment(fInterInicio, "YYYY-MM").isBefore(moment(iInterInicio, "YYYY-MM"))) {
+	                        		return {
+	                        			valid: false,
+	                        			message: 'A data de término deste intervalo deve ser posterior à data de início'
+	                        		}
 	                        	}
                         	}
+                        	var fInterTermino = validator.getFieldElements('fInterTermino').val();
+                        	if(value != "" && fInterTermino != ""){
+                    			fInterTermino = moment(fInterTermino, "YYYY-MM").format("YYYY-MM");
+                    			var fInterInicio = moment(value, "YYYY-MM").format("YYYY-MM");
+                    			if(moment(fInterInicio, "YYYY-MM").isAfter(moment(fInterTermino, "YYYY-MM"))) {
+	                        		return {
+	                        			valid: false,
+	                        			message:'Esta data deve ser posterior a data inicial do Intervalo de Termino'
+	                        		}
+	                        	}
+                    		}
                         	return true;
                         }
                     }
             	}
         	},
-	        termino: {
+        	iInterTermino:{
+        		validators:{
+        			callback:{
+        				callback: function(value, validator){
+        					var fInterTermino = validator.getFieldElements('fInterTermino').val();
+        					if(value != "" && fInterTermino != ""){
+        						fInterTermino = moment(fInterTermino, "YYYY-MM").format("YYYY-MM");
+	                        	var iInterTermino = moment(value, "YYYY-MM").format("YYYY-MM");
+	                        	if(moment(iInterTermino, "YYYY-MM").isAfter(moment(fInterTermino, "YYYY-MM"))) {
+	                        		return {
+	                        			valid: false,
+	                        			message:'A data de início deste intervalo deve ser anterior à data de termino'
+	                        			}
+	                        	}
+        					}
+        					var iInterInicio = validator.getFieldElements('iInterInicio').val();
+        					if(value != "" && iInterInicio != ""){
+        						iInterInicio = moment(iInterInicio, "YYYY-MM").format("YYYY-MM");
+        						var iInterTermino = moment(value, "YYYY-MM").format("YYYY-MM");
+        						if(moment(iInterTermino, "YYYY-MM").isBefore(moment(iInterInicio, "YYYY-MM"))) {
+	                        		return {
+	                        			valid: false,
+	                        			message:'Esta data deve ser posterior a data inicial do intervalo de Início'
+	                        			}
+	                        	}
+        					}
+        					return true;
+        				}
+        			}
+        		}
+        	},
+        	fInterTermino: {
 	        	validators:{
 	        		callback: {
-	                    message: 'A data de término deve ser posterior à data de início',
 	                    callback: function(value, validator) {
-	                    	var inicio = validator.getFieldElements('inicio').val();
-	                    	if(value != "" && inicio != "") {
-	                    		inicio = moment(inicio, "YYYY-MM").format("YYYY-MM");
-	                        	var termino = moment(value, "YYYY-MM").format("YYYY-MM");
-	                        	if(moment(inicio, "YYYY-MM").isAfter(moment(termino, "YYYY-MM"))) {
-	                        		return false;
+	                    	var iInterTermino = validator.getFieldElements('iInterTermino').val();
+	                    	if(value != "" && iInterTermino != "") {
+	                    		iInterTermino = moment(iInterTermino, "YYYY-MM").format("YYYY-MM");
+	                        	var fInterTermino = moment(value, "YYYY-MM").format("YYYY-MM");
+	                        	if(moment(fInterTermino, "YYYY-MM").isBefore(moment(iInterTermino, "YYYY-MM"))) {
+	                        		return {
+	                        			valid: false,
+	                        			message: 'A data de término deste intervalo deve ser posterior à data de início'
+	                        		}
 	                        	}
 	                    	}
+	                    	var fInterInicio = validator.getFieldElements('fInterInicio').val();
+	                		if(value != "" && fInterInicio != ""){
+	                			fInterInicio = moment(fInterInicio, "YYYY-MM").format("YYYY-MM");
+	                			var fInterTermino = moment(value, "YYYY-MM").format("YYYY-MM");
+	                			if(moment(fInterTermino, "YYYY-MM").isBefore(moment(fInterInicio, "YYYY-MM"))) {
+	                				return {
+	                        			valid: false,
+	                        			message: 'Esta data deve ser posterior a data inicial do intervalo de Início'
+	                				}
+	                        	}
+	                		}
 	                    	return true;
 	                    }
 	                }
@@ -466,7 +555,7 @@ $(document).ready(function() {
 	        }
         }
 	});
-	 $("#inicioRelatorio").datepicker({
+	 $("#inicioRelatorioInicio, #terminoRelatorioInicio, #inicioRelatorioTermino, #terminoRelatorioTermino").datepicker({
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",
@@ -475,8 +564,10 @@ $(document).ready(function() {
 			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'iInterInicio');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'fInterInicio');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'fInterTermino');
+			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'iInterTermino');
 	    });
 	 
 	 $("#submissaoRelatorio-inicio").datepicker({
@@ -500,7 +591,7 @@ $(document).ready(function() {
 			$(this).datepicker('hide');
 	    });
 	 
-	 $("#terminoRelatorio").datepicker({
+	 $("#terminoRelatorioTermino, #inicioRelatorioTermino" ).datepicker({
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",

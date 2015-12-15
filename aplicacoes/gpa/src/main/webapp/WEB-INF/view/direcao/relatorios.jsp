@@ -45,20 +45,32 @@
 							servletRelativeAction="relatorios/aprovados" method="GET"
 							cssClass="form-horizontal">
 							<div class="form-group">
+								<label class="col-sm-2 control-label">Intervalo de Início:</label>
 								<div class="form-item">
-									<label class="col-sm-2 control-label">Início do Intervalo:</label>
 									<div class="col-sm-2">
-										<input type="text" name="inicio" id="inicioRelatorio" class="form-control data">
+										<input type="text" name="iInterInicio" id="inicioRelatorioInicio" class="form-control data">
 									</div>
 								</div>
 								<div class="form-item">
-									<label class="col-sm-2 control-label">Término do Intervalo:</label>
 									<div class="col-sm-2">
-										<input type="text" name="termino" id="terminoRelatorio" class="form-control data">
+										<input type="text" name="fInterInicio" id="terminoRelatorioInicio" class="form-control data">
 									</div>
-									<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
+								</div>
+								<label class="col-sm-2 control-label">Intervalo de Término:</label>
+								<div class="form-item">
+									<div class="col-sm-2">
+										<input type="text" name="iInterTermino" id="inicioRelatorioTermino" class="form-control data">
+									</div>
+								</div>
+								<div class="form-item">
+									<div class="col-sm-2">
+										<input type="text" name="fInterTermino" id="terminoRelatorioTermino" class="form-control data">
+									</div>
 								</div>
 							</div>
+								<div class="controls">
+									<input name="gerar" type="submit" class="btn btn-primary" value="Gerar"/>
+								</div>
 
 						</form:form>
 					</div>
@@ -136,18 +148,57 @@
 						<div class="col-md-6">
 							<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)}</strong>
 						</div>
-						<div class="col-md-3">
-							<strong>Data início: <fmt:parseDate
-									value="${data_de_inicio}" pattern="yyyy-MM"
-									var="data_inicio_format" /> <fmt:formatDate
-									value="${data_inicio_format}" pattern="MM-yyyy" /></strong>
+					</div>	
+					<br>
+					<div class="row">	
+						<div class="col-md-6">
+							<c:if test="${not empty inicio_intervalo_inicio}">
+								<strong>Início do Intervalo de Início: <fmt:parseDate
+									value="${inicio_intervalo_inicio}" pattern="yyyy-MM"
+									var="data_inicio_Intervalo_I_format" /> <fmt:formatDate
+									value="${data_inicio_Intervalo_I_format}" pattern="MM-yyyy" /> </strong>
+							</c:if>
+							<c:if test="${empty inicio_intervalo_inicio}">
+								<strong>Início do Intervalo de Início: - - - </strong>
+							</c:if>
 						</div>
-						<div class="col-md-3">
-							<%-- <strong>Data término: ${data_de_termino}</strong> --%>
-							<strong>Data término: <fmt:parseDate
-									value="${data_de_termino}" pattern="yyyy-MM"
-									var="data_termino_format" /> <fmt:formatDate
-									value="${data_termino_format}" pattern="MM-yyyy" /></strong>
+						<div class="col-md-6">	
+							<c:if test="${not empty termino_intervalo_inicio}">
+								<strong>Termino do Intervalo de Início:<fmt:parseDate
+									value="${termino_intervalo_inicio}" pattern="yyyy-MM"
+									var="data_termino_Intervalo_I_format" /> <fmt:formatDate
+									value="${data_termino_Intervalo_I_format}" pattern="MM-yyyy" /> </strong>
+							</c:if>
+							<c:if test="${empty termino_intervalo_inicio}">
+								<strong>Termino do Intervalo de Início: - - - </strong>
+							</c:if>
+							
+						</div>
+					</div>
+					<br>
+					<div class="row">	
+						<div class="col-md-6">
+							<c:if test="${not empty inicio_intervalo_termino}">
+								<strong>Início do Intervalo de Término: <fmt:parseDate
+									value="${inicio_intervalo_termino}" pattern="yyyy-MM"
+									var="data_inicio_Intervalo_F_format" /> <fmt:formatDate
+									value="${data_inicio_Intervalo_F_format}" pattern="MM-yyyy" /> </strong>
+							</c:if>
+							<c:if test="${empty inicio_intervalo_termino}">
+								<strong>Início do Intervalo de Término: - - - </strong>
+							</c:if>
+						</div>
+						<div class="col-md-6">	
+							<c:if test="${not empty termino_intervalo_termino}">
+								<strong>Término do Intervalo de Término: <fmt:parseDate
+									value="${termino_intervalo_termino}" pattern="yyyy-MM"
+									var="data_termino_Intervalo_F_format" /> <fmt:formatDate
+									value="${data_termino_Intervalo_F_format}" pattern="MM-yyyy" /></strong>
+							</c:if>
+							<c:if test="${empty termino_intervalo_termino}">
+								<strong>Término do Intervalo de Término: - - - </strong>
+							</c:if>
+							
 						</div>
 					</div>
 					<br>
@@ -197,12 +248,10 @@
 							</div>
 							<div class="col-md-4">
 								<c:if test="${not empty data_de_submissao}">
-									<strong>Submissão: <fmt:parseDate value="${data_de_submissao}"
-											pattern="yyyy-MM" var="submissao_format" /> <fmt:formatDate
-											value="${submissao_format}" pattern="MM-yyyy" /></strong>
+									<strong>Data: ${data_de_submissao}</strong>
 								</c:if>
 								<c:if test="${empty data_de_submissao}">
-									<strong>Data de submissão: - - - </strong>
+									<strong>Data: - - - </strong>
 								</c:if>
 							</div>
 						</div>
@@ -306,75 +355,65 @@
 			var tabela_ext = 'pdfHtml5';
 			var img_align = 'center';
 
-			
-		$('#relatorios-projetosAprovados')
-					.DataTable(
-							{
-								dom : tabela_dom,
-								buttons : [ {
-									extend : tabela_ext,
-									text : text_export,
-									title : 'Relatórios - Projetos Aprovados',
-									message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\nData início: <fmt:formatDate
-						value="${data_inicio_format}" pattern="MM-yyyy" />\nData término: <fmt:formatDate
-						value="${data_termino_format}" pattern="MM-yyyy" />',
-									customize : function(doc) {
-										doc.content.splice(0, 0, {
-											margin : [ 0, 0, 0, 11 ],
-											alignment : img_align,
-											image : logo_gpa
-										});
-									}
-								} ],
-								"language" : {
-									"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
-								}
-							});
+			$('#relatorios-projetosAprovados').DataTable({
+				dom : tabela_dom,
+				buttons : [ {
+					extend : tabela_ext,
+					text : text_export,
+					title : 'Relatórios - Projetos Aprovados',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosAprovados)}\nData início: ${data_de_inicio}\nData término: ${data_de_termino}',
+					customize : function(doc) {
+						doc.content.splice(0, 0, {
+							margin : [ 0, 0, 0, 11 ],
+							alignment : img_align,
+							image : logo_gpa
+						});
+					}
+				} ],
+				"language" : {
+					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
+				}
+			});
 
-			$('#relatorios-projetosReprovados')
-					.DataTable(
-							{
-								dom : tabela_dom,
-								buttons : [ {
-									extend : tabela_ext,
-									text : text_export,
-									title : 'Relatórios - Projetos Reprovados',
-									message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \Submissão: <fmt:formatDate
-						value="${submissao_format}" pattern="MM-yyyy" />',
-									customize : function(doc) {
-										doc.content.splice(0, 0, {
-											margin : [ 0, 0, 0, 11 ],
-											alignment : img_align,
-											image : logo_gpa
-										});
-									}
-								} ],
-								"language" : {
-									"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
-								}
-							});
+			$('#relatorios-projetosReprovados').DataTable({
+				dom : tabela_dom,
+				buttons : [ {
+					extend : tabela_ext,
+					text : text_export,
+					title : 'Relatórios - Projetos Reprovados',
+					message : 'Quantidade de registros: ${fn:length(relatorio.projetosReprovados)} \nData: ${data_de_submissao}',
+					customize : function(doc) {
+						doc.content.splice(0, 0, {
+							margin : [ 0, 0, 0, 11 ],
+							alignment : img_align,
+							image : logo_gpa
+						});
+					}
+				} ],
+				"language" : {
+					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
+				}
+			});
 
-			$('#relatorios-projetosPorUsuario')
-					.DataTable(
-							{
-								dom : tabela_dom,
-								buttons : [ {
-									extend : tabela_ext,
-									text : text_export,
-									title : 'Relatórios - Projetos por usuário',
-									message : 'Nome: ${relatorio.nomeUsuario} \nAno: ${relatorio.anoConsulta} \nCarga horária total: ${relatorio.cargaHorariaTotalUsuario} \nValor total de bolsas: ${relatorio.valorTotalBolsasUsuario}',
-									customize : function(doc) {
-										doc.content.splice(0, 0, {
-											margin : [ 0, 0, 0, 11 ],
-											alignment : img_align,
-											image : logo_gpa
-										});
-									}
-								} ],
-								"language" : {
-									"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
-								}
-							});
+			$('#relatorios-projetosPorUsuario').DataTable({
+				dom : tabela_dom,
+				buttons : [ {
+					extend : tabela_ext,
+					text : text_export,
+					title : 'Relatórios - Projetos por usuário',
+					message : 'Nome: ${relatorio.nomeUsuario} \nAno: ${relatorio.anoConsulta} \nCarga horária total: ${relatorio.cargaHorariaTotalUsuario} \nValor total de bolsas: ${relatorio.valorTotalBolsasUsuario}',
+					customize : function(doc) {
+						doc.content.splice(0, 0, {
+							margin : [ 0, 0, 0, 11 ],
+							alignment : img_align,
+							image : logo_gpa
+						});
+					}
+				} ],
+				"language" : {
+					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
+				}
+			});
 		});
 	</script>
 </body>

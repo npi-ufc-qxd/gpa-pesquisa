@@ -30,14 +30,17 @@ public class RelatorioController {
 	private PessoaService pessoaService;
 
 	@RequestMapping(value = "/aprovados", method = RequestMethod.GET)
-	public String aprovados(ModelMap model, @RequestParam(value = "inicio", required = false) String inicio,
-			@RequestParam(value = "termino", required = false) String termino, RedirectAttributes redirectAttributes,
+	public String aprovados(ModelMap model, @RequestParam(value = "iInterInicio", required = false) String iInterInicio,
+			@RequestParam(value = "fInterInicio", required = false) String fInterInicio, @RequestParam(value = "iInterTermino", required = false) String iInterTermino, 
+			 @RequestParam(value = "fInterTermino", required = false) String fInterTermino, RedirectAttributes redirectAttributes,
 			HttpSession session) {
-		Relatorio relatorio = relatorioService.getProjetosAprovadosRelatorio(inicio, termino);
+		Relatorio relatorio = relatorioService.getProjetosAprovadosRelatorio(iInterInicio, fInterInicio, iInterTermino, fInterTermino);
 		model.addAttribute("tipoRelatorio", "aprovados");
 		model.addAttribute("relatorio", relatorio);
-		model.addAttribute("data_de_inicio", inicio);
-		model.addAttribute("data_de_termino", termino);
+		model.addAttribute("inicio_intervalo_inicio", iInterInicio);
+		model.addAttribute("termino_intervalo_inicio", fInterInicio);
+		model.addAttribute("inicio_intervalo_termino", iInterTermino);
+		model.addAttribute("termino_intervalo_termino", fInterTermino);
 		return PAGINA_RELATORIOS;
 	}
 

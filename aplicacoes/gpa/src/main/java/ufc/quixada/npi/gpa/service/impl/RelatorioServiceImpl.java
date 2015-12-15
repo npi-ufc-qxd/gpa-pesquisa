@@ -32,40 +32,66 @@ public class RelatorioServiceImpl implements RelatorioService {
 
 	@Inject
 	private GenericRepository<Projeto> projetoRepository;
-
+	
 	@Override
-	public List<Projeto> getProjetosIntervalosAprovados(String inicio, String termino) {
+	public List<Projeto> getProjetosIntervalosAprovados(String iInterInicio, String fInterInicio, String iInterTermino, String fInterTermino){
 		Map<String, Object> params = new HashMap<String, Object>();
-
-		if (!inicio.isEmpty() && !termino.isEmpty()) {
-			params.put("inicio", inicio);
-			params.put("termino", termino);
-			return projetoRepository.find(QueryType.JPQL,
-
-					"from Projeto p where (status = 'APROVADO' or status = 'APROVADO_COM_RESTRICAO') and ((p.inicio between TO_DATE (:inicio, 'yyyy-mm') and TO_DATE (:termino, 'yyyy-mm')) or (p.termino between TO_DATE (:inicio, 'yyyy-mm') and TO_DATE (:termino, 'yyyy-mm') or (p.inicio < TO_DATE (:inicio, 'yyyy-mm') and p.termino > TO_DATE (:termino, 'yyyy-mm'))))", params);
+		StringBuilder iniIntInicio = new StringBuilder();
+		StringBuilder terIntInicio = new StringBuilder();
+		StringBuilder iniIntTermino = new StringBuilder();
+		StringBuilder terIntTermino = new StringBuilder();
+		boolean vazio = true;
+		
+		if (!iInterInicio.isEmpty()) {
+			iniIntInicio = iniIntInicio.append("inicio >= TO_DATE(:iInterInicio, 'yyyy-mm')");
+			params.put("iInterInicio", iInterInicio);
+			vazio = false;
 		}
-		if(inicio.isEmpty() && !termino.isEmpty()){
-			params.put("termino", termino);
-			return projetoRepository.find(QueryType.JPQL, "from Projeto p where (status = 'APROVADO' or status = 'APROVADO_COM_RESTRICAO') and (p.inicio <= TO_DATE (:termino, 'yyyy-mm') or p.termino <= TO_DATE (:termino, 'yyyy-mm'))"
-					, params);
+		
+		if (!fInterInicio.isEmpty()) {
+			if(!iInterInicio.isEmpty()) {
+				terIntInicio.append(" and ");
+			}
+			terIntInicio.append("inicio <= TO_DATE(:fInterInicio, 'yyyy-mm')");
+			params.put("fInterInicio", fInterInicio);
+			vazio = false;
 		}
-		if(!inicio.isEmpty() && termino.isEmpty()){
-			params.put("inicio", inicio);
-			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto p where (status = 'APROVADO' or status = 'APROVADO_COM_RESTRICAO') and (p.inicio >= TO_DATE (:inicio, 'yyyy-mm') or p.termino >= TO_DATE (:inicio, 'yyyy-mm'))", params);
+		
+		if (!iInterTermino.isEmpty()) {
+			iniIntTermino.append("termino >= TO_DATE(:iInterTermino, 'yyyy-mm')");
+			params.put("iInterTermino", iInterTermino);
+			vazio = false;
 		}
-
-		List<Projeto> projetosBusca = new ArrayList<Projeto>();
-		projetosBusca = projetoService.getProjetos(StatusProjeto.APROVADO);
-		projetosBusca.addAll(projetoService.getProjetos(StatusProjeto.APROVADO_COM_RESTRICAO));
-		return projetosBusca;
-
+		
+		if (!fInterTermino.isEmpty()) {
+			if(!iInterTermino.isEmpty()) {
+				terIntTermino.append(" and ");
+			}
+			terIntTermino.append("termino <= TO_DATE(:fInterTermino, 'yyyy-mm')");
+			params.put("fInterTermino", fInterTermino);
+			vazio = false;
+		}
+		
+		StringBuilder consulta = new StringBuilder("from Projeto p where (status = 'APROVADO' or status = 'APROVADO_COM_RESTRICAO')");
+		
+		if (!vazio) {
+			consulta.append(" and (");
+			consulta.append(iniIntInicio);
+			consulta.append(terIntInicio);
+			if ((!iInterTermino.isEmpty() || !fInterTermino.isEmpty()) && (!iInterInicio.isEmpty() || !fInterInicio.isEmpty())) {
+				consulta.append(" and ");
+			}
+			consulta.append(iniIntTermino);
+			consulta.append(terIntTermino);
+			consulta.append(")");
+		}
+		return projetoRepository.find(QueryType.JPQL, consulta.toString(), params);
 	}
-
+	
 	@Override
-	public Relatorio getProjetosAprovadosRelatorio(String inicio, String termino) {
+	public Relatorio getProjetosAprovadosRelatorio(String iInterInicio, String fInterInicio, String iInterTermino, String fInterTermino) {
 		List<ProjetoAprovadoRelatorio> projetosAprovadosRelatorio = new ArrayList<ProjetoAprovadoRelatorio>();
-		List<Projeto> projetos = this.getProjetosIntervalosAprovados(inicio, termino);
+		List<Projeto> projetos = this.getProjetosIntervalosAprovados( iInterInicio,  fInterInicio,  iInterTermino,  fInterTermino);
 
 		for (Projeto p : projetos) {
 			ProjetoAprovadoRelatorio projetoAprovado = new ProjetoAprovadoRelatorio();
@@ -99,7 +125,7 @@ public class RelatorioServiceImpl implements RelatorioService {
 		r.setProjetosAprovados(projetosAprovadosRelatorio);
 		return r;
 	}
-
+	
 	@Override
 	public List<Projeto> getProjetosIntervaloReprovados(String submissao_inicio, String submissao_termino) {
 		if (!submissao_inicio.isEmpty()) {
