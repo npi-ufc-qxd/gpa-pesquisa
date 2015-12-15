@@ -333,7 +333,6 @@
 				buttons : [ {
 					extend : tabela_ext,
 					text : text_export,
-					download: 'open',
 					orientation: 'landscape',
 					title : 'Relatório - Projetos Aprovados',
 					message : 'Gerado em: <fmt:formatDate value="${data_pesquisa}" pattern="dd/MM/yyyy' às 'HH:mm:ss"/>;\n'+
