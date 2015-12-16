@@ -2,8 +2,6 @@ package ufc.quixada.npi.gpa.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -228,12 +226,6 @@ public class RelatorioServiceImpl implements RelatorioService {
 		relatorio.setCargaHorariaTotalUsuario(cargaHorariaTotal);
 		relatorio.setProjetosPorPessoa(projetosPorPessoaRelatorio);
 		return relatorio;
-	}
-
-	@Override
-	public Date getMomento() {
-		Calendar agora = Calendar.getInstance(); 
-		return agora.getTime();
 	}
 
 }
