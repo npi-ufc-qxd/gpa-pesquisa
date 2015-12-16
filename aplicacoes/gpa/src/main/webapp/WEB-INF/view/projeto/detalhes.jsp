@@ -141,7 +141,6 @@
 							</c:if>					
 						</div>							
 					</div>
-					<hr />
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Atividades Gerais:</label>
 						<div class="col-sm-10 value-label">
@@ -156,19 +155,7 @@
 						</div>		
 					</div>
 					
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Participantes:</label>
-						<div class="col-sm-10 value-label">
-							<c:if test="${empty projeto.participacoes }">
-								<label>-</label>
-							</c:if>
-							<c:if test="${not empty projeto.participacoes }">
-								<c:forEach items="${projeto.participacoes }" var="participacao">
-									<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" ></c:url>">${participacao.participante.nome};</a></label><br>
-								</c:forEach>
-							</c:if>
-						</div>
-					</div>
+					
 					<c:if test="${permissaoArquivo == true }">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Anexos:</label>
@@ -231,7 +218,44 @@
 								</div>
 							</div>
 						</c:if>
-					</sec:authorize>								
+					</sec:authorize>	
+					
+					<div class="col-md-8">
+						<h4>Participantes</h4>
+					</div>
+					
+					<span class="line"></span>
+					
+					<c:if test="${not empty projeto.participacoes}">
+						<table id="participacoes-projeto" class="display">
+							<thead>
+								<tr>
+									<th class="dt-center">Participante</th>
+									<th class="dt-center">Início</th>
+									<th class="dt-center">Término</th>
+									<th class="dt-center">Carga Horária Mensal</th>
+									<th class="dt-center">Valor da Bolsa</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="participacao" items="${projeto.participacoes}">
+									<tr>
+										<td class="dt-center">${participacao.participante.nome }</td>
+										<td class="dt-center"><fmt:formatNumber
+												minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+										<td class="dt-center"><fmt:formatNumber
+												minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+										<td class="dt-center"><fmt:formatNumber
+												minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
+										<td class="dt-center"><fmt:formatNumber type="CURRENCY"
+												currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+					
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:if>							
 					
 					<c:if test="${permissaoComentario == true }">
 						<h4 class="subtitle">Comentários</h4>
