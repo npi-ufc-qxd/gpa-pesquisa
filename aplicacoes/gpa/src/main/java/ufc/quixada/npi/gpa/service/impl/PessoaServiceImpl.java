@@ -8,15 +8,17 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ufc.quixada.npi.gpa.model.Papel;
-import ufc.quixada.npi.gpa.model.Pessoa;
-import ufc.quixada.npi.gpa.service.PapelService;
-import ufc.quixada.npi.gpa.service.PessoaService;
-import ufc.quixada.npi.gpa.utils.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.ldap.service.UsuarioService;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import ufc.quixada.npi.gpa.model.Papel;
+import ufc.quixada.npi.gpa.model.Participacao;
+import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.Projeto;
+import ufc.quixada.npi.gpa.service.PapelService;
+import ufc.quixada.npi.gpa.service.PessoaService;
+import ufc.quixada.npi.gpa.utils.Constants;
 
 @Named
 public class PessoaServiceImpl implements PessoaService {
@@ -142,6 +144,24 @@ public class PessoaServiceImpl implements PessoaService {
 			}
 		}
 		return pessoas;
+	}
+
+	@Override
+	public List<Pessoa> gerPossiveisPareceristas(Projeto projeto) {
+		List<Pessoa> naoAutor = getPareceristas(projeto.getAutor().getId());
+		List<Pessoa> possiveisPareceristas = new ArrayList<>();
+		for (Pessoa pessoa : naoAutor) {
+			boolean flag = true;
+			for (Participacao participacao : projeto.getParticipacoes()) {
+				if(possiveisPareceristas.contains(pessoa) 
+						|| participacao.getParticipante().equals(pessoa)){
+					flag = false;
+				}
+			}
+			if(flag)
+				possiveisPareceristas.add(pessoa);
+		}
+		return possiveisPareceristas;
 	}
 
 }
