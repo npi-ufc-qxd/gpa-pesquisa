@@ -8,15 +8,16 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ufc.quixada.npi.gpa.model.Papel;
-import ufc.quixada.npi.gpa.model.Pessoa;
-import ufc.quixada.npi.gpa.service.PapelService;
-import ufc.quixada.npi.gpa.service.PessoaService;
-import ufc.quixada.npi.gpa.utils.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.ldap.service.UsuarioService;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import ufc.quixada.npi.gpa.model.Papel;
+import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.Projeto;
+import ufc.quixada.npi.gpa.service.PapelService;
+import ufc.quixada.npi.gpa.service.PessoaService;
+import ufc.quixada.npi.gpa.utils.Constants;
 
 @Named
 public class PessoaServiceImpl implements PessoaService {
@@ -45,10 +46,12 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public List<Pessoa> getPareceristas(Long id) {
+	public List<Pessoa> getPareceristas(Projeto projeto) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return pessoaRepository.find(QueryType.JPQL, "from Pessoa where id != :id", params);
+		params.put("idP", projeto.getId());
+		return pessoaRepository.find(QueryType.JPQL, 
+				"select pe from Pessoa pe where pe not in (select pa.participante from Projeto po, Participacao pa "
+				+ "where pa.projeto.id = :idP and pa member of po.participacoes)", params);
 	}
 
 	@Override
