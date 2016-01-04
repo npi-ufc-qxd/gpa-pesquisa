@@ -207,12 +207,6 @@ public class RelatorioServiceImpl implements RelatorioService {
 						mesesParticiacao = 13 - participacao.getMesInicio();
 					else
 						mesesParticiacao = 12;
-					/*if (participacao.getAnoInicio().equals(participacao.getAnoTermino()))
-						mesesParticiacao = participacao.getMesTermino() - participacao.getMesInicio() + 1;
-					else {
-						int anosCompletos = participacao.getAnoTermino() - participacao.getAnoInicio() - 1;
-						mesesParticiacao = 13 - participacao.getMesInicio() + (anosCompletos * 12) + participacao.getMesTermino();
-					}*/
 					projetoPorPessoa.setCargaHoraria(participacao.getCargaHorariaMensal() * mesesParticiacao);
 					BigDecimal valorMesesParticipacao = new BigDecimal(mesesParticiacao);
 					valorMesesParticipacao = valorMesesParticipacao.multiply(participacao.getBolsaValorMensal());
