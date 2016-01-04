@@ -198,13 +198,21 @@ public class RelatorioServiceImpl implements RelatorioService {
 			BigDecimal valorBolsa = new BigDecimal(0);
 			for (Participacao participacao : projeto.getParticipacoes()) {
 				if (participacao.getParticipante().getId().equals(id)) {
-					int mesesParticiacao = 0;
-					if (participacao.getAnoInicio().equals(participacao.getAnoTermino()))
+					Integer mesesParticiacao = 0;
+					if(ano.equals(participacao.getAnoInicio().toString()) && ano.equals(participacao.getAnoTermino().toString()))
+						mesesParticiacao = participacao.getMesTermino() - participacao.getMesInicio() + 1;
+					else if(!ano.equals(participacao.getAnoInicio().toString()) && ano.equals(participacao.getAnoTermino().toString()))
+						mesesParticiacao = participacao.getMesTermino();
+					else if(ano.equals(participacao.getAnoInicio().toString()) && !ano.equals(participacao.getAnoTermino().toString()))
+						mesesParticiacao = 13 - participacao.getMesInicio();
+					else
+						mesesParticiacao = 12;
+					/*if (participacao.getAnoInicio().equals(participacao.getAnoTermino()))
 						mesesParticiacao = participacao.getMesTermino() - participacao.getMesInicio() + 1;
 					else {
 						int anosCompletos = participacao.getAnoTermino() - participacao.getAnoInicio() - 1;
 						mesesParticiacao = 13 - participacao.getMesInicio() + (anosCompletos * 12) + participacao.getMesTermino();
-					}
+					}*/
 					projetoPorPessoa.setCargaHoraria(participacao.getCargaHorariaMensal() * mesesParticiacao);
 					BigDecimal valorMesesParticipacao = new BigDecimal(mesesParticiacao);
 					valorMesesParticipacao = valorMesesParticipacao.multiply(participacao.getBolsaValorMensal());
