@@ -2,6 +2,8 @@ package ufc.quixada.npi.gpa.controller;
 
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_RELATORIOS;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -37,6 +39,7 @@ public class RelatorioController {
 		Relatorio relatorio = relatorioService.getProjetosAprovadosRelatorio(iInterInicio, fInterInicio, iInterTermino, fInterTermino);
 		model.addAttribute("tipoRelatorio", "aprovados");
 		model.addAttribute("relatorio", relatorio);
+		model.addAttribute("data_pesquisa", new Date());
 		model.addAttribute("inicio_intervalo_inicio", iInterInicio);
 		model.addAttribute("termino_intervalo_inicio", fInterInicio);
 		model.addAttribute("inicio_intervalo_termino", iInterTermino);
@@ -60,6 +63,7 @@ public class RelatorioController {
 		model.addAttribute("tipoRelatorio", "reprovados");
 		model.addAttribute("relatorio", relatorio);
 		model.addAttribute("data_de_submissao", submissao_inicio);
+		model.addAttribute("data_pesquisa", new Date());
 		return PAGINA_RELATORIOS;
 	}
 
@@ -69,6 +73,7 @@ public class RelatorioController {
 		Relatorio relatorio = relatorioService.getProjetosPorPessoa(id, ano);
 		model.addAttribute("tipoRelatorio", "por-pessoa");
 		model.addAttribute("relatorio", relatorio );
+		model.addAttribute("data_pesquisa", new Date());
 		return PAGINA_RELATORIOS;
 	}
 }
