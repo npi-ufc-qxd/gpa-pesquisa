@@ -48,6 +48,13 @@
 					</c:if>
 
 					<span class="line"></span>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Status do projeto:</label>
+						<div class="col-sm-10 value-label">
+							<label>${projeto.status.descricao}</label>
+						</div>
+					</div>
 			
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Nome:</label>
