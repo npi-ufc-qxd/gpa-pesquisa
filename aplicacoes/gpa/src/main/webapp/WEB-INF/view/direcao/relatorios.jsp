@@ -76,18 +76,27 @@
 					</div>
 					<%-- form dos projetos reprovados--%>
 					<div id="form_reprovados">
-						<form:form id="relatoriosRerovadosForm"
+						<form:form id="relatoriosReprovadosForm"
 							enctype="multipart/form-data"
 							servletRelativeAction="relatorios/reprovados" method="GET"
 							cssClass="form-horizontal">
-							<label class="col-sm-2 control-label">Intervalo da submissão:</label>
-							<div class="col-sm-2">
-								<input type="text" name="submissao-inicio" id="submissaoRelatorio-inicio" class="form-control data">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Intervalo da
+									submissão:</label>
+								<div class="form-item">
+									<div class="col-sm-2">
+										<input type="text" name="submissaoInicio"
+											id="submissaoRelatorioInicio" class="form-control data">
+									</div>
+								</div>
+								<div class="form-item">
+									<div class="col-sm-2">
+										<input type="text" name="submissaoTermino"
+											id="submissaoRelatoriTermino" class="form-control data">
+									</div>
+								</div>
+								<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 							</div>
-							<div class="col-sm-2">
-								<input type="text" name="submissao-termino" id="submissaoRelatorio-termino" class="form-control data">
-							</div>
-							<button name="gerar" type="submit" class="btn btn-primary">Gerar</button>
 						</form:form>
 					</div>
 					<%-- form por pessoa--%>

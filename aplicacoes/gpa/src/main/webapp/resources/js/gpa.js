@@ -570,7 +570,53 @@ $(document).ready(function() {
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'iInterTermino');
 	    });
 	 
-	 $("#submissaoRelatorio-inicio").datepicker({
+		$('#relatoriosReprovadosForm').bootstrapValidator({
+			group: '.form-item',
+			feedbackIcons: {
+	        	valid: 'glyphicon glyphicon-ok',
+	        	invalid: 'glyphicon glyphicon-remove',
+	        },
+	        fields: {
+	        	submissaoInicio :{
+	            	validators: {
+	            		callback: {
+	                        message: 'A data de início deve ser anterior à data de término',
+	                        callback: function(value, validator) {
+	                        	var submissaoTermino = validator.getFieldElements('submissaoTermino').val();
+	                        	if(value != "" && submissaoTermino != "") {
+	                        		submissaoTermino = moment(submissaoTermino, "YYYY-MM").format("YYYY-MM");
+		                        	var submissaoInicio = moment(value, "YYYY-MM").format("YYYY-MM");
+		                        	if(moment(submissaoTermino, "YYYY-MM").isBefore(moment(submissaoInicio, "YYYY-MM"))) {
+		                        		return false;
+		                        	}
+	                        	}
+	                        	return true;
+	                        }
+	                    }
+	            	}
+	        	},
+	        	submissaoTermino: {
+		        	validators:{
+		        		callback: {
+		                    message: 'A data de término deve ser posterior à data de início',
+		                    callback: function(value, validator) {
+		                    	var submissaoInicio = validator.getFieldElements('submissaoInicio').val();
+		                    	if(value != "" && submissaoInicio != "") {
+		                    		submissaoInicio = moment(submissaoInicio, "YYYY-MM").format("YYYY-MM");
+		                        	var submissaoTermino = moment(value, "YYYY-MM").format("YYYY-MM");
+		                        	if(moment(submissaoInicio, "YYYY-MM").isAfter(moment(submissaoTermino, "YYYY-MM"))) {
+		                        		return false;
+		                        	}
+		                    	}
+		                    	return true;
+		                    }
+		                }
+		        	}
+		        }
+	        }
+		});
+
+	 $("#submissaoRelatorioInicio,#submissaoRelatoriTermino").datepicker({
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",
@@ -579,17 +625,10 @@ $(document).ready(function() {
 			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
+			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoInicio');
+			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoTermino');
 	    });
-	 $("#submissaoRelatorio-termino").datepicker({
-			format : "yyyy-mm",
-			todayBtn : "linked",
-			language : "pt-BR",
-			viewMode: "months", 
-		    minViewMode: "months",
-			todayHighlight : true
-		}).on('changeDate', function(e) {
-			$(this).datepicker('hide');
-	    });
+
 	 
 	 $("#terminoRelatorioTermino, #inicioRelatorioTermino" ).datepicker({
 			format : "yyyy-mm",
