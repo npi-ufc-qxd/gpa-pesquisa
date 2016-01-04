@@ -53,8 +53,8 @@ public class RelatorioController {
 	}
 
 	@RequestMapping(value = "/reprovados", method = RequestMethod.GET)
-	public String reprovados(ModelMap model, @RequestParam(value = "submissao-inicio", required = false) String submissao_inicio,
-			@RequestParam(value="submissao-termino",required= false) String submissao_termino,
+	public String reprovados(ModelMap model, @RequestParam(value = "submissaoInicio", required = false) String submissao_inicio,
+			@RequestParam(value="submissaoTermino",required= false) String submissao_termino,
 			RedirectAttributes redirectAttributes, HttpSession session) {
 		Relatorio relatorio = relatorioService.getProjetosReprovadosRelatorio(submissao_inicio,submissao_termino);
 		model.addAttribute("tipoRelatorio", "reprovados");
