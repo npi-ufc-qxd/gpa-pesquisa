@@ -88,8 +88,7 @@ public class DirecaoController {
 
 		model.addAttribute("parecer", new Parecer());
 		model.addAttribute("projeto", projeto);
-		List<Pessoa> pessoas = pessoaService.getPareceristas(projeto);
-		model.addAttribute("usuarios", pessoas);
+		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
 		return PAGINA_ATRIBUIR_PARECERISTA;
 	}
 	
