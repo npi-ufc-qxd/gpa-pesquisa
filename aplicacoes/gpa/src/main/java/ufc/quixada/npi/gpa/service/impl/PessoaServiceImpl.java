@@ -13,7 +13,6 @@ import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.ldap.service.UsuarioService;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import ufc.quixada.npi.gpa.model.Papel;
-import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.service.PapelService;
@@ -47,10 +46,12 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public List<Pessoa> getPareceristas(Long id) {
+	public List<Pessoa> getPareceristas(Projeto projeto) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return pessoaRepository.find(QueryType.JPQL, "from Pessoa where id != :id", params);
+		params.put("idP", projeto.getId());
+		return pessoaRepository.find(QueryType.JPQL, 
+				"select pe from Pessoa pe where pe not in (select pa.participante from Projeto po, Participacao pa "
+				+ "where pa.projeto.id = :idP and pa member of po.participacoes)", params);
 	}
 
 	@Override
@@ -144,24 +145,6 @@ public class PessoaServiceImpl implements PessoaService {
 			}
 		}
 		return pessoas;
-	}
-
-	@Override
-	public List<Pessoa> gerPossiveisPareceristas(Projeto projeto) {
-		List<Pessoa> naoAutor = getPareceristas(projeto.getAutor().getId());
-		List<Pessoa> possiveisPareceristas = new ArrayList<>();
-		for (Pessoa pessoa : naoAutor) {
-			boolean flag = true;
-			for (Participacao participacao : projeto.getParticipacoes()) {
-				if(possiveisPareceristas.contains(pessoa) 
-						|| participacao.getParticipante().equals(pessoa)){
-					flag = false;
-				}
-			}
-			if(flag)
-				possiveisPareceristas.add(pessoa);
-		}
-		return possiveisPareceristas;
 	}
 
 }

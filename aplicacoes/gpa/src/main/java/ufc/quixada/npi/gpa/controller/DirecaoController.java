@@ -88,7 +88,8 @@ public class DirecaoController {
 
 		model.addAttribute("parecer", new Parecer());
 		model.addAttribute("projeto", projeto);
-		model.addAttribute("usuarios", pessoaService.gerPossiveisPareceristas(projeto));
+		List<Pessoa> pessoas = pessoaService.getPareceristas(projeto);
+		model.addAttribute("usuarios", pessoas);
 		return PAGINA_ATRIBUIR_PARECERISTA;
 	}
 	
@@ -107,7 +108,7 @@ public class DirecaoController {
 		parecerValidator.validateAtribuirParecerista(parecer, result);
 		if(result.hasErrors()){
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto.getAutor().getId()));
+			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		

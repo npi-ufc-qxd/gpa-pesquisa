@@ -13,7 +13,7 @@ public interface PessoaService {
 	
 	Pessoa getPessoa(Long id);
 
-	List<Pessoa> getPareceristas(Long id);
+	List<Pessoa> getPareceristas(Projeto projeto);
 
 	Pessoa getDirecao();
 
@@ -35,6 +35,4 @@ public interface PessoaService {
 
 	List<Pessoa> getUsuariosByNomeOuCpf(String busca);
 
-	List<Pessoa> gerPossiveisPareceristas(Projeto projeto);
-	
 }
