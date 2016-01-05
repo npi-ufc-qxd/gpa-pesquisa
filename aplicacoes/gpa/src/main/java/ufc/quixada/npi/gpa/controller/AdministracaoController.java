@@ -53,6 +53,7 @@ public class AdministracaoController {
 		List<Usuario> usuarios = administracaoService.getUsuariosByNomeOuCpf(busca);
 		if (!usuarios.isEmpty()) {
 			map.addAttribute("pessoas", usuarios);
+			map.addAttribute("action", "resultado");
 		} else {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_INICIAL_ADMINISTRACAO;

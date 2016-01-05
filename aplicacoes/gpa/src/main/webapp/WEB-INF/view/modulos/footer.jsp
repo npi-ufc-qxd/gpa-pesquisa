@@ -7,7 +7,6 @@
 <script src="<c:url value="/webjars/bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js" />"></script>
 <script src="<c:url value="/webjars/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.js" />"></script>
 <script src="<c:url value="/webjars/bootstrap-datepicker/1.4.0/locales/bootstrap-datepicker.pt-BR.min.js" />"></script>
-<script src="<c:url value="/resources/js/bootstrap-datepicker.pt-BR.js" />"></script>
 <script src="<c:url value="/webjars/momentjs/2.10.6/moment.js" />"></script>
 <script src="<c:url value="/webjars/momentjs/2.10.6/locale/pt-br.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.mask.min.js" />"></script>
@@ -16,7 +15,6 @@
 <script src="<c:url value="/resources/js/select2_locale_pt-BR.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput_locale_pt-BR.js" />"></script>
-<script src="<c:url value="/resources/js/gpa-adm.js" />"></script>
 
 <script src="<c:url value="/resources/js/datatable_ext/dataTables.buttons.min.js" />"></script>
 <script src="<c:url value="/resources/js/datatable_ext/pdfmake.min.js" />"></script>

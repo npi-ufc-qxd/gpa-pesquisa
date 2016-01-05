@@ -9,8 +9,8 @@
 	<link rel="shortcut icon" href="<c:url value="/resources/images/gpa-icone.jpg" />" />
 	
 	<link href="<c:url value="/resources/css/bootstrap/bootstrap.min.css"/>" rel="stylesheet">
-	<link href="<c:url value="/resources/css/font-awesome.min.css"/>" rel="stylesheet"/>
-	<link href="<c:url value="/resources/css/bootstrapValidator.css" />" rel="stylesheet" />
+	<link href="<c:url value="/webjars/font-awesome/4.5.0/css/font-awesome.min.css"/>" rel="stylesheet"/>
+	<link href="<c:url value="/webjars/bootstrapvalidator/0.5.3/css/bootstrapValidator.css" />" rel="stylesheet" />
 	<link href="<c:url value="/resources/css/style-login.css"/>" rel="stylesheet">
 </head>
 
@@ -55,9 +55,9 @@
 		<p>Desenvolvido por <a href="http://www.npi.quixada.ufc.br" target="_blank">Núcleo de Práticas em Informática</a></p>
 		<p><a href="http://www.quixada.ufc.br" target="_blank">Universidade Federal do Ceará - Campus Quixadá</a></p>
 	</footer>
-	<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
+	<script src="<c:url value="/webjars/jquery/2.1.4/jquery.min.js" />"></script>
 	<script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js" />"></script>
-	<script src="<c:url value="/resources/js/bootstrapValidator.min.js" />"></script>
+	<script src="<c:url value="/webjars/bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js" />"></script>
 	<script src="<c:url value="/resources/js/language/pt_BR.js" />"></script>
 	<script src="<c:url value="/resources/js/gpa-login.js" />"></script>
 </body>
