@@ -103,7 +103,7 @@
 								</label>
 							</c:if>
 						</div>
-						<c:if test="${permissaoDataParecer == true }">
+						<c:if test="${permissaoDataParecer}">
 							<div class="col-sm-3 control-label">
 								<c:if test="${not empty projeto.parecer.dataRealizacao }">
 									<label>Data de emissão do parecer:</label>

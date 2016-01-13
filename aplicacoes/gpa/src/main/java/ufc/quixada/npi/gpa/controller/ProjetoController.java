@@ -179,6 +179,11 @@ public class ProjetoController {
 			}else{
 				model.addAttribute("permissaoComentario", false);
 			}
+			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
+					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))
+					|| (projeto.getStatus().equals(StatusProjeto.REPROVADO))){
+				model.addAttribute("permissaoDataParecer", true);
+			}
 			model.addAttribute("permissaoArquivo", true);
 			
 		/**DIRETOR*/	
@@ -201,6 +206,11 @@ public class ProjetoController {
 			}else{
 				model.addAttribute("permissaoParecer", false);
 			}
+			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
+					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))
+					|| (projeto.getStatus().equals(StatusProjeto.REPROVADO))){
+				model.addAttribute("permissaoDataParecer", true);
+			}	
 			model.addAttribute("permissaoObservacao", true);
 			model.addAttribute("permissaoArquivo", true);
 			
