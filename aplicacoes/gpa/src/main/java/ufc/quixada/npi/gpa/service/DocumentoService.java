@@ -15,4 +15,6 @@ public interface DocumentoService {
 	
 	void remover(Documento documento);
 	
+	void removerPastaProjeto(String nomeProjeto);
+	
 }
