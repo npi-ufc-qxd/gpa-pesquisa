@@ -66,19 +66,9 @@
 						<div class="col-sm-4 value-label">
 							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 						</div>
-						<c:if test="${permissaoParecer == true }">
-							<label class="col-sm-3 control-label">Status:</label>
-							<div class="col-sm-3 value-label">
-								<label>${projeto.status.descricao }</label>
-							</div>
-						</c:if>
-						
-					</div>
-					
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Status do projeto:</label>
-						<div class="col-sm-10 value-label">
-							<label>${projeto.status.descricao}</label>
+						<label class="col-sm-3 control-label">Status do projeto:</label>
+						<div class="col-sm-3 value-label">
+							<label>${projeto.status.descricao }</label>
 						</div>
 					</div>
 					
