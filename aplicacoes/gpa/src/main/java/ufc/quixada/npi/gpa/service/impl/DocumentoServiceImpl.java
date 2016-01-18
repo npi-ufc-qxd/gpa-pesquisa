@@ -29,7 +29,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 				+ documento.getNome();
 		documento.setNomeOriginal(novoNome);
 
-		File dir = new File("gpa-pesquisa-uploads");
+		File homedir = new File(System.getProperty("user.home"));
+		File dir = new File(homedir,"gpa-pesquisa-uploads");
 		dir.mkdir();
 		File subDir = new File(dir, documento.getProjeto().getNome());
 		subDir.mkdir();
@@ -58,7 +59,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 			String novoNome = System.currentTimeMillis()+"-"+documento.getNome();
 			documento.setNomeOriginal(novoNome);
 			
-			File dir = new File( "gpa-pesquisa-uploads");
+			File homedir = new File(System.getProperty("user.home"));
+			File dir = new File(homedir,"gpa-pesquisa-uploads");
 			dir.mkdir();
 			File subDir = new File( dir, documento.getProjeto().getNome());
 			subDir.mkdir();
@@ -89,7 +91,8 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public void remover(Documento documento) {
 		documentoRepository.delete(documento);
-		File dir = new File( "gpa-pesquisa-uploads");
+		File homedir = new File(System.getProperty("user.home"));
+		File dir = new File(homedir,"gpa-pesquisa-uploads");
 		if(dir.isDirectory()){
 			File subDir = new File(dir,documento.getProjeto().getNome());
 			if(subDir.isDirectory()){
@@ -101,15 +104,21 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Override
 	public void removerPastaProjeto(String nomeProjeto) {
-		File dir = new File( "gpa-pesquisa-uploads");
-		if(dir.isDirectory()){
-			File subDir = new File(dir,nomeProjeto);
-			if(subDir.isDirectory()){
-				subDir.delete();
-			}
-		}
+		File homedir = new File(System.getProperty("user.home"));
+		File dir = new File(homedir,"gpa-pesquisa-uploads");
+		File subDir = new File(dir,nomeProjeto);
+		removerArquivos(subDir);
 		
 	}
+	public void removerArquivos(File f) {
+	     if (f.isDirectory()) {
+	         File[] files = f.listFiles();
+	         for (File file : files) {
+	             removerArquivos(file);
+	         }
+	     }
+	     f.delete();
+	  }
 	
 
 }
