@@ -281,12 +281,98 @@ $(document).ready(function() {
         }
     });
 	
-	$('#atribuirPareceristaForm, #emitirParecerForm, #adicionarParticipacaoForm').bootstrapValidator({
+	$('#atribuirPareceristaForm, #emitirParecerForm').bootstrapValidator({
 		group: '.form-item',
 		excluded: ':disabled',
         feedbackIcons: {
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
+        }
+    });
+	
+	//VINCULAR PARTICIPANTES
+	$('#adicionarParticipacaoForm').bootstrapValidator({
+		group: '.form-item',
+		excluded: ':disabled',
+        fields: {
+            mesInicio: {
+                validators: {
+                	notEmpty: {
+                        message: 'O mês de início é obrigatório'
+	                },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+                }
+            },
+            anoInicio: {
+            	validators: {
+            		notEmpty: {
+                        message: 'O ano de início é obrigatório'
+                    },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+            	}
+            },
+            mesTermino: {
+                validators: {
+                   notEmpty: {
+                        message: 'O mês de término é obrigatório'
+                    },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+                }
+            },
+            anoTermino: {
+            	validators: {
+            		notEmpty: {
+                        message: 'O ano de término é obrigatório'
+                    },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+            	}
+            },
+            cargaHorariaMensal: {
+                validators: {
+                   notEmpty: {
+                        message: 'A carga horária mensal é obrigatória'
+                   },
+            	   integer:{
+            		   message: 'Digite um número válido'
+            	   }	
+                }
+            },
+            bolsaValorMensal: {
+            	validators: {
+	        		notEmpty: {
+	                    message: 'O valor da bolsa é obrigatório'
+	                },
+		            numeric:{
+		     		   message: 'Digite um número válido'
+		     	   	}
+            	}
+            },
+            inicio :{
+            	validators: {
+            		callback: {
+                        message: 'A data de início deve ser anterior à data de término',
+                        callback: function(value, validator) {
+                        	var termino = validator.getFieldElements('termino').val();
+                        	if(value != "" && termino != "") {
+                        		termino = moment(termino, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	var inicio = moment(value, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	if(moment(termino, "DD/MM/YYYY").isBefore(moment(inicio, "DD/MM/YYYY"))) {
+	                        		return false;
+	                        	}
+                        	}
+                        	return true;
+                        }
+                    }
+            	}
+            }
         }
     });
 	
