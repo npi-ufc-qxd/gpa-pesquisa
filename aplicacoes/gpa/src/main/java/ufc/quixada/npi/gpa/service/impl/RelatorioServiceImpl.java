@@ -128,13 +128,26 @@ public class RelatorioServiceImpl implements RelatorioService {
 	
 	@Override
 	public List<Projeto> getProjetosIntervaloReprovados(String submissao_inicio, String submissao_termino) {
-		if (!submissao_inicio.isEmpty()) {
+		if (!submissao_inicio.isEmpty() && submissao_termino.isEmpty()) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("submissao_inicio", submissao_inicio);
+			return projetoRepository.find(QueryType.JPQL,
+					"from Projeto p where status = 'REPROVADO' and p.submissao >= TO_DATE (:submissao_inicio, 'yyyy-mm')", params);
+		}
+		else if (submissao_inicio.isEmpty() && !submissao_termino.isEmpty()) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("submissao_termino", submissao_termino);
+			return projetoRepository.find(QueryType.JPQL,
+					"from Projeto p where status = 'REPROVADO' and p.submissao <= TO_DATE (:submissao_termino, 'yyyy-mm')", params);
+		}
+		else if (!submissao_inicio.isEmpty() && !submissao_termino.isEmpty()) {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("submissao_inicio", submissao_inicio);
 			params.put("submissao_termino", submissao_termino);
 			return projetoRepository.find(QueryType.JPQL,
 					"from Projeto p where status = 'REPROVADO' and p.submissao between TO_DATE (:submissao_inicio, 'yyyy-mm') and TO_DATE (:submissao_termino, 'yyyy-mm')", params);
-		}
+		} 
+		
 		List<Projeto> projetosBusca = new ArrayList<Projeto>();
 		projetosBusca = projetoService.getProjetos(StatusProjeto.REPROVADO);
 		List<Projeto> projetos = projetosBusca;
