@@ -144,6 +144,7 @@
 
 						<div class="controls">
 							<input name="adicionar" type="submit" class="btn btn-primary" value="Adicionar" />
+							<a title="Voltar para detalhes do projeto" href="<c:url value="/projeto/detalhes/${projeto.id}"></c:url>" class="btn btn-warning"><span class="fa fa-arrow-circle-o-left"></span> Voltar</a>
 						</div>
 
 					</form:form>
