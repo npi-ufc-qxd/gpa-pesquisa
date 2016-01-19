@@ -298,7 +298,7 @@ $(document).ready(function() {
             mesInicio: {
                 validators: {
                 	notEmpty: {
-                        message: 'O mês de início é obrigatório'
+                        message: 'Campo obrigatório'
 	                },
 		            integer:{
 			     		message: 'Digite um número válido'
@@ -308,7 +308,7 @@ $(document).ready(function() {
             anoInicio: {
             	validators: {
             		notEmpty: {
-                        message: 'O ano de início é obrigatório'
+                        message: 'Campo obrigatório'
                     },
 		            integer:{
 			     		message: 'Digite um número válido'
@@ -318,7 +318,7 @@ $(document).ready(function() {
             mesTermino: {
                 validators: {
                    notEmpty: {
-                        message: 'O mês de término é obrigatório'
+                        message: 'Campo obrigatório'
                     },
 		            integer:{
 			     		message: 'Digite um número válido'
@@ -328,7 +328,7 @@ $(document).ready(function() {
             anoTermino: {
             	validators: {
             		notEmpty: {
-                        message: 'O ano de término é obrigatório'
+                        message: 'Campo obrigatório'
                     },
 		            integer:{
 			     		message: 'Digite um número válido'
@@ -338,7 +338,7 @@ $(document).ready(function() {
             cargaHorariaMensal: {
                 validators: {
                    notEmpty: {
-                        message: 'A carga horária mensal é obrigatória'
+                        message: 'Campo obrigatório'
                    },
             	   integer:{
             		   message: 'Digite um número válido'
@@ -348,7 +348,7 @@ $(document).ready(function() {
             bolsaValorMensal: {
             	validators: {
 	        		notEmpty: {
-	                    message: 'O valor da bolsa é obrigatório'
+	                    message: 'Campo obrigatório'
 	                },
 		            numeric:{
 		     		   message: 'Digite um número válido'
