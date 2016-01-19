@@ -17,4 +17,6 @@ public interface DocumentoService {
 	
 	void removerPastaProjeto(String nomeProjeto);
 	
+	byte[] getArquivo(Documento documento);
+	
 }

@@ -3,15 +3,13 @@ package ufc.quixada.npi.gpa.controller;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DOCUMENTO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,11 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Pessoa;
-import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
-import ufc.quixada.npi.gpa.service.ProjetoService;
 
 @Controller
 @RequestMapping("documento")
@@ -36,32 +32,37 @@ public class DocumentoController {
 	private DocumentoService documentoService;
 	
 	@Inject
-	private ProjetoService projetoService;
-	
-	@Inject
 	private PessoaService pessoaService;
 	
 	@RequestMapping(value = "/{id-projeto}/{id-arquivo}", method = RequestMethod.GET)
-	public void getArquivo(@PathVariable("id-projeto") Long idProjeto, 
+	public HttpEntity<byte[]> getArquivo(@PathVariable("id-projeto") Long idProjeto, 
 			@PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, 
 			HttpSession session, Authentication authentication) {
-		try {
-			Projeto projeto = projetoService.getProjeto(idProjeto);
-			Documento documento = documentoService.getDocumento(idArquivo);
-			Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-			if(documento != null && projeto != null && (pessoa.equals(projeto.getAutor()) 
-				||pessoa.isDirecao() 
-				|| (projeto.getParecer() != null && pessoa.equals(projeto.getParecer().getParecerista())))
-				&& projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)) {
-				InputStream is = new ByteArrayInputStream(documento.getArquivo());
-				response.setContentType(documento.getExtensao());
-				response.setHeader("Content-Disposition", "attachment; filename=" + documento.getNome());
-				IOUtils.copy(is, response.getOutputStream());
-				response.flushBuffer();
-			}
-		} catch (IOException ex) {
-		}
+
+		Documento documento = documentoService.getDocumento(idArquivo);
+		byte[] arquivo = documentoService.getArquivo(documento);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Disposition", "attachment; filename=" + documento.getNomeOriginal().replace(" ", "_"));
+		headers.setContentLength(arquivo.length);
+
+		return new HttpEntity<byte[]>(arquivo, headers);
 	}
+	
+	@RequestMapping(value = "/{id-arquivo}", method = RequestMethod.GET)
+	public HttpEntity<byte[]> getArquivoEdicao(@PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, 
+			HttpSession session, Authentication authentication) {
+
+		Documento documento = documentoService.getDocumento(idArquivo);
+		byte[] arquivo = documentoService.getArquivo(documento);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Disposition", "attachment; filename=" + documento.getNomeOriginal().replace(" ", "_"));
+		headers.setContentLength(arquivo.length);
+
+		return new HttpEntity<byte[]>(arquivo, headers);
+	}
+
 	
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
 	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, HttpSession session, Authentication authentication) {
