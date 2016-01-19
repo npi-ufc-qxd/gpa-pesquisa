@@ -238,7 +238,7 @@
 							<tbody>
 								<c:forEach var="participacao" items="${projeto.participacoes}">
 									<tr>
-										<td class="dt-center">${participacao.participante.nome }</td>
+										<td lass="dt-center"><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" ></c:url>">${participacao.participante.nome}</a></td>
 										<td class="dt-center"><fmt:formatNumber
 												minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
 										<td class="dt-center"><fmt:formatNumber

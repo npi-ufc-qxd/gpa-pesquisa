@@ -622,6 +622,7 @@ $(document).ready(function() {
 			language : "pt-BR",
 			viewMode: "months", 
 		    minViewMode: "months",
+		    orientation: "top auto",
 			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
