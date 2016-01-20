@@ -244,7 +244,6 @@
 					</table>
 				</c:if>
 				<!-- /TAB APROVADOS -->
-
 				<!-- TAB REPROVADOS -->
 				<div id="tab-projetos-aprovados">
 					<c:if test="${tipoRelatorio == 'reprovados'}">
@@ -255,9 +254,10 @@
 							<div class="col-md-2" style="text-align: right;">
 								<a href="<c:url value="/direcao/relatorios" />" class="btn btn-primary btn-sm">Nova consulta</a>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
+							
+							<br>
+							
+							<div class="col-md-4">
 								<strong>
 									Gerado em: <fmt:formatDate value="${data_pesquisa}"	pattern="dd/MM/yyyy' às 'HH:mm:ss" />
 								</strong>
@@ -265,12 +265,30 @@
 							<div class="col-md-8">
 								<strong>Quantidade de Projetos: ${fn:length(relatorio.projetosReprovados)}</strong>
 							</div>
+						</div>
+						<br>
+						<div class="row">
 							<div class="col-md-4">
-								<c:if test="${not empty data_de_submissao}">
-									<strong>Data: ${data_de_submissao}</strong>
+								<c:if test="${not empty data_inicio_intervalo}">
+									<strong>Data de Inicio: <fmt:parseDate
+									value="${data_inicio_intervalo}" pattern="yyyy-MM"
+									var="data_inicio_format" /> <fmt:formatDate
+									value="${data_inicio_format}" pattern="MM-yyyy" /></strong>
 								</c:if>
-								<c:if test="${empty data_de_submissao}">
-									<strong>Data: - - - </strong>
+								<c:if test="${empty data_inicio_intervalo}">
+									<strong>Data de Inicio: - - - </strong>
+								</c:if>
+							</div>
+								
+							<div class="col-md-4">
+								<c:if test="${not empty data_termino_intervalo}">
+									<strong>Data de Termino: <fmt:parseDate
+									value="${data_termino_intervalo}" pattern="yyyy-MM"
+									var="data_termino_format" /> <fmt:formatDate
+									value="${data_termino_format}" pattern="MM-yyyy" /></strong>
+								</c:if>
+								<c:if test="${empty data_termino_format}">
+									<strong>Data de Termino: - - - </strong>
 								</c:if>
 							</div>
 						</div>
