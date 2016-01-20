@@ -622,8 +622,8 @@ $(document).ready(function() {
 			language : "pt-BR",
 			viewMode: "months", 
 		    minViewMode: "months",
-			todayHighlight : true,
-			orientation: "bottom"
+		    orientation: "top auto",
+			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
 			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoInicio');
