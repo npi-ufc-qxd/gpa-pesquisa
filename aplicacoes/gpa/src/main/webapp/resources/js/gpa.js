@@ -198,14 +198,21 @@ $(document).ready(function() {
         fields: {
             nome: {
                 validators: {
+                	notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
                     stringLength: {
                         min: 2,
                         message: 'O nome deve ter no mínimo 2 caracteres'
                     }
+        
                 }
             },
             descricao: {
                 validators: {
+                	notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
                     stringLength: {
                         min: 5,
                         message: 'A descrição deve ter no mínimo 5 caracteres'
