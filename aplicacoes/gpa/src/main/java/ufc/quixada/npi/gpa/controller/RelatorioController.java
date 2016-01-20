@@ -62,7 +62,8 @@ public class RelatorioController {
 		Relatorio relatorio = relatorioService.getProjetosReprovadosRelatorio(submissao_inicio,submissao_termino);
 		model.addAttribute("tipoRelatorio", "reprovados");
 		model.addAttribute("relatorio", relatorio);
-		model.addAttribute("data_de_submissao", submissao_inicio);
+		model.addAttribute("data_inicio_intervalo", submissao_inicio);
+		model.addAttribute("data_termino_intervalo", submissao_termino);
 		model.addAttribute("data_pesquisa", new Date());
 		return PAGINA_RELATORIOS;
 	}

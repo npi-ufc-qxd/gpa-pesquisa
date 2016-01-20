@@ -708,7 +708,8 @@ $(document).ready(function() {
 			language : "pt-BR",
 			viewMode: "months", 
 		    minViewMode: "months",
-			todayHighlight : true
+			todayHighlight : true,
+			orientation: "bottom"
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
 			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoInicio');
