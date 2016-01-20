@@ -79,7 +79,9 @@
 							<div class="form-item">
 								<label class="col-sm-2 control-label"><span class="required">*</span> Mês/Ano início: </label>
 								<div class="col-sm-2">
-									<form:input id="mesInicio" name="mesInicio" type="number" placeholder="1" min="1" max="12" path="mesInicio" cssClass="form-control" required="required" />
+									<form:input id="mesInicio" name="mesInicio" 
+										type="number" placeholder="1" min="1" max="12" step="1" 
+										path="mesInicio" cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="mesInicio"></form:errors>
 									</div>
@@ -87,7 +89,9 @@
 							</div>
 							<div class="form-item">
 								<div class="col-sm-2">
-									<form:input id="anoInicio" name="anoInicio" type="number" placeholder="${ano }" min="${ano }" path="anoInicio" cssClass="form-control" required="required" />
+									<form:input id="anoInicio" name="anoInicio" 
+										type="number" placeholder="${ano }" min="${ano }" step="1"
+										path="anoInicio" cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="anoInicio"></form:errors>
 									</div>
@@ -96,7 +100,9 @@
 							<div class="form-item">
 								<label class="col-sm-2 control-label"><span class="required">*</span> Mês/Ano término: </label>
 								<div class="col-sm-2">
-									<form:input name="mesTermino" type="number" placeholder="1" min="1" max="12" path="mesTermino" cssClass="form-control" required="required" />
+									<form:input name="mesTermino" type="number" step="1" 
+										placeholder="1" min="1" max="12" path="mesTermino" 
+										cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="mesTermino"></form:errors>
 									</div>
@@ -105,7 +111,7 @@
 							<div class="form-item">
 								<div class="col-sm-2">
 									<form:input name="anoTermino" type="number"
-										placeholder="${ano }" min="${ano }" path="anoTermino"
+										placeholder="${ano }" step="1" min="${ano }" path="anoTermino"
 										cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="anoTermino"></form:errors>
@@ -133,7 +139,7 @@
 								<div class="col-sm-4">
 									<form:input id="bolsaValorMensal" name="bolsaValorMensal"
 										type="number" path="bolsaValorMensal" placeholder="1"
-										step="100.00" min="0.00" required="required"
+										step="1.5" min="0.00"
 										class="form-control" />
 									<div class="error-validation">
 										<form:errors path="bolsaValorMensal"></form:errors>
