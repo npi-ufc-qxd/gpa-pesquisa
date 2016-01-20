@@ -51,6 +51,7 @@
 		<bootstrapvalidator.version>0.5.3</bootstrapvalidator.version>
 		<font-awesome.version>4.5.0</font-awesome.version>
 		<momentjs.version>2.10.6</momentjs.version>
+		<bootstrap-fileinput.version>4.2.6</bootstrap-fileinput.version>
 		
 		<commons.fileupload.version>1.3.1</commons.fileupload.version>
 		<commons.io.version>2.4</commons.io.version>
@@ -256,6 +257,12 @@
 			<version>${momentjs.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>bootstrap-fileinput</artifactId>
+			<version>${bootstrap-fileinput.version}</version>
+		</dependency>
+		
 		<!-- Dandelion -->
 		<dependency>
 			<groupId>com.github.dandelion</groupId>
