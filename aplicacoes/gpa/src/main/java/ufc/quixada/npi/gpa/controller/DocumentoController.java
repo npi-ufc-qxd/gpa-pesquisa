@@ -5,7 +5,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpEntity;
@@ -36,8 +35,7 @@ public class DocumentoController {
 	
 	@RequestMapping(value = "/{id-projeto}/{id-arquivo}", method = RequestMethod.GET)
 	public HttpEntity<byte[]> getArquivo(@PathVariable("id-projeto") Long idProjeto, 
-			@PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, 
-			HttpSession session, Authentication authentication) {
+			@PathVariable("id-arquivo") Long idArquivo) {
 
 		Documento documento = documentoService.getDocumento(idArquivo);
 		byte[] arquivo = documentoService.getArquivo(documento);
@@ -50,8 +48,7 @@ public class DocumentoController {
 	}
 	
 	@RequestMapping(value = "/{id-arquivo}", method = RequestMethod.GET)
-	public HttpEntity<byte[]> getArquivoEdicao(@PathVariable("id-arquivo") Long idArquivo, HttpServletResponse response, 
-			HttpSession session, Authentication authentication) {
+	public HttpEntity<byte[]> getArquivoEdicao(@PathVariable("id-arquivo") Long idArquivo) {
 
 		Documento documento = documentoService.getDocumento(idArquivo);
 		byte[] arquivo = documentoService.getArquivo(documento);

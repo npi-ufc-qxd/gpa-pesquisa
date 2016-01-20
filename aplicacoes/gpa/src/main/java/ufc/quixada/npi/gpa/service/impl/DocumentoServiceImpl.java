@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import br.ufc.quixada.npi.repository.GenericRepository;
@@ -18,20 +19,18 @@ import br.ufc.quixada.npi.repository.GenericRepository;
 public class DocumentoServiceImpl implements DocumentoService {
 
 	File homedir = new File(System.getProperty("user.home"));
-	File dir = new File(homedir, "gpa-pesquisa-uploads");
+	File dir = new File(homedir, PASTA_DOCUMENTOS_GPA);
 
 	@Autowired
 	private GenericRepository<Documento> documentoRepository;
 
 	@Override
 	public void salvar(Documento documento) {
-		String novoNome = System.currentTimeMillis() + "-"
-				+ documento.getNome();
+		String novoNome = System.currentTimeMillis()+"_"+documento.getNome();
 		documento.setNomeOriginal(novoNome);
 
-		dir.mkdir();
-		File subDir = new File(dir, documento.getProjeto().getNome());
-		subDir.mkdir();
+		File subDir = new File(dir, documento.getProjeto().getCodigo());
+		subDir.mkdirs();
 
 		try {
 			File file = new File(subDir, documento.getNomeOriginal());
@@ -41,9 +40,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			fop.flush();
 			fop.close();
 
-			documento.setCaminho("gpa-pesquisa-uploads/"
-					+ documento.getProjeto().getNome() + "/"
-					+ documento.getNomeOriginal());
+			documento.setCaminho(file.getAbsolutePath());
 			documentoRepository.save(documento);
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -66,18 +63,13 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public void remover(Documento documento) {
 		documentoRepository.delete(documento);
-		if (dir.isDirectory()) {
-			File subDir = new File(dir, documento.getProjeto().getNome());
-			if (subDir.isDirectory()) {
-				File arquivo = new File(subDir, documento.getNomeOriginal());
-				arquivo.delete();
-			}
-		}
+		File file = new File(documento.getCaminho());
+		removerArquivos(file);
 	}
 
 	@Override
-	public void removerPastaProjeto(String nomeProjeto) {
-		File subDir = new File(dir, nomeProjeto);
+	public void removerPastaProjeto(String codigoProjeto) {
+		File subDir = new File(dir, codigoProjeto);
 		removerArquivos(subDir);
 
 	}
@@ -94,8 +86,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	public byte[] getArquivo(Documento documento) {
 		FileInputStream fileInputStream = null;
-		File subdir = new File(dir,documento.getProjeto().getNome());
-		File file = new File(subdir,documento.getNomeOriginal());
+		File file = new File(documento.getCaminho());
 		byte[] bFile = new byte[(int) file.length()];
 
 		try {

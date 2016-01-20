@@ -17,6 +17,7 @@ import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
+import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 
 @Named
@@ -30,6 +31,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
 	private GenericRepository<Parecer> parecerRepository;
+	
+	@Inject
+	private DocumentoService documentoService;
 
 	@Override
 	public void cadastrar(Projeto projeto) {
@@ -77,6 +81,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public void remover(Projeto projeto) {
 		projetoRepository.delete(projeto);
+		documentoService.removerPastaProjeto(projeto.getCodigo());
 	}
 
 	@Override

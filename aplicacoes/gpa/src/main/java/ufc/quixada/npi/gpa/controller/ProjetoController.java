@@ -401,7 +401,6 @@ public class ProjetoController {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			projetoService.remover(projeto);
-			documentoService.removerPastaProjeto(projeto.getNome());
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_REMOVIDO);
 		} else {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
