@@ -39,8 +39,10 @@ public class DocumentoServiceImpl implements DocumentoService {
 			fop.write(documento.getArquivo());
 			fop.flush();
 			fop.close();
-
-			documento.setCaminho(file.getAbsolutePath());
+			
+			String path = file.getPath();
+			path.replaceAll("\\\\", "/");
+			documento.setCaminho(path);
 			documentoRepository.save(documento);
 		} catch (IOException ex) {
 			ex.printStackTrace();
