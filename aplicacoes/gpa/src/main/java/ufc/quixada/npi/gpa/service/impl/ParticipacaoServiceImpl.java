@@ -1,5 +1,7 @@
 package ufc.quixada.npi.gpa.service.impl;
 
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARTICIPACAO_MESMO_PERIODO;
+
 import java.time.YearMonth;
 import java.util.List;
 
@@ -30,12 +32,12 @@ public class ParticipacaoServiceImpl implements ParticipacaoService{
 					// Verifica se a o inicioPartAtual é maior que o termino registrado
 					// Assim é possível dividir uma participação em 2 etapas, antes e depois do registrado.
 					if (!(inicioPartAtual.compareTo(termino) > 0)) {
-						throw new IllegalArgumentException("Não pode haver mais de uma partipação entre mesmo período");
+						throw new IllegalArgumentException(MENSAGEM_PARTICIPACAO_MESMO_PERIODO);
 					}
 				} else {
 					// Verifica se o termino da participação atual é maior que o inicio cadastradas
 					if (!(terminoPartAtual.compareTo(inicio) < 0)) {
-						throw new IllegalArgumentException("Não pode haver mais de uma partipação entre mesmo período");
+						throw new IllegalArgumentException(MENSAGEM_PARTICIPACAO_MESMO_PERIODO);
 					} 
 				}
 			}
