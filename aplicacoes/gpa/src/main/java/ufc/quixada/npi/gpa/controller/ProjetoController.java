@@ -311,8 +311,10 @@ public class ProjetoController {
 		try {
 			participacaoService.verificaIntervalosParticipacaoPessoa(participacao);
 		} catch (IllegalArgumentException e) {
-			redirectAttributes.addFlashAttribute("erro", e.getMessage());
-			return "redirect:/projeto/participacoes/"+projeto.getId();
+			model.addAttribute("erro", e.getMessage());
+			model.addAttribute("projeto", projeto);
+			model.addAttribute("pessoas", pessoaService.getAll());
+			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		projeto.adicionarParticipacao(participacao);
 		projetoService.atualizar(projeto);	
