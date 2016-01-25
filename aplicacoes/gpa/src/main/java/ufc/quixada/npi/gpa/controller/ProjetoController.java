@@ -56,6 +56,7 @@ import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
+import ufc.quixada.npi.gpa.service.ParticipacaoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
@@ -91,6 +92,9 @@ public class ProjetoController {
 
 	@Autowired
 	private DocumentoService documentoService;
+	
+	@Inject
+	private ParticipacaoService participacaoService;
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, Authentication authentication) {
@@ -303,6 +307,12 @@ public class ProjetoController {
 			model.addAttribute("pessoas", pessoaService.getAll());
 			model.addAttribute("validacao", result);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
+		}
+		try {
+			participacaoService.verificaIntervalosParticipacaoPessoa(participacao);
+		} catch (IllegalArgumentException e) {
+			redirectAttributes.addFlashAttribute("erro", e.getMessage());
+			return "redirect:/projeto/participacoes/"+projeto.getId();
 		}
 		projeto.adicionarParticipacao(participacao);
 		projetoService.atualizar(projeto);	

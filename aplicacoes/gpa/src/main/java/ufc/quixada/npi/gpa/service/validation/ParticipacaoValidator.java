@@ -3,7 +3,6 @@ package ufc.quixada.npi.gpa.service.validation;
 import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.inject.Named;
 
@@ -12,7 +11,6 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import ufc.quixada.npi.gpa.model.Participacao;
-import ufc.quixada.npi.gpa.model.Pessoa;
 
 /**
  * Validação da entidade {@link Participacao} com a interface {@link Validator}. <br>
@@ -51,7 +49,6 @@ public class ParticipacaoValidator implements Validator {
 
 		// Desenvolvimento #2368
 		verificaParticipacaoDentroLimiteProjeto(p, errors);
-		verificaIntervalosParticipacaoPessoa(p, errors);
 	}
 
 	/**
@@ -169,42 +166,4 @@ public class ParticipacaoValidator implements Validator {
 		}
 	}
 
-	/**
-	 * Valida intervalos de participação por pessoa, não permitindo intercessão.
-	 * 
-	 * @param participacao {@link Participacao}
-	 * @param errors {@link Errors}
-	 */
-	private void verificaIntervalosParticipacaoPessoa(Participacao participacao, Errors errors) {
-		List<Participacao> participacoes = participacao.getProjeto().getParticipacoes();
-
-		// Participação atual
-		Pessoa participanteAtual = participacao.getParticipante();
-		YearMonth inicioPartAtual = YearMonth.of(participacao.getAnoInicio(), participacao.getMesInicio());
-		YearMonth terminoPartAtual = YearMonth.of(participacao.getAnoTermino(), participacao.getMesTermino());
-
-		for (Participacao part : participacoes) {
-			if (participanteAtual.equals(part.getParticipante())) {
-				YearMonth inicio = YearMonth.of(part.getAnoInicio(), part.getMesInicio());
-				YearMonth termino = YearMonth.of(part.getAnoTermino(), part.getMesTermino());
-
-				if (inicioPartAtual.compareTo(termino) >= 0) {
-					// Verifica se a o inicioPartAtual é maior que o termino registrado
-					// Assim é possível dividir uma participação em 2 etapas, antes e depois do registrado.
-					if (inicioPartAtual.compareTo(termino) > 0) {
-						// pode cadastrar
-					} else {
-						errors.rejectValue("mesInicio", "participacao.validaIntervaloInicio");
-					}
-				} else {
-					// Verifica se o termino da participação atual é maior que o inicio cadastradas
-					if (terminoPartAtual.compareTo(inicio) < 0) {
-						// pode cadastrar
-					} else {
-						errors.rejectValue("mesTermino", "participacao.validaIntervaloInicio");
-					}
-				}
-			}
-		}
-	}
 }
