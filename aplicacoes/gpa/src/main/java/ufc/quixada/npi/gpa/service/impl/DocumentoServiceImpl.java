@@ -18,8 +18,8 @@ import br.ufc.quixada.npi.repository.GenericRepository;
 @Named
 public class DocumentoServiceImpl implements DocumentoService {
 
-	File homedir = new File(System.getProperty("user.home"));
-	File dir = new File(homedir, PASTA_DOCUMENTOS_GPA);
+	File[] roots = File.listRoots();
+	File dir = new File(roots[0], PASTA_DOCUMENTOS_GPA);
 
 	@Autowired
 	private GenericRepository<Documento> documentoRepository;
