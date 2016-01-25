@@ -107,5 +107,6 @@ public class Constants {
 	public static final String PAPEL_ADMINISTRACAO = "ADMINISTRACAO";
 
 	public static final String PAPEL_COORDENACAO = "COORDENADOR";
+
 	
 }
