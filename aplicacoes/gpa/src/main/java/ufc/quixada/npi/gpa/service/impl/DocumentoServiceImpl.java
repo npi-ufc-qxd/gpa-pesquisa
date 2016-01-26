@@ -18,9 +18,6 @@ import br.ufc.quixada.npi.repository.GenericRepository;
 @Named
 public class DocumentoServiceImpl implements DocumentoService {
 
-	File homedir = new File(System.getProperty("user.home"));
-	File dir = new File(homedir, PASTA_DOCUMENTOS_GPA);
-
 	@Autowired
 	private GenericRepository<Documento> documentoRepository;
 
@@ -29,7 +26,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		String novoNome = System.currentTimeMillis()+"_"+documento.getNome();
 		documento.setNomeOriginal(novoNome);
 
-		File subDir = new File(dir, documento.getProjeto().getCodigo());
+		File subDir = new File(PASTA_DOCUMENTOS_GPA, documento.getProjeto().getCodigo());
 		subDir.mkdirs();
 
 		try {
@@ -39,8 +36,10 @@ public class DocumentoServiceImpl implements DocumentoService {
 			fop.write(documento.getArquivo());
 			fop.flush();
 			fop.close();
-
-			documento.setCaminho(file.getAbsolutePath());
+			
+			String path = file.getPath();
+			path = path.replaceAll("\\\\", "/");
+			documento.setCaminho(path);
 			documentoRepository.save(documento);
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -69,7 +68,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Override
 	public void removerPastaProjeto(String codigoProjeto) {
-		File subDir = new File(dir, codigoProjeto);
+		File subDir = new File(PASTA_DOCUMENTOS_GPA, codigoProjeto);
 		removerArquivos(subDir);
 
 	}
