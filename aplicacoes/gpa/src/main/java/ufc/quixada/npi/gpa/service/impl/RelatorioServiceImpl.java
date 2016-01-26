@@ -175,13 +175,16 @@ public class RelatorioServiceImpl implements RelatorioService {
 			params.put("id", id);
 			params.put("ano", Integer.parseInt(ano));
 			return projetoRepository.find(QueryType.JPQL,
-					"select distinct proj FROM Projeto proj JOIN proj.participacoes part WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') and (:ano between year(proj.inicio) and year(proj.termino))"
+					"select distinct proj FROM Projeto proj JOIN proj.participacoes part "
+					+ "WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') "
+					+ "and (:ano >= part.anoInicio and :ano <= part.anoTermino)"
 					, params);
 		}
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		return projetoRepository.find(QueryType.JPQL,
-				"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') ",
+				"select distinct proj FROM Projeto as proj JOIN proj.participacoes part "
+				+ "WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') ",
 				params);
 	}
 
