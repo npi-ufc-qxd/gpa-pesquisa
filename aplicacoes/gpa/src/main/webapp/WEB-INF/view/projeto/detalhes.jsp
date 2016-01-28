@@ -66,12 +66,11 @@
 						<div class="col-sm-4 value-label">
 							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 						</div>
-						<c:if test="${permissaoParecer == true }">
+
 							<label class="col-sm-3 control-label">Status:</label>
 							<div class="col-sm-3 value-label">
 								<label>${projeto.status.descricao }</label>
 							</div>
-						</c:if>
 						
 					</div>
 			
@@ -103,20 +102,18 @@
 								</label>
 							</c:if>
 						</div>
-						<c:if test="${permissaoDataParecer}">
+						
+						<c:if test="${not empty projeto.parecer.dataRealizacao }">
 							<div class="col-sm-3 control-label">
-								<c:if test="${not empty projeto.parecer.dataRealizacao }">
-									<label>Data de emissão do parecer:</label>
-								</c:if>
+								<label>Data de emissão do parecer:</label>
 							</div>
 							<div class="col-sm-3 value-label">
-								<c:if test="${not empty projeto.parecer.dataRealizacao }">
-									<label>
-										<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" />
-									</label>
-								</c:if>
+								<label>
+									<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" />
+								</label>
 							</div>
 						</c:if>
+						
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Local de execução:</label>
@@ -169,7 +166,6 @@
 							</c:if>
 						</div>
 					</div>
-					<c:if test="${permissaoArquivo == true }">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Anexos:</label>
 							<div class="col-sm-10 value-label">
@@ -183,19 +179,53 @@
 								</c:if>
 							</div>
 						</div>
-					</c:if>
 							
-					<c:if test="${permissaoObservacao == true }">
-						<h4 class="subtitle">Observações do Diretor</h4>
+					<h4 class="subtitle">Avaliação</h4>
 						<span class="line"></span>
 						<div class="form-group">
 							<div class="col-sm-12">		
 								<p class="value-label">${projeto.parecer.observacao}</p>				
 							</div>				   		
 						</div>
-					</c:if>
-								
-					<sec:authorize ifAnyGranted="DIRETOR">
+						
+			
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Observação Avaliação:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.observacaoAvaliacao }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.observacaoAvaliacao }">
+								<label>							
+								${projeto.observacaoAvaliacao }
+								</label>
+							</c:if>
+						</div>		
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Oficio:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.oficio }">
+								<label>-</label>						
+							</c:if>				
+							<c:if test="${not empty projeto.oficio }">
+								<label><a href="<c:url value="/documento/${projeto.id }/${projeto.oficio.id }" ></c:url>">${projeto.oficio.nome }</a></label><br>							
+							</c:if>
+							</div>
+						</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Ata:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.ata }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.ata }">
+									<label><a href="<c:url value="/documento/${projeto.id }/${projeto.ata.id }" ></c:url>">${projeto.ata.nome }</a></label><br>							
+							</c:if>
+							</div>
+						</div>
+					
 						<c:if test="${projeto.parecer != null}">
 							<h4 class="subtitle">Parecer</h4>
 							<span class="line"></span>
@@ -230,10 +260,9 @@
 									<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />">${projeto.parecer.documento.nome }</a>
 								</div>
 							</div>
-						</c:if>
-					</sec:authorize>								
-					
-					<c:if test="${permissaoComentario == true }">
+						</c:if>		
+										
+						<c:if test="${permissao != 'participante' }">
 						<h4 class="subtitle">Comentários</h4>
 						<span class="line"></span>
 						<div id="comentarios" class="col-sm-12">
@@ -247,7 +276,7 @@
 								</div>
 							</c:forEach>
 						</div>
-						
+					</c:if>
 						<form id="comentarForm">
 							<div id="div-comentario" class="col-sm-12 form-item">
 								<div id="campo-comentario" class="col-sm-12">
@@ -259,7 +288,7 @@
 								<input id="comentar" name="comentar" type="submit" class="btn btn-primary" value="Enviar" />
 							</div>
 						</form>
-					</c:if>
+				
 				</div> <!-- form-horizontal -->
 			</div> <!-- /panel-body -->
 		</div> <!-- /panel -->

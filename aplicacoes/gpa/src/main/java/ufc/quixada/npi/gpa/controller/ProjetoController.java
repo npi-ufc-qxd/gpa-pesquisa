@@ -157,33 +157,41 @@ public class ProjetoController {
 	public String verDetalhes(@PathVariable("id") Long id, Model model, HttpSession session,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
+		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		
+		model.addAttribute("projeto",projeto);
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		if(!(pessoa.isDirecao() || projeto.getAutor().equals(pessoa)
-				|| (projeto.getParecer().getParecerista().equals(pessoa) 
-				&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)))) {
-			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
+		if(pessoa.isDirecao()){
+			model.addAttribute("permissao","direcao");
+			return PAGINA_DETALHES_PROJETO;
+		}
+		
+		if(projeto.getAutor().equals(pessoa)){
+			model.addAttribute("permissao","autor");
+			return PAGINA_DETALHES_PROJETO;	
+		}
+		
+		if(projeto.getParecer().getParecerista().equals(pessoa)
+			&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)){
+			model.addAttribute("permissao","parecerista");
+			return PAGINA_DETALHES_PROJETO;
+		}
+		
+		if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
 					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
 				for (Participacao participacao : projeto.getParticipacoes()) {
 					if (pessoa.equals(participacao.getParticipante())) {
+						model.addAttribute("permissao", "participante");
 						return PAGINA_DETALHES_PROJETO;
 					}
 				}
-				redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
-			}
 		}
-
-		model.addAttribute("permissaoObservacao", projetoService.permissaoObservacao(projeto, pessoa));
-		model.addAttribute("permissaoArquivo", projetoService.permissaoArquivo(projeto, pessoa));
-		model.addAttribute("permissaoParecer", projetoService.permissaoParecer(projeto, pessoa));
-		model.addAttribute("permissaoComentario", projetoService.permissaoComentario(projeto, pessoa));
-		model.addAttribute("permissaoDataParecer", projetoService.permissaoDataParecer(projeto, pessoa));
-		
-		model.addAttribute("projeto", projeto);
-		return PAGINA_DETALHES_PROJETO;
+		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		return PAGINA_LISTAR_PROJETO;
 	}
 
 	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
