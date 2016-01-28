@@ -198,14 +198,21 @@ $(document).ready(function() {
         fields: {
             nome: {
                 validators: {
+                	notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
                     stringLength: {
                         min: 2,
                         message: 'O nome deve ter no mínimo 2 caracteres'
                     }
+        
                 }
             },
             descricao: {
                 validators: {
+                	notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
                     stringLength: {
                         min: 5,
                         message: 'A descrição deve ter no mínimo 5 caracteres'
@@ -281,12 +288,98 @@ $(document).ready(function() {
         }
     });
 	
-	$('#atribuirPareceristaForm, #emitirParecerForm, #adicionarParticipacaoForm').bootstrapValidator({
+	$('#atribuirPareceristaForm, #emitirParecerForm').bootstrapValidator({
 		group: '.form-item',
 		excluded: ':disabled',
         feedbackIcons: {
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
+        }
+    });
+	
+	//VINCULAR PARTICIPANTES
+	$('#adicionarParticipacaoForm').bootstrapValidator({
+		group: '.form-item',
+		excluded: ':disabled',
+        fields: {
+            mesInicio: {
+                validators: {
+                	notEmpty: {
+                        message: 'Campo obrigatório'
+	                },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+                }
+            },
+            anoInicio: {
+            	validators: {
+            		notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+            	}
+            },
+            mesTermino: {
+                validators: {
+                   notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+                }
+            },
+            anoTermino: {
+            	validators: {
+            		notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
+		            integer:{
+			     		message: 'Digite um número válido'
+		     	   	}
+            	}
+            },
+            cargaHorariaMensal: {
+                validators: {
+                   notEmpty: {
+                        message: 'Campo obrigatório'
+                   },
+            	   integer:{
+            		   message: 'Digite um número válido'
+            	   }	
+                }
+            },
+            bolsaValorMensal: {
+            	validators: {
+	        		notEmpty: {
+	                    message: 'Campo obrigatório'
+	                },
+		            numeric:{
+		     		   message: 'Digite um número válido'
+		     	   	}
+            	}
+            },
+            inicio :{
+            	validators: {
+            		callback: {
+                        message: 'A data de início deve ser anterior à data de término',
+                        callback: function(value, validator) {
+                        	var termino = validator.getFieldElements('termino').val();
+                        	if(value != "" && termino != "") {
+                        		termino = moment(termino, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	var inicio = moment(value, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	if(moment(termino, "DD/MM/YYYY").isBefore(moment(inicio, "DD/MM/YYYY"))) {
+	                        		return false;
+	                        	}
+                        	}
+                        	return true;
+                        }
+                    }
+            	}
+            }
         }
     });
 	
@@ -570,26 +663,66 @@ $(document).ready(function() {
 			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'iInterTermino');
 	    });
 	 
-	 $("#submissaoRelatorio-inicio").datepicker({
+		$('#relatoriosReprovadosForm').bootstrapValidator({
+			group: '.form-item',
+			feedbackIcons: {
+	        	valid: 'glyphicon glyphicon-ok',
+	        	invalid: 'glyphicon glyphicon-remove',
+	        },
+	        fields: {
+	        	submissaoInicio :{
+	            	validators: {
+	            		callback: {
+	                        message: 'A data de início deve ser anterior à data de término',
+	                        callback: function(value, validator) {
+	                        	var submissaoTermino = validator.getFieldElements('submissaoTermino').val();
+	                        	if(value != "" && submissaoTermino != "") {
+	                        		submissaoTermino = moment(submissaoTermino, "YYYY-MM").format("YYYY-MM");
+		                        	var submissaoInicio = moment(value, "YYYY-MM").format("YYYY-MM");
+		                        	if(moment(submissaoTermino, "YYYY-MM").isBefore(moment(submissaoInicio, "YYYY-MM"))) {
+		                        		return false;
+		                        	}
+	                        	}
+	                        	return true;
+	                        }
+	                    }
+	            	}
+	        	},
+	        	submissaoTermino: {
+		        	validators:{
+		        		callback: {
+		                    message: 'A data de término deve ser posterior à data de início',
+		                    callback: function(value, validator) {
+		                    	var submissaoInicio = validator.getFieldElements('submissaoInicio').val();
+		                    	if(value != "" && submissaoInicio != "") {
+		                    		submissaoInicio = moment(submissaoInicio, "YYYY-MM").format("YYYY-MM");
+		                        	var submissaoTermino = moment(value, "YYYY-MM").format("YYYY-MM");
+		                        	if(moment(submissaoInicio, "YYYY-MM").isAfter(moment(submissaoTermino, "YYYY-MM"))) {
+		                        		return false;
+		                        	}
+		                    	}
+		                    	return true;
+		                    }
+		                }
+		        	}
+		        }
+	        }
+		});
+
+	 $("#submissaoRelatorioInicio,#submissaoRelatoriTermino").datepicker({
 			format : "yyyy-mm",
 			todayBtn : "linked",
 			language : "pt-BR",
 			viewMode: "months", 
 		    minViewMode: "months",
+		    orientation: "top auto",
 			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
+			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoInicio');
+			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoTermino');
 	    });
-	 $("#submissaoRelatorio-termino").datepicker({
-			format : "yyyy-mm",
-			todayBtn : "linked",
-			language : "pt-BR",
-			viewMode: "months", 
-		    minViewMode: "months",
-			todayHighlight : true
-		}).on('changeDate', function(e) {
-			$(this).datepicker('hide');
-	    });
+
 	 
 	 $("#terminoRelatorioTermino, #inicioRelatorioTermino" ).datepicker({
 			format : "yyyy-mm",
@@ -645,5 +778,29 @@ $(document).ready(function() {
                 }
             }
 		}
+	});
+	
+	//ADM
+	$('#confirm-vincular').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza que deseja vincular papeis a \"' + $(e.relatedTarget).data('name') + '\"?'
+				+' '+ $(e.relatedTarget).data('name') +' será cadastrada(o) automaticamente no sistema, caso confirme.');
+		$(this).find('.btn-primary').attr('href', $(e.relatedTarget).data('href'));
+	});
+	
+	$('#formBuscarPessoa').bootstrapValidator({
+		fields: {
+			busca: {
+                validators: {
+                	notEmpty: {
+                        message: 'Digite um nome ou CPF para efetuar a busca.'
+                    }
+                }
+            }
+		}
+	});
+	
+	$('a.back').click(function(){
+		parent.history.back();
+		return false;
 	});
 });

@@ -43,7 +43,7 @@ public class RelatorioServiceImpl implements RelatorioService {
 		boolean vazio = true;
 		
 		if (!iInterInicio.isEmpty()) {
-			iniIntInicio = iniIntInicio.append("inicio >= TO_DATE(:iInterInicio, 'yyyy-mm')");
+			iniIntInicio = iniIntInicio.append("TO_DATE(TO_CHAR(inicio, 'yyyy-mm'), 'yyyy-mm') >= TO_DATE(:iInterInicio, 'yyyy-mm')");
 			params.put("iInterInicio", iInterInicio);
 			vazio = false;
 		}
@@ -52,13 +52,13 @@ public class RelatorioServiceImpl implements RelatorioService {
 			if(!iInterInicio.isEmpty()) {
 				terIntInicio.append(" and ");
 			}
-			terIntInicio.append("inicio <= TO_DATE(:fInterInicio, 'yyyy-mm')");
+			terIntInicio.append("TO_DATE(TO_CHAR(inicio, 'yyyy-mm'), 'yyyy-mm') <= TO_DATE(:fInterInicio, 'yyyy-mm')");
 			params.put("fInterInicio", fInterInicio);
 			vazio = false;
 		}
 		
 		if (!iInterTermino.isEmpty()) {
-			iniIntTermino.append("termino >= TO_DATE(:iInterTermino, 'yyyy-mm')");
+			iniIntTermino.append("TO_DATE(TO_CHAR(termino, 'yyyy-mm'), 'yyyy-mm') >= TO_DATE(:iInterTermino, 'yyyy-mm')");
 			params.put("iInterTermino", iInterTermino);
 			vazio = false;
 		}
@@ -67,7 +67,7 @@ public class RelatorioServiceImpl implements RelatorioService {
 			if(!iInterTermino.isEmpty()) {
 				terIntTermino.append(" and ");
 			}
-			terIntTermino.append("termino <= TO_DATE(:fInterTermino, 'yyyy-mm')");
+			terIntTermino.append("TO_DATE(TO_CHAR(termino, 'yyyy-mm'), 'yyyy-mm') <= TO_DATE(:fInterTermino, 'yyyy-mm')");
 			params.put("fInterTermino", fInterTermino);
 			vazio = false;
 		}
@@ -127,18 +127,25 @@ public class RelatorioServiceImpl implements RelatorioService {
 	}
 	
 	@Override
-	public List<Projeto> getProjetosIntervaloReprovados(String submissao_inicio, String submissao_termino) {
-		if (!submissao_inicio.isEmpty()) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("submissao_inicio", submissao_inicio);
-			params.put("submissao_termino", submissao_termino);
+	public List<Projeto> getProjetosIntervaloReprovados(String submissaoInicio, String submissaoTermino) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (!submissaoInicio.isEmpty() && submissaoTermino.isEmpty()) {
+			params.put("submissao_inicio", submissaoInicio);
 			return projetoRepository.find(QueryType.JPQL,
-					"from Projeto p where status = 'REPROVADO' and p.submissao between TO_DATE (:submissao_inicio, 'yyyy-mm') and TO_DATE (:submissao_termino, 'yyyy-mm')", params);
+					"from Projeto p where status = 'REPROVADO' and TO_DATE(TO_CHAR(p.submissao, 'yyyy-mm'), 'yyyy-mm') >= TO_DATE (:submissao_inicio, 'yyyy-mm')", params);
 		}
-		List<Projeto> projetosBusca = new ArrayList<Projeto>();
-		projetosBusca = projetoService.getProjetos(StatusProjeto.REPROVADO);
-		List<Projeto> projetos = projetosBusca;
-		return projetos;
+		else if (submissaoInicio.isEmpty() && !submissaoTermino.isEmpty()) {
+			params.put("submissao_termino", submissaoTermino);
+			return projetoRepository.find(QueryType.JPQL,
+					"from Projeto p where status = 'REPROVADO' and TO_DATE(TO_CHAR(p.submissao, 'yyyy-mm'), 'yyyy-mm') <= TO_DATE (:submissao_termino, 'yyyy-mm')", params);
+		}
+		else if (!submissaoInicio.isEmpty() && !submissaoTermino.isEmpty()) {
+			params.put("submissao_inicio", submissaoInicio);
+			params.put("submissao_termino", submissaoTermino);
+			return projetoRepository.find(QueryType.JPQL,
+					"from Projeto p where status = 'REPROVADO' and TO_DATE(TO_CHAR(p.submissao, 'yyyy-mm'), 'yyyy-mm') between TO_DATE (:submissao_inicio, 'yyyy-mm') and TO_DATE (:submissao_termino, 'yyyy-mm')", params);
+		} 
+		return projetoService.getProjetos(StatusProjeto.REPROVADO);
 	}
 
 	@Override
@@ -198,13 +205,15 @@ public class RelatorioServiceImpl implements RelatorioService {
 			BigDecimal valorBolsa = new BigDecimal(0);
 			for (Participacao participacao : projeto.getParticipacoes()) {
 				if (participacao.getParticipante().getId().equals(id)) {
-					int mesesParticiacao = 0;
-					if (participacao.getAnoInicio().equals(participacao.getAnoTermino()))
+					Integer mesesParticiacao = 0;
+					if(ano.equals(participacao.getAnoInicio().toString()) && ano.equals(participacao.getAnoTermino().toString()))
 						mesesParticiacao = participacao.getMesTermino() - participacao.getMesInicio() + 1;
-					else {
-						int anosCompletos = participacao.getAnoTermino() - participacao.getAnoInicio() - 1;
-						mesesParticiacao = 13 - participacao.getMesInicio() + (anosCompletos * 12) + participacao.getMesTermino();
-					}
+					else if(!ano.equals(participacao.getAnoInicio().toString()) && ano.equals(participacao.getAnoTermino().toString()))
+						mesesParticiacao = participacao.getMesTermino();
+					else if(ano.equals(participacao.getAnoInicio().toString()) && !ano.equals(participacao.getAnoTermino().toString()))
+						mesesParticiacao = 13 - participacao.getMesInicio();
+					else
+						mesesParticiacao = 12;
 					projetoPorPessoa.setCargaHoraria(participacao.getCargaHorariaMensal() * mesesParticiacao);
 					BigDecimal valorMesesParticipacao = new BigDecimal(mesesParticiacao);
 					valorMesesParticipacao = valorMesesParticipacao.multiply(participacao.getBolsaValorMensal());

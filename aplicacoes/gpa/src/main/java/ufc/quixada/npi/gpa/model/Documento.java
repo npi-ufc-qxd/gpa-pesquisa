@@ -5,8 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Type;
+import javax.persistence.Transient;
 
 @Entity
 public class Documento {
@@ -19,9 +18,11 @@ public class Documento {
 	
 	private String nome;
 	
+	private String caminhoArquivo;
+	
 	private String extensao;
 	
-	@Type(type="org.hibernate.type.BinaryType") 
+	@Transient
 	private byte[] arquivo;
 
 	@ManyToOne
@@ -73,6 +74,14 @@ public class Documento {
 
 	public void setExtensao(String extensao) {
 		this.extensao = extensao;
+	}
+
+	public String getCaminho() {
+		return caminhoArquivo;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminhoArquivo = caminho;
 	}
 
 	@Override

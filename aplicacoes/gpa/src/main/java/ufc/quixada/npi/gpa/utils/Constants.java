@@ -101,6 +101,8 @@ public class Constants {
 	
 	public static final String MENSAGEM_SUCESSO_VINCULAR_PAPEIS = "Papéis vinculados com sucesso!";
 	
+	public static final String MENSAGEM_PARTICIPACAO_MESMO_PERIODO = "Não pode haver mais de uma partipação no mesmo período";
+	
 	/*Papeis*/
 	public static final String PAPEL_DIRECAO = "DIRECAO";
 	
@@ -108,5 +110,7 @@ public class Constants {
 
 	public static final String PAPEL_COORDENACAO = "COORDENADOR";
 
+	/*Arquivos*/
+	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
 	
 }

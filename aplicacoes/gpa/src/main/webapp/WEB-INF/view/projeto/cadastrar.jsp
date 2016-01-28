@@ -211,7 +211,7 @@
 			
 						<div class="controls">
 							<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
-							<a href="javascript:history.back();" class="btn btn-default">Cancelar</a>
+							<a  class="btn btn-default back">Cancelar</a>
 						</div>
 					</form:form>
 				</div>
