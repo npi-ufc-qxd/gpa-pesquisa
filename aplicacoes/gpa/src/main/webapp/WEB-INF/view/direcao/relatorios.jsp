@@ -130,7 +130,7 @@
 							</div>
 							<div class="form-group">
 								<div class="form-item">
-									<label class="col-sm-2 control-label">Ano de andamento:</label>
+									<label class="col-sm-2 control-label">Ano de participação:</label>
 									<div class="col-sm-2">
 										<input type="text" name="ano" id="anoRelatorio" class="form-control data">
 									</div>

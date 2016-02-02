@@ -175,13 +175,16 @@ public class RelatorioServiceImpl implements RelatorioService {
 			params.put("id", id);
 			params.put("ano", Integer.parseInt(ano));
 			return projetoRepository.find(QueryType.JPQL,
-					"select distinct proj FROM Projeto proj JOIN proj.participacoes part WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') and (:ano between year(proj.inicio) and year(proj.termino))"
+					"select distinct proj FROM Projeto proj JOIN proj.participacoes part "
+					+ "WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') "
+					+ "and (:ano >= part.anoInicio and :ano <= part.anoTermino)"
 					, params);
 		}
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		return projetoRepository.find(QueryType.JPQL,
-				"select distinct proj FROM Projeto as proj JOIN proj.participacoes part WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') ",
+				"select distinct proj FROM Projeto as proj JOIN proj.participacoes part "
+				+ "WHERE part.participante.id = :id and (proj.status = 'APROVADO' or proj.status = 'APROVADO_COM_RESTRICAO') ",
 				params);
 	}
 
@@ -205,15 +208,8 @@ public class RelatorioServiceImpl implements RelatorioService {
 			BigDecimal valorBolsa = new BigDecimal(0);
 			for (Participacao participacao : projeto.getParticipacoes()) {
 				if (participacao.getParticipante().getId().equals(id)) {
-					Integer mesesParticiacao = 0;
-					if(ano.equals(participacao.getAnoInicio().toString()) && ano.equals(participacao.getAnoTermino().toString()))
-						mesesParticiacao = participacao.getMesTermino() - participacao.getMesInicio() + 1;
-					else if(!ano.equals(participacao.getAnoInicio().toString()) && ano.equals(participacao.getAnoTermino().toString()))
-						mesesParticiacao = participacao.getMesTermino();
-					else if(ano.equals(participacao.getAnoInicio().toString()) && !ano.equals(participacao.getAnoTermino().toString()))
-						mesesParticiacao = 13 - participacao.getMesInicio();
-					else
-						mesesParticiacao = 12;
+					Integer mesesParticiacao = mesesParticipacao(ano, participacao);
+					
 					projetoPorPessoa.setCargaHoraria(participacao.getCargaHorariaMensal() * mesesParticiacao);
 					BigDecimal valorMesesParticipacao = new BigDecimal(mesesParticiacao);
 					valorMesesParticipacao = valorMesesParticipacao.multiply(participacao.getBolsaValorMensal());
@@ -235,6 +231,22 @@ public class RelatorioServiceImpl implements RelatorioService {
 		relatorio.setCargaHorariaTotalUsuario(cargaHorariaTotal);
 		relatorio.setProjetosPorPessoa(projetosPorPessoaRelatorio);
 		return relatorio;
+	}
+
+	private Integer mesesParticipacao(String ano, Participacao participacao) {
+		Integer mesesParticiacao = 0;
+		String anoTermino = participacao.getAnoTermino().toString();
+		String anoInicio = participacao.getAnoInicio().toString();
+		if(ano.equals(anoInicio) && ano.equals(anoTermino))
+			mesesParticiacao = participacao.getMesTermino() - participacao.getMesInicio() + 1;
+		else if(!ano.equals(anoInicio))
+			mesesParticiacao = participacao.getMesTermino();
+		else if(!ano.equals(anoTermino))
+			mesesParticiacao = 13 - participacao.getMesInicio();
+		else
+			mesesParticiacao = 12;
+		
+		return mesesParticiacao;
 	}
 
 }
