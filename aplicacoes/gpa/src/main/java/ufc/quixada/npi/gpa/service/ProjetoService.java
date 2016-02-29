@@ -92,17 +92,4 @@ public interface ProjetoService {
 	 */
 	List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idAutor);
 
-	boolean permissaoObservacao(Projeto projeto, Pessoa pessoa);
-
-	boolean permissaoArquivo(Projeto projeto, Pessoa pessoa);
-
-	boolean permissaoParecer(Projeto projeto, Pessoa pessoa);
-
-	boolean permissaoComentario(Projeto projeto, Pessoa pessoa);
-
-	boolean permissaoDataParecer(Projeto projeto, Pessoa pessoa);
-
-	
-	
-
 }

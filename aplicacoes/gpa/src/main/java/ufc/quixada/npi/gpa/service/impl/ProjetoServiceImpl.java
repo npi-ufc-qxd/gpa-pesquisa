@@ -1,13 +1,7 @@
 package ufc.quixada.npi.gpa.service.impl;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
-import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
-import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +12,6 @@ import javax.inject.Named;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
-import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -285,118 +278,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return projetoRepository.find(QueryType.JPQL,
 				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino < current_date()",
 				params);
-	}
-	@Override
-	public boolean permissaoObservacao(Projeto projeto, Pessoa pessoa) {
-		/**DIRETOR*/	
-		if(pessoa.isDirecao()){
-			return true;
-		/**PARECERISTA*/	
-		}else if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER) 
-				&& pessoa.equals(projeto.getParecer().getParecerista())){
-			return true;
-		} else {
-			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
-					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
-				for (Participacao participacao : projeto.getParticipacoes()) {
-					if (pessoa.equals(participacao.getParticipante())) {
-						return false;
-			
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean permissaoArquivo(Projeto projeto, Pessoa pessoa) {
-		/**AUTOR*/
-		if(pessoa.equals(projeto.getAutor())){
-			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
-					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))
-					|| (projeto.getStatus().equals(StatusProjeto.REPROVADO))){
-				return true;
-			}
-			return false;
-			
-		/**DIRETOR*/	
-		}else if(pessoa.isDirecao()){
-			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
-					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))
-					|| (projeto.getStatus().equals(StatusProjeto.REPROVADO))){
-				return true;
-			}	
-			return false;
-			
-		/**PARECERISTA*/	
-		}else if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER) 
-				&& pessoa.equals(projeto.getParecer().getParecerista())){
-			return true;
-		} else {
-			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
-					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
-						return true;
-						
-					}
-				}
-		return false;
-	}
-
-	@Override
-	public boolean permissaoParecer(Projeto projeto, Pessoa pessoa) {
-		/**DIRETOR*/	
-	if(pessoa.isDirecao()){
-		return true;
-		}
-	/**PARECERISTA*/	
-	if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER) 
-			&& pessoa.equals(projeto.getParecer().getParecerista())){
-		return true;
-	}
-	
-		return false;
-	}
-
-	@Override
-	public boolean permissaoComentario(Projeto projeto, Pessoa pessoa) {
-		/**AUTOR*/
-		if(pessoa.equals(projeto.getAutor())){
-				return true;
-			
-		/**DIRETOR*/	
-		}else if(pessoa.isDirecao()){
-			if(!projeto.getStatus().equals( StatusProjeto.NOVO)){
-				return true;
-			}
-				
-		}
-		return false;
-	}
-
-	@Override
-	public boolean permissaoDataParecer(Projeto projeto, Pessoa pessoa) {
-		/**AUTOR*/
-		if(pessoa.equals(projeto.getAutor())){
-				return true;
-			}
-	 		if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
-					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))
-					|| (projeto.getStatus().equals(StatusProjeto.REPROVADO))){
-				return true;
-			}
-
-			
-		/**DIRETOR*/	
-		if(pessoa.isDirecao()){
-				return true;
-			}
-			if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
-					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))
-					|| (projeto.getStatus().equals(StatusProjeto.REPROVADO))){
-				return true;
-			}	
-			return false;
 	}
 }
 
