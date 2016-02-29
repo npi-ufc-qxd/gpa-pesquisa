@@ -278,5 +278,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return projetoRepository.find(QueryType.JPQL,
 				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino < current_date()",
 				params);
-	}	
+	}
 }
+

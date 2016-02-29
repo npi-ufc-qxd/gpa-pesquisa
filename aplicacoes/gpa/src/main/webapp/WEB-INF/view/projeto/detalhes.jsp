@@ -48,7 +48,7 @@
 					</c:if>
 
 					<span class="line"></span>
-					
+			
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Nome:</label>
 						<div class="col-sm-10 value-label">
@@ -66,12 +66,14 @@
 						<div class="col-sm-4 value-label">
 							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
 						</div>
-						<label class="col-sm-3 control-label">Status do projeto:</label>
-						<div class="col-sm-3 value-label">
-							<label>${projeto.status.descricao }</label>
-						</div>
+
+							<label class="col-sm-3 control-label">Status:</label>
+							<div class="col-sm-3 value-label">
+								<label>${projeto.status.descricao }</label>
+							</div>
+						
 					</div>
-					
+			
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Início:</label>
 						<div class="col-sm-4 value-label">
@@ -100,20 +102,18 @@
 								</label>
 							</c:if>
 						</div>
-						<c:if test="${permissaoDataParecer == true }">
+						
+						<c:if test="${not empty projeto.parecer.dataRealizacao }">
 							<div class="col-sm-3 control-label">
-								<c:if test="${not empty projeto.parecer.dataRealizacao }">
-									<label>Data de emissão do parecer:</label>
-								</c:if>
+								<label>Data de emissão do parecer:</label>
 							</div>
 							<div class="col-sm-3 value-label">
-								<c:if test="${not empty projeto.parecer.dataRealizacao }">
-									<label>
-										<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" />
-									</label>
-								</c:if>
+								<label>
+									<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.parecer.dataRealizacao }" />
+								</label>
 							</div>
 						</c:if>
+						
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Local de execução:</label>
@@ -138,6 +138,7 @@
 							</c:if>					
 						</div>							
 					</div>
+					<hr />
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Atividades Gerais:</label>
 						<div class="col-sm-10 value-label">
@@ -152,8 +153,19 @@
 						</div>		
 					</div>
 					
-					
-					<c:if test="${permissaoArquivo == true }">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Participantes:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.participacoes }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.participacoes }">
+								<c:forEach items="${projeto.participacoes }" var="participacao">
+									<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" ></c:url>">${participacao.participante.nome};</a></label><br>
+								</c:forEach>
+							</c:if>
+						</div>
+					</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Anexos:</label>
 							<div class="col-sm-10 value-label">
@@ -167,19 +179,53 @@
 								</c:if>
 							</div>
 						</div>
-					</c:if>
 							
-					<c:if test="${permissaoObservacao == true }">
-						<h4 class="subtitle">Observações do Diretor</h4>
+					<h4 class="subtitle">Avaliação</h4>
 						<span class="line"></span>
 						<div class="form-group">
 							<div class="col-sm-12">		
 								<p class="value-label">${projeto.parecer.observacao}</p>				
 							</div>				   		
 						</div>
-					</c:if>
-								
-					<sec:authorize ifAnyGranted="DIRETOR">
+						
+			
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Observação Avaliação:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.observacaoAvaliacao }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.observacaoAvaliacao }">
+								<label>							
+								${projeto.observacaoAvaliacao }
+								</label>
+							</c:if>
+						</div>		
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Oficio:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.oficio }">
+								<label>-</label>						
+							</c:if>				
+							<c:if test="${not empty projeto.oficio }">
+								<label><a href="<c:url value="/documento/${projeto.id }/${projeto.oficio.id }" ></c:url>">${projeto.oficio.nome }</a></label><br>							
+							</c:if>
+							</div>
+						</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Ata:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.ata }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.ata }">
+									<label><a href="<c:url value="/documento/${projeto.id }/${projeto.ata.id }" ></c:url>">${projeto.ata.nome }</a></label><br>							
+							</c:if>
+							</div>
+						</div>
+					
 						<c:if test="${projeto.parecer != null}">
 							<h4 class="subtitle">Parecer</h4>
 							<span class="line"></span>
@@ -214,47 +260,9 @@
 									<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />">${projeto.parecer.documento.nome }</a>
 								</div>
 							</div>
-						</c:if>
-					</sec:authorize>	
-					
-					<div class="col-md-8">
-						<h4>Participantes</h4>
-					</div>
-					
-					<span class="line"></span>
-					
-					<c:if test="${not empty projeto.participacoes}">
-						<table id="participacoes-projeto" class="display">
-							<thead>
-								<tr>
-									<th class="dt-center">Participante</th>
-									<th class="dt-center">Início</th>
-									<th class="dt-center">Término</th>
-									<th class="dt-center">Carga Horária Mensal</th>
-									<th class="dt-center">Valor da Bolsa</th>
-									
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="participacao" items="${projeto.participacoes}">
-									<tr>
-										<td class="dt-center"><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" ></c:url>">${participacao.participante.nome}</a></td>
-										<td class="dt-center"><fmt:formatNumber
-												minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
-										<td class="dt-center"><fmt:formatNumber
-												minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
-										<td class="dt-center"><fmt:formatNumber
-												minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
-										<td class="dt-center"><fmt:formatNumber type="CURRENCY"
-												currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
-					
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</c:if>							
-					
-					<c:if test="${permissaoComentario == true }">
+						</c:if>		
+										
+						<c:if test="${permissao != 'participante' }">
 						<h4 class="subtitle">Comentários</h4>
 						<span class="line"></span>
 						<div id="comentarios" class="col-sm-12">
@@ -268,7 +276,7 @@
 								</div>
 							</c:forEach>
 						</div>
-						
+					</c:if>
 						<form id="comentarForm">
 							<div id="div-comentario" class="col-sm-12 form-item">
 								<div id="campo-comentario" class="col-sm-12">
@@ -280,7 +288,7 @@
 								<input id="comentar" name="comentar" type="submit" class="btn btn-primary" value="Enviar" />
 							</div>
 						</form>
-					</c:if>
+				
 				</div> <!-- form-horizontal -->
 			</div> <!-- /panel-body -->
 		</div> <!-- /panel -->

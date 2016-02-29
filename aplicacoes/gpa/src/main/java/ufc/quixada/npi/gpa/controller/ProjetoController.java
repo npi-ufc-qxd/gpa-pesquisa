@@ -20,8 +20,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -163,80 +161,41 @@ public class ProjetoController {
 	public String verDetalhes(@PathVariable("id") Long id, Model model, HttpSession session,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
+		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		
+		model.addAttribute("projeto",projeto);
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		/**AUTOR*/
-		if(pessoa.equals(projeto.getAutor())){
-			if(!projeto.getStatus().equals( StatusProjeto.NOVO)){
-				model.addAttribute("permissaoComentario", true);
-				List<Comentario> comentarios = projeto.getComentarios();
-				Collections.sort(comentarios, new Comparator<Comentario>() {
-					@Override
-					public int compare(Comentario comentario1, Comentario comentario2) {
-						return comentario1.getData().compareTo(comentario2.getData());
-					}
-				});
-				projeto.setComentarios(comentarios);
-			}else{
-				model.addAttribute("permissaoComentario", false);
-			}
-			model.addAttribute("permissaoArquivo", true);
-			
-		/**DIRETOR*/	
-		}else if(pessoa.isDirecao()){
-			if(!projeto.getStatus().equals( StatusProjeto.NOVO)){
-				model.addAttribute("permissaoComentario", true);
-				List<Comentario> comentarios = projeto.getComentarios();
-				Collections.sort(comentarios, new Comparator<Comentario>() {
-					@Override
-					public int compare(Comentario comentario1, Comentario comentario2) {
-						return comentario1.getData().compareTo(comentario2.getData());
-					}
-				});
-				projeto.setComentarios(comentarios);
-			}else{
-				model.addAttribute("permissaoComentario", false);
-			}
-			if(projeto.getStatus().equals( StatusProjeto.AGUARDANDO_PARECER)){
-				model.addAttribute("permissaoParecer", true);
-			}else{
-				model.addAttribute("permissaoParecer", false);
-			}
-			model.addAttribute("permissaoObservacao", true);
-			model.addAttribute("permissaoArquivo", true);
-			
-		/**PARECERISTA*/	
-		}else if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER) && pessoa.equals(projeto.getParecer().getParecerista())){
-			model.addAttribute("permissaoParecer", true);
-			model.addAttribute("permissaoObservacao", true);
-			model.addAttribute("permissaoArquivo", true);
-			model.addAttribute("permissaoComentario", false);
-		} else {
-			if (projeto.getStatus().equals(StatusProjeto.APROVADO) || (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
+		if(pessoa.isDirecao()){
+			model.addAttribute("permissao","direcao");
+			return PAGINA_DETALHES_PROJETO;
+		}
+		
+		if(projeto.getAutor().equals(pessoa)){
+			model.addAttribute("permissao","autor");
+			return PAGINA_DETALHES_PROJETO;	
+		}
+		
+		if(projeto.getParecer().getParecerista().equals(pessoa)
+			&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)){
+			model.addAttribute("permissao","parecerista");
+			return PAGINA_DETALHES_PROJETO;
+		}
+		
+		if (projeto.getStatus().equals(StatusProjeto.APROVADO) 
+					|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
 				for (Participacao participacao : projeto.getParticipacoes()) {
 					if (pessoa.equals(participacao.getParticipante())) {
-						model.addAttribute("permissaoObservacao", false);
-						model.addAttribute("permissaoArquivo", true);
-						model.addAttribute("permissaoParecer", false);
-						model.addAttribute("permissaoComentario", false);
-						model.addAttribute("permissaoDataParecer", false);
-						model.addAttribute("projeto", projeto);
+						model.addAttribute("permissao", "participante");
 						return PAGINA_DETALHES_PROJETO;
 					}
 				}
-				redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
-				return REDIRECT_PAGINA_LISTAR_PROJETO;
-			} else {
-				redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
-				return REDIRECT_PAGINA_LISTAR_PROJETO;
-			}
 		}
-		
-		model.addAttribute("projeto", projeto);
-		return PAGINA_DETALHES_PROJETO;
+		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		return PAGINA_LISTAR_PROJETO;
 	}
 
 	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)

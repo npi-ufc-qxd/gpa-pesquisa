@@ -91,4 +91,5 @@ public interface ProjetoService {
 	 * @return {@link List} {@link Projeto}
 	 */
 	List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idAutor);
+
 }
