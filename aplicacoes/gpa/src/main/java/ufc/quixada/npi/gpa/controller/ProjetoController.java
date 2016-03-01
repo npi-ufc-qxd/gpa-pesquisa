@@ -195,7 +195,7 @@ public class ProjetoController {
 				}
 		}
 		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
-		return PAGINA_LISTAR_PROJETO;
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
 	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
