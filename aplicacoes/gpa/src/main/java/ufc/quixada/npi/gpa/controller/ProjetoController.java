@@ -509,18 +509,18 @@ public class ProjetoController {
 		projeto.getParecer().setDataRealizacao(new Date());
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecer.getParecer());
-		if (anexo != null) {
-			try {
+		try {
+			if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
 				Documento documento = new Documento();
 				documento.setArquivo(anexo.getBytes());
 				documento.setNome(anexo.getOriginalFilename());
 				documento.setExtensao(anexo.getContentType());
 				documentoService.salvar(documento);
 				projeto.getParecer().setDocumento(documento);
-			} catch (IOException e) {
-				model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-				return PAGINA_EMITIR_PARECER;
 			}
+		} catch (IOException e) {
+			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+			return PAGINA_EMITIR_PARECER;
 		}
 				
 		parecerValidator.validate(projeto.getParecer(), result);
