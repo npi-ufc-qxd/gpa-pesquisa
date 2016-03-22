@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,6 +65,7 @@ public class Projeto {
 	private List<Documento> documentos;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	@OrderBy(value="data")
 	private List<Comentario> comentarios;
 	
 	@OneToOne(cascade = CascadeType.REMOVE)
@@ -226,6 +228,7 @@ public class Projeto {
 	}
 
 	public List<Comentario> getComentarios() {
+		
 		return comentarios;
 	}
 
