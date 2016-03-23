@@ -243,7 +243,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"FROM Projeto WHERE coordenador_id = :idCoordenador AND termino >= current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
+				"FROM Projeto WHERE coordenador.id = :idCoordenador AND termino >= current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
 				params);
 	}
 	
@@ -254,7 +254,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"FROM Projeto WHERE coordenador_id = :idCoordenador AND termino < current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao)", 
+				"FROM Projeto WHERE coordenador.id = :idCoordenador AND termino < current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao)", 
 				params);
 	}
 	
@@ -271,7 +271,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	
 	public List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("idcoordenador", idCoordenador);
+		params.put("idCoordenador", idCoordenador);
 		params.put("statusAprovado", StatusProjeto.APROVADO);
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		

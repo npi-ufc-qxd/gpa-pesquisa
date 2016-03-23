@@ -29,6 +29,7 @@ public class PessoaController {
 	@RequestMapping(value = "/detalhes/{id}")
 	public String getDetalhes(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
 		Pessoa pessoa = pessoaService.getPessoa(id);
+		
 		if (pessoa == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
