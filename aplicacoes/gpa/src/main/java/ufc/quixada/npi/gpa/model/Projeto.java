@@ -48,7 +48,7 @@ public class Projeto {
 	private String descricao;
 
 	@ManyToOne
-	private Pessoa autor;
+	private Pessoa coordenador;
 
 	@Column(columnDefinition = "TEXT")
 	private String atividades;
@@ -159,12 +159,12 @@ public class Projeto {
 		this.documentos = documentos;
 	}
 
-	public Pessoa getAutor() {
-		return autor;
+	public Pessoa getCoordenador() {
+		return coordenador;
 	}
 
-	public void setAutor(Pessoa autor) {
-		this.autor = autor;
+	public void setCoordenador(Pessoa coordenador) {
+		this.coordenador = coordenador;
 	}
 
 	public String getCodigo() {
@@ -249,7 +249,7 @@ public class Projeto {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
 				+ ", inicio=" + inicio + ", termino=" + termino
 				+ ", submissao=" + submissao + ", descricao=" + descricao
-				+ ", autor=" + autor + ", atividades=" + atividades
+				+ ", coordenador=" + coordenador + ", atividades=" + atividades
 				+ ", local=" + local + ", status=" + status + "]";
 	}
 

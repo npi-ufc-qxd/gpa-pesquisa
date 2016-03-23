@@ -9,7 +9,7 @@
 	</queryString>
 	<field name="nome" class="java.lang.String"/>
 	<field name="submissao" class="java.util.Date"/>
-	<field name="autor.nome" class="java.lang.String"/>
+	<field name="coordenador.nome" class="java.lang.String"/>
 	<field name="avaliacao" class="java.util.Date"/>
 	<background>
 		<band/>

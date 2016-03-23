@@ -117,7 +117,7 @@
 										<tr>
 											<td>${participacao.projeto.codigo}</td>
 											<td><a href="<c:url value="/projeto/detalhes/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
-											<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
+											<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.coordenador.id}" ></c:url>">${participacao.projeto.coordenador.nome}</a></td>					
 											<td>${participacao.projeto.status.descricao}</td>
 											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}
 											<fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
@@ -170,7 +170,7 @@
 									<tr>
 										<th>Código</th>
 										<th>Projeto</th>
-										<th>Autor</th>
+										<th>Coordenador</th>
 										<th>Data Submissão</th>
 										<th>Prazo</th>
 										<th></th>
@@ -181,7 +181,7 @@
 										<tr>
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
-											<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></td>
 											<td class="acoes">

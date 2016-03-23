@@ -126,7 +126,7 @@ public class ProjetoController {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
-		projeto.setAutor(pessoaService.getPessoa(authentication.getName()));
+		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && anexos.length != 0) {
@@ -174,8 +174,8 @@ public class ProjetoController {
 			return PAGINA_DETALHES_PROJETO;
 		}
 		
-		if(projeto.getAutor().equals(pessoa)){
-			model.addAttribute("permissao","autor");
+		if(projeto.getCoordenador().equals(pessoa)){
+			model.addAttribute("permissao","coordenador");
 			return PAGINA_DETALHES_PROJETO;	
 		}
 		
@@ -314,7 +314,7 @@ public class ProjetoController {
 	}
 
 	private boolean usuarioPodeEditarProjeto(Projeto projeto, Pessoa usuario) {
-		return (usuario.getId() == projeto.getAutor().getId() && projeto.getStatus().equals(StatusProjeto.NOVO));
+		return (usuario.getId() == projeto.getCoordenador().getId() && projeto.getStatus().equals(StatusProjeto.NOVO));
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
@@ -330,7 +330,7 @@ public class ProjetoController {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		projeto.setAutor(usuario);
+		projeto.setCoordenador(usuario);
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
@@ -422,7 +422,7 @@ public class ProjetoController {
 			BindingResult result, Model model, HttpSession session, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		projeto.setAutor(usuario);
+		projeto.setCoordenador(usuario);
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {

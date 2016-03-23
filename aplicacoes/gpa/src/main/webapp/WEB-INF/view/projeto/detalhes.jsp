@@ -62,9 +62,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Autor:</label>
+						<label class="col-sm-2 control-label">Coordenador:</label>
 						<div class="col-sm-4 value-label">
-							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
+							<label><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></label>
 						</div>
 
 							<label class="col-sm-3 control-label">Status:</label>

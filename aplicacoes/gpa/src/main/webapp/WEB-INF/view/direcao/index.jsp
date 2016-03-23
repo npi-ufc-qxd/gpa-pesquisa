@@ -50,7 +50,7 @@
 											<th>Nome</th>
 											<th>Status</th>
 											<th>Data Submissão</th>
-											<th>Autor</th>
+											<th>Coordenador</th>
 											<th>Parecerista</th>
 											<th></th>
 										</tr>
@@ -62,7 +62,7 @@
 												<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 												<td>${projeto.status.descricao}</td>
 												<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
-												<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
+												<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
 												<td>
 													<c:if test="${projeto.parecer == null }">-</c:if>
 													<c:if test="${projeto.parecer != null }">
@@ -101,7 +101,7 @@
 											<th>Nome</th>
 											<th>Status</th>
 											<th>Data Avaliação</th>
-											<th>Autor</th>
+											<th>Coordenador</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -111,7 +111,7 @@
 												<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 												<td>${projeto.status.descricao}</td>
 												<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.avaliacao }" /></td>
-												<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
+												<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
