@@ -30,7 +30,7 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Coordenador:</label>
 						<div class="col-sm-8 value-label">
-							<label>${projeto.autor.nome }</label>
+							<label>${projeto.coordenador.nome }</label>
 						</div>
 					</div>
 					<div class="form-group form-item">

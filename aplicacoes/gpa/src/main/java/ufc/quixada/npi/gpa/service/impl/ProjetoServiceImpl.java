@@ -96,27 +96,27 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 	
 	@Override
-	public List<Projeto> getProjetosSubmetidos(Long idAutor) {
+	public List<Projeto> getProjetosSubmetidos(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", idAutor);
+		params.put("id", idCoordenador);
 		params.put("submetido", StatusProjeto.SUBMETIDO);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
 		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where ((status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (autor.id = :id)",
+				"from Projeto where ((status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (coordenador.id = :id)",
 				params);
 	}
 
 	@Override
-	public List<Projeto> getProjetosNaoAvaliados(Long idAutor) {
+	public List<Projeto> getProjetosNaoAvaliados(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", idAutor);
+		params.put("id", idCoordenador);
 		params.put("novo", StatusProjeto.NOVO);
 		params.put("submetido", StatusProjeto.SUBMETIDO);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
 		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where ((status = :novo) OR (status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (autor.id = :id)",
+				"from Projeto where ((status = :novo) OR (status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (coordenador.id = :id)",
 				params);
 	}
 	
@@ -131,15 +131,15 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public List<Projeto> getProjetosAvaliados(Long idAutor) {
+	public List<Projeto> getProjetosAvaliados(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", idAutor);
+		params.put("id", idCoordenador);
 		params.put("aprovado", StatusProjeto.APROVADO);
 		params.put("reprovado", StatusProjeto.REPROVADO);
 		params.put("aprovado_restricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where ((status = :aprovado) OR (status = :reprovado) OR (status = :aprovado_restricao)) AND (autor.id = :id)",
+				"from Projeto where ((status = :aprovado) OR (status = :reprovado) OR (status = :aprovado_restricao)) AND (coordenador.id = :id)",
 				params);
 	}
 
@@ -149,10 +149,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public List<Projeto> getProjetos(Long idAutor) {
+	public List<Projeto> getProjetos(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", idAutor);
-		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id", params);
+		params.put("id", idCoordenador);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where coordenador.id = :id", params);
 	}
 
 	@Override
@@ -172,11 +172,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public List<Projeto> getProjetos(Long idAutor, StatusProjeto status) {
+	public List<Projeto> getProjetos(Long idCoordenador, StatusProjeto status) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", idAutor);
+		params.put("id", idCoordenador);
 		params.put("status", status);
-		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id and status = :status", params);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where coordenador.id = :id and status = :status", params);
 	}
 
 	@Override
@@ -195,7 +195,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("statusAprovado", StatusProjeto.APROVADO);
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		List<Participacao> lista = participacaoRepository.find(QueryType.JPQL,
-				"select distinct part FROM Participacao as part WHERE part.participante.id = :id and (part.projeto.status = :statusAprovado OR part.projeto.status = :statusAprovadoRestricao) and part.projeto.autor.id != :id", params);
+				"select distinct part FROM Participacao as part WHERE part.participante.id = :id and (part.projeto.status = :statusAprovado OR part.projeto.status = :statusAprovadoRestricao) and part.projeto.coordenador.id != :id", params);
 		return lista;
 	}
 
@@ -236,47 +236,47 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return false;
 	}
 	
-	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idAutor) {
+	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("idAutor", idAutor);
+		params.put("idCoordenador", idCoordenador);
 		params.put("statusAprovado", StatusProjeto.APROVADO);
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"FROM Projeto WHERE autor_id = :idAutor AND termino >= current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
+				"FROM Projeto WHERE coordenador.id = :idCoordenador AND termino >= current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao) ", 
 				params);
 	}
 	
-	public List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idAutor) {
+	public List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("idAutor", idAutor);
+		params.put("idCoordenador", idCoordenador);
 		params.put("statusAprovado", StatusProjeto.APROVADO);
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"FROM Projeto WHERE autor_id = :idAutor AND termino < current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao)", 
+				"FROM Projeto WHERE coordenador.id = :idCoordenador AND termino < current_date() AND (status = :statusAprovado OR status = :statusAprovadoRestricao)", 
 				params);
 	}
 	
-	public List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idAutor) {
+	public List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("idAutor", idAutor);
+		params.put("idCoordenador", idCoordenador);
 		params.put("statusAprovado", StatusProjeto.APROVADO);
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL, 
-				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino >= current_date()",
+				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idCoordenador AND proj.coordenador.id <> :idCoordenador AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino >= current_date()",
 				params);
 	}
 	
-	public List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idAutor) {
+	public List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("idAutor", idAutor);
+		params.put("idCoordenador", idCoordenador);
 		params.put("statusAprovado", StatusProjeto.APROVADO);
 		params.put("statusAprovadoRestricao", StatusProjeto.APROVADO_COM_RESTRICAO);
 		
 		return projetoRepository.find(QueryType.JPQL,
-				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idAutor AND proj.autor.id <> :idAutor AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino < current_date()",
+				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idCoordenador AND proj.coordenador.id <> :idCoordenador AND (proj.status = :statusAprovado OR proj.status = :statusAprovadoRestricao) AND termino < current_date()",
 				params);
 	}
 }

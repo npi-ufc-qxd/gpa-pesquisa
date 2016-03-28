@@ -76,7 +76,7 @@ public class ProjetoValidator implements Validator {
 		datas.put("termino", projeto.getTermino());
 		validaCampoData(datas, false, errors);
 
-		validaParticipacaoAutor(projeto, errors);
+		validaParticipacaoCoordenador(projeto, errors);
 	}
 
 	/**
@@ -155,23 +155,23 @@ public class ProjetoValidator implements Validator {
 	}
 
 	/**
-	 * Valida se Autor do projeto faz parte dos participantes.
+	 * Valida se Coordenador do projeto faz parte dos participantes.
 	 * 
 	 * @param projeto {@link Projeto}
 	 * @param errors {@link Errors}
 	 */
-	private void validaParticipacaoAutor(Projeto projeto, Errors errors) {
-		Boolean autorEstaParticipando = false;
-		Long autorId = projeto.getAutor().getId();
+	private void validaParticipacaoCoordenador(Projeto projeto, Errors errors) {
+		Boolean coordenadorEstaParticipando = false;
+		Long coordenadorId = projeto.getCoordenador().getId();
 
 		List<Participacao> participantes = projeto.getParticipacoes();
 		for (Participacao participacao : participantes) {
-			if (participacao.getParticipante().getId().equals(autorId))
-				autorEstaParticipando = true;
+			if (participacao.getParticipante().getId().equals(coordenadorId))
+				coordenadorEstaParticipando = true;
 		}
 
-		if (!autorEstaParticipando) {
-			errors.reject("projeto.autorNaoParticipante", "projeto.autorNaoParticipante");
+		if (!coordenadorEstaParticipando) {
+			errors.reject("projeto.coordenadorNaoParticipante", "projeto.coordenadorNaoParticipante");
 		}
 	}
 }

@@ -71,7 +71,7 @@ public class DocumentoController {
 			return model;
 		}
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		if(!pessoa.equals(documento.getProjeto().getAutor()) || !documento.getProjeto().getStatus().equals(StatusProjeto.NOVO)) {
+		if(!pessoa.equals(documento.getProjeto().getCoordenador()) || !documento.getProjeto().getStatus().equals(StatusProjeto.NOVO)) {
 			model.addAttribute("result", "erro");
 			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
 			return model;
