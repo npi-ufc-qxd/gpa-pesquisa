@@ -142,31 +142,29 @@
 							</div>
 						</div>
 						
-						<c:if test="${not empty projeto.id }">
+						<c:if test="${not empty projeto.id}">
 						<div class="form-group form-item">
 					
-								<label class="col-sm-2 control-label">Vincular participantes:</label>
+								<c:if test="${(not empty projeto.inicio) && (not empty projeto.termino)}">
+									<label class="col-sm-2 control-label">Vincular participantes:</label>
+								</c:if>
+								<c:if test="${((empty projeto.inicio) || (empty projeto.termino)) && (not empty projeto.participacoes)}">
+									<label class="col-sm-2 control-label">Participantes:</label>
+								</c:if>
 								
-								<div class="col-sm-10 field-value">
-									<c:if test="${empty projeto.participacoes }">
-										<label>  <a id="vincular"
-											href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
-											target="_blank" title="Vincular participantes"
-											class="btn btn-primary"> <i class="fa fa-users"></i>
-										</a>
-										</label>
-										
-									</c:if>
-									<ul class="list-inline" style="line-height: 2.7em">
-										<c:if test="${not empty projeto.participacoes }">
-
-											<label> <a id="vincular"
+								<div class="col-sm-10 field-value">	
+									<c:if test="${(not empty projeto.inicio) && (not empty projeto.termino)}">
+										<label>  
+											<a id="vincular"
 												href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
 												target="_blank" title="Vincular participantes"
 												class="btn btn-primary"> <i class="fa fa-users"></i>
 											</a>
-											</label>
-
+										</label>
+									</c:if>
+										
+									<ul class="list-inline" style="line-height: 2.7em">
+										<c:if test="${not empty projeto.participacoes }">
 											<table id="participantes-table" class="table table-striped table-hover ">
 												<thead>
 													<tr>

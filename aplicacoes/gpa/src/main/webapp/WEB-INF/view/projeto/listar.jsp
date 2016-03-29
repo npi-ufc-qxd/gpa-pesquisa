@@ -73,10 +73,12 @@
 														data-href="<c:url value="/projeto/submeter/${projetoNaoAvaliado.id}" ></c:url>" data-name="${projetoNaoAvaliado.nome }">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>
 													</a>
-		
-													<a id="vincular" href="<c:url value="/projeto/participacoes/${projetoNaoAvaliado.id}" ></c:url>" title="Vincular participantes">
-														<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
-													</a>
+													
+													<c:if test="${(not empty projetoNaoAvaliado.inicio) && (not empty projetoNaoAvaliado.termino)}">
+														<a id="vincular" href="<c:url value="/projeto/participacoes/${projetoNaoAvaliado.id}" ></c:url>" title="Vincular participantes">
+															<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
+														</a>
+													</c:if>
 													
 													<a id="editar" href="<c:url value="/projeto/editar/${projetoNaoAvaliado.id}" ></c:url>" title="Editar">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
