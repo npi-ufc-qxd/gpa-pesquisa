@@ -33,10 +33,12 @@
 							<label style="width: 100%; text-align: right;">
 								<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter" data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }" class="btn btn-primary btn-sm">
 									<i class="fa fa-cloud-upload"></i>
-								</a> 
-								<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-primary btn-sm">
-									<i class="fa fa-users"></i>
 								</a>
+								<c:if test="${(not empty projetoNaoAvaliado.inicio) && (not empty projetoNaoAvaliado.termino)}">
+									<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-primary btn-sm">
+										<i class="fa fa-users"></i>
+									</a>
+								</c:if>
 								<a id="editar" href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>" title="Editar projeto" class="btn btn-primary btn-sm">
 									<i class="fa fa-edit"></i>
 								</a>
