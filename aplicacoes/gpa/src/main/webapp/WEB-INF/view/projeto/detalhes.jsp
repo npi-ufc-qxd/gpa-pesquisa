@@ -34,7 +34,7 @@
 								<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter" data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }" class="btn btn-primary btn-sm">
 									<i class="fa fa-cloud-upload"></i>
 								</a>
-								<c:if test="${(not empty projetoNaoAvaliado.inicio) && (not empty projetoNaoAvaliado.termino)}">
+								<c:if test="${(not empty projeto.inicio) && (not empty projeto.termino)}">
 									<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-primary btn-sm">
 										<i class="fa fa-users"></i>
 									</a>
