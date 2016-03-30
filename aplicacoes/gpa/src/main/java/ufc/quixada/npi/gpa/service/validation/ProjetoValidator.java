@@ -1,5 +1,8 @@
+
 package ufc.quixada.npi.gpa.service.validation;
 
+import java.time.YearMonth;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +58,10 @@ public class ProjetoValidator implements Validator {
 		datas.put("inicio", projeto.getInicio());
 		datas.put("termino", projeto.getTermino());
 		validaCampoData(datas, true, errors);
+		
+		validaDataParticipacoes(projeto, errors);
 	}
+
 
 	/**
 	 * Valida submissão do formulário de {@link Projeto}.
@@ -172,6 +178,46 @@ public class ProjetoValidator implements Validator {
 
 		if (!coordenadorEstaParticipando) {
 			errors.reject("projeto.coordenadorNaoParticipante", "projeto.coordenadorNaoParticipante");
+		}
+	}
+	
+	private void validaDataParticipacoes(Projeto projeto, Errors errors) {
+		
+		List<Participacao> participantes = projeto.getParticipacoes();
+		
+		if(participantes != null) {
+			
+			if( projeto.getInicio() == null || projeto.getTermino() == null) {
+				errors.reject("projeto.periodoAbrangerParticipacoes", "projeto.periodoAbrangerParticipacoes");
+				return;
+			}
+			
+			Date dataInicio = projeto.getInicio();
+			Date dataTermino = projeto.getTermino();
+			
+			Calendar inicioProjetoCal = Calendar.getInstance();
+			Calendar terminoProjetoCal = Calendar.getInstance();
+			inicioProjetoCal.setTime(dataInicio);
+			terminoProjetoCal.setTime(dataTermino);
+			
+			// Atenção: Calendar.MONTH, indice começa em 0.
+			YearMonth inicioProj = YearMonth.of(inicioProjetoCal.get(Calendar.YEAR),
+					(inicioProjetoCal.get(Calendar.MONTH) + 1));
+			YearMonth terminoProj = YearMonth.of(terminoProjetoCal.get(Calendar.YEAR),
+					(terminoProjetoCal.get(Calendar.MONTH) + 1));
+			
+			for(Participacao participante : participantes) {
+				YearMonth inicioParticipacao = YearMonth.of(participante.getAnoInicio(),
+						participante.getMesInicio());
+				YearMonth TerminoParticipacao = YearMonth.of(participante.getAnoTermino(),
+						participante.getMesTermino());
+				
+				if (inicioProj.isAfter(inicioParticipacao) || terminoProj.isBefore(TerminoParticipacao)) {
+					errors.reject("projeto.periodoAbrangerParticipacoes",
+						"projeto.periodoAbrangerParticipacoes");
+					return;
+				}
+			}
 		}
 	}
 }

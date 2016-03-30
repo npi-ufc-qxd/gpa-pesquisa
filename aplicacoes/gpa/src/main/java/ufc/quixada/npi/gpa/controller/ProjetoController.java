@@ -324,11 +324,6 @@ public class ProjetoController {
 
 		model.addAttribute("action", "editar");
 
-		projetoValidator.validate(projeto, result);
-
-		if (result.hasErrors()) {
-			return PAGINA_CADASTRAR_PROJETO;
-		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		projeto.setCoordenador(usuario);
 
@@ -349,6 +344,18 @@ public class ProjetoController {
 					return PAGINA_CADASTRAR_PROJETO;
 				}
 			}
+		}
+		
+		List<Participacao> participacoes = projetoService.getParticipacoesByProjeto(projeto.getId());
+		projeto.setParticipacoes(participacoes);
+		
+		projetoValidator.validate(projeto, result);
+
+		if (result.hasErrors()) {
+			if(result.hasGlobalErrors()){
+				model.addAttribute("validacao", result);
+			}
+			return PAGINA_CADASTRAR_PROJETO;
 		}
 
 		if (!documentos.isEmpty()) {

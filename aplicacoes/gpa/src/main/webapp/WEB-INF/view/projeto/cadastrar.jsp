@@ -36,6 +36,14 @@
 						<c:out value="${erro}"></c:out>
 					</div>
 				</c:if>
+				<c:if test="${not empty validacao.globalErrors }">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<c:forEach items="${validacao.globalErrors}" var="vg">
+							<p><spring:message code="${vg.defaultMessage}"></spring:message></p>
+						</c:forEach>
+					</div>
+				</c:if>
 				<div class="formulario">
 					<form:form id="adicionarProjetoForm" role="form" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="${url }" method="POST" cssClass="form-horizontal">
 			
@@ -142,29 +150,20 @@
 							</div>
 						</div>
 						
-						<c:if test="${not empty projeto.id}">
-						<div class="form-group form-item">
-					
-								<c:if test="${(not empty projeto.inicio) && (not empty projeto.termino)}">
-									<label class="col-sm-2 control-label">Vincular participantes:</label>
-								</c:if>
-								<c:if test="${((empty projeto.inicio) || (empty projeto.termino)) && (not empty projeto.participacoes)}">
-									<label class="col-sm-2 control-label">Participantes:</label>
-								</c:if>
+						<c:if test="${not empty projeto.participacoes}">
+							<div class="form-group form-item">
+								<label class="col-sm-2 control-label">Vincular participantes:</label>
 								
 								<div class="col-sm-10 field-value">	
-									<c:if test="${(not empty projeto.inicio) && (not empty projeto.termino)}">
-										<label>  
-											<a id="vincular"
-												href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
-												target="_blank" title="Vincular participantes"
-												class="btn btn-primary"> <i class="fa fa-users"></i>
-											</a>
-										</label>
-									</c:if>
+									<label>  
+										<a id="vincular"
+											href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
+											target="_blank" title="Vincular participantes"
+											class="btn btn-primary"> <i class="fa fa-users"></i>
+										</a>
+									</label>
 										
 									<ul class="list-inline" style="line-height: 2.7em">
-										<c:if test="${not empty projeto.participacoes }">
 											<table id="participantes-table" class="table table-striped table-hover ">
 												<thead>
 													<tr>
@@ -191,7 +190,6 @@
 													</c:forEach>
 												</tbody>
 											</table>
-										</c:if>
 									</ul>
 								</div>
 							</div>
