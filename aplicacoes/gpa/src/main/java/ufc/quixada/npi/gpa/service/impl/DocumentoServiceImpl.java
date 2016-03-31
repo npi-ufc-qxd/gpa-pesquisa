@@ -25,7 +25,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	public void salvar(Documento documento) {
 		String novoNome = System.currentTimeMillis()+"_"+documento.getNome();
 		documento.setNomeOriginal(novoNome);
-
+		
 		File subDir = new File(PASTA_DOCUMENTOS_GPA, documento.getProjeto().getCodigo());
 		subDir.mkdirs();
 
