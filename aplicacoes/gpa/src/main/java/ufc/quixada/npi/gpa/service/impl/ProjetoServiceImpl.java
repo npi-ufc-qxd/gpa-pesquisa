@@ -187,6 +187,17 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return projetoRepository.find(QueryType.JPQL,
 				"from Projeto where parecer.parecerista.id = :id and status = :aguardando_parecer", params);
 	}
+	
+	@Override
+	public List<Projeto> getProjetosParecerEmitido(Long idParecerista) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idParecerista);
+		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+
+		return projetoRepository.find(QueryType.JPQL,
+				"from Projeto where parecer.parecerista.id = :id AND status != :aguardando_parecer",
+				params);
+	}
 
 	@Override
 	public List<Participacao> getParticipacoes(Long idPessoa) {

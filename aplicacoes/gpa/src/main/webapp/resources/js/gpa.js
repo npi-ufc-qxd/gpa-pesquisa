@@ -72,6 +72,19 @@ $(document).ready(function() {
         }
 	});
 	
+	$('#projetos-parecer-emitido').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0, 1, 3, 4 ]},            
+            {"targets" : 1, "orderable" : false},
+		    {"targets" : 4, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$('#projetos-em-tramitacao').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
