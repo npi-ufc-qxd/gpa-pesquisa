@@ -192,13 +192,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 	public List<Projeto> getProjetosParecerEmitido(Long idParecerista) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idParecerista);
-		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
-		params.put("aprovado", StatusProjeto.APROVADO);
-		params.put("reprovado", StatusProjeto.REPROVADO);
-		params.put("aprovado_restricao", StatusProjeto.APROVADO_COM_RESTRICAO);
+		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
 
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where ((status = :aguardando_avaliacao) OR (status = :aprovado) OR (status = :reprovado) OR (status = :aprovado_restricao)) AND (parecer.parecerista.id = :id)",
+				"from Projeto where parecer.parecerista.id = :id AND status != :aguardando_parecer",
 				params);
 	}
 
