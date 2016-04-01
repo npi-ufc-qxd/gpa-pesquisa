@@ -137,7 +137,6 @@ public class ProjetoController {
 						documento.setArquivo(anexo.getBytes());
 						documento.setNome(anexo.getOriginalFilename());
 						documento.setExtensao(anexo.getContentType());
-						documento.setProjeto(projeto);
 						documentos.add(documento);
 					}
 				} catch (IOException e) {
@@ -150,9 +149,14 @@ public class ProjetoController {
 		projetoService.cadastrar(projeto);
 
 		if (!documentos.isEmpty()) {
-			documentoService.salvar(documentos);
+			documentoService.salvar(documentos,projeto.getCodigo());
 		}
-
+		for (Documento documento : documentos) {
+			projeto.addDocumento(documento);
+		}
+		System.out.println(projeto.toString());
+		projetoService.atualizar(projeto);
+		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -321,7 +325,7 @@ public class ProjetoController {
 	public String editar(@RequestParam("anexos") List<MultipartFile> anexos, @Valid Projeto projeto,
 			BindingResult result, Model model, HttpSession session, RedirectAttributes redirect,
 			Authentication authentication) {
-
+		System.out.println(projeto.toString());
 		model.addAttribute("action", "editar");
 
 		projetoValidator.validate(projeto, result);
@@ -329,9 +333,10 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
+		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		projeto.setCoordenador(usuario);
-
+		oldProjeto.setCoordenador(usuario);
+		oldProjeto = updateProjetoFields(oldProjeto, projeto);
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
@@ -341,7 +346,6 @@ public class ProjetoController {
 						documento.setArquivo(anexo.getBytes());
 						documento.setNome(anexo.getOriginalFilename());
 						documento.setExtensao(anexo.getContentType());
-						documento.setProjeto(projeto);
 						documentos.add(documento);
 					}
 				} catch (IOException e) {
@@ -352,11 +356,13 @@ public class ProjetoController {
 		}
 
 		if (!documentos.isEmpty()) {
-			documentoService.salvar(documentos);
+			documentoService.salvar(documentos, projeto.getCodigo());
 		}
-
-		projetoService.atualizar(projeto);
-
+		for (Documento documento : documentos) {
+			oldProjeto.addDocumento(documento);
+		}
+		projetoService.atualizar(oldProjeto);
+		System.out.println(projeto.toString());
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -422,7 +428,8 @@ public class ProjetoController {
 			BindingResult result, Model model, HttpSession session, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		projeto.setCoordenador(usuario);
+		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
+		oldProjeto.setCoordenador(usuario);
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
@@ -433,7 +440,6 @@ public class ProjetoController {
 						documento.setArquivo(anexo.getBytes());
 						documento.setNome(anexo.getOriginalFilename());
 						documento.setExtensao(anexo.getContentType());
-						documento.setProjeto(projeto);
 						documentos.add(documento);
 					}
 				} catch (IOException e) {
@@ -443,26 +449,27 @@ public class ProjetoController {
 			}
 		}
 		if (!documentos.isEmpty()) {
-			documentoService.salvar(documentos);
+			documentoService.salvar(documentos, oldProjeto.getCodigo());
 		}
 
 		List<Participacao> participacoes = projetoService.getParticipacoesByProjeto(projeto.getId());
-		projeto.setParticipacoes(participacoes);
+		oldProjeto.setParticipacoes(participacoes);
 
 		// Recupera os anexos já cadastrados para realizar validação
-		Projeto projetoAtualizado = projetoService.getProjeto(projeto.getId());
-		projeto.setDocumentos(projetoAtualizado.getDocumentos());
+		for (Documento documento : documentos) {
+			oldProjeto.addDocumento(documento);
+		}
 		
-		projetoValidator.validateSubmissao(projeto, result);
+		projetoValidator.validateSubmissao(oldProjeto, result);
 		if (result.hasErrors()) {
-			model.addAttribute("projeto", projeto);
+			model.addAttribute("projeto", oldProjeto);
 			model.addAttribute("participantes", pessoaService.getParticipantes(usuario));
 			model.addAttribute("validacao", result);
 			return PAGINA_SUBMETER_PROJETO;
 
 		} else {
-			projetoService.atualizar(projeto);
-			projetoService.submeter(projeto);
+			projetoService.atualizar(oldProjeto);
+			projetoService.submeter(oldProjeto);
 
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
 			notificacaoService.notificar(projeto, Evento.SUBMISSAO);
@@ -515,8 +522,9 @@ public class ProjetoController {
 				documento.setArquivo(anexo.getBytes());
 				documento.setNome(anexo.getOriginalFilename());
 				documento.setExtensao(anexo.getContentType());
-				documentoService.salvar(documento);
+				documentoService.salvar(documento, projeto.getCodigo());
 				projeto.getParecer().setDocumento(documento);
+				projeto.addDocumento(documento);
 			}
 		} catch (IOException e) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
@@ -560,6 +568,16 @@ public class ProjetoController {
 		model.addAttribute("comentario", comentarioResult);
 		model.addAttribute("autor", autor.getNome());
 		return model;
+	}
+	
+	private Projeto updateProjetoFields(Projeto oldProjeto, Projeto newProjeto){		
+		oldProjeto.setDescricao(newProjeto.getDescricao());
+		oldProjeto.setInicio(newProjeto.getInicio());
+		oldProjeto.setLocal(newProjeto.getLocal());
+		oldProjeto.setNome(newProjeto.getNome());
+		oldProjeto.setAtividades(newProjeto.getAtividades());
+		oldProjeto.setTermino(newProjeto.getTermino());
+		return oldProjeto;
 	}
 
 }

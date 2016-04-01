@@ -22,11 +22,11 @@ public class DocumentoServiceImpl implements DocumentoService {
 	private GenericRepository<Documento> documentoRepository;
 
 	@Override
-	public void salvar(Documento documento) {
+	public void salvar(Documento documento, String projetoCodigo) {
 		String novoNome = System.currentTimeMillis()+"_"+documento.getNome();
 		documento.setNomeOriginal(novoNome);
 
-		File subDir = new File(PASTA_DOCUMENTOS_GPA, documento.getProjeto().getCodigo());
+		File subDir = new File(PASTA_DOCUMENTOS_GPA, projetoCodigo);
 		subDir.mkdirs();
 
 		try {
@@ -48,9 +48,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	@Override
-	public void salvar(List<Documento> documentos) {
+	public void salvar(List<Documento> documentos, String projetoCodigo) {
 		for (Documento documento : documentos) {
-			salvar(documento);
+			salvar(documento, projetoCodigo);
 		}
 	}
 

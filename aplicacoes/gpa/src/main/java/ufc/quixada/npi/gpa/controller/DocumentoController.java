@@ -3,7 +3,6 @@ package ufc.quixada.npi.gpa.controller;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DOCUMENTO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +21,7 @@ import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
+import ufc.quixada.npi.gpa.service.ProjetoService;
 
 @Controller
 @RequestMapping("documento")
@@ -32,6 +32,9 @@ public class DocumentoController {
 	
 	@Inject
 	private PessoaService pessoaService;
+	
+	@Inject
+	private ProjetoService projetoService;
 	
 	@RequestMapping(value = "/{id-projeto}/{id-arquivo}", method = RequestMethod.GET)
 	public HttpEntity<byte[]> getArquivo(@PathVariable("id-projeto") Long idProjeto, 
@@ -71,10 +74,10 @@ public class DocumentoController {
 			return model;
 		}
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		if(!pessoa.equals(documento.getProjeto().getCoordenador()) || !documento.getProjeto().getStatus().equals(StatusProjeto.NOVO)) {
-			model.addAttribute("result", "erro");
-			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
-			return model;
+		if(projetoService.getProjetos(pessoa.getId())== null){
+				model.addAttribute("result", "erro");
+				model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
+				return model;
 		}
 		documentoService.remover(documento);
 		model.addAttribute("result", "ok");
