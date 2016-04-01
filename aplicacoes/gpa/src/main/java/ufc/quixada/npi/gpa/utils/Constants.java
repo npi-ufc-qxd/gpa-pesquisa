@@ -103,6 +103,8 @@ public class Constants {
 
 	public static final String MENSAGEM_PARTICIPACAO_MESMO_PERIODO = "Não pode haver mais de uma partipação no mesmo período";
 
+	public static final String MENSAGEM_PARECERISTA_ALTERADO = "Parecerista alterado com sucesso";
+	
 	/* Papeis */
 	public static final String PAPEL_DIRECAO = "DIRECAO";
 
