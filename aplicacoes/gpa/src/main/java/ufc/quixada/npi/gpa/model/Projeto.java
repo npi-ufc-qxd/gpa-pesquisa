@@ -252,15 +252,11 @@ public class Projeto {
 		this.observacaoAvaliacao = observacaoAvaliacao;
 	}
 
-	
-
 	@Override
 	public String toString() {
-		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", inicio=" + inicio + ", termino="
-				+ termino + ", descricao=" + descricao + ", atividades=" + atividades + ", local=" + local + "]";
+		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", coordenador=" + coordenador
+				+ ", status=" + status + ", documentos=" + documentos + "]";
 	}
-
-
 
 	public enum StatusProjeto {
 
