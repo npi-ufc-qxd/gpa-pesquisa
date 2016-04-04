@@ -114,5 +114,10 @@ public class Constants {
 
 	/* Arquivos */
 	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
+	
+	/* Action */
+	public static final String ATRIBUIR_PARECERISTA = "atribuir";
+	
+	public static final String ALTERAR_PARECERISTA = "alterar";
 
 }

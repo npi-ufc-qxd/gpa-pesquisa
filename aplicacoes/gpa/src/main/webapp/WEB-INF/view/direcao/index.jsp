@@ -81,7 +81,7 @@
 														</a>
 													</c:if>
 													<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
-														<a id="alterarParecerista" title="Alterar parecerista" data-toggle="modal"href="<c:url value="/direcao/alterar-parecerista/${projeto.id}" ></c:url>">
+														<a id="alterarParecerista" title="Alterar parecerista" data-toggle="modal"href="<c:url value="/direcao/atribuir-parecerista/${projeto.id}" ></c:url>">
 															<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 														</a>
 													</c:if>

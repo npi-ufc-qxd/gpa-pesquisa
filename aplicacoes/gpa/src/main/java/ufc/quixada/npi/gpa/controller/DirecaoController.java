@@ -82,15 +82,25 @@ public class DirecaoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
-		if (projeto.getStatus() != StatusProjeto.SUBMETIDO) {
+		if (projeto.getStatus() != StatusProjeto.SUBMETIDO && projeto.getStatus() != StatusProjeto.AGUARDANDO_PARECER) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
+		
+		else {
+			if (projeto.getStatus() == StatusProjeto.SUBMETIDO ) {
+				model.addAttribute("action", Constants.ATRIBUIR_PARECERISTA);
+				model.addAttribute("parecer", new Parecer());
+			}
+		
+			else {
+				model.addAttribute("action", Constants.ALTERAR_PARECERISTA);
+				model.addAttribute("parecer", projeto.getParecer());
+			}
+		}
 
-		model.addAttribute("parecer", new Parecer());
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-		model.addAttribute("action", "atribuir parecerista");
 		return PAGINA_ATRIBUIR_PARECERISTA;
 	}
 	
@@ -196,7 +206,7 @@ public class DirecaoController {
 		return PAGINA_DIRECAO_BUSCAR_PESSOA;
 	}
 	
-	@RequestMapping(value = "/alterar-parecerista/{id-projeto}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/alterar-parecerista/{id-projeto}", method = RequestMethod.GET)
 	public String alterarPareceristaForm(@PathVariable("id-projeto") Long projetoId, Model model, RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		if (projeto == null) {
@@ -213,7 +223,7 @@ public class DirecaoController {
 		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
 		model.addAttribute("action", "alterar parecerista");
 		return PAGINA_ATRIBUIR_PARECERISTA;
-	}
+	}*/
 	
 	@RequestMapping(value = "/alterar-parecerista", method = RequestMethod.POST)
 	public String alterarParecerista(@RequestParam("prazo") @DateTimeFormat(pattern = "dd/MM/yyyy") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 

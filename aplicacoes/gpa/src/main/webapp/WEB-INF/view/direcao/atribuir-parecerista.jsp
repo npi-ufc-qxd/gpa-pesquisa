@@ -12,12 +12,12 @@
 	<title>Atribuir Parecerista</title>
 </head>
 <body>
-	<c:if test="${action eq 'atribuir parecerista' }">
+	<c:if test="${action eq 'atribuir' }">
 		<c:set var="url" value="/direcao/atribuir-parecerista"></c:set>
 		<c:set var="titulo" value="Atribuir Parecerista"></c:set>
 		<c:set var="parecerista" value="Parecerista:"></c:set>
 	</c:if>
-	<c:if test="${action eq 'alterar parecerista' }">
+	<c:if test="${action eq 'alterar' }">
 		<c:set var="url" value="/direcao/alterar-parecerista"></c:set>
 		<c:set var="titulo" value="Alterar Parecerista "></c:set>
 		<c:set var="parecerista" value="Novo Parecerista:"></c:set>
