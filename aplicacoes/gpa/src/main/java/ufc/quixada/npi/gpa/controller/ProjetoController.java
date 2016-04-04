@@ -155,7 +155,6 @@ public class ProjetoController {
 		for (Documento documento : documentos) {
 			projeto.addDocumento(documento);
 		}
-		System.out.println(projeto.toString());
 		projetoService.atualizar(projeto);
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
@@ -326,14 +325,15 @@ public class ProjetoController {
 	public String editar(@RequestParam("anexos") List<MultipartFile> anexos, @Valid Projeto projeto,
 			BindingResult result, Model model, HttpSession session, RedirectAttributes redirect,
 			Authentication authentication) {
-		System.out.println(projeto.toString());
 		model.addAttribute("action", "editar");
 
-		projetoValidator.validate(projeto, result);
-
 		if (result.hasErrors()) {
+			if(result.hasGlobalErrors()){
+				model.addAttribute("validacao", result);
+			}
 			return PAGINA_CADASTRAR_PROJETO;
 		}
+		
 		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		oldProjeto.setCoordenador(usuario);
@@ -355,7 +355,12 @@ public class ProjetoController {
 				}
 			}
 		}
-
+		
+		List<Participacao> participacoes = projetoService.getParticipacoesByProjeto(projeto.getId());
+		oldProjeto.setParticipacoes(participacoes);
+		
+		projetoValidator.validate(oldProjeto, result);
+		
 		if (!documentos.isEmpty()) {
 			documentoService.salvar(documentos, projeto.getCodigo());
 		}
@@ -363,7 +368,6 @@ public class ProjetoController {
 			oldProjeto.addDocumento(documento);
 		}
 		projetoService.atualizar(oldProjeto);
-		System.out.println(projeto.toString());
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
