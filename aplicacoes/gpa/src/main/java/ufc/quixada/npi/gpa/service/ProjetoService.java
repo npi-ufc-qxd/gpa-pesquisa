@@ -45,6 +45,8 @@ public interface ProjetoService {
 	List<Projeto> getProjetos(Long idCoordenador, StatusProjeto status);
 
 	List<Projeto> getProjetosAguardandoParecer(Long idParecerista);
+	
+	List<Projeto> getProjetosParecerEmitido(Long idParecerista);
 
 	List<Participacao> getParticipacoes(Long idPessoa);
 
