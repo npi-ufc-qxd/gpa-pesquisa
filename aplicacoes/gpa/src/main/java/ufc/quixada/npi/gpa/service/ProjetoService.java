@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
+import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -26,25 +27,27 @@ public interface ProjetoService {
 
 	List<Projeto> getProjetosSubmetidos();
 	
-	List<Projeto> getProjetosSubmetidos(Long idAutor);
+	List<Projeto> getProjetosSubmetidos(Long idCoordenador);
 	
-	List<Projeto> getProjetosNaoAvaliados(Long idAutor);
+	List<Projeto> getProjetosNaoAvaliados(Long idCoordenador);
 
 	List<Projeto> getProjetosAvaliados();
 
-	List<Projeto> getProjetosAvaliados(Long idAutor);
+	List<Projeto> getProjetosAvaliados(Long idCoordenador);
 
 	Projeto getProjeto(Long id);
 
-	List<Projeto> getProjetos(Long idAutor);
+	List<Projeto> getProjetos(Long idCoordenador);
 
 	List<Projeto> getProjetosByParticipante(Long idParticipante);
 
 	List<Projeto> getProjetos(StatusProjeto status);
 
-	List<Projeto> getProjetos(Long idAutor, StatusProjeto status);
+	List<Projeto> getProjetos(Long idCoordenador, StatusProjeto status);
 
 	List<Projeto> getProjetosAguardandoParecer(Long idParecerista);
+	
+	List<Projeto> getProjetosParecerEmitido(Long idParecerista);
 
 	List<Participacao> getParticipacoes(Long idPessoa);
 
@@ -56,40 +59,42 @@ public interface ProjetoService {
 
 	boolean isParticipante(Pessoa pessoa, Projeto projeto);
 	
+	void removerArquivoProjeto(Projeto projeto, Documento documento);
+	
 	/**
 	 * Exibe lista de {@link Projeto} que o autor coordena, com status APROVADO e APROVADO_COM_RESTRICAO.
 	 * <p>São exibidos registros com "termino >= now()".
 	 * 
-	 * @param idAutor {@link Long}
+	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idAutor);
+	List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o autor coordenou, com status APROVADO e APROVADO_COM_RESTRICAO.
 	 * <p>São exibidos registros com "termino < now()".
 	 * 
-	 * @param idAutor {@link Long}
+	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idAutor);
+	List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idCoordenador);
 	
 	/**
-	 * Exibe lista de {@link Projeto} que o usuário participa mas não é autor, com status APROVADO e APROVADO_COM_RESTRICAO.
+	 * Exibe lista de {@link Projeto} que o usuário participa mas não é coordenador, com status APROVADO e APROVADO_COM_RESTRICAO.
 	 * <p>São exibidos registros com "termino >= now()".
 	 * 
-	 * @param idAutor {@link Long}
+	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idAutor);
+	List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idCoordenador);
 	
 	/**
-	 * Exibe lista de {@link Projeto} que o usuário participou mas não é autor, com status APROVADO e APROVADO_COM_RESTRICAO.
+	 * Exibe lista de {@link Projeto} que o usuário participou mas não é coordenador, com status APROVADO e APROVADO_COM_RESTRICAO.
 	 * <p>São exibidos registros com "termino < now()".
 	 * 
-	 * @param idAutor {@link Long}
+	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idAutor);
+	List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idCoordenador);
 
 }

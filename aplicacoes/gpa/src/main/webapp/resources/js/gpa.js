@@ -72,6 +72,19 @@ $(document).ready(function() {
         }
 	});
 	
+	$('#projetos-parecer-emitido').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [ 0, 1, 3, 4 ]},            
+            {"targets" : 1, "orderable" : false},
+		    {"targets" : 4, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$('#projetos-em-tramitacao').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
@@ -182,6 +195,32 @@ $(document).ready(function() {
 			$('#confirm-delete-file').modal('hide');
 		});
 	});
+	
+	$('#confirm-delete-p-file').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('#button-delete-p-file').attr('data-idProjeto', $(e.relatedTarget).data('idprojeto'));
+	});
+	
+	$('#button-delete-p-file').on('click', function(e) {
+		e.preventDefault();
+		var idProjeto = $(this).attr('data-idProjeto');
+		$.ajax({
+			type: "POST",
+			url: "/gpa-pesquisa/documento/excluirArqProj/" + idProjeto,
+		})
+		.success(function( result ) {
+			if(result.result == 'ok') {
+				$('#table-arquivo-projeto').remove();
+				$('#campo-arquivo-projeto').removeClass('hidden');
+			}
+			$('#confirm-delete-p-file').modal('hide');
+			
+		});
+	});
+	
+	if($('#table-arquivo-projeto').length){
+		$('#campo-arquivo-projeto').addClass('hidden');
+	}
 	
 	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante").select2({
    	 	placeholder: "Buscar...",

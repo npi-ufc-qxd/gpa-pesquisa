@@ -33,10 +33,12 @@
 							<label style="width: 100%; text-align: right;">
 								<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter" data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }" class="btn btn-primary btn-sm">
 									<i class="fa fa-cloud-upload"></i>
-								</a> 
-								<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-primary btn-sm">
-									<i class="fa fa-users"></i>
 								</a>
+								<c:if test="${(not empty projeto.inicio) && (not empty projeto.termino)}">
+									<a id="vincular" href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>" target="_blank" title="Vincular participantes" class="btn btn-primary btn-sm">
+										<i class="fa fa-users"></i>
+									</a>
+								</c:if>
 								<a id="editar" href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>" title="Editar projeto" class="btn btn-primary btn-sm">
 									<i class="fa fa-edit"></i>
 								</a>
@@ -62,9 +64,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Autor:</label>
+						<label class="col-sm-2 control-label">Coordenador:</label>
 						<div class="col-sm-4 value-label">
-							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
+							<label><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></label>
 						</div>
 
 							<label class="col-sm-3 control-label">Status:</label>
@@ -176,6 +178,18 @@
 									<c:forEach items="${projeto.documentos }" var="documento">
 										<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label><br>							
 									</c:forEach>
+								</c:if>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Arquivo do Projeto:</label>
+							<div class="col-sm-10 value-label">
+								<c:if test="${empty projeto.arquivoProjeto }">
+									<label>-</label>						
+								</c:if>				
+								<c:if test="${not empty projeto.arquivoProjeto }">
+									<label><a href="<c:url value="/documento/${projeto.id }/${projeto.arquivoProjeto.id }" ></c:url>">${projeto.arquivoProjeto.nome }</a></label><br>	
 								</c:if>
 							</div>
 						</div>

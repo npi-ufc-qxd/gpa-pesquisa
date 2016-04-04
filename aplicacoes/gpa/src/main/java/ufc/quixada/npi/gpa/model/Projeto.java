@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -47,7 +48,7 @@ public class Projeto {
 	private String descricao;
 
 	@ManyToOne
-	private Pessoa autor;
+	private Pessoa coordenador;
 
 	@Column(columnDefinition = "TEXT")
 	private String atividades;
@@ -64,6 +65,7 @@ public class Projeto {
 	private List<Documento> documentos;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	@OrderBy(value="data")
 	private List<Comentario> comentarios;
 	
 	@OneToOne(cascade = CascadeType.REMOVE)
@@ -77,6 +79,9 @@ public class Projeto {
 	
 	@Column(columnDefinition = "TEXT")
 	private String observacaoAvaliacao;
+	
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+	private Documento arquivoProjeto;
 
 	public List<Participacao> getParticipacoes() {
 		return participacoes;
@@ -157,12 +162,12 @@ public class Projeto {
 		this.documentos = documentos;
 	}
 
-	public Pessoa getAutor() {
-		return autor;
+	public Pessoa getCoordenador() {
+		return coordenador;
 	}
 
-	public void setAutor(Pessoa autor) {
-		this.autor = autor;
+	public void setCoordenador(Pessoa coordenador) {
+		this.coordenador = coordenador;
 	}
 
 	public String getCodigo() {
@@ -213,6 +218,14 @@ public class Projeto {
 		this.oficio = oficio;
 	}
 
+	public Documento getArquivoProjeto() {
+		return arquivoProjeto;
+	}
+
+	public void setArquivoProjeto(Documento arquivoProjeto) {
+		this.arquivoProjeto = arquivoProjeto;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Projeto) {
@@ -226,6 +239,7 @@ public class Projeto {
 	}
 
 	public List<Comentario> getComentarios() {
+		
 		return comentarios;
 	}
 
@@ -246,7 +260,7 @@ public class Projeto {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
 				+ ", inicio=" + inicio + ", termino=" + termino
 				+ ", submissao=" + submissao + ", descricao=" + descricao
-				+ ", autor=" + autor + ", atividades=" + atividades
+				+ ", coordenador=" + coordenador + ", atividades=" + atividades
 				+ ", local=" + local + ", status=" + status + "]";
 	}
 

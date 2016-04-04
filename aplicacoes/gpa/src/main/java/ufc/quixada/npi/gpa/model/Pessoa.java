@@ -32,7 +32,7 @@ public class Pessoa {
 	@JoinTable(name = "papel_pessoa", joinColumns = @JoinColumn(name = "pessoa_id"), inverseJoinColumns = @JoinColumn(name = "papel_id"))
 	private List<Papel> papeis;
 
-	@OneToMany(mappedBy = "autor")
+	@OneToMany(mappedBy = "coordenador")
 	private List<Projeto> projetos;
 
 	private String cpf;

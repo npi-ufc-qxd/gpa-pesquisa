@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
 import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import br.ufc.quixada.npi.repository.GenericRepository;
 
@@ -22,11 +23,11 @@ public class DocumentoServiceImpl implements DocumentoService {
 	private GenericRepository<Documento> documentoRepository;
 
 	@Override
-	public void salvar(Documento documento) {
+	public void salvar(Documento documento, Projeto projeto) {
 		String novoNome = System.currentTimeMillis()+"_"+documento.getNome();
 		documento.setNomeOriginal(novoNome);
-
-		File subDir = new File(PASTA_DOCUMENTOS_GPA, documento.getProjeto().getCodigo());
+		
+		File subDir = new File(PASTA_DOCUMENTOS_GPA, projeto.getCodigo());
 		subDir.mkdirs();
 
 		try {
@@ -48,9 +49,9 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 
 	@Override
-	public void salvar(List<Documento> documentos) {
+	public void salvar(List<Documento> documentos, Projeto projeto) {
 		for (Documento documento : documentos) {
-			salvar(documento);
+			salvar(documento, projeto);
 		}
 	}
 

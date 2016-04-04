@@ -96,7 +96,7 @@ public class RelatorioServiceImpl implements RelatorioService {
 		for (Projeto p : projetos) {
 			ProjetoAprovadoRelatorio projetoAprovado = new ProjetoAprovadoRelatorio();
 			projetoAprovado.setId(p.getId());
-			projetoAprovado.setNomeCoordenador(p.getAutor().getNome());
+			projetoAprovado.setNomeCoordenador(p.getCoordenador().getNome());
 			projetoAprovado.setNomeProjeto(p.getNome());
 			projetoAprovado.setDataInicio(p.getInicio());
 			projetoAprovado.setDataTermino(p.getTermino());
@@ -157,7 +157,7 @@ public class RelatorioServiceImpl implements RelatorioService {
 			ProjetoReprovadoRelatorio projetoReprovado = new ProjetoReprovadoRelatorio();
 			projetoReprovado.setId(p.getId());
 			projetoReprovado.setNomeProjeto(p.getNome());
-			projetoReprovado.setNomeCoordenador(p.getAutor().getNome());
+			projetoReprovado.setNomeCoordenador(p.getCoordenador().getNome());
 			projetoReprovado.setDataDeSubimissao(p.getSubmissao());
 			projetoReprovado.setDataDeAvaliacao(p.getAvaliacao());
 			projetosReprovadosRelatorio.add(projetoReprovado);
@@ -201,7 +201,7 @@ public class RelatorioServiceImpl implements RelatorioService {
 			ProjetoPorPessoaRelatorio projetoPorPessoa = new ProjetoPorPessoaRelatorio();
 			projetoPorPessoa.setId(projeto.getId());
 			projetoPorPessoa.setNomeProjeto(projeto.getNome());
-			if (projeto.getAutor().getId() == id)
+			if (projeto.getCoordenador().getId() == id)
 				projetoPorPessoa.setVinculo("COORDENADOR");
 			else
 				projetoPorPessoa.setVinculo("PARTICIPANTE");
