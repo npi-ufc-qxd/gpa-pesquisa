@@ -28,13 +28,13 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="autor" class="col-sm-2 control-label">Parecerista:</label>
+						<label for="coordenador" class="col-sm-2 control-label">Parecerista:</label>
 						<div class="col-sm-4 value-label">
 							<label>${projeto.parecer.parecerista.nome }</label>
 						</div>
-						<label for="autor" class="col-sm-2 control-label">Autor:</label>
+						<label for="coordenador" class="col-sm-2 control-label">Coordenador:</label>
 						<div class="col-sm-4 value-label">
-							<label><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></label>
+							<label><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></label>
 						</div>
 					</div>
 					<div class="form-group">

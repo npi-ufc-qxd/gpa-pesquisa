@@ -254,7 +254,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		projetoRepository.update(projeto);
 		documentoService.remover(documento);
 	}
-	
+
 	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("idCoordenador", idCoordenador);

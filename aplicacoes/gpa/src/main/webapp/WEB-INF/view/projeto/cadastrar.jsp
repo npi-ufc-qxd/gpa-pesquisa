@@ -216,6 +216,7 @@
 								<div class="col-sm-10 field-value">
 										<label> 
 											<a id="vincular"
+
 											href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
 											target="_blank" title="Vincular participantes"
 											class="btn btn-primary"> <i class="fa fa-users"></i>
@@ -223,8 +224,8 @@
 									</label>
 
 									<ul class="list-inline" style="line-height: 2.7em">
-											<table id="participantes-table"
-												class="table table-striped table-hover ">
+
+											<table id="participantes-table" class="table table-striped table-hover ">
 												<thead>
 													<tr>
 														<th>Participante</th>

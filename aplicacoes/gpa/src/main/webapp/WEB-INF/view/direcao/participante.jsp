@@ -99,7 +99,7 @@
 											${projeto.nome }<br>
 											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 280)}...</small>
 										</td>
-										<td style="vertical-align:middle;"><span style="white-space: nowrap;">${projeto.autor.nome }</span></td>
+										<td style="vertical-align:middle;"><span style="white-space: nowrap;">${projeto.coordenador.nome }</span></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.inicio }" /></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></td>
 									</tr>
@@ -161,7 +161,7 @@
 											${projeto.nome }<br>
 											<small class="visible-md-inline visible-lg-inline">${fn:substring(projeto.descricao, 0, 270)}...</small>
 										</td>
-										<td style="vertical-align:middle;"><span style="white-space: nowrap;">${projeto.autor.nome }</span></td>
+										<td style="vertical-align:middle;"><span style="white-space: nowrap;">${projeto.coordenador.nome }</span></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.inicio }" /></td>
 										<td style="vertical-align:middle;"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></td>
 									</tr>

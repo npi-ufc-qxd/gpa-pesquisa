@@ -37,6 +37,7 @@
 		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Em Participação <span class="badge">${participacoesEmProjetos.size() }</span></a></li>		            
 		            <li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
+		            <li class=""><a aria-expanded="false" href="#tab-parecer-emitidos" data-toggle="tab">Pareceres Emitidos <span class="badge">${projetosParecerEmitido.size() }</span></a></li>
 		        </ul>
 		        <div class="tab-content">
 		        	<div class="tab-pane fade active in" id="tab-meus-projetos">
@@ -73,10 +74,12 @@
 														data-href="<c:url value="/projeto/submeter/${projetoNaoAvaliado.id}" ></c:url>" data-name="${projetoNaoAvaliado.nome }">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>
 													</a>
-		
-													<a id="vincular" href="<c:url value="/projeto/participacoes/${projetoNaoAvaliado.id}" ></c:url>" title="Vincular participantes">
-														<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
-													</a>
+													
+													<c:if test="${(not empty projetoNaoAvaliado.inicio) && (not empty projetoNaoAvaliado.termino)}">
+														<a id="vincular" href="<c:url value="/projeto/participacoes/${projetoNaoAvaliado.id}" ></c:url>" title="Vincular participantes">
+															<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
+														</a>
+													</c:if>
 													
 													<a id="editar" href="<c:url value="/projeto/editar/${projetoNaoAvaliado.id}" ></c:url>" title="Editar">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
@@ -117,7 +120,7 @@
 										<tr>
 											<td>${participacao.projeto.codigo}</td>
 											<td><a href="<c:url value="/projeto/detalhes/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
-											<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.autor.id}" ></c:url>">${participacao.projeto.autor.nome}</a></td>					
+											<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.coordenador.id}" ></c:url>">${participacao.projeto.coordenador.nome}</a></td>					
 											<td>${participacao.projeto.status.descricao}</td>
 											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}
 											<fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
@@ -170,7 +173,7 @@
 									<tr>
 										<th>Código</th>
 										<th>Projeto</th>
-										<th>Autor</th>
+										<th>Coordenador</th>
 										<th>Data Submissão</th>
 										<th>Prazo</th>
 										<th></th>
@@ -181,7 +184,7 @@
 										<tr>
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
-											<td><a href="<c:url value="/pessoa/detalhes/${projeto.autor.id}" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></td>
 											<td class="acoes">
@@ -197,6 +200,38 @@
 							</table>
 						</c:if>
 			        </div><!-- tab-parecer -->
+			        
+			        <div class="tab-pane fade" id="tab-parecer-emitidos">
+			            <c:if test="${empty projetosParecerEmitido}">
+							<div class="alert alert-warning" role="alert">Não há projetos com parecer emitido.</div>
+						</c:if>
+						<c:if test="${not empty projetosParecerEmitido}">
+							<table id="projetos-parecer-emitido" class="display">
+								<thead>
+									<tr>
+										<th>Código</th>
+										<th>Projeto</th>
+										<th>Coordenador</th>
+										<th>Parecer</th>
+										<th>Data do Parecer</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="projeto" items="${projetosParecerEmitido}">
+										<tr>
+											<td>${projeto.codigo }</td>
+											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
+											<td>${projeto.parecer.status }</td>
+											<td>
+												<fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.dataRealizacao }" />
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:if>
+			        </div><!-- tab-parecer emitidos -->
 		        </div><!-- tab-content -->
 		    </div><!-- /panel-body -->
 		</div><!-- /panel -->

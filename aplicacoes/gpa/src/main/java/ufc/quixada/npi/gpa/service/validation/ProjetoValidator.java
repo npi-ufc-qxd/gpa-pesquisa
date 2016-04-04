@@ -186,7 +186,7 @@ public class ProjetoValidator implements Validator {
 		
 		List<Participacao> participantes = projeto.getParticipacoes();
 		
-		if(participantes != null && !participantes.isEmpty()) {
+		if(participantes != null) {
 			
 			if( projeto.getInicio() == null || projeto.getTermino() == null) {
 				errors.reject("projeto.periodoAbrangerParticipacoes", "projeto.periodoAbrangerParticipacoes");
