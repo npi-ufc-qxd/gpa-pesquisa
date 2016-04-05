@@ -70,10 +70,9 @@ public class DocumentoController {
 
 	
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
-	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session, Authentication authentication) {
+	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, @RequestParam("projetoId") Long projetoId, HttpSession session, Authentication authentication) {
 		ModelMap model = new ModelMap();
 		Documento documento = documentoService.getDocumento(id);
-		Long projetoId = Long.valueOf(request.getParameter("projetoId"));
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		if(!projeto.getCoordenador().equals(pessoa) || !projeto.getStatus().equals(StatusProjeto.NOVO)){
