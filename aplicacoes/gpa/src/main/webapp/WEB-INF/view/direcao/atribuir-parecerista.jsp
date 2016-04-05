@@ -31,6 +31,7 @@
 			</div>
 			<div class="panel-body">
 				<form:form id="atribuirPareceristaForm" commandName="parecer" servletRelativeAction="${url }" method="POST" cssClass="form-horizontal">
+					<form:hidden path="id"/>
 					<input type="hidden" name="projetoId" value="${projeto.id}">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
@@ -44,7 +45,7 @@
 							<label>${projeto.coordenador.nome }</label>
 						</div>
 					</div>
-					<c:if test="${action eq 'alterar parecerista' }">
+					<c:if test="${action eq 'alterar' }">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Parecerista atual:</label>
 							<div class="col-sm-8 value-label">

@@ -26,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -105,22 +106,20 @@ public class DirecaoController {
 	}
 	
 	@RequestMapping(value = "/atribuir-parecerista", method = RequestMethod.POST)
-	public String atribuirParecerista(@RequestParam("prazo") @DateTimeFormat(pattern = "dd/MM/yyyy") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("pareceristaId") Long pareceristaId, Model model, @Valid Parecer parecer, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String atribuirParecerista(@Valid @ModelAttribute("parecer") Parecer parecer, @RequestParam("projetoId") Long projetoId, 
+			@RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
 		
 		parecer.setDataAtribuicao(new Date());
-		parecer.setObservacao(observacao);
 		parecer.setParecerista(parecerista);
-		parecer.setPrazo(prazo);
 		
 		parecerValidator.validateAtribuirParecerista(parecer, result);
 		if(result.hasErrors()){
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-			model.addAttribute("action", "atribuir parecerista");
+			model.addAttribute("action", Constants.ATRIBUIR_PARECERISTA);
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		
@@ -206,50 +205,29 @@ public class DirecaoController {
 		return PAGINA_DIRECAO_BUSCAR_PESSOA;
 	}
 	
-	/*@RequestMapping(value = "/alterar-parecerista/{id-projeto}", method = RequestMethod.GET)
-	public String alterarPareceristaForm(@PathVariable("id-projeto") Long projetoId, Model model, RedirectAttributes redirectAttributes) {
-		Projeto projeto = projetoService.getProjeto(projetoId);
-		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
-			return REDIRECT_PAGINA_INICIAL_DIRECAO;
-		}
-		if (projeto.getStatus() != StatusProjeto.AGUARDANDO_PARECER) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
-			return REDIRECT_PAGINA_INICIAL_DIRECAO;
-		}
-
-		model.addAttribute("parecer", projeto.getParecer());
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-		model.addAttribute("action", "alterar parecerista");
-		return PAGINA_ATRIBUIR_PARECERISTA;
-	}*/
-	
 	@RequestMapping(value = "/alterar-parecerista", method = RequestMethod.POST)
-	public String alterarParecerista(@RequestParam("prazo") @DateTimeFormat(pattern = "dd/MM/yyyy") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("pareceristaId") Long pareceristaId, Model model, @Valid Parecer parecer, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String alterarParecerista(@Valid @ModelAttribute("parecer") Parecer parecer, @RequestParam("projetoId") Long projetoId, 
+			@RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
-		
+			
 		parecer.setDataAtribuicao(new Date());
-		parecer.setObservacao(observacao);
 		parecer.setParecerista(parecerista);
-		parecer.setPrazo(prazo);
 		
 		parecerValidator.validateAtribuirParecerista(parecer, result);
 		if(result.hasErrors()){
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-			model.addAttribute("action", "alterar parecerista");
+			model.addAttribute("action", Constants.ALTERAR_PARECERISTA);
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		
 		notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA);
-		projetoService.atribuirParecerista(projeto, parecer);
+		projetoService.alterarParecerista(projeto, parecer);
 		
 		redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PARECERISTA_ALTERADO);
 		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
-	}
+		}
 }

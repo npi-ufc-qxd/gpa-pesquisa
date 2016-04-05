@@ -19,6 +19,8 @@ public interface ProjetoService {
 	void submeter(Projeto projeto);
 
 	void atribuirParecerista(Projeto projeto, Parecer parecer);
+	
+	void alterarParecerista(Projeto projeto, Parecer parecer);
 
 	void emitirParecer(Projeto projeto);
 

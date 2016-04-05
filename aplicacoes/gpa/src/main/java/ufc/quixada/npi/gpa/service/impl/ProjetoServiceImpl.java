@@ -65,6 +65,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		projetoRepository.update(projeto);
 	}
+	
+	@Override
+	public void alterarParecerista(Projeto projeto, Parecer parecer) {
+		parecerRepository.update(parecer);
+	}
 
 	@Override
 	public void emitirParecer(Projeto projeto) {		
