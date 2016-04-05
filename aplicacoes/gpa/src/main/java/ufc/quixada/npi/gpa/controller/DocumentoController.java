@@ -82,7 +82,6 @@ public class DocumentoController {
 		}
 		projeto.getDocumentos().remove(documento);
 		projetoService.atualizar(projeto);
-		documentoService.remover(documento);
 		model.addAttribute("result", "ok");
 		return model;
 	}
