@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -61,7 +64,9 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private List<Participacao> participacoes;
 
-	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	@JoinTable(name = "projeto_documento", joinColumns = @JoinColumn(name = "projeto_id",referencedColumnName="id"),
+	inverseJoinColumns = @JoinColumn(name = "documento_id",referencedColumnName="id"))
 	private List<Documento> documentos;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
@@ -155,8 +160,11 @@ public class Projeto {
 		return documentos;
 	}
 
-	public void setDocumentos(List<Documento> documentos) {
-		this.documentos = documentos;
+	public void addDocumento(Documento documento) {
+		if(this.documentos == null){
+			this.documentos = new ArrayList<>();
+		}
+		this.documentos.add(documento);
 	}
 
 	public Pessoa getCoordenador() {
@@ -246,11 +254,8 @@ public class Projeto {
 
 	@Override
 	public String toString() {
-		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
-				+ ", inicio=" + inicio + ", termino=" + termino
-				+ ", submissao=" + submissao + ", descricao=" + descricao
-				+ ", coordenador=" + coordenador + ", atividades=" + atividades
-				+ ", local=" + local + ", status=" + status + "]";
+		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", coordenador=" + coordenador
+				+ ", status=" + status + ", documentos=" + documentos + "]";
 	}
 
 	public enum StatusProjeto {

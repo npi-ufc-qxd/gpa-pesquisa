@@ -138,7 +138,7 @@
 											        </td>
 											        <td class="align-right">
 											        	<a id="exluir-arquivo" data-toggle="modal" data-target="#confirm-delete-file" href="#" title="Excluir"
-											        		data-name="${documento.nome }" data-id="${documento.id }">
+											        		data-name="${documento.nome }" data-id="${documento.id }" data-projeto-id="${projeto.id}">
 															<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
 														</a>
 											        </td>
