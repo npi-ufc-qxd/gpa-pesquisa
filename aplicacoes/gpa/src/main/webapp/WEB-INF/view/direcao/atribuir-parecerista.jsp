@@ -13,12 +13,10 @@
 </head>
 <body>
 	<c:if test="${action eq 'atribuir' }">
-		<c:set var="url" value="/direcao/atribuir-parecerista"></c:set>
 		<c:set var="titulo" value="Atribuir Parecerista"></c:set>
 		<c:set var="parecerista" value="Parecerista:"></c:set>
 	</c:if>
 	<c:if test="${action eq 'alterar' }">
-		<c:set var="url" value="/direcao/alterar-parecerista"></c:set>
 		<c:set var="titulo" value="Alterar Parecerista "></c:set>
 		<c:set var="parecerista" value="Novo Parecerista:"></c:set>
 	</c:if>
@@ -30,9 +28,10 @@
 				<h3 class="panel-title">${titulo }</h3>
 			</div>
 			<div class="panel-body">
-				<form:form id="atribuirPareceristaForm" commandName="parecer" servletRelativeAction="${url }" method="POST" cssClass="form-horizontal">
+				<form:form id="atribuirPareceristaForm" commandName="parecer" servletRelativeAction="/direcao/atribuir-parecerista" method="POST" cssClass="form-horizontal">
 					<form:hidden path="id"/>
 					<input type="hidden" name="projetoId" value="${projeto.id}">
+					<input type="hidden" name="action" value="${action}">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
 						<div class="col-sm-8 value-label">

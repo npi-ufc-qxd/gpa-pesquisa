@@ -73,7 +73,7 @@ public class Projeto {
 	@OrderBy(value="data")
 	private List<Comentario> comentarios;
 	
-	@OneToOne(cascade = CascadeType.REMOVE)
+	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
 	private Parecer parecer;
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

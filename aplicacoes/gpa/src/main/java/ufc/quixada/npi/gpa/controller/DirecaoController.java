@@ -107,7 +107,7 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "/atribuir-parecerista", method = RequestMethod.POST)
 	public String atribuirParecerista(@Valid @ModelAttribute("parecer") Parecer parecer, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
+			@RequestParam("action") String action, @RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
@@ -119,13 +119,22 @@ public class DirecaoController {
 		if(result.hasErrors()){
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-			model.addAttribute("action", Constants.ATRIBUIR_PARECERISTA);
+			model.addAttribute("action", action);
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		
-		projetoService.atribuirParecerista(projeto, parecer);
+		if (action.equals(Constants.ALTERAR_PARECERISTA)) {
+			notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA);
+			projetoService.alterarParecerista(parecer);
+			
+			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PARECERISTA_ALTERADO);
+		}
+		else if (action.equals(Constants.ATRIBUIR_PARECERISTA)) {
+			projetoService.atribuirParecerista(projeto, parecer);
+			
+			redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
+		}
 		
-		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
 		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
@@ -204,30 +213,4 @@ public class DirecaoController {
 		}
 		return PAGINA_DIRECAO_BUSCAR_PESSOA;
 	}
-	
-	@RequestMapping(value = "/alterar-parecerista", method = RequestMethod.POST)
-	public String alterarParecerista(@Valid @ModelAttribute("parecer") Parecer parecer, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
-
-		Projeto projeto = projetoService.getProjeto(projetoId);
-		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
-			
-		parecer.setDataAtribuicao(new Date());
-		parecer.setParecerista(parecerista);
-		
-		parecerValidator.validateAtribuirParecerista(parecer, result);
-		if(result.hasErrors()){
-			model.addAttribute("projeto", projeto);
-			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-			model.addAttribute("action", Constants.ALTERAR_PARECERISTA);
-			return PAGINA_ATRIBUIR_PARECERISTA;
-		}
-		
-		notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA);
-		projetoService.alterarParecerista(parecer);
-		
-		redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PARECERISTA_ALTERADO);
-		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
-		return REDIRECT_PAGINA_INICIAL_DIRECAO;
-		}
 }
