@@ -147,11 +147,6 @@ public class ProjetoController {
 			}
 		}
 
-//		projetoService.cadastrar(projeto);
-//
-//		if (!documentos.isEmpty()) {
-//			documentoService.salvar(documentos,projeto.getCodigo());
-//		}
 		for (Documento documento : documentos) {
 			projeto.addDocumento(documento);
 		}
@@ -357,10 +352,7 @@ public class ProjetoController {
 		}
 		
 		projetoValidator.validate(oldProjeto, result);
-		
-//		if (!documentos.isEmpty()) {
-//			documentoService.salvar(documentos, projeto.getCodigo());
-//		}
+
 		for (Documento documento : documentos) {
 			oldProjeto.addDocumento(documento);
 		}
