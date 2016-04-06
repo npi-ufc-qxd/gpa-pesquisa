@@ -147,15 +147,10 @@ public class ProjetoController {
 			}
 		}
 
-		projetoService.cadastrar(projeto);
-
-		if (!documentos.isEmpty()) {
-			documentoService.salvar(documentos,projeto.getCodigo());
-		}
 		for (Documento documento : documentos) {
 			projeto.addDocumento(documento);
 		}
-		projetoService.atualizar(projeto);
+		projetoService.cadastrar(projeto);
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -356,18 +351,12 @@ public class ProjetoController {
 			}
 		}
 		
-		List<Participacao> participacoes = projetoService.getParticipacoesByProjeto(projeto.getId());
-		oldProjeto.setParticipacoes(participacoes);
-		
 		projetoValidator.validate(oldProjeto, result);
-		
-		if (!documentos.isEmpty()) {
-			documentoService.salvar(documentos, projeto.getCodigo());
-		}
+
 		for (Documento documento : documentos) {
 			oldProjeto.addDocumento(documento);
 		}
-		projetoService.atualizar(oldProjeto);
+		projetoService.cadastrar(oldProjeto);
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -456,9 +445,6 @@ public class ProjetoController {
 		if (!documentos.isEmpty()) {
 			documentoService.salvar(documentos, oldProjeto.getCodigo());
 		}
-
-		List<Participacao> participacoes = projetoService.getParticipacoesByProjeto(projeto.getId());
-		oldProjeto.setParticipacoes(participacoes);
 
 		// Recupera os anexos já cadastrados para realizar validação
 		for (Documento documento : documentos) {

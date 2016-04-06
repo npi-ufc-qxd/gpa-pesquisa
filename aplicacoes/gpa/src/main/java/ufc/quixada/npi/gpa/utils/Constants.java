@@ -112,5 +112,4 @@ public class Constants {
 
 	/* Arquivos */
 	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
-
 }
