@@ -103,6 +103,8 @@ public class Constants {
 
 	public static final String MENSAGEM_PARTICIPACAO_MESMO_PERIODO = "Não pode haver mais de uma partipação no mesmo período";
 
+	public static final String MENSAGEM_PARECERISTA_ALTERADO = "Parecerista alterado com sucesso";
+	
 	/* Papeis */
 	public static final String PAPEL_DIRECAO = "DIRECAO";
 
@@ -112,4 +114,10 @@ public class Constants {
 
 	/* Arquivos */
 	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
+	
+	/* Action */
+	public static final String ATRIBUIR_PARECERISTA = "atribuir";
+	
+	public static final String ALTERAR_PARECERISTA = "alterar";
+
 }

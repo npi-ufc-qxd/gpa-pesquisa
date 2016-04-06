@@ -30,6 +30,8 @@ public class EmailObserver implements Observer {
 	private static final String CORPO_SUBMISSAO = "email.corpo.submissao";
 	private static final String CORPO_ATRIBUICAO_PARECERISTA_COORDENADOR = "email.corpo.atribuicao_parecerista.coordenador";
 	private static final String CORPO_ATRIBUICAO_PARECERISTA_PARECERISTA = "email.corpo.atribuicao_parecerista.parecerista";
+	private static final String CORPO_ALTERACAO_PARECERISTA_PARECERISTA = "email.corpo.alteracao_parecerista.parecerista";
+	private static final String CORPO_ALTERACAO_PARECERISTA_COORDENADOR = "email.corpo.alteracao_parecerista.coordenador";
 	private static final String CORPO_ATRIBUICAO_PARECERISTA_DIRETOR = "email.corpo.atribuicao_parecerista.diretor";
 	private static final String CORPO_EMISSAO_PARECER_COORDENADOR = "email.corpo.emissao_parecer.coordenador";
 	private static final String CORPO_EMISSAO_PARECER_PARECERISTA = "email.corpo.emissao_parecer.parecerista";
@@ -169,6 +171,30 @@ public class EmailObserver implements Observer {
 							email.setSubject(subject);
 							email.setText(body);
 							email.setTo(emailDiretor, emailCoordenador);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
+							break;
+						
+						case ALTERACAO_PARECERISTA:
+							body = properties.getProperty(CORPO_ALTERACAO_PARECERISTA_PARECERISTA).replaceAll(NOME_PROJETO, nomeProjeto);
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailParecerista);
+							try {
+								emailService.sendEmail(email);
+							} catch (MessagingException e) {
+
+							}
+							
+							body = properties.getProperty(CORPO_ALTERACAO_PARECERISTA_COORDENADOR).replaceAll(NOME_PROJETO, nomeProjeto);
+							email.setFrom(emailGPA);
+							email.setSubject(subject);
+							email.setText(body);
+							email.setTo(emailCoordenador);
 							try {
 								emailService.sendEmail(email);
 							} catch (MessagingException e) {

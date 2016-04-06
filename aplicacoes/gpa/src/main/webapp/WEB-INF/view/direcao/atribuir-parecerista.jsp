@@ -12,15 +12,26 @@
 	<title>Atribuir Parecerista</title>
 </head>
 <body>
+	<c:if test="${action eq 'atribuir' }">
+		<c:set var="titulo" value="Atribuir Parecerista"></c:set>
+		<c:set var="parecerista" value="Parecerista:"></c:set>
+	</c:if>
+	<c:if test="${action eq 'alterar' }">
+		<c:set var="titulo" value="Alterar Parecerista "></c:set>
+		<c:set var="parecerista" value="Novo Parecerista:"></c:set>
+	</c:if>
+	
 	<jsp:include page="../modulos/header.jsp" />
 	<div class="container">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Atribuir Parecerista</h3>
+				<h3 class="panel-title">${titulo }</h3>
 			</div>
 			<div class="panel-body">
 				<form:form id="atribuirPareceristaForm" commandName="parecer" servletRelativeAction="/direcao/atribuir-parecerista" method="POST" cssClass="form-horizontal">
+					<form:hidden path="id"/>
 					<input type="hidden" name="projetoId" value="${projeto.id}">
+					<input type="hidden" name="action" value="${action}">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
 						<div class="col-sm-8 value-label">
@@ -33,8 +44,16 @@
 							<label>${projeto.coordenador.nome }</label>
 						</div>
 					</div>
+					<c:if test="${action eq 'alterar' }">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Parecerista atual:</label>
+							<div class="col-sm-8 value-label">
+								<label>${projeto.parecer.parecerista.nome }</label>
+							</div>
+						</div>
+					</c:if>
 					<div class="form-group form-item">
-						<label for="parecerista" class="col-sm-2 control-label"><span class="required">*</span> Parecerista:</label>
+						<label for="parecerista" class="col-sm-2 control-label"><span class="required">*</span> ${parecerista}</label>
 						<div class="col-sm-4">
 							<select id="parecerista" name="pareceristaId" class="form-control">
 								<c:forEach items="${usuarios}" var="usuario">

@@ -26,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,6 +45,7 @@ import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
 import ufc.quixada.npi.gpa.service.validation.ParecerValidation;
 import ufc.quixada.npi.gpa.service.validation.ProjetoValidator;
+import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
 @RequestMapping("direcao")
@@ -81,39 +83,58 @@ public class DirecaoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
-		if (projeto.getStatus() != StatusProjeto.SUBMETIDO) {
+		if (projeto.getStatus() != StatusProjeto.SUBMETIDO && projeto.getStatus() != StatusProjeto.AGUARDANDO_PARECER) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
+		
+		else {
+			if (projeto.getStatus() == StatusProjeto.SUBMETIDO ) {
+				model.addAttribute("action", Constants.ATRIBUIR_PARECERISTA);
+				model.addAttribute("parecer", new Parecer());
+			}
+		
+			else {
+				model.addAttribute("action", Constants.ALTERAR_PARECERISTA);
+				model.addAttribute("parecer", projeto.getParecer());
+			}
+		}
 
-		model.addAttribute("parecer", new Parecer());
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
 		return PAGINA_ATRIBUIR_PARECERISTA;
 	}
 	
 	@RequestMapping(value = "/atribuir-parecerista", method = RequestMethod.POST)
-	public String atribuirParecerista(@RequestParam("prazo") @DateTimeFormat(pattern = "dd/MM/yyyy") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("pareceristaId") Long pareceristaId, Model model, @Valid Parecer parecer, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String atribuirParecerista(@Valid @ModelAttribute("parecer") Parecer parecer, @RequestParam("projetoId") Long projetoId, 
+			@RequestParam("action") String action, @RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
 		
 		parecer.setDataAtribuicao(new Date());
-		parecer.setObservacao(observacao);
 		parecer.setParecerista(parecerista);
-		parecer.setPrazo(prazo);
 		
 		parecerValidator.validateAtribuirParecerista(parecer, result);
 		if(result.hasErrors()){
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
+			model.addAttribute("action", action);
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		
-		projetoService.atribuirParecerista(projeto, parecer);
+		if (action.equals(Constants.ALTERAR_PARECERISTA)) {
+			notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA);
+			projetoService.alterarParecerista(parecer);
+			
+			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PARECERISTA_ALTERADO);
+		}
+		else if (action.equals(Constants.ATRIBUIR_PARECERISTA)) {
+			projetoService.atribuirParecerista(projeto, parecer);
+			
+			redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
+		}
 		
-		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
 		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
