@@ -20,7 +20,7 @@ public interface ProjetoService {
 
 	void atribuirParecerista(Projeto projeto, Parecer parecer);
 	
-	void alterarParecerista(Projeto projeto, Parecer parecer);
+	void alterarParecerista(Parecer parecer);
 
 	void emitirParecer(Projeto projeto);
 

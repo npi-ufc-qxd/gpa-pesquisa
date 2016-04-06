@@ -67,7 +67,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 	
 	@Override
-	public void alterarParecerista(Projeto projeto, Parecer parecer) {
+	public void alterarParecerista(Parecer parecer) {
 		parecerRepository.update(parecer);
 	}
 

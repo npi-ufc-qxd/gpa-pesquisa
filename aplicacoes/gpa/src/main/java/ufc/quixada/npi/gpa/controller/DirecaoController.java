@@ -224,7 +224,7 @@ public class DirecaoController {
 		}
 		
 		notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA);
-		projetoService.alterarParecerista(projeto, parecer);
+		projetoService.alterarParecerista(parecer);
 		
 		redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PARECERISTA_ALTERADO);
 		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
