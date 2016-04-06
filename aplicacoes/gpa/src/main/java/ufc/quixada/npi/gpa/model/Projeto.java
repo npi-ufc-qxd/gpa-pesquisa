@@ -64,7 +64,7 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private List<Participacao> participacoes;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval=true)
 	@JoinTable(name = "projeto_documento", joinColumns = @JoinColumn(name = "projeto_id",referencedColumnName="id"),
 	inverseJoinColumns = @JoinColumn(name = "documento_id",referencedColumnName="id"))
 	private List<Documento> documentos;
@@ -87,10 +87,6 @@ public class Projeto {
 
 	public List<Participacao> getParticipacoes() {
 		return participacoes;
-	}
-
-	public void setParticipacoes(List<Participacao> participacoes) {
-		this.participacoes = participacoes;
 	}
 	
 	public Date getAvaliacao() {
@@ -326,6 +322,9 @@ public class Projeto {
 	}
 
 	public void adicionarParticipacao(Participacao participacao) {
+		if(getParticipacoes() == null){
+			this.participacoes = new ArrayList<>();
+		}
         if (!getParticipacoes().contains(participacao)) {
             getParticipacoes().add(participacao);
         }
