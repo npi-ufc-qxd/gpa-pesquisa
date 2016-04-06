@@ -111,6 +111,6 @@ public class Constants {
 	public static final String PAPEL_COORDENACAO = "COORDENADOR";
 
 	/* Arquivos */
-	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
+	public static final String PASTA_DOCUMENTOS_GPA = "/home/ruben.silva/gpa-pesquisa-uploads";
 
 }

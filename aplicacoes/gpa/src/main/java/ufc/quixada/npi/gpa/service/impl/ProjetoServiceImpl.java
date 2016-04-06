@@ -252,7 +252,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	public void removerArquivoProjeto(Projeto projeto, Documento documento) {
 		projeto.setArquivoProjeto(null);
 		projetoRepository.update(projeto);
-		documentoService.remover(documento);
+		//documentoService.remover(documento);
 	}
 
 	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador) {

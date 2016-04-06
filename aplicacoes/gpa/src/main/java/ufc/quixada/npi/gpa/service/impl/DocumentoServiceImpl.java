@@ -1,5 +1,7 @@
 package ufc.quixada.npi.gpa.service.impl;
 
+import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,11 +12,10 @@ import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
+import br.ufc.quixada.npi.repository.GenericRepository;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
-import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
 public class DocumentoServiceImpl implements DocumentoService {
@@ -58,13 +59,6 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Override
 	public Documento getDocumento(Long id) {
 		return documentoRepository.find(Documento.class, id);
-	}
-
-	@Override
-	public void remover(Documento documento) {
-		documentoRepository.delete(documento);
-		File file = new File(documento.getCaminho());
-		removerArquivos(file);
 	}
 
 	@Override

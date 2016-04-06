@@ -82,7 +82,7 @@ public class DocumentoController {
 			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
 			return model;
 		}
-		documentoService.remover(documento);
+		//documentoService.remover(documento);
 		model.addAttribute("result", "ok");
 		return model;
 	}
@@ -92,12 +92,6 @@ public class DocumentoController {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		
 		ModelMap model = new ModelMap();
-		Documento documento = projeto.getArquivoProjeto();
-		if(documento == null) {
-			model.addAttribute("result", "erro");
-			model.addAttribute("mensagem", MENSAGEM_DOCUMENTO_INEXISTENTE);
-			return model;
-		}
 		
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		if(!pessoa.equals(projeto.getCoordenador()) || !projeto.getStatus().equals(StatusProjeto.NOVO)) {
@@ -105,7 +99,10 @@ public class DocumentoController {
 			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
 			return model;
 		}
-		projetoService.removerArquivoProjeto(projeto, documento);
+		
+		projeto.setArquivoProjeto(null);
+		projetoService.atualizar(projeto);
+		
 		model.addAttribute("result", "ok");
 		return model;
 	}
