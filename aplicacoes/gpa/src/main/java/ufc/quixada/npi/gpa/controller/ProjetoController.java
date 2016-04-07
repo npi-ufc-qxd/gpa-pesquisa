@@ -450,7 +450,7 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam("anexos") List<MultipartFile> anexos,
 			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result,
-			Model model, HttpSession session, RedirectAttributes redirectAttributes, Authentication authentication) {
+			Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
 		oldProjeto.setCoordenador(usuario);
