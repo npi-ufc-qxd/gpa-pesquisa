@@ -105,6 +105,10 @@ public class Constants {
 
 	public static final String MENSAGEM_PARECERISTA_ALTERADO = "Parecerista alterado com sucesso";
 	
+	public static final String MENSAGEM_OK = "ok";
+	
+	public static final String MENSAGEM_ERRO = "erro";
+	
 	/* Papeis */
 	public static final String PAPEL_DIRECAO = "DIRECAO";
 
@@ -114,7 +118,7 @@ public class Constants {
 
 	/* Arquivos */
 
-	public static final String PASTA_DOCUMENTOS_GPA = "/home/ruben.silva/gpa-pesquisa-uploads";
+	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
 	
 	/* Action */
 	public static final String ATRIBUIR_PARECERISTA = "atribuir";

@@ -116,8 +116,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String cadastrar(@RequestParam("anexos") MultipartFile[] anexos,
-			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result,
-			HttpSession session, RedirectAttributes redirect, Authentication authentication, Model model) {
+			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, Authentication authentication, Model model) {
 		
 		model.addAttribute("action", "cadastrar");
 
@@ -232,7 +231,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.GET)
-	public String listarParticipacoes(@PathVariable("id") Long id, Model model, HttpSession session,
+	public String listarParticipacoes(@PathVariable("id") Long id, Model model,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
@@ -332,7 +331,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	public String editar(@RequestParam("anexos[]") List<MultipartFile> anexos, @RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto,
+	public String editar(@RequestParam("anexos") List<MultipartFile> anexos, @RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto,
 			BindingResult result, Model model, HttpSession session, RedirectAttributes redirect,
 			Authentication authentication) {
 		model.addAttribute("action", "editar");

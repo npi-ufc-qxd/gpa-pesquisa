@@ -210,7 +210,7 @@ $(document).ready(function() {
 		var idProjeto = $(this).attr('data-idProjeto');
 		$.ajax({
 			type: "POST",
-			url: "/gpa-pesquisa/documento/excluirArqProj/" + idProjeto,
+			url: "/gpa-pesquisa/documento/excluir-arquivo-projeto/" + idProjeto,
 		})
 		.success(function( result ) {
 			if(result.result == 'ok') {

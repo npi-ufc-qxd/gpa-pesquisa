@@ -1,6 +1,8 @@
 package ufc.quixada.npi.gpa.controller;
 
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OK;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,8 +69,7 @@ public class DocumentoController {
 
 	
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
-	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, @RequestParam("projetoId") Long projetoId, HttpSession session, Authentication authentication) {
-		ModelMap model = new ModelMap();
+	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, @RequestParam("projetoId") Long projetoId, HttpSession session, Authentication authentication, @ModelAttribute ModelMap model) {
 		Documento documento = documentoService.getDocumento(id);
 
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
@@ -83,15 +85,13 @@ public class DocumentoController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/excluirArqProj/{idProjeto}", method = RequestMethod.POST)
-	@ResponseBody public  ModelMap excluirArquivoProjeto(@PathVariable("idProjeto") Long idProjeto, HttpSession session, Authentication authentication) {
+	@RequestMapping(value = "/excluir-arquivo-projeto/{idProjeto}", method = RequestMethod.POST)
+	@ResponseBody public  ModelMap excluirArquivoProjeto(@PathVariable("idProjeto") Long idProjeto, Authentication authentication,@ModelAttribute ModelMap model) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
-		
-		ModelMap model = new ModelMap();
 		
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		if(!pessoa.equals(projeto.getCoordenador()) || !projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			model.addAttribute("result", "erro");
+			model.addAttribute("result", MENSAGEM_ERRO);
 			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
 			return model;
 		}
@@ -99,7 +99,7 @@ public class DocumentoController {
 		projeto.setArquivoProjeto(null);
 		projetoService.atualizar(projeto);
 		
-		model.addAttribute("result", "ok");
+		model.addAttribute("result", MENSAGEM_OK);
 		return model;
 	}
 }
