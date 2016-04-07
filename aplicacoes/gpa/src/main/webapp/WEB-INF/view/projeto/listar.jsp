@@ -110,6 +110,7 @@
 										<th>Projeto</th>
 										<th>Coordenador(a)</th>
 										<th>Status</th>
+										<th>Participação</th>
 										<th>Duração</th>
 										<th class="col-md-1 col-md-offset-1">Carga horária mensal</th>
 										<th>Valor bolsa mensal</th>										
@@ -122,6 +123,7 @@
 											<td><a href="<c:url value="/projeto/detalhes/${participacao.projeto.id}" ></c:url>">${participacao.projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${participacao.projeto.coordenador.id}" ></c:url>">${participacao.projeto.coordenador.nome}</a></td>					
 											<td>${participacao.projeto.status.descricao}</td>
+											<td>${participacao.tipo.descricao}</td>
 											<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}
 											<fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
 											<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
