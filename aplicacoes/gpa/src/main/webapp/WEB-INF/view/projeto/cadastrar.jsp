@@ -143,20 +143,18 @@
 										</thead>
 										<tbody>
 											<c:forEach items="${projeto.documentos }" var="documento">
-												<tr id="documento-${documento.id}">
-													<td><a
-														href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
-													</td>
-													<td class="align-right"><a id="exluir-arquivo"
-														data-toggle="modal" data-target="#confirm-delete-file"
-														href="#" title="Excluir" data-name="${documento.nome }"
-														data-id="${documento.id }">
-															<button class="btn btn-danger btn-xs">
-																<i class="fa fa-trash-o"></i>
-															</button>
-													</a></td>
-												</tr>
-											</c:forEach>
+				                    			<tr id="documento-${documento.id}">
+											        <td>
+											            <a href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
+											        </td>
+											        <td class="align-right">
+											        	<a id="exluir-arquivo" data-toggle="modal" data-target="#confirm-delete-file" href="#" title="Excluir"
+											        		data-name="${documento.nome }" data-id="${documento.id }" data-projeto-id="${projeto.id}">
+															<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
+														</a>
+											        </td>
+											    </tr>	
+				                    		</c:forEach>
 										</tbody>
 									</table>
 								</c:if>

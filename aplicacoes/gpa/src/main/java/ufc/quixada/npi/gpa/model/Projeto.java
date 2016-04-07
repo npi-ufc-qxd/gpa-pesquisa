@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -61,14 +64,16 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private List<Participacao> participacoes;
 
-	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval=true)
+	@JoinTable(name = "projeto_documento", joinColumns = @JoinColumn(name = "projeto_id",referencedColumnName="id"),
+	inverseJoinColumns = @JoinColumn(name = "documento_id",referencedColumnName="id"))
 	private List<Documento> documentos;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	@OrderBy(value="data")
 	private List<Comentario> comentarios;
 	
-	@OneToOne(cascade = CascadeType.REMOVE)
+	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
 	private Parecer parecer;
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -80,15 +85,11 @@ public class Projeto {
 	@Column(columnDefinition = "TEXT")
 	private String observacaoAvaliacao;
 	
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento arquivoProjeto;
 
 	public List<Participacao> getParticipacoes() {
 		return participacoes;
-	}
-
-	public void setParticipacoes(List<Participacao> participacoes) {
-		this.participacoes = participacoes;
 	}
 	
 	public Date getAvaliacao() {
@@ -158,8 +159,11 @@ public class Projeto {
 		return documentos;
 	}
 
-	public void setDocumentos(List<Documento> documentos) {
-		this.documentos = documentos;
+	public void addDocumento(Documento documento) {
+		if(this.documentos == null){
+			this.documentos = new ArrayList<>();
+		}
+		this.documentos.add(documento);
 	}
 
 	public Pessoa getCoordenador() {
@@ -257,11 +261,8 @@ public class Projeto {
 
 	@Override
 	public String toString() {
-		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
-				+ ", inicio=" + inicio + ", termino=" + termino
-				+ ", submissao=" + submissao + ", descricao=" + descricao
-				+ ", coordenador=" + coordenador + ", atividades=" + atividades
-				+ ", local=" + local + ", status=" + status + "]";
+		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", coordenador=" + coordenador
+				+ ", status=" + status + ", documentos=" + documentos + "]";
 	}
 
 	public enum StatusProjeto {
@@ -282,7 +283,7 @@ public class Projeto {
 	}
 
 	public enum Evento {
-		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA
 	}
 	
 	@Deprecated
@@ -332,6 +333,9 @@ public class Projeto {
 	}
 
 	public void adicionarParticipacao(Participacao participacao) {
+		if(getParticipacoes() == null){
+			this.participacoes = new ArrayList<>();
+		}
         if (!getParticipacoes().contains(participacao)) {
             getParticipacoes().add(participacao);
         }

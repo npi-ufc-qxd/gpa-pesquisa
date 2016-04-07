@@ -61,10 +61,14 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Override
 	public void atribuirParecerista(Projeto projeto, Parecer parecer) {
-		parecerRepository.save(parecer);
 		projeto.setParecer(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		projetoRepository.update(projeto);
+	}
+	
+	@Override
+	public void alterarParecerista(Parecer parecer) {
+		parecerRepository.update(parecer);
 	}
 
 	@Override

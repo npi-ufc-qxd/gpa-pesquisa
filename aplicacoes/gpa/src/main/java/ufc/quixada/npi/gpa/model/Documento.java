@@ -26,9 +26,6 @@ public class Documento {
 	
 	@Transient
 	private byte[] arquivo;
-
-	@ManyToOne
-	private Projeto projeto;
 	
 	public Long getId() {
 		return id;
@@ -52,14 +49,6 @@ public class Documento {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Projeto getProjeto() {
-		return projeto;
-	}
-
-	public void setProjeto(Projeto projeto) {
-		this.projeto = projeto;
 	}
 
 	public byte[] getArquivo() {

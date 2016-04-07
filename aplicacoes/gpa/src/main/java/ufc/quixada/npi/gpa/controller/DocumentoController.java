@@ -1,8 +1,6 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DOCUMENTO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
-
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -15,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ufc.quixada.npi.gpa.model.Documento;
@@ -67,22 +66,19 @@ public class DocumentoController {
 
 	
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
-	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, HttpSession session, Authentication authentication) {
+	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, @RequestParam("projetoId") Long projetoId, HttpSession session, Authentication authentication) {
 		ModelMap model = new ModelMap();
 		Documento documento = documentoService.getDocumento(id);
-		if(documento == null) {
-			model.addAttribute("result", "erro");
-			model.addAttribute("mensagem", MENSAGEM_DOCUMENTO_INEXISTENTE);
-			return model;
-		}
 
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		if(!pessoa.equals(documento.getProjeto().getCoordenador()) || !documento.getProjeto().getStatus().equals(StatusProjeto.NOVO)) {
+		Projeto projeto = projetoService.getProjeto(projetoId);
+		if(!projeto.getCoordenador().equals(pessoa) || !projeto.getStatus().equals(StatusProjeto.NOVO)){
 			model.addAttribute("result", "erro");
 			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
 			return model;
 		}
-		//documentoService.remover(documento);
+		projeto.getDocumentos().remove(documento);
+		projetoService.atualizar(projeto);
 		model.addAttribute("result", "ok");
 		return model;
 	}

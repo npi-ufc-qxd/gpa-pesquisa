@@ -184,9 +184,13 @@ $(document).ready(function() {
 	$('#button-delete-file').on('click', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('data-id');
+		var projetoId = $('#id').val();
 		$.ajax({
 			type: "POST",
-			url: "/gpa-pesquisa/documento/excluir/" + id
+			url: "/gpa-pesquisa/documento/excluir/" + id,
+			data:{
+				projetoId:projetoId
+			}
 		})
 		.success(function( result ) {
 			if(result.result == 'ok') {
