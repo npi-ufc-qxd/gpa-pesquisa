@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Documento;
-import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
@@ -43,7 +42,7 @@ import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
-import ufc.quixada.npi.gpa.service.validation.ParecerValidation;
+import ufc.quixada.npi.gpa.service.validation.ParecerTecnicoValidation;
 import ufc.quixada.npi.gpa.service.validation.ProjetoValidator;
 import ufc.quixada.npi.gpa.utils.Constants;
 
@@ -61,7 +60,7 @@ public class DirecaoController {
 	private NotificacaoService notificacaoService;
 	
 	@Inject
-	private ParecerValidation parecerValidator;
+	private ParecerTecnicoValidation parecerValidator;
 	
 	@Inject
 	private ProjetoValidator projetoValidator;
@@ -91,7 +90,7 @@ public class DirecaoController {
 		else {
 			if (projeto.getStatus() == StatusProjeto.SUBMETIDO ) {
 				model.addAttribute("action", Constants.ATRIBUIR_PARECERISTA);
-				model.addAttribute("parecer", new Parecer());
+				model.addAttribute("parecer", new ParecerTecnico());
 			}
 		
 			else {
@@ -106,7 +105,7 @@ public class DirecaoController {
 	}
 	
 	@RequestMapping(value = "/atribuir-parecerista", method = RequestMethod.POST)
-	public String atribuirParecerista(@Valid @ModelAttribute("parecer") Parecer parecer, @RequestParam("projetoId") Long projetoId, 
+	public String atribuirParecerista(@Valid @ModelAttribute("parecer") ParecerTecnico parecer, @RequestParam("projetoId") Long projetoId, 
 			@RequestParam("action") String action, @RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(projetoId);

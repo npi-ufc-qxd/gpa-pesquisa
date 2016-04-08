@@ -74,7 +74,7 @@ public class Projeto {
 	private List<Comentario> comentarios;
 	
 	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-	private Parecer parecer;
+	private ParecerTecnico parecer;
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Documento ata;
@@ -195,11 +195,11 @@ public class Projeto {
 		this.submissao = submissao;
 	}
 
-	public Parecer getParecer() {
+	public ParecerTecnico getParecer() {
 		return parecer;
 	}
 
-	public void setParecer(Parecer parecer) {
+	public void setParecer(ParecerTecnico parecer) {
 		this.parecer = parecer;
 	}
 

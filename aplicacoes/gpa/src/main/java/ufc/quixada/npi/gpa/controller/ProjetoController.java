@@ -45,8 +45,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
-import ufc.quixada.npi.gpa.model.Parecer;
-import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
+import ufc.quixada.npi.gpa.model.ParecerTecnico;
+import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Participacao.TipoParticipacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -59,7 +59,7 @@ import ufc.quixada.npi.gpa.service.ParticipacaoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.impl.NotificacaoService;
-import ufc.quixada.npi.gpa.service.validation.ParecerValidation;
+import ufc.quixada.npi.gpa.service.validation.ParecerTecnicoValidation;
 import ufc.quixada.npi.gpa.service.validation.ParticipacaoValidator;
 import ufc.quixada.npi.gpa.service.validation.ProjetoValidator;
 import ufc.quixada.npi.gpa.utils.Constants;
@@ -84,7 +84,7 @@ public class ProjetoController {
 	private ParticipacaoValidator participacaoValidator;
 	
 	@Inject
-	private ParecerValidation parecerValidator;
+	private ParecerTecnicoValidation parecerValidator;
 
 	@Autowired
 	private ComentarioService comentarioService;
@@ -490,7 +490,7 @@ public class ProjetoController {
 		}
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("posicionamento", StatusPosicionamento.values());
-		model.addAttribute("parecer", new Parecer());
+		model.addAttribute("parecer", new ParecerTecnico());
 		return PAGINA_EMITIR_PARECER;
 	}
 
@@ -498,7 +498,7 @@ public class ProjetoController {
 	public String emitirParecer(@RequestParam("id-projeto") Long idProjeto, 
 			@RequestParam("anexo") MultipartFile anexo,
 			@RequestParam("posicionamento") StatusPosicionamento posicionamento, Model model,
-			@Valid Parecer parecer, BindingResult result, RedirectAttributes redirectAttributes) {
+			@Valid ParecerTecnico parecer, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		if (projeto == null) {
