@@ -75,7 +75,6 @@ public class ProjetoValidator implements Validator {
 
 		validaCampoObrigatorio("local", errors);
 		validaCampoObrigatorio("atividades", errors);
-		validaCampoObrigatorio("documentos", errors);
 
 		Map<String, Date> datas = new HashMap<>();
 		datas.put("inicio", projeto.getInicio());
