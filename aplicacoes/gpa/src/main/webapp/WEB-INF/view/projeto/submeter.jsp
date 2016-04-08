@@ -101,9 +101,9 @@
 					</div>
 					
 					<div class="form-group form-item">
-						<label for="anexos" class="col-sm-2 control-label"><span class="required">*</span> Anexos:</label>
+						<label for="anexos" class="col-sm-2 control-label"> Anexos:</label>
 						<div class="col-sm-10">
-							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple" required="required"></input>
+							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple"></input>
 							<form:errors path="documentos"></form:errors>
 							<c:if test="${not empty projeto.documentos}">
 								<table id="table-anexos" class="table table-striped table-hover">
