@@ -26,9 +26,14 @@ public class Participacao {
 	@OneToOne
 	private Pessoa participante;
 	
+	@OneToOne
+	@JoinColumn(name="pessoa_externa_id")
+	private PessoaExterna participanteExterno;
+	
 	@Enumerated(EnumType.STRING)
 	private TipoParticipacao tipo;
 	
+	private boolean isExterno;
 	private Integer mesInicio;
 	private Integer anoInicio;
 	private Integer mesTermino;
@@ -36,6 +41,15 @@ public class Participacao {
 	private BigDecimal bolsaValorMensal;
 	private Integer cargaHorariaMensal;
 	
+	
+	public boolean isExterno() {
+		return isExterno;
+	}
+
+	public void setExterno(boolean isExterno) {
+		this.isExterno = isExterno;
+	}
+
 	public Integer getMesInicio() {
 		return mesInicio;
 	}
