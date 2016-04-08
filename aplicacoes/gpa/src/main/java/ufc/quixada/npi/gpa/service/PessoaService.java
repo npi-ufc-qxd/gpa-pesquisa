@@ -5,6 +5,7 @@ import java.util.List;
 import br.ufc.quixada.npi.ldap.model.Usuario;
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.PessoaExterna;
 import ufc.quixada.npi.gpa.model.Projeto;
 
 public interface PessoaService {
@@ -35,4 +36,9 @@ public interface PessoaService {
 
 	List<Pessoa> getUsuariosByNomeOuCpf(String busca);
 
+	void savePessoaExterna(PessoaExterna pessoaExterna);
+	
+	List<PessoaExterna> getAllPessoaExterna();
+	
+	PessoaExterna getPessoaExterna(int id);
 }

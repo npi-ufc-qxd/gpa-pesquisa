@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -33,7 +34,9 @@ public class Participacao {
 	@Enumerated(EnumType.STRING)
 	private TipoParticipacao tipo;
 	
+	@Column(name="externo",columnDefinition="boolean")
 	private boolean isExterno;
+	
 	private Integer mesInicio;
 	private Integer anoInicio;
 	private Integer mesTermino;

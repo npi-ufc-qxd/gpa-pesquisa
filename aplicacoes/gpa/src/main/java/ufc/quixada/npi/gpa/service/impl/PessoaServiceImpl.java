@@ -14,6 +14,7 @@ import br.ufc.quixada.npi.ldap.service.UsuarioService;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.PessoaExterna;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.service.PapelService;
 import ufc.quixada.npi.gpa.service.PessoaService;
@@ -27,6 +28,9 @@ public class PessoaServiceImpl implements PessoaService {
 	
 	@Inject
 	private GenericRepository<Papel> papelRepository;
+	
+	@Inject
+	private GenericRepository<PessoaExterna> pessoaExternaRepository;
 	
 	@Inject 
 	private PapelService papelService;
@@ -146,5 +150,22 @@ public class PessoaServiceImpl implements PessoaService {
 		}
 		return pessoas;
 	}
+
+	@Override
+	public void savePessoaExterna(PessoaExterna pessoaExterna) {
+		pessoaExternaRepository.save(pessoaExterna);
+	}
+
+	@Override
+	public List<PessoaExterna> getAllPessoaExterna() { 
+		return pessoaExternaRepository.find(PessoaExterna.class);
+	}
+
+	@Override
+	public PessoaExterna getPessoaExterna(int id) {
+		return pessoaExternaRepository.find(PessoaExterna.class, id);
+	}
+	
+	
 
 }
