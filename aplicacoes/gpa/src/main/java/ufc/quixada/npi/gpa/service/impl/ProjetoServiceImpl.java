@@ -50,6 +50,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 		projeto.setStatus(StatusProjeto.NOVO);
 		projetoRepository.update(projeto);
 	}
+	
+	@Override
+	public void update(Projeto projeto) {
+		projetoRepository.update(projeto);
+	}
 
 	@Override
 	public void submeter(Projeto projeto) {
@@ -188,8 +193,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idParecerista);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where parecer.parecerista.id = :id and status = :aguardando_parecer", params);
+				"from Projeto where parecer.parecerista.id = :id and (status = :aguardando_parecer or status =:resolvendo_pendencias)", params);
 	}
 	
 	@Override
@@ -197,9 +203,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idParecerista);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where parecer.parecerista.id = :id AND status != :aguardando_parecer",
+				"from Projeto where parecer.parecerista.id = :id AND (status != :aguardando_parecer and status != :resolvendo_pendencias)",
 				params);
 	}
 

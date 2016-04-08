@@ -13,6 +13,8 @@ public interface ProjetoService {
 	void cadastrar(Projeto projeto);
 
 	void atualizar(Projeto projeto);
+	
+	void update(Projeto projeto);
 
 	void remover(Projeto projeto);
 

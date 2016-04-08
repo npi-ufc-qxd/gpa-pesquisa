@@ -41,6 +41,15 @@ div.controls {
 	text-align: center;
 }
 
+div.button-right{
+	text-align: right;
+}
+
+div.title {
+	float: left;
+	width: 50%;
+}
+
 table#table-anexos {
 	margin-top: 10px;
 }
