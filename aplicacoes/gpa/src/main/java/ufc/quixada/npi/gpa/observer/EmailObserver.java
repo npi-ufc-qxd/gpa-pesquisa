@@ -202,7 +202,7 @@ public class EmailObserver implements Observer {
 
 							}
 							break;
-						case RESOLUSAO_PENDENCIAS:
+						case RESOLUCAO_PENDENCIAS:
 							body = properties.getProperty(CORPO_RESOLUCAO_PENDENCIAS).replaceAll(NOME_PROJETO, nomeProjeto);
 							email.setFrom(emailGPA);
 							email.setSubject(subject);

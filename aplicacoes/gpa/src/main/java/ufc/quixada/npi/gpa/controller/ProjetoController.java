@@ -572,8 +572,8 @@ public class ProjetoController {
 		return oldProjeto;
 	}
 
-	@RequestMapping(value = "/pedido-resolucao-pendencias/{id-projeto}")
-	public String PedidoResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/solicitar-resolucao-pendencias/{id-projeto}")
+	public String SolicitarResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		
@@ -582,16 +582,16 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
-		if (projeto.getStatus() != StatusProjeto.AGUARDANDO_PARECER) {
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 
 		projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS);
-		notificacaoService.notificar(projeto, Evento.RESOLUSAO_PENDENCIAS);
+		notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
 		projetoService.update(projeto);
 
-		return PAGINA_LISTAR_PROJETO;
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
 

@@ -20,7 +20,7 @@
 					<h3 class="panel-title">Emitir Parecer</h3>
 				</div>
 				<div class="button-right">
-						<a href="<c:url value="/projeto/pedido-resolucao-pendencias/${projeto.id}"></c:url>" class="btn btn-warning">Solicitar Resolução de Pendências</a>
+						<a href="<c:url value="/projeto/solicitar-resolucao-pendencias/${projeto.id}"></c:url>" class="btn btn-warning">Solicitar Resolução de Pendências</a>
 				</div>
 			</div>
 			<div class="panel-body">
