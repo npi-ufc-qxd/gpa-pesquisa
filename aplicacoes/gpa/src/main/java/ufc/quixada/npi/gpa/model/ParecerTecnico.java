@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Parecer {
+public class ParecerTecnico {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

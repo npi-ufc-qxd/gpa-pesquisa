@@ -16,7 +16,12 @@
 	<div class="container">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Emitir Parecer</h3>
+				<div class="title">
+					<h3 class="panel-title">Emitir Parecer</h3>
+				</div>
+				<div class="button-right">
+						<a href="<c:url value="/projeto/solicitar-resolucao-pendencias/${projeto.id}"></c:url>" class="btn btn-warning">Solicitar Resolução de Pendências</a>
+				</div>
 			</div>
 			<div class="panel-body">
 				<c:if test="${not empty erro}">

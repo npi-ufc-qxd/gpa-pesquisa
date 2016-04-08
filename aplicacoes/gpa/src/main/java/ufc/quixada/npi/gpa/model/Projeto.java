@@ -74,7 +74,7 @@ public class Projeto {
 	private List<Comentario> comentarios;
 	
 	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-	private Parecer parecer;
+	private ParecerTecnico parecer;
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Documento ata;
@@ -195,11 +195,11 @@ public class Projeto {
 		this.submissao = submissao;
 	}
 
-	public Parecer getParecer() {
+	public ParecerTecnico getParecer() {
 		return parecer;
 	}
 
-	public void setParecer(Parecer parecer) {
+	public void setParecer(ParecerTecnico parecer) {
 		this.parecer = parecer;
 	}
 
@@ -257,8 +257,8 @@ public class Projeto {
 	public enum StatusProjeto {
 
 		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
-		AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO("REPROVADO"),
-		APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
+		RESOLVENDO_PENDENCIAS("RESOLVENDO PENDÊNCIAS"), AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"),
+		APROVADO("APROVADO"), REPROVADO("REPROVADO"), APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
 		
 		private String descricao;
 
@@ -272,7 +272,7 @@ public class Projeto {
 	}
 
 	public enum Evento {
-		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS
 	}
 	
 	@Deprecated
