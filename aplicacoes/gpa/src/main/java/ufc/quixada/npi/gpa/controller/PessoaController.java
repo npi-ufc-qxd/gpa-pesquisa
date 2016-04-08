@@ -9,10 +9,14 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.PessoaExterna;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 
@@ -43,5 +47,11 @@ public class PessoaController {
 
 			return PAGINA_DETALHES_PARTICIPANTE;
 		}
+	}
+	
+	@RequestMapping(value= "/cadastrarExterno", method=RequestMethod.POST)
+	public @ResponseBody String cadastrarPessoaExterna(@RequestBody PessoaExterna pessoaExterna){
+		pessoaService.savePessoaExterna(pessoaExterna);
+		return "sucess";
 	}
 }

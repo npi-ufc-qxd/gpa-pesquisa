@@ -50,6 +50,7 @@ import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Participacao.TipoParticipacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.PessoaExterna;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
@@ -236,6 +237,8 @@ public class ProjetoController {
 		model.addAttribute("ano", calendario.get(Calendar.YEAR));
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("participacao", new Participacao());
+		model.addAttribute("participacaoExterna", new PessoaExterna());
+		model.addAttribute("pessoasExternas", pessoaService.getAllPessoaExterna());
 		model.addAttribute("pessoas", pessoaService.getAll());
 		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 	}

@@ -34,8 +34,8 @@ public class Participacao {
 	@Enumerated(EnumType.STRING)
 	private TipoParticipacao tipo;
 	
-	@Column(name="externo",columnDefinition="boolean")
-	private boolean isExterno;
+	@Column(columnDefinition="boolean")
+	private boolean externo;
 	
 	private Integer mesInicio;
 	private Integer anoInicio;
@@ -46,11 +46,11 @@ public class Participacao {
 	
 	
 	public boolean isExterno() {
-		return isExterno;
+		return externo;
 	}
 
 	public void setExterno(boolean isExterno) {
-		this.isExterno = isExterno;
+		this.externo = isExterno;
 	}
 
 	public Integer getMesInicio() {

@@ -200,7 +200,7 @@ $(document).ready(function() {
 		});
 	});
 	
-	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante").select2({
+	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante, #participanteExterno").select2({
    	 	placeholder: "Buscar...",
    	 	dropdownCssClass: "bigdrop"
     });
@@ -819,5 +819,27 @@ $(document).ready(function() {
 	$('a.back').click(function(){
 		parent.history.back();
 		return false;
+	});
+	
+	
+	$('#pessoaExternaCheckBox').change(function() {
+	   if($(this).is(":checked")) {
+		   $("#divParticipante").hide();
+		   $("#divParticipanteExterno").show();
+	   } else {
+		   $("#divParticipanteExterno").hide();
+		   $("#divParticipante").show();
+	   }
+	});
+	
+	var modal = document.getElementById('cadastrarPessoaExternaModal');
+	$("#cadastrarPessoaExternaBtn").click(function() {
+	    modal.style.display = "block";
+	});
+	$("#fecharModalBtn").click(function(){
+		modal.style.display = "none";
+	});
+	$("#cancelarModalBtn").click(function(){
+		modal.style.display = "none";
 	});
 });

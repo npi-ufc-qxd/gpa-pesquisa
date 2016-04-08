@@ -57,37 +57,95 @@
 				<div class="formulario">
 					<form:form id="adicionarParticipacaoForm" role="form" commandName="participacao" enctype="multipart/form-data" servletRelativeAction="/projeto/participacoes/${projeto.id}" method="POST" cssClass="form-horizontal">
 						<div class="form-group">
-							<div class="form-item">	
-								<label for="idParticipantes" class="col-sm-2 control-label">Novo participante:</label>
-								<div class="col-sm-4">
-									<select id="participante" name="participanteSelecionado" class="form-control">
-										<c:set var="part" value="${pessoas }"></c:set>
+							<div class="form-item">
+										<label class="col-sm-2 control-label"></label>
+										<div class="col-sm-5">
+											<div class="checkbox">
+						                        	<label>
+						                          		<input type="checkbox" id="pessoaExternaCheckBox"> Participante Externo
+						                        	</label>
+						                    </div>						                    
+					                    </div>
+				                    </div>
+				        </div>
+						<div class="form-group">
+								<div class="form-item" id="divParticipante">	
+									<label for="idParticipantes" class="col-sm-2 control-label">Novo participante:</label>
+									<div class="col-sm-4">
+											<select name="participanteSelecionado" class="form-control">
+												<c:set var="part" value="${pessoas }"></c:set>
+												
+												<c:forEach items="${pessoas }" var="participante">
+													<c:set var="selected" value=""></c:set>
+													<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
+													
+													<c:if test="${fn:contains(part, participanteSelecionado)}">
+														<c:set var="selected" value="selected=\"selected\""></c:set>
+													</c:if>
+													<option value="${participante.id }" ${selected }>${participante.nome }</option>
+												</c:forEach>
+											</select>
+									</div>
+								</div>
+								<div class="form-item" id="divParticipanteExterno" style="display: none;">
+									<label for="idParticipantes" class="col-sm-2 control-label">Participante externo:</label>
+									<div class="col-sm-4">
+									<select name="participanteSelecionado" class="form-control">
+										<c:set var="part" value="${pessoasExternas }"></c:set>
 										
-										<c:forEach items="${pessoas }" var="participante">
+										<c:forEach items="${pessoasExternas }" var="participante">
 											<c:set var="selected" value=""></c:set>
 											<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
-											
 											<c:if test="${fn:contains(part, participanteSelecionado)}">
 												<c:set var="selected" value="selected=\"selected\""></c:set>
 											</c:if>
 											<option value="${participante.id }" ${selected }>${participante.nome }</option>
 										</c:forEach>
 									</select>
+									<a href="#" id="cadastrarPessoaExternaBtn" class="btn btn-link">Cadastrar pessoa externa</a>
+									</div>
 								</div>
+								<div id="cadastrarPessoaExternaModal" class="modal">
+					                <div class="modal-dialog">
+					                  <div class="modal-content">
+					                    <div class="modal-header">
+					                      <button id="fecharModalBtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					                      <h4 class="modal-title">Cadastrar Nova Pessoa Externa</h4>
+					                    </div>
+					                    <div class="modal-body">
+					                    	<div class="form-group">
+							                    <label for="inputNome" class="col-lg-2 control-label">Nome</label>
+							                    <div class="col-lg-4">
+							                      <input type="text" class="form-control" id="inputNome" placeholder="Nome">
+							                    </div>
+						                  	</div>
+					                      <div class="form-group">
+						                    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+						                    <div class="col-lg-4">
+						                      <input type="text" class="form-control" id="inputEmail" placeholder="Email">
+						                    </div>
+						                  </div>
+					                    </div>
+					                    <div class="modal-footer">
+					                      <button id="cancelarModalBtn" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					                      <button id="submeterNovaPessoaExterna" type="button" class="btn btn-primary">Cadastrar</button>
+					                    </div>
+					                  </div>
+					                </div>
+				              </div>
+								<div class="form-item">
+									<label for="tipoParticipante" class="col-sm-2 control-label">Tipo de participante:</label>
+									<div class="col-sm-4">
+										<select id="tipoParticipante" name="tipo" class="form-control">
+											<c:forEach items="${tiposDeParticipacao}" var="tipo">
+												<option value="${tipo }" >${tipo.descricao}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>							
 							</div>
 
-							<div class="form-item">
-								<label for="tipoParticipante" class="col-sm-2 control-label">Tipo de participante:</label>
-								<div class="col-sm-4">
-									<select id="tipoParticipante" name="tipo" class="form-control">
-										<c:forEach items="${tiposDeParticipacao}" var="tipo">
-											<option value="${tipo }" >${tipo.descricao}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-						</div>
-
+							
 						<div class="form-group">
 							<div class="form-item">
 								<label class="col-sm-2 control-label"><span class="required">*</span> Mês/Ano início: </label>
