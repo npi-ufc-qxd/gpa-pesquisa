@@ -56,22 +56,35 @@
 				<!-- Formulario -->
 				<div class="formulario">
 					<form:form id="adicionarParticipacaoForm" role="form" commandName="participacao" enctype="multipart/form-data" servletRelativeAction="/projeto/participacoes/${projeto.id}" method="POST" cssClass="form-horizontal">
-						<div class="form-group form-item">
-							<label for="idParticipantes" class="col-sm-2 control-label">Novo participante:</label>
-							<div class="col-sm-10">
-								<select id="participante" name="participanteSelecionado" class="form-control">
-									<c:set var="part" value="${pessoas }"></c:set>
-									
-									<c:forEach items="${pessoas }" var="participante">
-										<c:set var="selected" value=""></c:set>
-										<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
+						<div class="form-group">
+							<div class="form-item">	
+								<label for="idParticipantes" class="col-sm-2 control-label">Novo participante:</label>
+								<div class="col-sm-4">
+									<select id="participante" name="participanteSelecionado" class="form-control">
+										<c:set var="part" value="${pessoas }"></c:set>
 										
-										<c:if test="${fn:contains(part, participanteSelecionado)}">
-											<c:set var="selected" value="selected=\"selected\""></c:set>
-										</c:if>
-										<option value="${participante.id }" ${selected }>${participante.nome }</option>
-									</c:forEach>
-								</select>
+										<c:forEach items="${pessoas }" var="participante">
+											<c:set var="selected" value=""></c:set>
+											<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
+											
+											<c:if test="${fn:contains(part, participanteSelecionado)}">
+												<c:set var="selected" value="selected=\"selected\""></c:set>
+											</c:if>
+											<option value="${participante.id }" ${selected }>${participante.nome }</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-item">
+								<label for="tipoParticipante" class="col-sm-2 control-label">Tipo de participante:</label>
+								<div class="col-sm-4">
+									<select id="tipoParticipante" name="tipo" class="form-control">
+										<c:forEach items="${tiposDeParticipacao}" var="tipo">
+											<option value="${tipo }" >${tipo.descricao}</option>
+										</c:forEach>
+									</select>
+								</div>
 							</div>
 						</div>
 
@@ -172,6 +185,7 @@
 									<th class="dt-center">Término</th>
 									<th class="dt-center">Carga Horária Mensal</th>
 									<th class="dt-center">Valor da Bolsa</th>
+									<th class="dt-center">Tipo de Participação</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -187,6 +201,7 @@
 												minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
 										<td class="dt-center"><fmt:formatNumber type="CURRENCY"
 												currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+										<td class="dt-center">${participacao.tipo.descricao }</td>
 										<td class="acoes dt-center"><a id="excluir"
 											data-toggle="modal" class="btn btn-danger btn-xs"
 											data-target="#confirm-delete-participacao" href="#"
