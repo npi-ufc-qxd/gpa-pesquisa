@@ -277,7 +277,7 @@ public class ProjetoController {
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		projeto.adicionarParticipacao(participacao);
-		projetoService.atualizar(projeto);
+		projetoService.update(projeto);
 
 		Calendar calendario = Calendar.getInstance();
 		model.addAttribute("ano", calendario.get(Calendar.YEAR));
@@ -315,7 +315,8 @@ public class ProjetoController {
 	}
 
 	private boolean usuarioPodeEditarProjeto(Projeto projeto, Pessoa usuario) {
-		return (usuario.getId() == projeto.getCoordenador().getId() && projeto.getStatus().equals(StatusProjeto.NOVO));
+		return (usuario.getId() == projeto.getCoordenador().getId() && (projeto.getStatus().equals(StatusProjeto.NOVO) || 
+				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)));
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
@@ -359,7 +360,7 @@ public class ProjetoController {
 		for (Documento documento : documentos) {
 			oldProjeto.addDocumento(documento);
 		}
-		projetoService.cadastrar(oldProjeto);
+		projetoService.update(oldProjeto);
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -407,6 +408,12 @@ public class ProjetoController {
 					model.addAttribute("validacao", result);
 				}
 				return PAGINA_SUBMETER_PROJETO;
+			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
+				projetoService.submeterPendencias(projeto);
+				
+				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
 
@@ -462,14 +469,19 @@ public class ProjetoController {
 			model.addAttribute("validacao", result);
 			return PAGINA_SUBMETER_PROJETO;
 
+		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
+			projetoService.submeterPendencias(oldProjeto);
+			
+			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 		} else {
-			projetoService.atualizar(oldProjeto);
 			projetoService.submeter(oldProjeto);
 
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
 			notificacaoService.notificar(projeto, Evento.SUBMISSAO);
-			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
 	@RequestMapping(value = "/emitir-parecer/{id-projeto}", method = RequestMethod.GET)

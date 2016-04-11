@@ -68,6 +68,8 @@ public class Constants {
 	public static final String MENSAGEM_PARECERISTA_ATRIBUIDO = "Parecerista atribuído com sucesso";
 
 	public static final String MENSAGEM_PROJETO_SUBMETIDO = "Projeto submetido com sucesso";
+	
+	public static final String MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS = "Resolução de pendências submetido com sucesso";
 
 	public static final String MENSAGEM_PARECER_EMITIDO = "Parecer emitido com sucesso";
 
