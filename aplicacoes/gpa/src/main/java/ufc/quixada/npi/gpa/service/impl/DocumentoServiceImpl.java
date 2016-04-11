@@ -4,9 +4,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 import javax.inject.Named;
 
@@ -21,39 +18,6 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	@Autowired
 	private GenericRepository<Documento> documentoRepository;
-
-	@Override
-	public void salvar(Documento documento, String codigoProjeto) {
-		String novoNome = System.currentTimeMillis()+"_"+documento.getNome();
-		documento.setNomeOriginal(novoNome);
-		
-		File subDir = new File(PASTA_DOCUMENTOS_GPA, codigoProjeto);
-		subDir.mkdirs();
-
-		try {
-			File file = new File(subDir, documento.getNomeOriginal());
-			FileOutputStream fop = new FileOutputStream(file);
-			file.createNewFile();
-			fop.write(documento.getArquivo());
-			fop.flush();
-			fop.close();
-			
-			String path = file.getPath();
-			path = path.replaceAll("\\\\", "/");
-			documento.setCaminho(path);
-			documentoRepository.save(documento);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public void salvar(List<Documento> documentos, String codigoProjeto) {
-		for (Documento documento : documentos) {
-			salvar(documento, codigoProjeto);
-		}
-	}
 
 	@Override
 	public Documento getDocumento(Long id) {

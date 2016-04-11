@@ -1,5 +1,7 @@
 package ufc.quixada.npi.gpa.model;
 
+import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -64,7 +66,7 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private List<Participacao> participacoes;
 
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval=true)
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	@JoinTable(name = "projeto_documento", joinColumns = @JoinColumn(name = "projeto_id",referencedColumnName="id"),
 	inverseJoinColumns = @JoinColumn(name = "documento_id",referencedColumnName="id"))
 	private List<Documento> documentos;
@@ -85,7 +87,7 @@ public class Projeto {
 	@Column(columnDefinition = "TEXT")
 	private String observacaoAvaliacao;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento arquivoProjeto;
 
 	public List<Participacao> getParticipacoes() {
@@ -228,6 +230,10 @@ public class Projeto {
 
 	public void setArquivoProjeto(Documento arquivoProjeto) {
 		this.arquivoProjeto = arquivoProjeto;
+	}
+	
+	public String getCaminhoArquivos(){
+		return PASTA_DOCUMENTOS_GPA + "/" + this.codigo;
 	}
 
 	@Override
