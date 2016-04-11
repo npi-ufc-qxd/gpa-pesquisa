@@ -1,11 +1,11 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OK;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OK;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -69,7 +69,7 @@ public class DocumentoController {
 
 	
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
-	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, @RequestParam("projetoId") Long projetoId, HttpSession session, Authentication authentication, @ModelAttribute ModelMap model) {
+	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, @RequestParam("projetoId") Long projetoId, Authentication authentication, @ModelAttribute ModelMap model) {
 		Documento documento = documentoService.getDocumento(id);
 
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
@@ -88,6 +88,11 @@ public class DocumentoController {
 	@RequestMapping(value = "/excluir-arquivo-projeto/{idProjeto}", method = RequestMethod.POST)
 	@ResponseBody public  ModelMap excluirArquivoProjeto(@PathVariable("idProjeto") Long idProjeto, Authentication authentication,@ModelAttribute ModelMap model) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
+		if(projeto == null){
+			model.addAttribute("result", MENSAGEM_ERRO);
+			model.addAttribute("mensagem", MENSAGEM_PROJETO_INEXISTENTE);
+			return model;
+		}
 		
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		if(!pessoa.equals(projeto.getCoordenador()) || !projeto.getStatus().equals(StatusProjeto.NOVO)) {
