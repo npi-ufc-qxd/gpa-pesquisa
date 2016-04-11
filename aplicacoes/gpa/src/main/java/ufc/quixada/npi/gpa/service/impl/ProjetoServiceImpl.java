@@ -42,7 +42,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 		String codigo = geraCodigoProjeto(projeto.getId());
 		projeto.setCodigo(codigo);
-		projetoRepository.update(projeto);
 	}
 
 	@Override
@@ -264,7 +263,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 		return false;
 	}
-	
+
 	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("idCoordenador", idCoordenador);

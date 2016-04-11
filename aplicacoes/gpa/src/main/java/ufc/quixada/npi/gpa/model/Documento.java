@@ -1,13 +1,14 @@
 package ufc.quixada.npi.gpa.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 @Entity
+@EntityListeners(DocumentoEntityListener.class)
 public class Documento {
 
 	@Id
@@ -22,7 +23,7 @@ public class Documento {
 	
 	private String extensao;
 	
-	@Transient
+	@Column(insertable = false, updatable = false)
 	private byte[] arquivo;
 	
 	public Long getId() {
