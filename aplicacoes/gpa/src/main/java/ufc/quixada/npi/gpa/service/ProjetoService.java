@@ -2,9 +2,7 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
-import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
-
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
@@ -63,8 +61,6 @@ public interface ProjetoService {
 	List<Participacao> getParticipacoesByProjeto(Long idProjeto);
 
 	boolean isParticipante(Pessoa pessoa, Projeto projeto);
-	
-	void removerArquivoProjeto(Projeto projeto, Documento documento);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o autor coordena, com status APROVADO e APROVADO_COM_RESTRICAO.

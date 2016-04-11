@@ -31,14 +31,14 @@ public class DocumentoServiceImpl implements DocumentoService {
 
 	}
 
-	public void removerArquivos(File f) {
-		if (f.isDirectory()) {
-			File[] files = f.listFiles();
-			for (File file : files) {
-				removerArquivos(file);
+	public void removerArquivos(File file) {
+		if (file.isDirectory()) {
+			File[] files = file.listFiles();
+			for (File f : files) {
+				removerArquivos(f);
 			}
 		}
-		f.delete();
+		file.delete();
 	}
 
 	public byte[] getArquivo(Documento documento) {

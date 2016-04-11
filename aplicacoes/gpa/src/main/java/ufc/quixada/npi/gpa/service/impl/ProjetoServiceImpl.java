@@ -12,10 +12,7 @@ import javax.inject.Named;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
-
-import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
-
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
@@ -258,12 +255,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 			}
 		}
 		return false;
-	}
-	
-	@Override
-	public void removerArquivoProjeto(Projeto projeto, Documento documento) {
-		projeto.setArquivoProjeto(null);
-		projetoRepository.update(projeto);
 	}
 
 	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador) {
