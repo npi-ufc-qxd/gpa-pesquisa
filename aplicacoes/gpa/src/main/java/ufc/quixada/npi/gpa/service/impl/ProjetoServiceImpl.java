@@ -12,8 +12,10 @@ import javax.inject.Named;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+
 import ufc.quixada.npi.gpa.model.Documento;
-import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.ParecerTecnico;
+
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
@@ -31,7 +33,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	private GenericRepository<Participacao> participacaoRepository;
 
 	@Inject
-	private GenericRepository<Parecer> parecerRepository;
+	private GenericRepository<ParecerTecnico> parecerRepository;
 	
 	@Inject
 	private DocumentoService documentoService;
@@ -50,6 +52,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 		projeto.setStatus(StatusProjeto.NOVO);
 		projetoRepository.update(projeto);
 	}
+	
+	@Override
+	public void update(Projeto projeto) {
+		projetoRepository.update(projeto);
+	}
 
 	@Override
 	public void submeter(Projeto projeto) {
@@ -59,14 +66,14 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
-	public void atribuirParecerista(Projeto projeto, Parecer parecer) {
+	public void atribuirParecerista(Projeto projeto, ParecerTecnico parecer) {
 		projeto.setParecer(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		projetoRepository.update(projeto);
 	}
 	
 	@Override
-	public void alterarParecerista(Parecer parecer) {
+	public void alterarParecerista(ParecerTecnico parecer) {
 		parecerRepository.update(parecer);
 	}
 
@@ -188,8 +195,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idParecerista);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where parecer.parecerista.id = :id and status = :aguardando_parecer", params);
+				"from Projeto where parecer.parecerista.id = :id and (status = :aguardando_parecer or status =:resolvendo_pendencias)", params);
 	}
 	
 	@Override
@@ -197,9 +205,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idParecerista);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where parecer.parecerista.id = :id AND status != :aguardando_parecer",
+				"from Projeto where parecer.parecerista.id = :id AND (status != :aguardando_parecer and status != :resolvendo_pendencias)",
 				params);
 	}
 
