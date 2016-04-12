@@ -42,13 +42,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 		String codigo = geraCodigoProjeto(projeto.getId());
 		projeto.setCodigo(codigo);
-		projetoRepository.update(projeto);
-	}
-
-	@Override
-	public void atualizar(Projeto projeto) {
-		projeto.setStatus(StatusProjeto.NOVO);
-		projetoRepository.update(projeto);
 	}
 	
 	@Override
@@ -60,6 +53,12 @@ public class ProjetoServiceImpl implements ProjetoService {
 	public void submeter(Projeto projeto) {
 		projeto.setStatus(StatusProjeto.SUBMETIDO);
 		projeto.setSubmissao(new Date());
+		projetoRepository.update(projeto);
+	}
+	
+	@Override
+	public void submeterPendencias(Projeto projeto) {
+		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		projetoRepository.update(projeto);
 	}
 
@@ -124,8 +123,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("submetido", StatusProjeto.SUBMETIDO);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
 		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where ((status = :novo) OR (status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (coordenador.id = :id)",
+				"from Projeto where ((status = :novo) OR (status = :submetido) OR (status = :resolvendo_pendencias) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (coordenador.id = :id)",
 				params);
 	}
 	
@@ -257,7 +257,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 		return false;
 	}
-	
+
 	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("idCoordenador", idCoordenador);

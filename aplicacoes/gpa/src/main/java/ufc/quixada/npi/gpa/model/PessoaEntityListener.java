@@ -19,6 +19,7 @@ public class PessoaEntityListener implements ApplicationContextAware {
 	@PostLoad
 	public void loadProfessor(Pessoa pessoa) {
 		context.getAutowireCapableBeanFactory().autowireBean(this);
+		
 		Usuario usuario = usuarioService.getByCpf(pessoa.getCpf());
 		pessoa.setNome(usuario.getNome());
 		pessoa.setEmail(usuario.getEmail());
