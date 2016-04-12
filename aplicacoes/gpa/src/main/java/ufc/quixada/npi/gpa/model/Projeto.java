@@ -76,6 +76,9 @@ public class Projeto {
 	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
 	private ParecerTecnico parecer;
 	
+	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	private ParecerRelator parecerRelator;
+	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Documento ata;
 	
@@ -202,6 +205,14 @@ public class Projeto {
 	public void setParecer(ParecerTecnico parecer) {
 		this.parecer = parecer;
 	}
+	
+	public ParecerRelator getParecerRelator() {
+		return parecerRelator;
+	}
+
+	public void setParecerRelator(ParecerRelator parecerRelator) {
+		this.parecerRelator = parecerRelator;
+	}
 
 	public Documento getAta() {
 		return ata;
@@ -272,7 +283,7 @@ public class Projeto {
 	}
 
 	public enum Evento {
-		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS, ATRIBUICAO_RELATOR, ALTERACAO_RELATOR
 	}
 	
 	@Deprecated
