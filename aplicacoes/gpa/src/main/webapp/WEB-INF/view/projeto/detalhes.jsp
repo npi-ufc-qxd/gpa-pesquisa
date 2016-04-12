@@ -97,7 +97,7 @@
 						<label class="col-sm-2 control-label">Valor:</label>
 						<div class="col-sm-10 value-label">
 						<fmt:setLocale value="pt_BR"/>
-							<label><fmt:formatNumber value="${projeto.valorProjeto }" type="currency"/></label>
+							<label><fmt:formatNumber value="${projeto.valorProjeto }" type="currency" currencySymbol="R$ "/></label>
 						</div>
 					</div>
 					
