@@ -474,7 +474,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam("anexos") List<MultipartFile> anexos,
-			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result,
+			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto,
 			Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
@@ -520,7 +520,10 @@ public class ProjetoController {
 		for (Documento documento : documentos) {
 			oldProjeto.addDocumento(documento);
 		}
+		
+		projetoService.update(oldProjeto);
 
+		BindingResult result = new BeanPropertyBindingResult(oldProjeto, "oldProjeto");
 		projetoValidator.validateSubmissao(oldProjeto, result);
 		
 		if (result.hasErrors()) {
