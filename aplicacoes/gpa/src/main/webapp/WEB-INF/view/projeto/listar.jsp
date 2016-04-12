@@ -69,7 +69,7 @@
 												<fmt:formatDate pattern="dd/MM/yyyy" value="${projetoNaoAvaliado.submissao }" />
 											</td>
 											<td class="acoes">
-												<c:if test="${projetoNaoAvaliado.status == 'NOVO'}">
+												<c:if test="${projetoNaoAvaliado.status == 'NOVO' or projetoNaoAvaliado.status == 'RESOLVENDO_PENDENCIAS'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
 														data-href="<c:url value="/projeto/submeter/${projetoNaoAvaliado.id}" ></c:url>" data-name="${projetoNaoAvaliado.nome }">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>

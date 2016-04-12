@@ -197,12 +197,6 @@
 							
 					<h4 class="subtitle">Avaliação</h4>
 						<span class="line"></span>
-						<div class="form-group">
-							<div class="col-sm-12">		
-								<p class="value-label">${projeto.parecer.observacao}</p>				
-							</div>				   		
-						</div>
-						
 			
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Observação Avaliação:</label>
