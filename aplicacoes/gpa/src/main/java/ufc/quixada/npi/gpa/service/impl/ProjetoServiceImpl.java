@@ -43,12 +43,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 		String codigo = geraCodigoProjeto(projeto.getId());
 		projeto.setCodigo(codigo);
 	}
-
-	@Override
-	public void atualizar(Projeto projeto) {
-		projeto.setStatus(StatusProjeto.NOVO);
-		projetoRepository.update(projeto);
-	}
 	
 	@Override
 	public void update(Projeto projeto) {

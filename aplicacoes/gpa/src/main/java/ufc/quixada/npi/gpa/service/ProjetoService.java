@@ -11,8 +11,6 @@ import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 public interface ProjetoService {
 
 	void cadastrar(Projeto projeto);
-
-	void atualizar(Projeto projeto);
 	
 	void update(Projeto projeto);
 

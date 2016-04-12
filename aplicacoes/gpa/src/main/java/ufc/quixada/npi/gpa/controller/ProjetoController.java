@@ -167,7 +167,7 @@ public class ProjetoController {
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		
-		projetoService.atualizar(projeto);
+		projetoService.update(projeto);
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
