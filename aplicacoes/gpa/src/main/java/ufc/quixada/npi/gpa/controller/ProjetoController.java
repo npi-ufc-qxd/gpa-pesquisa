@@ -139,6 +139,8 @@ public class ProjetoController {
 						documento.setArquivo(anexo.getBytes());
 						documento.setNome(anexo.getOriginalFilename());
 						documento.setExtensao(anexo.getContentType());
+						documento.setPessoa(pessoaService.getPessoa(authentication.getName()));
+						documento.setData(new Date());
 						documentos.add(documento);
 					}
 				} catch (IOException e) {
@@ -345,6 +347,8 @@ public class ProjetoController {
 						documento.setArquivo(anexo.getBytes());
 						documento.setNome(anexo.getOriginalFilename());
 						documento.setExtensao(anexo.getContentType());
+						documento.setPessoa(usuario);
+						documento.setData(new Date());
 						documentos.add(documento);
 					}
 				} catch (IOException e) {
