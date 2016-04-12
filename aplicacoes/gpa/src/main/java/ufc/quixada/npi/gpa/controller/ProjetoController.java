@@ -18,6 +18,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -130,6 +131,8 @@ public class ProjetoController {
 
 		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
 
+		projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
+		
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && anexos.length != 0) {
 			for (MultipartFile anexo : anexos) {
@@ -571,6 +574,7 @@ public class ProjetoController {
 		oldProjeto.setNome(newProjeto.getNome());
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
+		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
 		return oldProjeto;
 	}
 

@@ -101,6 +101,21 @@
 									</c:if>
 								</div>
 							</div>
+							
+							<div class="form-item">
+								<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
+								<div class="col-sm-2">
+									<form:input id="valorProjeto" type="text" path="valorProjeto" cssClass="form-control" placeholder="Valor do Projeto"/>
+									<div class="error-validation">
+										<form:errors path="valorProjeto"></form:errors>
+									</div>
+									<c:if test="${not empty error_termino}">
+										<div class="error-validation">
+											<span>${error_termino}</span>
+										</div>
+									</c:if>
+								</div>
+							</div>
 			
 						</div>
 
