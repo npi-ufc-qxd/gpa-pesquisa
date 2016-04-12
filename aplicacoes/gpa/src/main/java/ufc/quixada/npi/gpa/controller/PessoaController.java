@@ -5,6 +5,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,8 +51,8 @@ public class PessoaController {
 	}
 	
 	@RequestMapping(value= "/cadastrarExterno", method=RequestMethod.POST)
-	public @ResponseBody String cadastrarPessoaExterna(@RequestBody PessoaExterna pessoaExterna){
+	public @ResponseBody String cadastrarPessoaExterna(@RequestBody PessoaExterna pessoaExterna, HttpServletRequest request){
 		pessoaService.savePessoaExterna(pessoaExterna);
-		return "sucess";
+		return "{ data : OK }";
 	}
 }

@@ -831,7 +831,7 @@ $(document).ready(function() {
 		   $("#divParticipante").show();
 	   }
 	});
-	
+	/* MODAL */
 	var modal = document.getElementById('cadastrarPessoaExternaModal');
 	$("#cadastrarPessoaExternaBtn").click(function() {
 	    modal.style.display = "block";
@@ -842,4 +842,73 @@ $(document).ready(function() {
 	$("#cancelarModalBtn").click(function(){
 		modal.style.display = "none";
 	});
+	var nomePessoaExterna = $("#inputNome");
+	var cpfPessoaExterna = $("#inputCPF");
+	var emailPessoaExterna = $("#inputEmail");
+	$("#cadastrarPessoaExternaForm").bootstrapValidator({
+		group: '.form-item',
+		feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+		fields: {
+            inputNome: {
+                validators: {
+                    notEmpty: {
+                        message: 'Nome obrigatório'
+                    },
+                    regexp: { 
+                    	regexp: /^[a-záàâãéèêíïóôõöúçñ ]+$/i,
+                    	message: 'Nome inválido'
+                    }
+                    
+                }
+            },inputCPF: {
+                validators: {
+                    notEmpty: {
+                        message: 'Campo CPF não pode ficar vazio'
+                    },
+                    regexp: {
+                    	regexp:/^([0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}|[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2})$/,
+                        message: 'CPF inválido'
+                    }
+                }
+            },
+            inputEmail: {
+                validators: {
+                    notEmpty: {
+                        message: 'Email não pode ficar vazio'
+                    },
+                    emailAddress: {
+                        message: 'Email inválido'
+                    }
+                }
+            }
+		}
+    });
+	$("#submeterNovaPessoaExterna").click(function(e){
+		e.preventDefault();
+		$('#cadastrarPessoaExternaForm').bootstrapValidator('validate');
+		$.ajax({
+			    url: "/gpa-pesquisa/pessoa/cadastrarExterno", 
+			    type: 'POST', 
+			    dataType: 'json', 
+			    data: {
+			    	nome: nomePessoaExterna.val(),
+					cpf: cpfPessoaExterna.val(),
+					email: emailPessoaExterna.val()
+			    }, 
+			    contentType: 'application/json'
+//			    success: function(data, textStatus, xhr) {
+//			    	modal.style.display = "none";
+//			    },
+//			    complete: function(xhr, textStatus) {
+//			    	if(xhr.status==200)
+//			    		modal.style.display = "none";
+//			    }
+		});
+		
+	});
+	/* MODAL */
 });

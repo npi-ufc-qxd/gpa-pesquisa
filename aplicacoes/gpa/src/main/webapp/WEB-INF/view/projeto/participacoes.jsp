@@ -105,34 +105,6 @@
 									<a href="#" id="cadastrarPessoaExternaBtn" class="btn btn-link">Cadastrar pessoa externa</a>
 									</div>
 								</div>
-								<div id="cadastrarPessoaExternaModal" class="modal">
-					                <div class="modal-dialog">
-					                  <div class="modal-content">
-					                    <div class="modal-header">
-					                      <button id="fecharModalBtn" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					                      <h4 class="modal-title">Cadastrar Nova Pessoa Externa</h4>
-					                    </div>
-					                    <div class="modal-body">
-					                    	<div class="form-group">
-							                    <label for="inputNome" class="col-lg-2 control-label">Nome</label>
-							                    <div class="col-lg-4">
-							                      <input type="text" class="form-control" id="inputNome" placeholder="Nome">
-							                    </div>
-						                  	</div>
-					                      <div class="form-group">
-						                    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-						                    <div class="col-lg-4">
-						                      <input type="text" class="form-control" id="inputEmail" placeholder="Email">
-						                    </div>
-						                  </div>
-					                    </div>
-					                    <div class="modal-footer">
-					                      <button id="cancelarModalBtn" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-					                      <button id="submeterNovaPessoaExterna" type="button" class="btn btn-primary">Cadastrar</button>
-					                    </div>
-					                  </div>
-					                </div>
-				              </div>
 								<div class="form-item">
 									<label for="tipoParticipante" class="col-sm-2 control-label">Tipo de participante:</label>
 									<div class="col-sm-4">
@@ -295,6 +267,53 @@
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div id="cadastrarPessoaExternaModal" class="modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button id="fecharModalBtn" type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">Cadastrar Nova Pessoa Externa</h4>
+				</div>
+				<div class="modal-body">
+					<form:form id="cadastrarPessoaExternaForm" cssClass="form-horizontal" role="form">
+						<div class="form-group">
+							<div class="form-item">
+								<label for="inputNome" class="col-lg-2 control-label">Nome</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" id="inputNome" name="inputNome"/>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="form-item">
+								<label for="inputCPF" class="col-lg-2 control-label">CPF</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" id="inputCPF" name="inputCPF"/>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="form-item">
+								<label for="inputEmail" class="col-lg-2 control-label">Email</label>
+								<div class="col-lg-8">
+									<input type="text" class="form-control" id="inputEmail" name="inputEmail"/>
+								</div>
+							</div>
+						</div>
+					</form:form>
+				</div>
+				<div class="modal-footer">
+					<button id="cancelarModalBtn" type="button" class="btn btn-default"
+						data-dismiss="modal">Cancelar</button>
+					<button id="submeterNovaPessoaExterna" type="button"
+						class="btn btn-primary">Cadastrar</button>
+				</div>
+				
+			</div>
+			
 		</div>
 	</div>
 
