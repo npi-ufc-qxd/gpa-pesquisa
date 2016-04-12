@@ -182,15 +182,21 @@
 								</c:if>
 							</div>
 						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Arquivo do Projeto:</label>
+							<div class="col-sm-10 value-label">
+								<c:if test="${empty projeto.arquivoProjeto }">
+									<label>-</label>						
+								</c:if>				
+								<c:if test="${not empty projeto.arquivoProjeto }">
+									<label><a href="<c:url value="/documento/${projeto.id }/${projeto.arquivoProjeto.id }" ></c:url>">${projeto.arquivoProjeto.nome }</a></label><br>	
+								</c:if>
+							</div>
+						</div>
 							
 					<h4 class="subtitle">Avaliação</h4>
 						<span class="line"></span>
-						<div class="form-group">
-							<div class="col-sm-12">		
-								<p class="value-label">${projeto.parecer.observacao}</p>				
-							</div>				   		
-						</div>
-						
 			
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Observação Avaliação:</label>

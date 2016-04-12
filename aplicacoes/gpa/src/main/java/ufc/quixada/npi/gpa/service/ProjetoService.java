@@ -12,14 +12,14 @@ import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 public interface ProjetoService {
 
 	void cadastrar(Projeto projeto);
-
-	void atualizar(Projeto projeto);
 	
 	void update(Projeto projeto);
 
 	void remover(Projeto projeto);
 
 	void submeter(Projeto projeto);
+	
+	void submeterPendencias(Projeto projeto);
 
 	void atribuirParecerista(Projeto projeto, ParecerTecnico parecer);
 	
