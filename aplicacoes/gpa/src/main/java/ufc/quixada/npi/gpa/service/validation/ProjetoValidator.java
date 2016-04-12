@@ -173,8 +173,9 @@ public class ProjetoValidator implements Validator {
 		List<Participacao> participantes = projeto.getParticipacoes();
 		for (Participacao participacao : participantes) {
 			float bolsaParticipante = participacao.getBolsaValorMensal().intValue();
-			float mesesTrabalhados = participacao.getMesTermino() - participacao.getMesInicio();
-			valorParticipante = bolsaParticipante * mesesTrabalhados;
+			int anostrabalhados = (participacao.getAnoTermino()- participacao.getAnoInicio())*12;
+			float mesesTrabalhados = participacao.getMesTermino() - participacao.getMesInicio() + 1;
+			valorParticipante = bolsaParticipante * (mesesTrabalhados + anostrabalhados);
 			valorTotalParticipantes = valorTotalParticipantes + valorParticipante;
 		}
 				
