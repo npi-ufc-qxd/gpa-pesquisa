@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-avaliados-diretor').DataTable({
+	$('#projetos-homologados-diretor').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3]},            
@@ -427,7 +427,7 @@ $(document).ready(function() {
     });
 	
 	//Avaliar projeto
-	$('#avaliarProjetoForm').bootstrapValidator({
+	$('#homologarProjetoForm').bootstrapValidator({
 		feedbackIcons: {
         	valid: 'glyphicon glyphicon-ok',
             validating: 'glyphicon glyphicon-refresh'

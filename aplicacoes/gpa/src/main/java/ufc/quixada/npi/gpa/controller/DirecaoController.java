@@ -3,15 +3,16 @@ package ufc.quixada.npi.gpa.controller;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECERISTA_ATRIBUIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_AVALIADO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_HOMOLOGADO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
-import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_AVALIAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DIRECAO_BUSCAR_PESSOA;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_HOMOLOGAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_INICIAL_DIRECAO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_DIRECAO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
 import java.util.Date;
@@ -68,8 +69,8 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {
-		model.addAttribute("projetosSubmetidos", projetoService.getProjetosSubmetidos());
-		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados());
+		model.addAttribute("projetosEmTramitacao", projetoService.getProjetosEmTramitacao());
+		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados());
 		model.addAttribute("participantes", pessoaService.getParticipantesProjetos());
 		return PAGINA_INICIAL_DIRECAO;
 
@@ -138,58 +139,73 @@ public class DirecaoController {
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
 	
-	@RequestMapping(value = "/avaliar/{id}", method = RequestMethod.GET)
-	public String avaliarForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
+	@RequestMapping(value = "/homologar/{id}", method = RequestMethod.GET)
+	public String homologarForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
 		Projeto projeto = projetoService.getProjeto(id);
-		if (projeto == null || !projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
+		if (projeto == null) {
 			redirect.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
+		
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_HOMOLOGACAO)) {
+			redirect.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_INICIAL_DIRECAO;
+		}
 		model.addAttribute("projeto", projeto);
-		return PAGINA_AVALIAR_PROJETO;
+		return PAGINA_HOMOLOGAR_PROJETO;
 	}
 	
-	@RequestMapping(value = "/avaliar", method = RequestMethod.POST)
-	public String avaliar(@RequestParam("id") Long id, @RequestParam("avaliacaoParam") StatusProjeto avaliacao, 
+	@RequestMapping(value = "/homologar", method = RequestMethod.POST)
+	public String homologar(@RequestParam("id") Long id, @RequestParam("homologacaoParam") StatusProjeto homologacao, 
 			@RequestParam("ataParam") MultipartFile ataParam, @RequestParam("oficioParam") MultipartFile oficioParam, 
 			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect) {
 				
 		Documento ataDocumento = null;
 		Documento oficioDocumento = null;
 		
+		projeto = projetoService.getProjeto(id);
+		
+		if (projeto == null) {
+			redirect.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_INICIAL_DIRECAO;
+		}
+		
 		try {
 			if (ataParam != null && ataParam.getBytes() != null && ataParam.getBytes().length != 0) {
 				ataDocumento = new Documento();
 				ataDocumento.setArquivo(ataParam.getBytes());
 				ataDocumento.setNome(ataParam.getOriginalFilename());
+				ataDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + ataParam.getName());
 				ataDocumento.setExtensao(ataParam.getContentType());
+				ataDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + ataParam.getOriginalFilename());
 			}
 			if (oficioParam != null && oficioParam.getBytes() != null && oficioParam.getBytes().length != 0) {
 				oficioDocumento = new Documento();
 				oficioDocumento.setArquivo(oficioParam.getBytes());
 				oficioDocumento.setNome(oficioParam.getOriginalFilename());
+				oficioDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + oficioParam.getName());
 				oficioDocumento.setExtensao(oficioParam.getContentType());
+				oficioDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + oficioParam.getOriginalFilename());
 			}
 		} catch (IOException e) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-			return PAGINA_AVALIAR_PROJETO;
+			return PAGINA_HOMOLOGAR_PROJETO;
 		}
 		
-		projeto = projetoService.getProjeto(id);
-		projeto.setStatus(avaliacao);
+		projeto.setStatus(homologacao);
 		projeto.setAta(ataDocumento);
 		projeto.setOficio(oficioDocumento);
-		projeto.setObservacaoAvaliacao(observacao);
+		projeto.setObservacaoHomologacao(observacao);
 		
-		projetoValidator.validateAvaliacao(projeto, result);
+		projetoValidator.validateHomologacao(projeto, result);
 		if(result.hasErrors()){			
 			model.addAttribute("projeto", projeto);
-			return PAGINA_AVALIAR_PROJETO;
+			return PAGINA_HOMOLOGAR_PROJETO;
 		}
 		
-		projetoService.avaliar(projeto);
+		projetoService.homologar(projeto);
 		
-		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
+		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_HOMOLOGADO);
 		notificacaoService.notificar(projeto, Evento.AVALIACAO);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
