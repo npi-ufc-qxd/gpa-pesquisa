@@ -166,14 +166,14 @@ public class ProjetoValidator implements Validator {
 
 	//Validando se o valor do projeto é maior que o somatório das bolsas dos participantes
 	private void validaValorProjeto(Projeto projeto, Errors errors) {
-		int valorProjeto = projeto.getValorProjeto().intValue();
-		int valorTotalParticipantes = 0;
-		int valorParticipante = 0;
+		float valorProjeto = projeto.getValorProjeto().floatValue();
+		float valorTotalParticipantes = 0;
+		float valorParticipante = 0;
 		
 		List<Participacao> participantes = projeto.getParticipacoes();
 		for (Participacao participacao : participantes) {
-			int bolsaParticipante = participacao.getBolsaValorMensal().intValue();
-			int mesesTrabalhados = participacao.getMesTermino() - participacao.getMesInicio();
+			float bolsaParticipante = participacao.getBolsaValorMensal().intValue();
+			float mesesTrabalhados = participacao.getMesTermino() - participacao.getMesInicio();
 			valorParticipante = bolsaParticipante * mesesTrabalhados;
 			valorTotalParticipantes = valorTotalParticipantes + valorParticipante;
 		}
