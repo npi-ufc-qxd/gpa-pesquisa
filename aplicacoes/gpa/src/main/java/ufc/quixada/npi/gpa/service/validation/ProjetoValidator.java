@@ -169,7 +169,6 @@ public class ProjetoValidator implements Validator {
 		int valorProjeto = projeto.getValorProjeto().intValue();
 		int valorTotalParticipantes = 0;
 		int valorParticipante = 0;
-		int diferenca = 0;
 		
 		List<Participacao> participantes = projeto.getParticipacoes();
 		for (Participacao participacao : participantes) {
@@ -178,10 +177,7 @@ public class ProjetoValidator implements Validator {
 			valorParticipante = bolsaParticipante * mesesTrabalhados;
 			valorTotalParticipantes = valorTotalParticipantes + valorParticipante;
 		}
-		System.out.println(diferenca);
-		System.out.println(valorParticipante);
-		System.out.println(valorTotalParticipantes);
-		
+				
 		if (valorTotalParticipantes > valorProjeto) {
 			errors.reject("projeto.valorProjetoInsuficiente", "projeto.valorProjetoInsuficiente");
 		}
