@@ -156,18 +156,15 @@ public class DirecaoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
-		
-		if (projeto.getStatus() == StatusProjeto.AGUARDANDO_AVALIACAO ) {
-				
-			if(projeto.getParecerRelator() == null){
+			
+		if(projeto.getParecerRelator() == null){
 			model.addAttribute("action", Constants.ATRIBUIR_RELATOR);
 			model.addAttribute("parecer", new ParecerRelator());
 			}
-			else{
-				model.addAttribute("action", Constants.ALTERAR_RELATOR);
-				model.addAttribute("parecer", projeto.getParecerRelator());
+		else{
+			model.addAttribute("action", Constants.ALTERAR_RELATOR);
+			model.addAttribute("parecer", projeto.getParecerRelator());
 			}
-		}
 		
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
