@@ -7,10 +7,10 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,9 +50,15 @@ public class PessoaController {
 		}
 	}
 	
-	@RequestMapping(value= "/cadastrarExterno", method=RequestMethod.POST)
-	public @ResponseBody String cadastrarPessoaExterna(@RequestBody PessoaExterna pessoaExterna, HttpServletRequest request){
+	@RequestMapping(value= "/cadastrarExterno", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Model cadastrarPessoaExterna(HttpServletRequest request, Model model){
+		PessoaExterna pessoaExterna = new PessoaExterna();
+		if(request.getParameter("nome").equals("") || request.getParameter("email").equals("") || request.getParameter("cpf").equals(""))
+			return null;
+		pessoaExterna.setNome(request.getParameter("nome"));
+		pessoaExterna.setEmail(request.getParameter("email"));
+		pessoaExterna.setCpf(request.getParameter("cpf"));
 		pessoaService.savePessoaExterna(pessoaExterna);
-		return "{ data : OK }";
+		return model.addAttribute("pessoaExterna", pessoaExterna);
 	}
 }

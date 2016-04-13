@@ -246,11 +246,12 @@ public class ProjetoController {
 	@RequestMapping(value = "/participacoes/{idProjeto}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("idProjeto") Long idProjeto,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
+			@RequestParam(value = "participanteExternoSelecionado") int idParticipanteExternoSelecionado,
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
-
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		model.addAttribute("tiposDeParticipacao",TipoParticipacao.values());
+		model.addAttribute("pessoasExternas", pessoaService.getAllPessoaExterna());
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -260,10 +261,12 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		
-		participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
+		if(participacao.isExterno()== true){
+			participacao.setParticipanteExterno(pessoaService.getPessoaExterna(idParticipanteExternoSelecionado));
+		}else{
+			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
+		}
 		participacao.setProjeto(projeto);
-		
 		participacaoValidator.validate(participacao, result);
 		if(result.hasErrors()){			
 			model.addAttribute("projeto", projeto);
@@ -272,7 +275,10 @@ public class ProjetoController {
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		try {
-			participacaoService.verificaIntervalosParticipacaoPessoa(participacao);
+			if(participacao.isExterno()== true)
+				participacaoService.verificaIntervalosParticipacaoPessoaExterna(participacao);
+			else
+				participacaoService.verificaIntervalosParticipacaoPessoa(participacao);
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("erro", e.getMessage());
 			model.addAttribute("projeto", projeto);
@@ -314,6 +320,7 @@ public class ProjetoController {
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("participacao", new Participacao());
 		model.addAttribute("pessoas", pessoaService.getAll());
+		model.addAttribute("pessoasExternas", pessoaService.getAllPessoaExterna());
 		return "redirect:/" + PAGINA_VINCULAR_PARTICIPANTES_PROJETO + "/" + idProjeto;
 	}
 

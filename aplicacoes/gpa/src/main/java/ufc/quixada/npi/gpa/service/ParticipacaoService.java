@@ -9,4 +9,5 @@ public interface ParticipacaoService{
 	 * 
 	 */
 	public abstract void verificaIntervalosParticipacaoPessoa(Participacao participacao);
+	public abstract void verificaIntervalosParticipacaoPessoaExterna(Participacao participacao);
 }

@@ -172,7 +172,10 @@ $(document).ready(function() {
 	});
 	
 	$('#confirm-delete-participacao').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name') + '\"?');
+		if($(e.relatedTarget).data('name') == "")
+			$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name-externo') + '\"?');
+		else
+			$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
@@ -826,9 +829,11 @@ $(document).ready(function() {
 	   if($(this).is(":checked")) {
 		   $("#divParticipante").hide();
 		   $("#divParticipanteExterno").show();
+		   document.getElementById("externoBoolean").value=true;
 	   } else {
 		   $("#divParticipanteExterno").hide();
 		   $("#divParticipante").show();
+		   document.getElementById("externoBoolean").value=false;
 	   }
 	});
 	/* MODAL */
@@ -847,11 +852,13 @@ $(document).ready(function() {
 	var emailPessoaExterna = $("#inputEmail");
 	$("#cadastrarPessoaExternaForm").bootstrapValidator({
 		group: '.form-item',
+		live: 'enabled',
 		feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
+        excluded: ':disabled',
 		fields: {
             inputNome: {
                 validators: {
@@ -861,6 +868,9 @@ $(document).ready(function() {
                     regexp: { 
                     	regexp: /^[a-záàâãéèêíïóôõöúçñ ]+$/i,
                     	message: 'Nome inválido'
+                    },
+                    stringLength: {
+                        min: 3
                     }
                     
                 }
@@ -872,6 +882,9 @@ $(document).ready(function() {
                     regexp: {
                     	regexp:/^([0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}|[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2})$/,
                         message: 'CPF inválido'
+                    },
+                    stringLength: {
+                        max:11
                     }
                 }
             },
@@ -887,28 +900,23 @@ $(document).ready(function() {
             }
 		}
     });
-	$("#submeterNovaPessoaExterna").click(function(e){
+	$("#submeterNovaPessoaExterna").on('click',function(e){
 		e.preventDefault();
-		$('#cadastrarPessoaExternaForm').bootstrapValidator('validate');
-		$.ajax({
-			    url: "/gpa-pesquisa/pessoa/cadastrarExterno", 
-			    type: 'POST', 
-			    dataType: 'json', 
-			    data: {
-			    	nome: nomePessoaExterna.val(),
-					cpf: cpfPessoaExterna.val(),
-					email: emailPessoaExterna.val()
-			    }, 
-			    contentType: 'application/json'
-//			    success: function(data, textStatus, xhr) {
-//			    	modal.style.display = "none";
-//			    },
-//			    complete: function(xhr, textStatus) {
-//			    	if(xhr.status==200)
-//			    		modal.style.display = "none";
-//			    }
-		});
-		
+		$('#cadastrarPessoaExternaForm').bootstrapValidator('validate')
+		if(cpfPessoaExterna.val().length){
+			$.ajax({
+				    url: "/gpa-pesquisa/pessoa/cadastrarExterno", 
+				    type: 'POST', 
+				    data: {
+				    	nome: nomePessoaExterna.val(),
+						cpf: cpfPessoaExterna.val(),
+						email: emailPessoaExterna.val()
+				    },			    
+				    success: function(data, textStatus, xhr) {
+				    	location.reload();
+				    }
+			});
+		}
 	});
 	/* MODAL */
 });

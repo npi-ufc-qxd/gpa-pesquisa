@@ -134,6 +134,14 @@ public class Participacao {
 		this.tipo = tipo;
 	}
 
+	public PessoaExterna getParticipanteExterno() {
+		return participanteExterno;
+	}
+
+	public void setParticipanteExterno(PessoaExterna participanteExterno) {
+		this.participanteExterno = participanteExterno;
+	}
+
 	@Override
 	public String toString() {
 		return "Participacao [id=" + id + ", projeto=" + projeto + ", participante=" + participante + ", mesInicio=" + mesInicio
