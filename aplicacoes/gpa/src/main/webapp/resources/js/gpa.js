@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-avaliados').DataTable({
+	$('#projetos-homologados').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3, 4]},            
