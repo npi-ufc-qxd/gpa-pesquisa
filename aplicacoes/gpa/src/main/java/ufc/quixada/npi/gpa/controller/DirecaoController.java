@@ -12,7 +12,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_HOMOLOGAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_INICIAL_DIRECAO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_DIRECAO;
-import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
 import java.util.Date;
@@ -175,17 +174,17 @@ public class DirecaoController {
 				ataDocumento = new Documento();
 				ataDocumento.setArquivo(ataParam.getBytes());
 				ataDocumento.setNome(ataParam.getOriginalFilename());
-				ataDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + ataParam.getName());
+				ataDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + ataDocumento.getNome());
 				ataDocumento.setExtensao(ataParam.getContentType());
-				ataDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + ataParam.getOriginalFilename());
+				ataDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + ataDocumento.getNomeOriginal());
 			}
 			if (oficioParam != null && oficioParam.getBytes() != null && oficioParam.getBytes().length != 0) {
 				oficioDocumento = new Documento();
 				oficioDocumento.setArquivo(oficioParam.getBytes());
 				oficioDocumento.setNome(oficioParam.getOriginalFilename());
-				oficioDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + oficioParam.getName());
+				oficioDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + oficioDocumento.getNome());
 				oficioDocumento.setExtensao(oficioParam.getContentType());
-				oficioDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + oficioParam.getOriginalFilename());
+				oficioDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + oficioDocumento.getNomeOriginal());
 			}
 		} catch (IOException e) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);

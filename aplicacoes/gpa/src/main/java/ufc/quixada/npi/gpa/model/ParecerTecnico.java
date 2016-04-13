@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,7 +41,7 @@ public class ParecerTecnico {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date prazo;
 
-	@ManyToOne
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	@JoinColumn(name = "documento_id")
 	private Documento documento;
 

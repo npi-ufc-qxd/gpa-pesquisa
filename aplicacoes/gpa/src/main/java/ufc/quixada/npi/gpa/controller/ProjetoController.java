@@ -583,9 +583,10 @@ public class ProjetoController {
 				Documento documento = new Documento();
 				documento.setArquivo(anexo.getBytes());
 				documento.setNome(anexo.getOriginalFilename());
+				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
 				documento.setExtensao(anexo.getContentType());
+				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
 				projeto.getParecer().setDocumento(documento);
-				projeto.addDocumento(documento);
 			}
 		} catch (IOException e) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);

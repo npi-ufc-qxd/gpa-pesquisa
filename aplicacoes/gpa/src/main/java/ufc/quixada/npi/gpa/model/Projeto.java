@@ -75,13 +75,13 @@ public class Projeto {
 	@OrderBy(value="data")
 	private List<Comentario> comentarios;
 	
-	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private ParecerTecnico parecer;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento ata;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento oficio;
 	
 	@Column(columnDefinition = "TEXT")
