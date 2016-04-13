@@ -88,7 +88,7 @@
 														</c:if>
 														<c:if test="${projeto.parecerRelator != null }">
 															<a id="alterarRelator" title="Alterar relator" data-toggle="modal"href="<c:url value="/direcao/atribuir-relator/${projeto.id}" ></c:url>">
-																R<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
+																<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 															</a>
 														</c:if>
 													</c:if>
