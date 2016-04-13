@@ -21,11 +21,6 @@ public class ParecerRelatorValidador implements Validator{
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		//TODO
-	}
-	
-	public void validateAtribuirRelator(Object target, Errors errors){
-		
 		ValidationUtils.rejectIfEmpty(errors, "relator", "projeto.campoNulo");
 	}
 }

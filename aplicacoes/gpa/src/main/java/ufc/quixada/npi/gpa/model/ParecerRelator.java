@@ -26,7 +26,7 @@ public class ParecerRelator {
 	@Enumerated(EnumType.STRING)
 	private StatusPosicionamento status;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@DateTimeFormat
 	private Date data;
 	
 	@Column(columnDefinition = "TEXT")

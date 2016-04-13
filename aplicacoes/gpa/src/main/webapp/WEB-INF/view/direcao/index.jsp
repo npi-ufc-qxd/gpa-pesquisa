@@ -76,9 +76,6 @@
 														</a>
 													</c:if>
 													<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
-														<%-- <a id="avaliarProjeto" title="Avaliar" data-toggle="modal"href="<c:url value="/direcao/avaliar/${projeto.id}" ></c:url>">
-															<button class="btn btn-primary btn-xs"><i class="fa fa-check-square-o"></i></button>
-														</a>--%>
 														<c:if test="${projeto.parecerRelator == null }">
 															<a id="atribuirRelator" title="Atribuir relator" href="<c:url value="/direcao/atribuir-relator/${projeto.id}" ></c:url>">
 																<button class="btn btn-primary btn-xs"><i class="fa fa-user"></i></button>
