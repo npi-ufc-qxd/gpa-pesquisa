@@ -173,7 +173,7 @@
 							<c:if test="${not empty projeto.participacoes }">
 								<c:forEach items="${projeto.participacoes }" var="participacao">
 									<c:choose>
-										<c:when test="${not participacao.externo}">
+										<c:when test="${participacao.externo}">
 											<label>${participacao.participanteExterno.nome} (${participacao.tipo.descricao});</label><br>
 										</c:when>
 										<c:otherwise>
