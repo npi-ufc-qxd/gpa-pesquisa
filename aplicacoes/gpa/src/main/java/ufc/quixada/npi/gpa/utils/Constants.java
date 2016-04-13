@@ -35,6 +35,8 @@ public class Constants {
 	public static final String PAGINA_ADMINISTRACAO = "administracao/index";
 
 	public static final String PAGINA_ADMINISTRACAO_VINCULAR_PAPEL = "administracao/vincularPapel";
+	
+	public static final String PAGINA_ATRIBUIR_RELATOR = "direcao/atribuir-relator";
 
 	/** Redirecionamentos */
 
@@ -106,7 +108,11 @@ public class Constants {
 	public static final String MENSAGEM_PARTICIPACAO_MESMO_PERIODO = "Não pode haver mais de uma partipação no mesmo período";
 
 	public static final String MENSAGEM_PARECERISTA_ALTERADO = "Parecerista alterado com sucesso";
-	
+
+	public static final String MENSAGEM_RELATOR_ATRIBUIDO = "Relator atribuído com sucesso";
+
+	public static final String MENSAGEM_RELATOR_ALTERADO = "Relator alterado com sucesso";
+
 	public static final String MENSAGEM_OK = "ok";
 	
 	public static final String MENSAGEM_ERRO = "erro";
@@ -125,4 +131,9 @@ public class Constants {
 	public static final String ATRIBUIR_PARECERISTA = "atribuir";
 	
 	public static final String ALTERAR_PARECERISTA = "alterar";
+
+	public static final String ATRIBUIR_RELATOR = "atribuir";
+	
+	public static final String ALTERAR_RELATOR = "alterar";
+
 }
