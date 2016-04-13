@@ -63,19 +63,22 @@
 						<div class="form-group form-item">
 							<label for="descricao" class="col-sm-2 control-label"><span class="required">*</span> Descrição:</label>
 							<div class="col-sm-10">
-								<form:textarea id="descricao" path="descricao" class="form-control" rows="5" placeholder="Descrição" name="descricao" required="required"/>
+								<form:textarea id="descricao" path="descricao"
+									class="form-control" rows="5" placeholder="Descrição"
+									name="descricao" required="required" />
 								<div class="error-validation">
 									<form:errors path="descricao"></form:errors>
 								</div>
 							</div>
-			
+
 						</div>
-			
+
 						<div class="form-group">
 							<div class="form-item">
 								<label for="inicio" class="col-sm-2 control-label">Início:</label>
 								<div class="col-sm-2">
-									<form:input id="inicio" type="text" path="inicio" cssClass="form-control data" placeholder="Data de início"/>
+									<form:input id="inicio" type="text" path="inicio"
+										cssClass="form-control data" placeholder="Data de início" />
 									<div class="error-validation">
 										<form:errors path="inicio"></form:errors>
 									</div>
@@ -90,9 +93,26 @@
 							<div class="form-item">
 								<label for="termino" class="col-sm-2 control-label">Término:</label>
 								<div class="col-sm-2">
-									<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de término"/>
+									<form:input id="termino" type="text" path="termino"
+										cssClass="form-control data" placeholder="Data de término" />
 									<div class="error-validation">
 										<form:errors path="termino"></form:errors>
+									</div>
+									<c:if test="${not empty error_termino}">
+										<div class="error-validation">
+											<span>${error_termino}</span>
+										</div>
+									</c:if>
+								</div>
+							</div>
+							
+							<!-- Valor do Projeto -->
+							<div class="form-item">
+								<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
+								<div class="col-sm-2">
+									<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto"/>
+									<div class="error-validation">
+										<form:errors path="valorProjeto"></form:errors>
 									</div>
 									<c:if test="${not empty error_termino}">
 										<div class="error-validation">
@@ -105,25 +125,32 @@
 						</div>
 
 						<div class="form-group form-item">
-							<label for="local" class="col-sm-2 control-label">Local de execução:</label>
+							<label for="local" class="col-sm-2 control-label">Local
+								de execução:</label>
 							<div class="col-sm-10">
-								<form:input id="local" path="local" cssClass="form-control" placeholder="Local do projeto" />
+								<form:input id="local" path="local" cssClass="form-control"
+									placeholder="Local do projeto" />
 							</div>
 						</div>
 			
 						<div class="form-group form-item">
-							<label for="atividades" class="col-sm-2 control-label">Atividades gerais:</label>
+							<label for="atividades" class="col-sm-2 control-label">Atividades
+								gerais:</label>
 							<div class="col-sm-10">
-								<form:textarea id="atividades" path="atividades" name="atividades" class="form-control" rows="5" placeholder="Atividades"></form:textarea>
+								<form:textarea id="atividades" path="atividades"
+									name="atividades" class="form-control" rows="5"
+									placeholder="Atividades"></form:textarea>
 							</div>
 						</div>
 						
 						<div class="form-group form-item">
 							<label for="anexos" class="col-sm-2 control-label">Anexos:</label>
 							<div class="col-sm-10">
-								<input id="anexos" type="file" name="anexos" class="anexo file-loading" multiple="multiple" ></input>
+								<input id="anexos" type="file" name="anexos"
+									class="anexo file-loading" multiple></input>
 								<c:if test="${not empty projeto.documentos }">
-									<table id="table-anexos" class="table table-striped table-hover">
+									<table id="table-anexos"
+										class="table table-striped table-hover">
 										<thead>
 											<tr>
 												<th></th>
@@ -149,6 +176,48 @@
 								</c:if>
 							</div>
 						</div>
+						<div class="form-group form-item">
+
+							<label for="div-arquivo-projeto" class="col-sm-2 control-label">Arquivo
+								do Projeto:</label>
+
+							<div id="div-arquivo-projeto" class="col-sm-10">
+
+								<div id="campo-arquivo-projeto">
+									<input type="file" name="arquivo_projeto"
+										class="anexo file-loading "></input>
+								</div>
+
+
+								<c:if test="${not empty projeto.arquivoProjeto}">
+									<table id="table-arquivo-projeto"
+										class="table table-striped table-hover">
+										
+										<tbody>
+											<tr>
+												<td id="arquivo-projeto" class="col-sm-11"><a
+													href="<c:url value="/documento/${projeto.arquivoProjeto.id }" />">${projeto.arquivoProjeto.nome }</a>
+												</td>
+
+												<td><a id="exluir-arquivo-p" class="col-sm-1"
+													data-toggle="modal" data-target="#confirm-delete-p-file"
+													title="Excluir" data-name="${projeto.arquivoProjeto.nome }"
+													data-idprojeto="${projeto.id }">
+
+														<button class="btn btn-danger btn-xs">
+															<i class="fa fa-trash-o"></i>
+														</button>
+
+												</a></td>
+											</tr>
+										</tbody>
+
+									</table>
+								</c:if>
+							</div>
+						</div>
+						
+						<hr></hr>
 						
 						<c:if test="${not empty projeto.participacoes}">
 							<div class="form-group form-item">
@@ -232,6 +301,27 @@
 		</div>
 	</div>
 
+<!-- Modal Excluir Arquivo do Projeto -->
+	<div class="modal fade" id="confirm-delete-p-file">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						&times;<span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">Excluir</h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<button id="button-delete-p-file" class="btn btn-danger btn-sm">Excluir</button>
+					<button type="button" class="btn btn-default btn-sm"
+						data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<jsp:include page="../modulos/footer.jsp" />
 	
 	<script type="text/javascript">

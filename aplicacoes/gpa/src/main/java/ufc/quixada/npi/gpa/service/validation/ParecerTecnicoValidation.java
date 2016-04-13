@@ -8,7 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.ParecerTecnico;
 
 /**
  * Validação da classe {@link Parecer} com a interface {@link Validator}.<br>
@@ -17,11 +17,11 @@ import ufc.quixada.npi.gpa.model.Parecer;
  * @author 00056726198
  */
 @Named
-public class ParecerValidation implements Validator {
+public class ParecerTecnicoValidation implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return Parecer.class.equals(clazz);
+		return ParecerTecnico.class.equals(clazz);
 	}
 
 	/**
@@ -32,13 +32,13 @@ public class ParecerValidation implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		Parecer p = (Parecer) target;
+		ParecerTecnico p = (ParecerTecnico) target;
 
 		validaCampoMin("parecer", p.getParecer(), 5, errors);
 	}
 	
 	public void validateAtribuirParecerista(Object target, Errors errors){
-		Parecer p = (Parecer) target;
+		ParecerTecnico p = (ParecerTecnico) target;
 		
 		ValidationUtils.rejectIfEmpty(errors, "parecerista", "projeto.campoNulo");
 		validaData("prazo", p.getPrazo(), errors);

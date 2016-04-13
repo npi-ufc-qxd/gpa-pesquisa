@@ -2,7 +2,8 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
-import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.ParecerRelator;
+import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
@@ -11,16 +12,22 @@ import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 public interface ProjetoService {
 
 	void cadastrar(Projeto projeto);
-
-	void atualizar(Projeto projeto);
+	
+	void update(Projeto projeto);
 
 	void remover(Projeto projeto);
 
 	void submeter(Projeto projeto);
-
-	void atribuirParecerista(Projeto projeto, Parecer parecer);
 	
-	void alterarParecerista(Parecer parecer);
+	void submeterPendencias(Projeto projeto);
+
+	void atribuirParecerista(Projeto projeto, ParecerTecnico parecer);
+	
+	void alterarParecerista(ParecerTecnico parecer);
+	
+	void atribuirRelator(Projeto projeto, ParecerRelator parecerRelator);
+	
+	void alterarRelator(ParecerRelator parecerRelator);
 
 	void emitirParecer(Projeto projeto);
 

@@ -1,5 +1,11 @@
 package ufc.quixada.npi.gpa.model;
 
+
+import java.math.BigDecimal;
+
+import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
+
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,13 +64,16 @@ public class Projeto {
 
 	private String local;
 	
+	@Column(scale=2)
+	private BigDecimal valorProjeto;
+
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 	
 	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private List<Participacao> participacoes;
 
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval=true)
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	@JoinTable(name = "projeto_documento", joinColumns = @JoinColumn(name = "projeto_id",referencedColumnName="id"),
 	inverseJoinColumns = @JoinColumn(name = "documento_id",referencedColumnName="id"))
 	private List<Documento> documentos;
@@ -74,7 +83,10 @@ public class Projeto {
 	private List<Comentario> comentarios;
 	
 	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-	private Parecer parecer;
+	private ParecerTecnico parecer;
+	
+	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	private ParecerRelator parecerRelator;
 	
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Documento ata;
@@ -84,6 +96,9 @@ public class Projeto {
 	
 	@Column(columnDefinition = "TEXT")
 	private String observacaoAvaliacao;
+	
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+	private Documento arquivoProjeto;
 
 	public List<Participacao> getParticipacoes() {
 		return participacoes;
@@ -140,6 +155,14 @@ public class Projeto {
 		return local;
 	}
 
+	public BigDecimal getValorProjeto() {
+		return valorProjeto;
+	}
+
+	public void setValorProjeto(BigDecimal valorProjeto) {
+		this.valorProjeto = valorProjeto;
+	}
+
 	public void setLocal(String local) {
 		this.local = local;
 	}
@@ -174,7 +197,7 @@ public class Projeto {
 	public String getCodigo() {
 		return codigo;
 	}
-
+	
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
@@ -195,12 +218,20 @@ public class Projeto {
 		this.submissao = submissao;
 	}
 
-	public Parecer getParecer() {
+	public ParecerTecnico getParecer() {
 		return parecer;
 	}
 
-	public void setParecer(Parecer parecer) {
+	public void setParecer(ParecerTecnico parecer) {
 		this.parecer = parecer;
+	}
+	
+	public ParecerRelator getParecerRelator() {
+		return parecerRelator;
+	}
+
+	public void setParecerRelator(ParecerRelator parecerRelator) {
+		this.parecerRelator = parecerRelator;
 	}
 
 	public Documento getAta() {
@@ -217,6 +248,18 @@ public class Projeto {
 
 	public void setOficio(Documento oficio) {
 		this.oficio = oficio;
+	}
+
+	public Documento getArquivoProjeto() {
+		return arquivoProjeto;
+	}
+
+	public void setArquivoProjeto(Documento arquivoProjeto) {
+		this.arquivoProjeto = arquivoProjeto;
+	}
+	
+	public String getCaminhoArquivos(){
+		return PASTA_DOCUMENTOS_GPA + "/" + this.codigo;
 	}
 
 	@Override
@@ -257,8 +300,8 @@ public class Projeto {
 	public enum StatusProjeto {
 
 		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
-		AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO("REPROVADO"),
-		APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
+		RESOLVENDO_PENDENCIAS("RESOLVENDO PENDÊNCIAS"), AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"),
+		APROVADO("APROVADO"), REPROVADO("REPROVADO"), APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
 		
 		private String descricao;
 
@@ -272,7 +315,8 @@ public class Projeto {
 	}
 
 	public enum Evento {
-		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS, 
+		ATRIBUICAO_RELATOR, ALTERACAO_RELATOR, SUBMISSAO_RESOLUCAO_PENDENCIAS
 	}
 	
 	@Deprecated

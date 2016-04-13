@@ -12,7 +12,8 @@ import javax.inject.Named;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
-import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.ParecerRelator;
+import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
@@ -30,7 +31,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 	private GenericRepository<Participacao> participacaoRepository;
 
 	@Inject
-	private GenericRepository<Parecer> parecerRepository;
+	private GenericRepository<ParecerTecnico> parecerRepository;
+	
+	@Inject
+	private GenericRepository<ParecerRelator> parecerRelatorRepository;
 	
 	@Inject
 	private DocumentoService documentoService;
@@ -42,12 +46,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 		String codigo = geraCodigoProjeto(projeto.getId());
 		projeto.setCodigo(codigo);
-		projetoRepository.update(projeto);
 	}
-
+	
 	@Override
-	public void atualizar(Projeto projeto) {
-		projeto.setStatus(StatusProjeto.NOVO);
+	public void update(Projeto projeto) {
 		projetoRepository.update(projeto);
 	}
 
@@ -57,19 +59,36 @@ public class ProjetoServiceImpl implements ProjetoService {
 		projeto.setSubmissao(new Date());
 		projetoRepository.update(projeto);
 	}
+	
+	@Override
+	public void submeterPendencias(Projeto projeto) {
+		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
+		projetoRepository.update(projeto);
+	}
 
 	@Override
-	public void atribuirParecerista(Projeto projeto, Parecer parecer) {
+	public void atribuirParecerista(Projeto projeto, ParecerTecnico parecer) {
 		projeto.setParecer(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		projetoRepository.update(projeto);
 	}
 	
 	@Override
-	public void alterarParecerista(Parecer parecer) {
+	public void alterarParecerista(ParecerTecnico parecer) {
 		parecerRepository.update(parecer);
 	}
 
+	@Override
+	public void atribuirRelator(Projeto projeto, ParecerRelator parecerRelator){
+		projeto.setParecerRelator(parecerRelator);
+		projetoRepository.update(projeto);
+	}
+	
+	@Override
+	public void alterarRelator(ParecerRelator parecerRelator){
+		parecerRelatorRepository.update(parecerRelator);
+	}
+	
 	@Override
 	public void emitirParecer(Projeto projeto) {		
 		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
@@ -119,8 +138,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("submetido", StatusProjeto.SUBMETIDO);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
 		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where ((status = :novo) OR (status = :submetido) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (coordenador.id = :id)",
+				"from Projeto where ((status = :novo) OR (status = :submetido) OR (status = :resolvendo_pendencias) OR (status = :aguardando_parecer) OR (status = :aguardando_avaliacao)) AND (coordenador.id = :id)",
 				params);
 	}
 	
@@ -188,8 +208,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idParecerista);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where parecer.parecerista.id = :id and status = :aguardando_parecer", params);
+				"from Projeto where parecer.parecerista.id = :id and (status = :aguardando_parecer or status =:resolvendo_pendencias)", params);
 	}
 	
 	@Override
@@ -197,9 +218,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idParecerista);
 		params.put("aguardando_parecer", StatusProjeto.AGUARDANDO_PARECER);
+		params.put("resolvendo_pendencias", StatusProjeto.RESOLVENDO_PENDENCIAS);
 
 		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where parecer.parecerista.id = :id AND status != :aguardando_parecer",
+				"from Projeto where parecer.parecerista.id = :id AND (status != :aguardando_parecer and status != :resolvendo_pendencias)",
 				params);
 	}
 
@@ -250,7 +272,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 		return false;
 	}
-	
+
 	public List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("idCoordenador", idCoordenador);

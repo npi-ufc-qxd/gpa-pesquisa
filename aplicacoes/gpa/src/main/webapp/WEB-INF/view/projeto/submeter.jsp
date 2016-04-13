@@ -101,9 +101,9 @@
 					</div>
 					
 					<div class="form-group form-item">
-						<label for="anexos" class="col-sm-2 control-label"><span class="required">*</span> Anexos:</label>
+						<label for="anexos" class="col-sm-2 control-label"> Anexos:</label>
 						<div class="col-sm-10">
-							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple" required="required"></input>
+							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple"></input>
 							<form:errors path="documentos"></form:errors>
 							<c:if test="${not empty projeto.documentos}">
 								<table id="table-anexos" class="table table-striped table-hover">
@@ -132,7 +132,52 @@
 							</c:if>
 						</div>
 					</div>
+
+					<hr></hr>
+
+					<div class="form-group form-item">
+
+						<label for="div-arquivo-projeto" class="col-sm-2 control-label">Arquivo
+							do Projeto:</label>
+
+						<div id="div-arquivo-projeto" class="col-sm-10">
+
+							<div id="campo-arquivo-projeto">
+								<input type="file" name="arquivo_projeto"
+									class="anexo file-loading "></input>
+							</div>
+
+
+							<c:if test="${not empty projeto.arquivoProjeto}">
+								<table id="table-arquivo-projeto"
+									class="table table-striped table-hover">
+
+									<tbody>
+										<tr>
+											<td id="arquivo-projeto" class="col-sm-11"><a
+												href="<c:url value="/documento/${projeto.arquivoProjeto.id }" />">${projeto.arquivoProjeto.nome }</a>
+											</td>
+
+											<td><a id="exluir-arquivo-p" class="col-sm-1"
+												data-toggle="modal" data-target="#confirm-delete-p-file"
+												title="Excluir" data-name="${projeto.arquivoProjeto.nome }"
+												data-idprojeto="${projeto.id }">
+
+													<button class="btn btn-danger btn-xs">
+														<i class="fa fa-trash-o"></i>
+													</button>
+
+											</a></td>
+										</tr>
+									</tbody>
+
+								</table>
+							</c:if>
+						</div>
+					</div>
 					
+					<hr></hr>
+
 					<div class="form-group form-item">
 								<label class="col-sm-2 control-label">Vincular participantes:</label>
 								
@@ -219,6 +264,27 @@
 				<div class="modal-footer">
 					<a id="button-delete-file" href="#" class="btn btn-danger btn-sm">Excluir</a>
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal Excluir Arquivo do Projeto -->
+	<div class="modal fade" id="confirm-delete-p-file">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						&times;<span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">Excluir</h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<button id="button-delete-p-file" class="btn btn-danger btn-sm">Excluir</button>
+					<button type="button" class="btn btn-default btn-sm"
+						data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>

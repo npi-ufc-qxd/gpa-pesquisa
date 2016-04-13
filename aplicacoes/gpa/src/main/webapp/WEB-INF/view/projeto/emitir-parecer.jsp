@@ -16,7 +16,12 @@
 	<div class="container">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Emitir Parecer</h3>
+				<div class="title">
+					<h3 class="panel-title">Emitir Parecer</h3>
+				</div>
+				<div class="button-right">
+						<a href="<c:url value="/projeto/solicitar-resolucao-pendencias/${projeto.id}"></c:url>" class="btn btn-warning">Solicitar Resolução de Pendências</a>
+				</div>
 			</div>
 			<div class="panel-body">
 				<c:if test="${not empty erro}">
@@ -41,16 +46,6 @@
 						<label for="coordenador" class="col-sm-2 control-label">Coordenador:</label>
 						<div class="col-sm-8 value-label">
 							<label><a href="<c:url value="/pessoa/${projeto.coordenador.id}/detalhes" ></c:url>">${projeto.coordenador.nome}</a></label>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Observação</label>
-						<div class="col-sm-10 value-label">
-							<c:if test="${empty projeto.parecer.observacao }">
-								<label>-</label>
-							</c:if>
-							<label>${projeto.parecer.observacao }</label>
 						</div>
 					</div>
 					

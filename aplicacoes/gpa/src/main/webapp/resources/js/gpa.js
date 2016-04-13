@@ -203,7 +203,33 @@ $(document).ready(function() {
 		});
 	});
 	
-	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante, #participanteExterno").select2({
+	$('#confirm-delete-p-file').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('#button-delete-p-file').attr('data-idProjeto', $(e.relatedTarget).data('idprojeto'));
+	});
+	
+	$('#button-delete-p-file').on('click', function(e) {
+		e.preventDefault();
+		var idProjeto = $(this).attr('data-idProjeto');
+		$.ajax({
+			type: "POST",
+			url: "/gpa-pesquisa/documento/excluir-arquivo-projeto/" + idProjeto,
+		})
+		.success(function( result ) {
+			if(result.result == 'ok') {
+				$('#table-arquivo-projeto').remove();
+				$('#campo-arquivo-projeto').removeClass('hidden');
+			}
+			$('#confirm-delete-p-file').modal('hide');
+			
+		});
+	});
+	
+	if($('#table-arquivo-projeto').length){
+		$('#campo-arquivo-projeto').addClass('hidden');
+	}
+	
+	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante","#participanteExterno").select2({
    	 	placeholder: "Buscar...",
    	 	dropdownCssClass: "bigdrop"
     });
