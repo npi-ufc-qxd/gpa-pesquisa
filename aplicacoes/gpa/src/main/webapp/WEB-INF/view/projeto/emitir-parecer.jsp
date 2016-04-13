@@ -49,16 +49,6 @@
 						</div>
 					</div>
 					
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Observação</label>
-						<div class="col-sm-10 value-label">
-							<c:if test="${empty projeto.parecer.observacao }">
-								<label>-</label>
-							</c:if>
-							<label>${projeto.parecer.observacao }</label>
-						</div>
-					</div>
-					
 					<div class="form-group form-item">
 						<label for="posicionamento" class="col-sm-2 control-label">Posicionamento:</label>
 						<div class="col-sm-4">

@@ -1,6 +1,10 @@
 package ufc.quixada.npi.gpa.model;
 
+
+import java.math.BigDecimal;
+
 import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +64,9 @@ public class Projeto {
 
 	private String local;
 	
+	@Column(scale=2)
+	private BigDecimal valorProjeto;
+
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 	
@@ -77,6 +84,9 @@ public class Projeto {
 	
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private ParecerTecnico parecer;
+	
+	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	private ParecerRelator parecerRelator;
 	
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento ata;
@@ -145,6 +155,14 @@ public class Projeto {
 		return local;
 	}
 
+	public BigDecimal getValorProjeto() {
+		return valorProjeto;
+	}
+
+	public void setValorProjeto(BigDecimal valorProjeto) {
+		this.valorProjeto = valorProjeto;
+	}
+
 	public void setLocal(String local) {
 		this.local = local;
 	}
@@ -179,7 +197,7 @@ public class Projeto {
 	public String getCodigo() {
 		return codigo;
 	}
-
+	
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
@@ -206,6 +224,14 @@ public class Projeto {
 
 	public void setParecer(ParecerTecnico parecer) {
 		this.parecer = parecer;
+	}
+	
+	public ParecerRelator getParecerRelator() {
+		return parecerRelator;
+	}
+
+	public void setParecerRelator(ParecerRelator parecerRelator) {
+		this.parecerRelator = parecerRelator;
 	}
 
 	public Documento getAta() {
@@ -289,8 +315,9 @@ public class Projeto {
 	}
 
 	public enum Evento {
+		
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS,
-		SUBMISSAO_RESOLUCAO_PENDENCIAS, HOMOLOGACAO
+		SUBMISSAO_RESOLUCAO_PENDENCIAS, ATRIBUICAO_RELATOR, ALTERACAO_RELATOR, HOMOLOGACAO
 	}
 	
 	@Deprecated

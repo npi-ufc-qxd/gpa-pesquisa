@@ -92,6 +92,15 @@
 							<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></label>
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Valor:</label>
+						<div class="col-sm-10 value-label">
+						<fmt:setLocale value="pt_BR"/>
+							<label><fmt:formatNumber value="${projeto.valorProjeto }" type="currency" currencySymbol="R$ "/></label>
+						</div>
+					</div>
+					
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Data de submissão:</label>
 						<div class="col-sm-4 value-label">
@@ -197,12 +206,6 @@
 							
 					<h4 class="subtitle">Homologação</h4>
 						<span class="line"></span>
-						<div class="form-group">
-							<div class="col-sm-12">		
-								<p class="value-label">${projeto.parecer.observacao}</p>				
-							</div>				   		
-						</div>
-						
 			
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Observação Homologação:</label>

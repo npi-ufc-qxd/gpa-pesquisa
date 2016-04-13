@@ -27,9 +27,6 @@ public class ParecerTecnico {
 	private StatusPosicionamento status;
 
 	@Column(columnDefinition = "TEXT")
-	private String observacao;
-
-	@Column(columnDefinition = "TEXT")
 	private String parecer;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -64,21 +61,13 @@ public class ParecerTecnico {
 	public void setStatus(StatusPosicionamento status) {
 		this.status = status;
 	}
-
-	public String getObservacao() {
-		return observacao;
-	}
-
+	
 	public Documento getDocumento() {
 		return documento;
 	}
 
 	public void setDocumento(Documento documento) {
 		this.documento = documento;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
 	}
 
 	public Date getDataAtribuicao() {
@@ -123,10 +112,10 @@ public class ParecerTecnico {
 
 	@Override
 	public String toString() {
-		return "Parecer [id=" + id + ", status=" + status + ", comentario=" + observacao + ", dataAtribuicao="
+		return "Parecer [id=" + id + ", status=" + status + ", dataAtribuicao="
 				+ dataAtribuicao + ", dataRealizacao=" + dataRealizacao + ", prazo=" + prazo + "]";
 	}
-
+	
 	public enum StatusPosicionamento {
 		FAVORAVEL("FAVORÁVEL"), NAO_FAVORAVEL("NÃO FAVORÁVEL");
 

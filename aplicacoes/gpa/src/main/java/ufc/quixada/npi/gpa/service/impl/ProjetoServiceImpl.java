@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -31,6 +32,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
 	private GenericRepository<ParecerTecnico> parecerRepository;
+	
+	@Inject
+	private GenericRepository<ParecerRelator> parecerRelatorRepository;
 	
 	@Inject
 	private DocumentoService documentoService;
@@ -74,6 +78,17 @@ public class ProjetoServiceImpl implements ProjetoService {
 		parecerRepository.update(parecer);
 	}
 
+	@Override
+	public void atribuirRelator(Projeto projeto, ParecerRelator parecerRelator){
+		projeto.setParecerRelator(parecerRelator);
+		projetoRepository.update(projeto);
+	}
+	
+	@Override
+	public void alterarRelator(ParecerRelator parecerRelator){
+		parecerRelatorRepository.update(parecerRelator);
+	}
+	
 	@Override
 	public void emitirParecer(Projeto projeto) {		
 		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);

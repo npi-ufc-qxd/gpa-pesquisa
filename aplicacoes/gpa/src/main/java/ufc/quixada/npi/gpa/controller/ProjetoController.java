@@ -18,6 +18,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -127,6 +128,8 @@ public class ProjetoController {
 		
 		projetoService.cadastrar(projeto);
 
+		projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
+		
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && anexos.length != 0) {
 			for (MultipartFile anexo : anexos) {
@@ -470,7 +473,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam("anexos") List<MultipartFile> anexos,
-			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result,
+			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto,
 			Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
@@ -516,7 +519,10 @@ public class ProjetoController {
 		for (Documento documento : documentos) {
 			oldProjeto.addDocumento(documento);
 		}
+		
+		projetoService.update(oldProjeto);
 
+		BindingResult result = new BeanPropertyBindingResult(oldProjeto, "oldProjeto");
 		projetoValidator.validateSubmissao(oldProjeto, result);
 		
 		if (result.hasErrors()) {
@@ -639,6 +645,7 @@ public class ProjetoController {
 		oldProjeto.setNome(newProjeto.getNome());
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
+		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
 		return oldProjeto;
 	}
 
