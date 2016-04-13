@@ -1,6 +1,10 @@
 package ufc.quixada.npi.gpa.model;
 
+
+import java.math.BigDecimal;
+
 import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +64,9 @@ public class Projeto {
 
 	private String local;
 	
+	@Column(scale=2)
+	private BigDecimal valorProjeto;
+
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 	
@@ -145,6 +152,14 @@ public class Projeto {
 		return local;
 	}
 
+	public BigDecimal getValorProjeto() {
+		return valorProjeto;
+	}
+
+	public void setValorProjeto(BigDecimal valorProjeto) {
+		this.valorProjeto = valorProjeto;
+	}
+
 	public void setLocal(String local) {
 		this.local = local;
 	}
@@ -179,7 +194,7 @@ public class Projeto {
 	public String getCodigo() {
 		return codigo;
 	}
-
+	
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
