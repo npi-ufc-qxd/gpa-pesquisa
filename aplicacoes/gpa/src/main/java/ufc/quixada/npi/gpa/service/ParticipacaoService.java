@@ -8,6 +8,5 @@ public interface ParticipacaoService{
 	 * Valida intervalos de participação por pessoa, não permitindo intercessão.
 	 * 
 	 */
-	public abstract void verificaIntervalosParticipacaoPessoa(Participacao participacao);
-	public abstract void verificaIntervalosParticipacaoPessoaExterna(Participacao participacao);
+	public abstract void verificaIntervalosParticipacaoPessoa(Participacao participacao, Long id);
 }

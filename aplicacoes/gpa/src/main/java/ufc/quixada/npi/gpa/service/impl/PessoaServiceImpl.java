@@ -162,7 +162,7 @@ public class PessoaServiceImpl implements PessoaService {
 	}
 
 	@Override
-	public PessoaExterna getPessoaExterna(int id) {
+	public PessoaExterna getPessoaExterna(Long id) {
 		return pessoaExternaRepository.find(PessoaExterna.class, id);
 	}
 	

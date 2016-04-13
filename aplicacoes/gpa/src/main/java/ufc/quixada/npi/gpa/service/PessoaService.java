@@ -40,5 +40,5 @@ public interface PessoaService {
 	
 	List<PessoaExterna> getAllPessoaExterna();
 	
-	PessoaExterna getPessoaExterna(int id);
+	PessoaExterna getPessoaExterna(Long id);
 }

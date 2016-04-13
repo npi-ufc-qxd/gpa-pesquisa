@@ -890,15 +890,7 @@ $(document).ready(function() {
                 validators: {
                     notEmpty: {
                         message: 'Nome obrigatório'
-                    },
-                    regexp: { 
-                    	regexp: /^[a-záàâãéèêíïóôõöúçñ ]+$/i,
-                    	message: 'Nome inválido'
-                    },
-                    stringLength: {
-                        min: 3
                     }
-                    
                 }
             },inputCPF: {
                 validators: {
@@ -939,7 +931,7 @@ $(document).ready(function() {
 						email: emailPessoaExterna.val()
 				    },			    
 				    success: function(data, textStatus, xhr) {
-				    	location.reload();
+				    	location.reload(true);
 				    }
 			});
 		}

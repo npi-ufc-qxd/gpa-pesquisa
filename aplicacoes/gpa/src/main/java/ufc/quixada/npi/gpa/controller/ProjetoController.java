@@ -273,7 +273,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/participacoes/{idProjeto}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("idProjeto") Long idProjeto,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
-			@RequestParam(value = "participanteExternoSelecionado") int idParticipanteExternoSelecionado,
+			@RequestParam(value = "participanteExternoSelecionado") Long idParticipanteExternoSelecionado,
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
@@ -308,9 +308,9 @@ public class ProjetoController {
 		}
 		try {
 			if(participacao.isExterno()== true)
-				participacaoService.verificaIntervalosParticipacaoPessoaExterna(participacao);
+				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteExternoSelecionado);
 			else
-				participacaoService.verificaIntervalosParticipacaoPessoa(participacao);
+				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteSelecionado);
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("erro", e.getMessage());
 			model.addAttribute("projeto", projeto);

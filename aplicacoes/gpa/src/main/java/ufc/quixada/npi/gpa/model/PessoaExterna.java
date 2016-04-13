@@ -10,7 +10,7 @@ public class PessoaExterna {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	private String nome;
 	
@@ -23,11 +23,11 @@ public class PessoaExterna {
 		return "PessoaExterna [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", email=" + email + "]";
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
