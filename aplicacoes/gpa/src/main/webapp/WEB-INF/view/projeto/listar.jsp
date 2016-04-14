@@ -38,6 +38,7 @@
 		            <li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-parecer-emitidos" data-toggle="tab">Pareceres Emitidos <span class="badge">${projetosParecerEmitido.size() }</span></a></li>
+		            <li class=""><a aria-expanded="false" href="#tab-projetos-aguardando-avaliacao" data-toggle="tab">Projetos a Avaliar <span class="badge">${projetosAguardandoAvaliacao.size() }</span></a></li>
 		        </ul>
 		        <div class="tab-content">
 		        	<div class="tab-pane fade active in" id="tab-meus-projetos">
@@ -234,6 +235,33 @@
 							</table>
 						</c:if>
 			        </div><!-- tab-parecer emitidos -->
+		        	
+		        	 <div class="tab-pane fade" id="tab-projetos-aguardando-avaliacao">
+			            <c:if test="${empty projetosAguardandoAvaliacao}">
+							<div class="alert alert-warning" role="alert">Não há projetos aguardando avaliação.</div>
+						</c:if>
+						<c:if test="${not empty projetosAguardandoAvaliacao}">
+							<table id="projetos-aguardando-avaliacao" class="display">
+								<thead>
+									<tr>
+										<th>Código</th>
+										<th>Projeto</th>
+										<th>Coordenador</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="projeto" items="${projetosAguardandoAvaliacao}">
+										<tr>
+											<td>${projeto.codigo }</td>
+											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:if>
+			        </div><!-- tab-aguardando avaliacao -->
+		        	
 		        </div><!-- tab-content -->
 		    </div><!-- /panel-body -->
 		</div><!-- /panel -->

@@ -101,6 +101,8 @@ public class ProjetoController {
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosParecerEmitido", projetoService.getProjetosParecerEmitido(idUsuarioLogado));
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
+		model.addAttribute("projetosAguardandoAvaliacao", projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
+		
 
 		return PAGINA_LISTAR_PROJETO;
 	}
