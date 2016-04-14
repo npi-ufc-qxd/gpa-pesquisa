@@ -14,8 +14,6 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
-
 @Entity
 public class ParecerRelator {
 
@@ -24,7 +22,7 @@ public class ParecerRelator {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusPosicionamento status;
+	private StatusPosicionamentoRelator status;
 	
 	@DateTimeFormat
 	private Date data;
@@ -44,11 +42,11 @@ public class ParecerRelator {
 		this.id = id;
 	}
 
-	public StatusPosicionamento getStatus() {
+	public StatusPosicionamentoRelator getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusPosicionamento status) {
+	public void setStatus(StatusPosicionamentoRelator status) {
 		this.status = status;
 	}
 
@@ -74,5 +72,19 @@ public class ParecerRelator {
 
 	public void setRelator(Pessoa relator) {
 		this.relator = relator;
+	}
+	
+	public enum StatusPosicionamentoRelator {
+		FAVORAVEL("FAVORÁVEL"), NAO_FAVORAVEL("NÃO FAVORÁVEL");
+
+		private String descricao;
+
+		private StatusPosicionamentoRelator(String descricao) {
+			this.descricao = descricao;
+		}
+
+		public String getDescricao() {
+			return this.descricao;
+		}
 	}
 }

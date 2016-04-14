@@ -90,6 +90,7 @@ $(document).ready(function() {
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1,]},
             {"targets" : 1, "orderable" : false},
+            {"targets" : 3, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {

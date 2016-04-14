@@ -12,6 +12,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_SUBMETIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +48,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.ParecerRelator;
+import ufc.quixada.npi.gpa.model.ParecerRelator.StatusPosicionamentoRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
@@ -612,6 +616,52 @@ public class ProjetoController {
 
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
 		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+	
+	@RequestMapping(value = "/avaliar/{id-projeto}", method = RequestMethod.GET)
+	public String avaliarForm(@PathVariable("id-projeto") long idProjeto, Model model, HttpSession session,
+			RedirectAttributes redirectAttributes, Authentication authentication) {
+		Projeto projeto = projetoService.getProjeto(idProjeto);
+
+		if (projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		if (!usuario.equals(projeto.getParecerRelator().getRelator())) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		model.addAttribute("projeto", projeto);
+		model.addAttribute("posicionamento", StatusPosicionamentoRelator.values());
+		model.addAttribute("parecer", new ParecerRelator());
+		return PAGINA_EMITIR_PARECER_RELATOR;
+	}
+	
+	@RequestMapping(value = "/avaliar", method = RequestMethod.POST)
+	public String avaliar(@RequestParam("id-projeto") Long idProjeto,
+			@RequestParam("posicionamento") StatusPosicionamentoRelator posicionamento,
+			@RequestParam("observacao") String observacao, Model model, RedirectAttributes redirectAttributes) {
+		
+		Projeto projeto = projetoService.getProjeto(idProjeto);
+		
+		if(projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		
+		projeto.getParecerRelator().setData(new Date());
+		projeto.getParecerRelator().setStatus(posicionamento);
+		projeto.getParecerRelator().setObservacao(observacao);
+		projeto.setStatus(StatusProjeto.AGUARDANDO_HOMOLOGACAO);
+		
+		projetoService.update(projeto);
+		
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
