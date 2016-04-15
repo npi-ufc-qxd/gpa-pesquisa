@@ -72,13 +72,6 @@
 						</div>
 					</div>
 					
-					<div class="form-group form-item">
-						<label for="observacao" class="col-sm-2 control-label">Observações:</label>
-						<div class="col-sm-10">
-							<form:textarea id="observacao" path="observacao" cssClass="form-control" rows="5" placeholder="Observações" />
-						</div>
-					</div>
-					
 					<div class="form-group">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-2">

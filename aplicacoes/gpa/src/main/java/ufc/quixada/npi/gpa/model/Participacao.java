@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,8 +27,15 @@ public class Participacao {
 	@OneToOne
 	private Pessoa participante;
 	
+	@OneToOne
+	@JoinColumn(name="pessoa_externa_id")
+	private PessoaExterna participanteExterno;
+	
 	@Enumerated(EnumType.STRING)
 	private TipoParticipacao tipo;
+	
+	@Column(columnDefinition="boolean")
+	private boolean externo;
 	
 	private Integer mesInicio;
 	private Integer anoInicio;
@@ -36,6 +44,15 @@ public class Participacao {
 	private BigDecimal bolsaValorMensal;
 	private Integer cargaHorariaMensal;
 	
+	
+	public boolean isExterno() {
+		return externo;
+	}
+
+	public void setExterno(boolean isExterno) {
+		this.externo = isExterno;
+	}
+
 	public Integer getMesInicio() {
 		return mesInicio;
 	}
@@ -115,6 +132,14 @@ public class Participacao {
 
 	public void setTipo(TipoParticipacao tipo) {
 		this.tipo = tipo;
+	}
+
+	public PessoaExterna getParticipanteExterno() {
+		return participanteExterno;
+	}
+
+	public void setParticipanteExterno(PessoaExterna participanteExterno) {
+		this.participanteExterno = participanteExterno;
 	}
 
 	@Override

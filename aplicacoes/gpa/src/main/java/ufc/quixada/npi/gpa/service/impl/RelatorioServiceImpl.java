@@ -159,7 +159,7 @@ public class RelatorioServiceImpl implements RelatorioService {
 			projetoReprovado.setNomeProjeto(p.getNome());
 			projetoReprovado.setNomeCoordenador(p.getCoordenador().getNome());
 			projetoReprovado.setDataDeSubimissao(p.getSubmissao());
-			projetoReprovado.setDataDeAvaliacao(p.getAvaliacao());
+			projetoReprovado.setDataDeAvaliacao(p.getHomologacao());
 			projetosReprovadosRelatorio.add(projetoReprovado);
 		}
 		

@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-avaliados').DataTable({
+	$('#projetos-homologados').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3, 4]},            
@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-avaliados-diretor').DataTable({
+	$('#projetos-homologados-diretor').DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3]},            
@@ -185,7 +185,10 @@ $(document).ready(function() {
 	});
 	
 	$('#confirm-delete-participacao').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name') + '\"?');
+		if($(e.relatedTarget).data('name') == "")
+			$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name-externo') + '\"?');
+		else
+			$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
@@ -239,7 +242,7 @@ $(document).ready(function() {
 		$('#campo-arquivo-projeto').addClass('hidden');
 	}
 	
-	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante").select2({
+	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante","#participanteExterno").select2({
    	 	placeholder: "Buscar...",
    	 	dropdownCssClass: "bigdrop"
     });
@@ -440,7 +443,7 @@ $(document).ready(function() {
     });
 	
 	//Avaliar projeto
-	$('#avaliarProjetoForm').bootstrapValidator({
+	$('#homologarProjetoForm').bootstrapValidator({
 		feedbackIcons: {
         	valid: 'glyphicon glyphicon-ok',
             validating: 'glyphicon glyphicon-refresh'
@@ -859,4 +862,92 @@ $(document).ready(function() {
 		parent.history.back();
 		return false;
 	});
+	
+	
+	$('#pessoaExternaCheckBox').change(function() {
+	   if($(this).is(":checked")) {
+		   $("#divParticipante").hide();
+		   $("#divParticipanteExterno").show();
+		   document.getElementById("externoBoolean").value=true;
+	   } else {
+		   $("#divParticipanteExterno").hide();
+		   $("#divParticipante").show();
+		   document.getElementById("externoBoolean").value=false;
+	   }
+	});
+	/* MODAL */
+	var modal = document.getElementById('cadastrarPessoaExternaModal');
+	$("#cadastrarPessoaExternaBtn").click(function() {
+	    modal.style.display = "block";
+	});
+	$("#fecharModalBtn").click(function(){
+		modal.style.display = "none";
+	});
+	$("#cancelarModalBtn").click(function(){
+		modal.style.display = "none";
+	});
+	var nomePessoaExterna = $("#inputNome");
+	var cpfPessoaExterna = $("#inputCPF");
+	var emailPessoaExterna = $("#inputEmail");
+	$("#cadastrarPessoaExternaForm").bootstrapValidator({
+		group: '.form-item',
+		live: 'enabled',
+		feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        excluded: ':disabled',
+		fields: {
+            inputNome: {
+                validators: {
+                    notEmpty: {
+                        message: 'Nome obrigatório'
+                    }
+                }
+            },inputCPF: {
+                validators: {
+                    notEmpty: {
+                        message: 'Campo CPF não pode ficar vazio'
+                    },
+                    regexp: {
+                    	regexp:/^([0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}|[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2})$/,
+                        message: 'CPF inválido'
+                    },
+                    stringLength: {
+                        max:11
+                    }
+                }
+            },
+            inputEmail: {
+                validators: {
+                    notEmpty: {
+                        message: 'Email não pode ficar vazio'
+                    },
+                    emailAddress: {
+                        message: 'Email inválido'
+                    }
+                }
+            }
+		}
+    });
+	$("#submeterNovaPessoaExterna").on('click',function(e){
+		e.preventDefault();
+		$('#cadastrarPessoaExternaForm').bootstrapValidator('validate')
+		if(cpfPessoaExterna.val().length){
+			$.ajax({
+				    url: "/gpa-pesquisa/pessoa/cadastrarExterno", 
+				    type: 'POST', 
+				    data: {
+				    	nome: nomePessoaExterna.val(),
+						cpf: cpfPessoaExterna.val(),
+						email: emailPessoaExterna.val()
+				    },			    
+				    success: function(data, textStatus, xhr) {
+				    	location.reload(true);
+				    }
+			});
+		}
+	});
+	/* MODAL */
 });

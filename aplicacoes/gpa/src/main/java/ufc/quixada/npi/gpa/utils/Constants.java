@@ -28,7 +28,7 @@ public class Constants {
 
 	public static final String PAGINA_ATRIBUIR_PARECERISTA = "direcao/atribuir-parecerista";
 
-	public static final String PAGINA_AVALIAR_PROJETO = "direcao/avaliar-projeto";
+	public static final String PAGINA_HOMOLOGAR_PROJETO = "direcao/homologar-projeto";
 
 	public static final String PAGINA_DETALHES_PARTICIPANTE = "direcao/participante";
 
@@ -81,7 +81,7 @@ public class Constants {
 
 	public static final String MENSAGEM_PARTICIPACAO_REMOVIDA = "Participação removida com sucesso";
 
-	public static final String MENSAGEM_PROJETO_AVALIADO = "Projeto avaliado com sucesso";
+	public static final String MENSAGEM_PROJETO_HOMOLOGADO = "Projeto homologado com sucesso";
 
 	public static final String MENSAGEM_DATA_TERMINO_FUTURA = "A data de término não pode ser anterior à data atual";
 

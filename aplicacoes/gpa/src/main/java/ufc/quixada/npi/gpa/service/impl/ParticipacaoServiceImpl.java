@@ -9,22 +9,24 @@ import javax.inject.Named;
 
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.PessoaExterna;
 import ufc.quixada.npi.gpa.service.ParticipacaoService;
 
 @Named
 public class ParticipacaoServiceImpl implements ParticipacaoService{
 
 	@Override
-	public void verificaIntervalosParticipacaoPessoa(Participacao participacao) {
+	public void verificaIntervalosParticipacaoPessoa(Participacao participacao, Long id) {
+		
 		List<Participacao> participacoes = participacao.getProjeto().getParticipacoes();
-
 		// Participação atual
 		Pessoa participanteAtual = participacao.getParticipante();
+		PessoaExterna participanteExternoAtual = participacao.getParticipanteExterno();
 		YearMonth inicioPartAtual = YearMonth.of(participacao.getAnoInicio(), participacao.getMesInicio());
 		YearMonth terminoPartAtual = YearMonth.of(participacao.getAnoTermino(), participacao.getMesTermino());
 
 		for (Participacao part : participacoes) {
-			if (participanteAtual.equals(part.getParticipante())) {
+			if (participanteAtual.equals(part.getParticipante()) || participanteExternoAtual.equals(part.getParticipanteExterno())) {
 				YearMonth inicio = YearMonth.of(part.getAnoInicio(), part.getMesInicio());
 				YearMonth termino = YearMonth.of(part.getAnoTermino(), part.getMesTermino());
 

@@ -47,7 +47,7 @@ public class Projeto {
 	private Date termino;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date avaliacao;
+	private Date homologacao;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date submissao;
@@ -82,20 +82,20 @@ public class Projeto {
 	@OrderBy(value="data")
 	private List<Comentario> comentarios;
 	
-	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private ParecerTecnico parecer;
 	
 	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
 	private ParecerRelator parecerRelator;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento ata;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento oficio;
 	
 	@Column(columnDefinition = "TEXT")
-	private String observacaoAvaliacao;
+	private String observacaoHomologacao;
 	
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento arquivoProjeto;
@@ -104,12 +104,12 @@ public class Projeto {
 		return participacoes;
 	}
 	
-	public Date getAvaliacao() {
-		return avaliacao;
+	public Date getHomologacao() {
+		return homologacao;
 	}
 
-	public void setAvaliacao(Date avaliacao) {
-		this.avaliacao = avaliacao;
+	public void setHomologacao(Date homologacao) {
+		this.homologacao = homologacao;
 	}
 	public String getNome() {
 		return nome;
@@ -283,12 +283,12 @@ public class Projeto {
 		this.comentarios = comentarios;
 	}
 
-	public String getObservacaoAvaliacao() {
-		return observacaoAvaliacao;
+	public String getObservacaoHomologacao() {
+		return observacaoHomologacao;
 	}
 
-	public void setObservacaoAvaliacao(String observacaoAvaliacao) {
-		this.observacaoAvaliacao = observacaoAvaliacao;
+	public void setObservacaoHomologacao(String observacaoHomologacao) {
+		this.observacaoHomologacao = observacaoHomologacao;
 	}
 
 	@Override
@@ -301,8 +301,7 @@ public class Projeto {
 
 		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
 		RESOLVENDO_PENDENCIAS("RESOLVENDO PENDÊNCIAS"), AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"),
-		APROVADO("APROVADO"), REPROVADO("REPROVADO"), APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO"),
-		AGUARDANDO_HOMOLOGACAO("AGUARDANDO HOMOLOGAÇÃO");
+		AGUARDANDO_HOMOLOGACAO("AGUARDANDO HOMOLOGAÇÃO"), APROVADO("APROVADO"), REPROVADO("REPROVADO");
 		
 		private String descricao;
 
@@ -316,8 +315,9 @@ public class Projeto {
 	}
 
 	public enum Evento {
-		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS, 
-		ATRIBUICAO_RELATOR, ALTERACAO_RELATOR, SUBMISSAO_RESOLUCAO_PENDENCIAS
+		
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS,
+		SUBMISSAO_RESOLUCAO_PENDENCIAS, ATRIBUICAO_RELATOR, ALTERACAO_RELATOR, HOMOLOGACAO
 	}
 	
 	@Deprecated
