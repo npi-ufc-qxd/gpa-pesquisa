@@ -106,6 +106,7 @@ public class ProjetoController {
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosParecerEmitido", projetoService.getProjetosParecerEmitido(idUsuarioLogado));
 		model.addAttribute("projetosAguardandoAvaliacao", projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
+		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados(idUsuarioLogado));
 
 
@@ -123,19 +124,19 @@ public class ProjetoController {
 	public String cadastrar(@RequestParam("anexos") MultipartFile[] anexos,
 			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, Authentication authentication, Model model) {
 		
-		model.addAttribute("action", "cadastrar");
-
 		projetoValidator.validate(projeto, result);
 
 		if (result.hasErrors()) {
+			model.addAttribute("action", "cadastrar");
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
 		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
-		
 		projetoService.cadastrar(projeto);
-
-		projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
+		
+		if(projeto.getValorProjeto() != null) {
+			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
+		}
 		
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && anexos.length != 0) {
@@ -210,12 +211,10 @@ public class ProjetoController {
 			model.addAttribute("permissao", "parecerista");
 			return PAGINA_DETALHES_PROJETO;
 		}
-
-
-		if (projeto.getParecer().getParecerista().equals(pessoa)
-				&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
-			model.addAttribute("permissao", "parecerista");
-			return PAGINA_DETALHES_PROJETO;
+		
+		if(projeto.getParecerRelator().getRelator().equals(pessoa)){
+				model.addAttribute("permissao", "relator");
+				return PAGINA_DETALHES_PROJETO;
 		}
 
 		if (projeto.getStatus().equals(StatusProjeto.APROVADO)) {
@@ -278,7 +277,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/participacoes/{idProjeto}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("idProjeto") Long idProjeto,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
-			@RequestParam(value = "participanteExternoSelecionado") Long idParticipanteExternoSelecionado,
+			@RequestParam(value = "participanteExternoSelecionado", required = false) Long idParticipanteExternoSelecionado,
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 

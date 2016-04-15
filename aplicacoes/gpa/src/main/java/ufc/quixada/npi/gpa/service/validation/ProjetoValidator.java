@@ -1,7 +1,6 @@
 
 package ufc.quixada.npi.gpa.service.validation;
 
-import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,6 +77,7 @@ public class ProjetoValidator implements Validator {
 		validaCampoObrigatorio("atividades", errors);
 		validaCampoObrigatorio("documentos", errors);
 		validaCampoObrigatorio("arquivoProjeto", errors);
+		validaCampoObrigatorio("valorProjeto", errors);
 
 		Map<String, Date> datas = new HashMap<>();
 		datas.put("inicio", projeto.getInicio());
@@ -166,21 +166,23 @@ public class ProjetoValidator implements Validator {
 
 	//Validando se o valor do projeto é maior que o somatório das bolsas dos participantes
 	private void validaValorProjeto(Projeto projeto, Errors errors) {
-		float valorProjeto = projeto.getValorProjeto().floatValue();
-		float valorTotalParticipantes = 0;
-		float valorParticipante = 0;
-		
-		List<Participacao> participantes = projeto.getParticipacoes();
-		for (Participacao participacao : participantes) {
-			float bolsaParticipante = participacao.getBolsaValorMensal().intValue();
-			int anostrabalhados = (participacao.getAnoTermino()- participacao.getAnoInicio())*12;
-			float mesesTrabalhados = participacao.getMesTermino() - participacao.getMesInicio() + 1;
-			valorParticipante = bolsaParticipante * (mesesTrabalhados + anostrabalhados);
-			valorTotalParticipantes = valorTotalParticipantes + valorParticipante;
-		}
-				
-		if (valorTotalParticipantes > valorProjeto) {
-			errors.reject("projeto.valorProjetoInsuficiente", "projeto.valorProjetoInsuficiente");
+		if(projeto.getValorProjeto() != null) {
+			float valorProjeto = projeto.getValorProjeto().floatValue();
+			float valorTotalParticipantes = 0;
+			float valorParticipante = 0;
+			
+			List<Participacao> participantes = projeto.getParticipacoes();
+			for (Participacao participacao : participantes) {
+				float bolsaParticipante = participacao.getBolsaValorMensal().intValue();
+				int anostrabalhados = (participacao.getAnoTermino()- participacao.getAnoInicio())*12;
+				float mesesTrabalhados = participacao.getMesTermino() - participacao.getMesInicio() + 1;
+				valorParticipante = bolsaParticipante * (mesesTrabalhados + anostrabalhados);
+				valorTotalParticipantes = valorTotalParticipantes + valorParticipante;
+			}
+					
+			if (valorTotalParticipantes > valorProjeto) {
+				errors.reject("projeto.valorProjetoInsuficiente", "projeto.valorProjetoInsuficiente");
+			}
 		}
 	}
 	

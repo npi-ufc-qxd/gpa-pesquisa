@@ -217,6 +217,14 @@ public class ProjetoServiceImpl implements ProjetoService {
 	};
 
 	@Override
+	public List<Projeto> getProjetosAvaliados(Long idRelator) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idRelator);
+		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where parecerRelator.relator.id = :id AND status != :aguardando_avaliacao" , params);
+	}
+	
+	@Override
 	public List<Participacao> getParticipacoes(Long idPessoa) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idPessoa);

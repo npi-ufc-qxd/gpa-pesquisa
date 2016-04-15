@@ -33,19 +33,20 @@
 					</div>
 				</c:if>
 		        <ul class="nav nav-tabs">
-		            <li class="active"><a aria-expanded="true" href="#tab-meus-projetos" data-toggle="tab">Meus projetos <span class="badge">${projetosNaoHomologados.size() }</span></a></li>
-		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Em Participação <span class="badge">${participacoesEmProjetos.size() }</span></a></li>		            
+		            <li class="active"><a aria-expanded="true" href="#tab-meus-projetos" data-toggle="tab">Meus projetos <span class="badge">${projetosNaoHomologados.size()}</span></a></li>
+		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Participações <span class="badge">${participacoesEmProjetos.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-homologados" data-toggle="tab">Projetos Homologados <span class="badge">${projetosHomologados.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-parecer-emitidos" data-toggle="tab">Pareceres Emitidos <span class="badge">${projetosParecerEmitido.size() }</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-projetos-aguardando-avaliacao" data-toggle="tab">Projetos a Avaliar <span class="badge">${projetosAguardandoAvaliacao.size() }</span></a></li>
+		            <li class=""><a aria-expanded="false" href="#tab-projetos-avaliados" data-toggle="tab">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
 		        </ul>
 		        <div class="tab-content">
 		        	<div class="tab-pane fade active in" id="tab-meus-projetos">
-		        		<c:if test="${empty projetosNaoHomologados}">
+			        	<c:if test="${empty projetosNaoHomologados}">
 							<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 						</c:if>
-						
+							
 						<c:if test="${not empty projetosNaoHomologados}">
 							<table id="meus-projetos" class="display">
 								<thead>
@@ -69,23 +70,24 @@
 												<c:if test="${empty projetoNaoHomologado.submissao }">-</c:if>
 												<fmt:formatDate pattern="dd/MM/yyyy" value="${projetoNaoHomologado.submissao }" />
 											</td>
+													
 											<td class="acoes">
 												<c:if test="${projetoNaoHomologado.status == 'NOVO' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
 														data-href="<c:url value="/projeto/submeter/${projetoNaoHomologado.id}" ></c:url>" data-name="${projetoNaoHomologado.nome }">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>
 													</a>
-													
+															
 													<c:if test="${(not empty projetoNaoHomologado.inicio) && (not empty projetoNaoHomologado.termino)}">
 														<a id="vincular" href="<c:url value="/projeto/participacoes/${projetoNaoHomologado.id}" ></c:url>" title="Vincular participantes">
 															<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
 														</a>
 													</c:if>
-													
+														
 													<a id="editar" href="<c:url value="/projeto/editar/${projetoNaoHomologado.id}" ></c:url>" title="Editar">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 													</a>
-		
+			
 													<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" title="Excluir"
 														data-href="<c:url value="/projeto/excluir/${projetoNaoHomologado.id}"></c:url>" data-name="${projetoNaoHomologado.nome }">
 														<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
@@ -135,9 +137,9 @@
 							</table>
 						</c:if>
 		        	</div><!-- tab-em-participacao -->
-		        	
+
 			        <div class="tab-pane fade" id="tab-homologados">
-			            <c:if test="${empty projetosHomologados}">
+				    	<c:if test="${empty projetosHomologados}">
 							<div class="alert alert-warning" role="alert">Não há projetos homologados.</div>
 						</c:if>
 						<c:if test="${not empty projetosHomologados}">
@@ -164,8 +166,8 @@
 								</tbody>
 							</table>
 						</c:if>
-			        </div><!-- tab-homologados -->
-			        
+				    </div><!-- tab-homologados -->
+				        	
 			        <div class="tab-pane fade" id="tab-parecer">
 			            <c:if test="${empty projetosAguardandoParecer}">
 							<div class="alert alert-warning" role="alert">Não há projetos aguardando parecer.</div>
@@ -267,6 +269,38 @@
 							</table>
 						</c:if>
 			        </div><!-- tab-aguardando avaliacao -->
+			        
+			        <div class="tab-pane fade" id="tab-projetos-avaliados">
+			            <c:if test="${empty projetosAvaliados}">
+							<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
+						</c:if>
+						<c:if test="${not empty projetosAvaliados}">
+							<table id="projetos-avaliados" class="display">
+								<thead>
+									<tr>
+										<th>Código</th>
+										<th>Projeto</th>
+										<th>Coordenador</th>
+										<th>Avaliação</th>
+										<th>Data Avaliação</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="projeto" items="${projetosAvaliados}">
+										<tr>
+											<td>${projeto.codigo }</td>
+											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
+											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
+											<td>${projeto.parecerRelator.status}</td>
+											<td>
+												<fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecerRelator.data}" />
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:if>
+			        </div><!-- tab-projetos-avaliados -->
 		        	
 		        </div><!-- tab-content -->
 		    </div><!-- /panel-body -->
