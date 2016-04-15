@@ -28,7 +28,6 @@ public class ParticipacaoServiceImpl implements ParticipacaoService{
 		for (Participacao part : participacoes) {
 			if ((participanteAtual!=null && participanteAtual.equals(part.getParticipante()))
 					|| (participanteExternoAtual!=null && participanteExternoAtual.equals(part.getParticipanteExterno()))) {
-			
 				YearMonth inicio = YearMonth.of(part.getAnoInicio(), part.getMesInicio());
 				YearMonth termino = YearMonth.of(part.getAnoTermino(), part.getMesTermino());
 

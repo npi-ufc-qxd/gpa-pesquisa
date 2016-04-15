@@ -297,7 +297,6 @@ public class ProjetoController {
 		}else{
 			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
 		}
-		participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
 		participacao.setProjeto(projeto);
 		participacaoValidator.validate(participacao, result);
 		if (result.hasErrors()) {
