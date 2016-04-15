@@ -179,6 +179,41 @@ $(document).ready(function() {
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
+	mensagemFonteFinanciamento();
+	
+	function mensagemFonteFinanciamento(){
+		if($('#table-fontes-financiamento tr').length){
+			$('#mensagem-fonte-financiamento').addClass('hidden');
+		}else{
+			$('#mensagem-fonte-financiamento').removeClass('hidden');
+		}
+	}
+	
+	$('#confirm-delete-fonte-financiamento').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a Fonte de Financiamento: \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('#button-delete-fonte-financiamento').attr('data-id', $(e.relatedTarget).data('id'));
+	});
+	
+	$('#button-delete-fonte-financiamento').on('click', function(e) {
+		e.preventDefault();
+		var id = $(this).attr('data-id');
+		var fonteFinanciamentoId = $('#id').val();
+		$.ajax({
+			type: "POST",
+			url: "/gpa-pesquisa/administracao/fonte-financiamento/excluir/" + id,
+			data:{
+				fonteFinanciamentoId:fonteFinanciamentoId
+			}
+		})
+		.success(function( result ) {
+			if(result.result == 'ok') {
+				$('#fonte-'+id).remove();
+				mensagemFonteFinanciamento();
+			}
+			$('#confirm-delete-fonte-financiamento').modal('hide');
+		});
+	});
+	
 	$('#confirm-delete-file').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('#button-delete-file').attr('data-id', $(e.relatedTarget).data('id'));

@@ -1,7 +1,6 @@
 
 package ufc.quixada.npi.gpa.service.validation;
 
-import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Date;
