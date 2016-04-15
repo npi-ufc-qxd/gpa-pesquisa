@@ -7,13 +7,11 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_VINCULAR_PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_CADASTRADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OK;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_SUCESSO_VINCULAR_PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ADMINISTRACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ADMINISTRACAO_VINCULAR_PAPEL;
-import static ufc.quixada.npi.gpa.utils.Constants.PAPEL_ADMINISTRACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAPEL_COORDENACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_ADMINISTRACAO;
@@ -154,7 +152,7 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/fonte-financiamento/excluir/{id}", method = RequestMethod.POST)
-	@ResponseBody public ModelMap excluirFonteFinanciamento(@PathVariable("id") Long fonteFinanciamentoId, @ModelAttribute ModelMap model, Authentication authentication) {
+	@ResponseBody public ModelMap excluirFonteFinanciamento(@PathVariable("id") Long fonteFinanciamentoId, @ModelAttribute ModelMap model) {
 		FonteFinanciamento fonteFinanciamento = fonteFinanciamentoService.getFonteFinanciamento(fonteFinanciamentoId);
 		
 		if(fonteFinanciamento == null){
@@ -163,30 +161,10 @@ public class AdministracaoController {
 			return model;
 		}
 		
-		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		if(!eAdministrador(usuario)){
-			model.addAttribute("result", MENSAGEM_ERRO);
-			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
-			return model;
-		}
-		
 		fonteFinanciamentoService.remover(fonteFinanciamento);
 		
 		model.addAttribute("result", MENSAGEM_OK);
-		model.addAttribute("mensagem", "excluido com sucesso");
 		
 		return model;
-	}
-	
-	private boolean eAdministrador(Pessoa usuario){
-		List<Papel> papeis = usuario.getPapeis();
-		
-		if(papeis == null || papeis.isEmpty()) return false;
-		
-		for(Papel papel : papeis){
-			if(papel.getNome().equals(PAPEL_ADMINISTRACAO)) return true;
-		}
-		
-		return false;
 	}
 }
