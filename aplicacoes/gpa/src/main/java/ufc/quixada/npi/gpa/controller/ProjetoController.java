@@ -305,7 +305,7 @@ public class ProjetoController {
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		try {
-			participacaoService.verificaIntervalosParticipacaoPessoa(participacao);
+			participacaoService.verificaIntervalosParticipacaoPessoa(participacao, projeto.getId());
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("erro", e.getMessage());
 			model.addAttribute("projeto", projeto);
