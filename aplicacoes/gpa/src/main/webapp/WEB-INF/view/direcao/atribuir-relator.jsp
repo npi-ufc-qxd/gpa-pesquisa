@@ -9,16 +9,16 @@
 <html>
 <head>
 	<jsp:include page="../modulos/header-estrutura.jsp" />
-	<title>Atribuir Parecerista</title>
+	<title>Atribuir Relator</title>
 </head>
 <body>
 	<c:if test="${action eq 'atribuir' }">
-		<c:set var="titulo" value="Atribuir Parecerista"></c:set>
-		<c:set var="parecerista" value="Parecerista:"></c:set>
+		<c:set var="titulo" value="Atribuir Relator"></c:set>
+		<c:set var="relator" value="Relator:"></c:set>
 	</c:if>
 	<c:if test="${action eq 'alterar' }">
-		<c:set var="titulo" value="Alterar Parecerista "></c:set>
-		<c:set var="parecerista" value="Novo Parecerista:"></c:set>
+		<c:set var="titulo" value="Alterar Relator "></c:set>
+		<c:set var="relator" value="Novo Relator:"></c:set>
 	</c:if>
 	
 	<jsp:include page="../modulos/header.jsp" />
@@ -28,7 +28,7 @@
 				<h3 class="panel-title">${titulo }</h3>
 			</div>
 			<div class="panel-body">
-				<form:form id="atribuirPareceristaForm" commandName="parecer" servletRelativeAction="/direcao/atribuir-parecerista" method="POST" cssClass="form-horizontal">
+				<form:form id="atribuirRelatorForm" commandName="parecer" servletRelativeAction="/direcao/atribuir-relator" method="POST" cssClass="form-horizontal">
 					<form:hidden path="id"/>
 					<input type="hidden" name="projetoId" value="${projeto.id}">
 					<input type="hidden" name="action" value="${action}">
@@ -46,29 +46,21 @@
 					</div>
 					<c:if test="${action eq 'alterar' }">
 						<div class="form-group">
-							<label class="col-sm-2 control-label">Parecerista atual:</label>
+							<label class="col-sm-2 control-label">Relator atual:</label>
 							<div class="col-sm-8 value-label">
-								<label>${projeto.parecer.parecerista.nome }</label>
+								<label>${projeto.parecerRelator.relator.nome }</label>
 							</div>
 						</div>
 					</c:if>
 					<div class="form-group form-item">
-						<label for="parecerista" class="col-sm-2 control-label"><span class="required">*</span> ${parecerista}</label>
+						<label for="relator" class="col-sm-2 control-label"><span class="required">*</span> ${relator}</label>
 						<div class="col-sm-4">
-							<select id="parecerista" name="pareceristaId" class="form-control">
+							<select id="relator" name="relatorId" class="form-control">
 								<c:forEach items="${usuarios}" var="usuario">
 									<option value="${usuario.id}">${usuario.nome}</option>
 								</c:forEach>
 							</select>
-							<form:errors path="parecerista"></form:errors>
-						</div>
-					</div>
-					
-					<div class="form-group form-item">
-						<label for="prazo" class="col-sm-2 control-label"><span class="required">*</span> Prazo:</label>
-						<div class="col-sm-2">
-							<form:input id="prazo" path="prazo" cssClass="form-control data" placeholder="Prazo" required="required" />
-							<form:errors path="prazo" cssClass="error-validation"></form:errors>
+							<form:errors path="relator"></form:errors>
 						</div>
 					</div>
 					

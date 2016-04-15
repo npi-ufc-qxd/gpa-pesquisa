@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,9 +27,6 @@ public class ParecerTecnico {
 	private StatusPosicionamento status;
 
 	@Column(columnDefinition = "TEXT")
-	private String observacao;
-
-	@Column(columnDefinition = "TEXT")
 	private String parecer;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -39,7 +38,7 @@ public class ParecerTecnico {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date prazo;
 
-	@ManyToOne
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	@JoinColumn(name = "documento_id")
 	private Documento documento;
 
@@ -62,21 +61,13 @@ public class ParecerTecnico {
 	public void setStatus(StatusPosicionamento status) {
 		this.status = status;
 	}
-
-	public String getObservacao() {
-		return observacao;
-	}
-
+	
 	public Documento getDocumento() {
 		return documento;
 	}
 
 	public void setDocumento(Documento documento) {
 		this.documento = documento;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
 	}
 
 	public Date getDataAtribuicao() {
@@ -121,10 +112,10 @@ public class ParecerTecnico {
 
 	@Override
 	public String toString() {
-		return "Parecer [id=" + id + ", status=" + status + ", comentario=" + observacao + ", dataAtribuicao="
+		return "Parecer [id=" + id + ", status=" + status + ", dataAtribuicao="
 				+ dataAtribuicao + ", dataRealizacao=" + dataRealizacao + ", prazo=" + prazo + "]";
 	}
-
+	
 	public enum StatusPosicionamento {
 		FAVORAVEL("FAVORÁVEL"), NAO_FAVORAVEL("NÃO FAVORÁVEL");
 

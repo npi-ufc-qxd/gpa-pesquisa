@@ -80,7 +80,7 @@ public class DocumentoController {
 			return model;
 		}
 		projeto.getDocumentos().remove(documento);
-		projetoService.atualizar(projeto);
+		projetoService.update(projeto);
 		model.addAttribute("result", "ok");
 		return model;
 	}
@@ -102,7 +102,7 @@ public class DocumentoController {
 		}
 		
 		projeto.setArquivoProjeto(null);
-		projetoService.atualizar(projeto);
+		projetoService.update(projeto);
 		
 		model.addAttribute("result", MENSAGEM_OK);
 		return model;

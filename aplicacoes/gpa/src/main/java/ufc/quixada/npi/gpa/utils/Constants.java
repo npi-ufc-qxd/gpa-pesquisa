@@ -26,7 +26,7 @@ public class Constants {
 
 	public static final String PAGINA_ATRIBUIR_PARECERISTA = "direcao/atribuir-parecerista";
 
-	public static final String PAGINA_AVALIAR_PROJETO = "direcao/avaliar-projeto";
+	public static final String PAGINA_HOMOLOGAR_PROJETO = "direcao/homologar-projeto";
 
 	public static final String PAGINA_DETALHES_PARTICIPANTE = "direcao/participante";
 
@@ -38,6 +38,9 @@ public class Constants {
 	
 	public static final String PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO = "administracao/fontes-financiamento";
 
+	public static final String PAGINA_ATRIBUIR_RELATOR = "direcao/atribuir-relator";
+
+	
 	/** Redirecionamentos */
 
 	public static final String REDIRECT_PAGINA_LISTAR_PROJETO = "redirect:/projeto";
@@ -72,6 +75,8 @@ public class Constants {
 	public static final String MENSAGEM_PARECERISTA_ATRIBUIDO = "Parecerista atribuído com sucesso";
 
 	public static final String MENSAGEM_PROJETO_SUBMETIDO = "Projeto submetido com sucesso";
+	
+	public static final String MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS = "Resolução de pendências submetido com sucesso";
 
 	public static final String MENSAGEM_PARECER_EMITIDO = "Parecer emitido com sucesso";
 
@@ -79,7 +84,7 @@ public class Constants {
 
 	public static final String MENSAGEM_PARTICIPACAO_REMOVIDA = "Participação removida com sucesso";
 
-	public static final String MENSAGEM_PROJETO_AVALIADO = "Projeto avaliado com sucesso";
+	public static final String MENSAGEM_PROJETO_HOMOLOGADO = "Projeto homologado com sucesso";
 
 	public static final String MENSAGEM_DATA_TERMINO_FUTURA = "A data de término não pode ser anterior à data atual";
 
@@ -108,11 +113,15 @@ public class Constants {
 	public static final String MENSAGEM_PARTICIPACAO_MESMO_PERIODO = "Não pode haver mais de uma partipação no mesmo período";
 
 	public static final String MENSAGEM_PARECERISTA_ALTERADO = "Parecerista alterado com sucesso";
-	
+
 	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_CADASTRADA = "Fonte de financiamento cadastrada com sucesso";
 	
 	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE = "Fonte de financiamento inexistente";
 	
+	public static final String MENSAGEM_RELATOR_ATRIBUIDO = "Relator atribuído com sucesso";
+
+	public static final String MENSAGEM_RELATOR_ALTERADO = "Relator alterado com sucesso";
+
 	public static final String MENSAGEM_OK = "ok";
 	
 	public static final String MENSAGEM_ERRO = "erro";
@@ -131,4 +140,9 @@ public class Constants {
 	public static final String ATRIBUIR_PARECERISTA = "atribuir";
 	
 	public static final String ALTERAR_PARECERISTA = "alterar";
+
+	public static final String ATRIBUIR_RELATOR = "atribuir";
+	
+	public static final String ALTERAR_RELATOR = "alterar";
+
 }

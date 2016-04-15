@@ -92,6 +92,15 @@
 							<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></label>
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Valor:</label>
+						<div class="col-sm-10 value-label">
+						<fmt:setLocale value="pt_BR"/>
+							<label><fmt:formatNumber value="${projeto.valorProjeto }" type="currency" currencySymbol="R$ "/></label>
+						</div>
+					</div>
+					
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Data de submissão:</label>
 						<div class="col-sm-4 value-label">
@@ -130,13 +139,13 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-2 control-label">
-						<c:if test="${not empty projeto.avaliacao }">
-							<label class="field">Data de avaliação:</label>
+						<c:if test="${not empty projeto.homologacao }">
+							<label class="field">Data de Homologação:</label>
 						</c:if>
 						</div>
 						<div class="col-sm-10 value-label">
-							<c:if test="${not empty projeto.avaliacao }">
-								<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.avaliacao }" /></label>
+							<c:if test="${not empty projeto.homologacao }">
+								<label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${projeto.homologacao }" /></label>
 							</c:if>					
 						</div>							
 					</div>
@@ -163,8 +172,15 @@
 							</c:if>
 							<c:if test="${not empty projeto.participacoes }">
 								<c:forEach items="${projeto.participacoes }" var="participacao">
-									<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" >
-									</c:url>">${participacao.participante.nome} </a>(${participacao.tipo.descricao});</label><br>
+									<c:choose>
+										<c:when test="${participacao.externo}">
+											<label>${participacao.participanteExterno.nome} (${participacao.tipo.descricao});</label><br>
+										</c:when>
+										<c:otherwise>
+											<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" >
+											</c:url>">${participacao.participante.nome} </a>(${participacao.tipo.descricao});</label><br>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 							</c:if>
 						</div>
@@ -195,24 +211,18 @@
 							</div>
 						</div>
 							
-					<h4 class="subtitle">Avaliação</h4>
+					<h4 class="subtitle">Homologação</h4>
 						<span class="line"></span>
-						<div class="form-group">
-							<div class="col-sm-12">		
-								<p class="value-label">${projeto.parecer.observacao}</p>				
-							</div>				   		
-						</div>
-						
 			
 					<div class="form-group">
-						<label class="col-sm-2 control-label">Observação Avaliação:</label>
+						<label class="col-sm-2 control-label">Observação Homologação:</label>
 						<div class="col-sm-10 value-label">
-							<c:if test="${empty projeto.observacaoAvaliacao }">
+							<c:if test="${empty projeto.observacaoHomologacao }">
 								<label>-</label>
 							</c:if>
-							<c:if test="${not empty projeto.observacaoAvaliacao }">
+							<c:if test="${not empty projeto.observacaoHomologacao }">
 								<label>							
-								${projeto.observacaoAvaliacao }
+								${projeto.observacaoHomologacao }
 								</label>
 							</c:if>
 						</div>		

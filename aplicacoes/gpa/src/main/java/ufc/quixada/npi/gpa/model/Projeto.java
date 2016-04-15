@@ -1,6 +1,10 @@
 package ufc.quixada.npi.gpa.model;
 
+
+import java.math.BigDecimal;
+
 import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +47,7 @@ public class Projeto {
 	private Date termino;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date avaliacao;
+	private Date homologacao;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date submissao;
@@ -60,6 +64,9 @@ public class Projeto {
 
 	private String local;
 	
+	@Column(scale=2)
+	private BigDecimal valorProjeto;
+
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 	
@@ -75,17 +82,20 @@ public class Projeto {
 	@OrderBy(value="data")
 	private List<Comentario> comentarios;
 	
-	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private ParecerTecnico parecer;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	private ParecerRelator parecerRelator;
+	
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento ata;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento oficio;
 	
 	@Column(columnDefinition = "TEXT")
-	private String observacaoAvaliacao;
+	private String observacaoHomologacao;
 	
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento arquivoProjeto;
@@ -94,12 +104,12 @@ public class Projeto {
 		return participacoes;
 	}
 	
-	public Date getAvaliacao() {
-		return avaliacao;
+	public Date getHomologacao() {
+		return homologacao;
 	}
 
-	public void setAvaliacao(Date avaliacao) {
-		this.avaliacao = avaliacao;
+	public void setHomologacao(Date homologacao) {
+		this.homologacao = homologacao;
 	}
 	public String getNome() {
 		return nome;
@@ -145,6 +155,14 @@ public class Projeto {
 		return local;
 	}
 
+	public BigDecimal getValorProjeto() {
+		return valorProjeto;
+	}
+
+	public void setValorProjeto(BigDecimal valorProjeto) {
+		this.valorProjeto = valorProjeto;
+	}
+
 	public void setLocal(String local) {
 		this.local = local;
 	}
@@ -179,7 +197,7 @@ public class Projeto {
 	public String getCodigo() {
 		return codigo;
 	}
-
+	
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
@@ -206,6 +224,14 @@ public class Projeto {
 
 	public void setParecer(ParecerTecnico parecer) {
 		this.parecer = parecer;
+	}
+	
+	public ParecerRelator getParecerRelator() {
+		return parecerRelator;
+	}
+
+	public void setParecerRelator(ParecerRelator parecerRelator) {
+		this.parecerRelator = parecerRelator;
 	}
 
 	public Documento getAta() {
@@ -257,12 +283,12 @@ public class Projeto {
 		this.comentarios = comentarios;
 	}
 
-	public String getObservacaoAvaliacao() {
-		return observacaoAvaliacao;
+	public String getObservacaoHomologacao() {
+		return observacaoHomologacao;
 	}
 
-	public void setObservacaoAvaliacao(String observacaoAvaliacao) {
-		this.observacaoAvaliacao = observacaoAvaliacao;
+	public void setObservacaoHomologacao(String observacaoHomologacao) {
+		this.observacaoHomologacao = observacaoHomologacao;
 	}
 
 	@Override
@@ -275,7 +301,7 @@ public class Projeto {
 
 		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
 		RESOLVENDO_PENDENCIAS("RESOLVENDO PENDÊNCIAS"), AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"),
-		APROVADO("APROVADO"), REPROVADO("REPROVADO"), APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
+		APROVADO("APROVADO"), REPROVADO("REPROVADO"), AGUARDANDO_HOMOLOGACAO("AGUARDANDO HOMOLOGAÇÃO");
 		
 		private String descricao;
 
@@ -289,7 +315,9 @@ public class Projeto {
 	}
 
 	public enum Evento {
-		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS
+		
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO, ALTERACAO_PARECERISTA, RESOLUCAO_PENDENCIAS,
+		SUBMISSAO_RESOLUCAO_PENDENCIAS, ATRIBUICAO_RELATOR, ALTERACAO_RELATOR, HOMOLOGACAO
 	}
 	
 	@Deprecated
