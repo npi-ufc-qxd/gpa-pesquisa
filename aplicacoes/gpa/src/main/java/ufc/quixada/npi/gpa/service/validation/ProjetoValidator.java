@@ -95,7 +95,7 @@ public class ProjetoValidator implements Validator {
 	 * @param target
 	 * @param errors
 	 */
-	public void validateAvaliacao(Object target, Errors errors) {
+	public void validateHomologacao(Object target, Errors errors) {
 		Projeto p = (Projeto) target;
 
 		if (p.getAta() == null)

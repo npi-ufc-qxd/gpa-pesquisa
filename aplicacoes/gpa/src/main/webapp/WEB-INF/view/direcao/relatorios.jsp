@@ -299,7 +299,7 @@
 									<th>Coordenador</th>
 									<th class="col-sm-6">Nome do Projeto</th>
 									<th>Submissão</th>
-									<th>Avaliação</th>
+									<th>Homologação</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -309,7 +309,7 @@
 										<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nomeProjeto}</a>
 										</td>
 										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataDeSubimissao}"/></td>
-										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataDeAvaliacao}"/></td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.dataDeHomologacao}"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>

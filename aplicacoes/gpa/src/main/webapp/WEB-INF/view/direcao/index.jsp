@@ -34,15 +34,15 @@
 						</div>
 					</c:if>
 					<ul class="nav nav-tabs">
-						<li class="active"><a aria-expanded="true" href="#tab-em-tramitacao" data-toggle="tab">Em tramitação <span class="badge">${projetosSubmetidos.size() }</span></a></li>
-						<li class=""><a aria-expanded="false" href="#tab-avaliados" data-toggle="tab">Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
+						<li class="active"><a aria-expanded="true" href="#tab-em-tramitacao" data-toggle="tab">Em tramitação <span class="badge">${projetosEmTramitacao.size() }</span></a></li>
+						<li class=""><a aria-expanded="false" href="#tab-homologados" data-toggle="tab">Homologados <span class="badge">${projetosHomologados.size() }</span></a></li>
 					</ul>
 				    <div class="tab-content">
 				       	<div  class="tab-pane fade active in" id="tab-em-tramitacao">
-				       		<c:if test="${empty projetosSubmetidos}">
+				       		<c:if test="${empty projetosEmTramitacao}">
 								<div class="alert alert-warning" role="alert">Não há projetos em tramitação.</div>
 							</c:if>
-							<c:if test="${not empty projetosSubmetidos}">
+							<c:if test="${not empty projetosEmTramitacao}">
 								<table id="projetos-em-tramitacao" class="display">
 									<thead>
 										<tr>
@@ -56,7 +56,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="projeto" items="${projetosSubmetidos}">
+										<c:forEach var="projeto" items="${projetosEmTramitacao}">
 											<tr>
 												<td>${projeto.codigo }</td>
 												<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
@@ -75,6 +75,11 @@
 															<button class="btn btn-primary btn-xs"><i class="fa fa-user"></i></button>
 														</a>
 													</c:if>
+													<c:if test="${projeto.status == 'AGUARDANDO_HOMOLOGACAO'}">
+														<a id="homologarProjeto" title="Homologar" data-toggle="modal"href="<c:url value="/direcao/homologar/${projeto.id}" ></c:url>">
+															<button class="btn btn-primary btn-xs"><i class="fa fa-check-square-o"></i></button>
+														</a>
+													</c:if>
 													<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
 														<c:if test="${projeto.parecerRelator == null }">
 															<a id="atribuirRelator" title="Atribuir relator" href="<c:url value="/direcao/atribuir-relator/${projeto.id}" ></c:url>">
@@ -83,8 +88,8 @@
 														</c:if>
 														<c:if test="${projeto.parecerRelator != null }">
 															<a id="alterarRelator" title="Alterar relator" data-toggle="modal"href="<c:url value="/direcao/atribuir-relator/${projeto.id}" ></c:url>">
-															<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
-														</a>
+																<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
+															</a>
 														</c:if>
 													</c:if>
 													<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
@@ -99,30 +104,30 @@
 								</table>
 							</c:if>
 				       	</div>
-				       	<div class="tab-pane fade" id="tab-avaliados">
-				       		<c:if test="${empty projetosAvaliados}">
-								<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
+				       	<div class="tab-pane fade" id="tab-homologados">
+				       		<c:if test="${empty projetosHomologados}">
+								<div class="alert alert-warning" role="alert">Não há projetos homologados.</div>
 							</c:if>
-							<c:if test="${not empty projetosAvaliados}">
+							<c:if test="${not empty projetosHomologados}">
 								<input type="hidden" name="parecerId" value="${parecerId}">
 
-								<table id="projetos-avaliados-diretor" class="display">
+								<table id="projetos-homologados-diretor" class="display">
 									<thead>
 										<tr>
 											<th>Código</th>
 											<th>Nome</th>
 											<th>Status</th>
-											<th>Data Avaliação</th>
+											<th>Data Homologação</th>
 											<th>Coordenador</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="projeto" items="${projetosAvaliados}">
+										<c:forEach var="projeto" items="${projetosHomologados}">
 											<tr>
 												<td>${projeto.codigo }</td>
 												<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 												<td>${projeto.status.descricao}</td>
-												<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.avaliacao }" /></td>
+												<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.homologacao }" /></td>
 												<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
 											</tr>
 										</c:forEach>

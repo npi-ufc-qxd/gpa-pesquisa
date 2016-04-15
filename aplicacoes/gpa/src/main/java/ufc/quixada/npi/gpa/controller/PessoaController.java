@@ -41,10 +41,10 @@ public class PessoaController {
 		} else {
 			model.addAttribute("pessoa", pessoa);
 
-			model.addAttribute("projetosCoordena", projetoService.getProjetosCoordenaAprovadosAtualmente(pessoa.getId()));
-			model.addAttribute("projetosCoordenou", projetoService.getProjetosCoordenouAprovadosAtualmente(pessoa.getId()));
-			model.addAttribute("projetosParticipa", projetoService.getProjetosParticipaAprovadosAtualmente(pessoa.getId()));
-			model.addAttribute("projetosParticipou", projetoService.getProjetosParticipouAprovadosAtualmente(pessoa.getId()));
+			model.addAttribute("projetosCoordena", projetoService.getProjetosCoordenaHomologadosAtualmente(pessoa.getId()));
+			model.addAttribute("projetosCoordenou", projetoService.getProjetosCoordenouHomologadosAtualmente(pessoa.getId()));
+			model.addAttribute("projetosParticipa", projetoService.getProjetosParticipaHomologadosAtualmente(pessoa.getId()));
+			model.addAttribute("projetosParticipou", projetoService.getProjetosParticipouHomologadosAtualmente(pessoa.getId()));
 
 			return PAGINA_DETALHES_PARTICIPANTE;
 		}
