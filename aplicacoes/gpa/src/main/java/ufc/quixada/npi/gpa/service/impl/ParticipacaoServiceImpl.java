@@ -16,7 +16,7 @@ import ufc.quixada.npi.gpa.service.ParticipacaoService;
 public class ParticipacaoServiceImpl implements ParticipacaoService{
 
 	@Override
-	public void verificaIntervalosParticipacaoPessoa(Participacao participacao, Long id) {
+	public void verificaIntervalosParticipacaoPessoa(Participacao participacao) {
 		
 		List<Participacao> participacoes = participacao.getProjeto().getParticipacoes();
 		// Participação atual
@@ -26,7 +26,9 @@ public class ParticipacaoServiceImpl implements ParticipacaoService{
 		YearMonth terminoPartAtual = YearMonth.of(participacao.getAnoTermino(), participacao.getMesTermino());
 
 		for (Participacao part : participacoes) {
-			if (participanteAtual.equals(part.getParticipante()) || participanteExternoAtual.equals(part.getParticipanteExterno())) {
+			if ((participanteAtual!=null && participanteAtual.equals(part.getParticipante()))
+					|| (participanteExternoAtual!=null && participanteExternoAtual.equals(part.getParticipanteExterno()))) {
+			
 				YearMonth inicio = YearMonth.of(part.getAnoInicio(), part.getMesInicio());
 				YearMonth termino = YearMonth.of(part.getAnoTermino(), part.getMesTermino());
 

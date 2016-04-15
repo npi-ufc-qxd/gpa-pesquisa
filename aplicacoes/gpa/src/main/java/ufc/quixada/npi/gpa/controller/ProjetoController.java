@@ -307,10 +307,7 @@ public class ProjetoController {
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		try {
-			if(participacao.isExterno()== true)
-				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteExternoSelecionado);
-			else
-				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteSelecionado);
+			participacaoService.verificaIntervalosParticipacaoPessoa(participacao);
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("erro", e.getMessage());
 			model.addAttribute("projeto", projeto);
