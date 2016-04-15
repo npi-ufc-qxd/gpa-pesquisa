@@ -97,11 +97,11 @@ public class ProjetoController {
 	public String listar(Model model, Authentication authentication) {
 		Long idUsuarioLogado = pessoaService.getPessoa(authentication.getName()).getId();
 		model.addAttribute("projetos", projetoService.getProjetos(idUsuarioLogado));
-		model.addAttribute("projetosNaoAvaliados", projetoService.getProjetosNaoAvaliados(idUsuarioLogado));
+		model.addAttribute("projetosNaoHomologados", projetoService.getProjetosNaoHomologados(idUsuarioLogado));
 		model.addAttribute("participacoesEmProjetos", projetoService.getParticipacoes(idUsuarioLogado));
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosParecerEmitido", projetoService.getProjetosParecerEmitido(idUsuarioLogado));
-		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
+		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados(idUsuarioLogado));
 
 		return PAGINA_LISTAR_PROJETO;
 	}
@@ -212,8 +212,7 @@ public class ProjetoController {
 			return PAGINA_DETALHES_PROJETO;
 		}
 
-		if (projeto.getStatus().equals(StatusProjeto.APROVADO)
-				|| (projeto.getStatus().equals(StatusProjeto.APROVADO_COM_RESTRICAO))) {
+		if (projeto.getStatus().equals(StatusProjeto.APROVADO)) {
 			for (Participacao participacao : projeto.getParticipacoes()) {
 				if (pessoa.equals(participacao.getParticipante())) {
 					model.addAttribute("permissao", "participante");
@@ -605,9 +604,10 @@ public class ProjetoController {
 				Documento documento = new Documento();
 				documento.setArquivo(anexo.getBytes());
 				documento.setNome(anexo.getOriginalFilename());
+				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
 				documento.setExtensao(anexo.getContentType());
+				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
 				projeto.getParecer().setDocumento(documento);
-				projeto.addDocumento(documento);
 			}
 		} catch (IOException e) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);

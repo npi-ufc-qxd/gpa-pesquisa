@@ -31,17 +31,15 @@ public interface ProjetoService {
 
 	void emitirParecer(Projeto projeto);
 
-	void avaliar(Projeto projeto);
+	void homologar(Projeto projeto);
 
-	List<Projeto> getProjetosSubmetidos();
+	List<Projeto> getProjetosEmTramitacao();
 	
-	List<Projeto> getProjetosSubmetidos(Long idCoordenador);
-	
-	List<Projeto> getProjetosNaoAvaliados(Long idCoordenador);
+	List<Projeto> getProjetosNaoHomologados(Long idCoordenador);
 
-	List<Projeto> getProjetosAvaliados();
+	List<Projeto> getProjetosHomologados();
 
-	List<Projeto> getProjetosAvaliados(Long idCoordenador);
+	List<Projeto> getProjetosHomologados(Long idCoordenador);
 
 	Projeto getProjeto(Long id);
 
@@ -74,7 +72,7 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador);
+	List<Projeto> getProjetosCoordenaHomologadosAtualmente(Long idCoordenador);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o autor coordenou, com status APROVADO e APROVADO_COM_RESTRICAO.
@@ -83,7 +81,7 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idCoordenador);
+	List<Projeto> getProjetosCoordenouHomologadosAtualmente(Long idCoordenador);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o usuário participa mas não é coordenador, com status APROVADO e APROVADO_COM_RESTRICAO.
@@ -92,7 +90,7 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idCoordenador);
+	List<Projeto> getProjetosParticipaHomologadosAtualmente(Long idCoordenador);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o usuário participou mas não é coordenador, com status APROVADO e APROVADO_COM_RESTRICAO.
@@ -101,6 +99,6 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idCoordenador);
+	List<Projeto> getProjetosParticipouHomologadosAtualmente(Long idCoordenador);
 
 }
