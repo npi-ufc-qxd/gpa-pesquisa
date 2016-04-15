@@ -42,8 +42,23 @@
 					</li>
 				</sec:authorize>
 				<sec:authorize ifAnyGranted="ADMINISTRACAO">
-					<li id="menu-administracao" class=""><a
-						href="<c:url value="/administracao" />" title="Administração">Administração</a>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" 
+							data-toggle="dropdown" role="button" 
+		              		aria-haspopup="true" aria-expanded="false">
+		              		Administração <span class="caret"></span>
+		              	</a>
+						<ul class="dropdown-menu " role="menu">
+							<li id="menu-administracao" class=""><a
+								href="<c:url value="/administracao" />" title="Buscar Usuários">
+								<i class="glyphicon glyphicon-search"></i> Buscar Usuários</a>
+							</li>
+							<li id="menu-financas" class="">
+					           	<a href="<c:url value="/administracao/fonte-financiamento/mostrar" />" title="Fontes de Financiamento">
+					           	<i class="glyphicon glyphicon-usd"></i> Fontes de Financiamento</a>
+					       	</li>
+							
+						</ul>
 					</li>
 				</sec:authorize>
 			</ul>

@@ -35,6 +35,8 @@ public class Constants {
 	public static final String PAGINA_ADMINISTRACAO = "administracao/index";
 
 	public static final String PAGINA_ADMINISTRACAO_VINCULAR_PAPEL = "administracao/vincularPapel";
+	
+	public static final String PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO = "administracao/fontes-financiamento";
 
 	/** Redirecionamentos */
 
@@ -47,6 +49,8 @@ public class Constants {
 	public static final String REDIRECT_PAGINA_INICIAL_ADMINISTRACAO = "redirect:/administracao";
 
 	public static final String REDIRECT_PAGINA_BUSCAR_PARTICIPANTE = "redirect:/direcao/buscar";
+	
+	public static final String REDIRECT_PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO = "redirect:/administracao/fonte-financiamento/mostrar";
 
 	/** Mensagens */
 	public static final String MENSAGEM_PERMISSAO_NEGADA = "Permissão negada";
@@ -104,6 +108,10 @@ public class Constants {
 	public static final String MENSAGEM_PARTICIPACAO_MESMO_PERIODO = "Não pode haver mais de uma partipação no mesmo período";
 
 	public static final String MENSAGEM_PARECERISTA_ALTERADO = "Parecerista alterado com sucesso";
+	
+	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_CADASTRADA = "Fonte de financiamento cadastrada com sucesso";
+	
+	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE = "Fonte de financiamento inexistente";
 	
 	public static final String MENSAGEM_OK = "ok";
 	
