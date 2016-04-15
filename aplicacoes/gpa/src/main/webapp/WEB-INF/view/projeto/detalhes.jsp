@@ -172,8 +172,15 @@
 							</c:if>
 							<c:if test="${not empty projeto.participacoes }">
 								<c:forEach items="${projeto.participacoes }" var="participacao">
-									<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" >
-									</c:url>">${participacao.participante.nome} </a>(${participacao.tipo.descricao});</label><br>
+									<c:choose>
+										<c:when test="${participacao.externo}">
+											<label>${participacao.participanteExterno.nome} (${participacao.tipo.descricao});</label><br>
+										</c:when>
+										<c:otherwise>
+											<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" >
+											</c:url>">${participacao.participante.nome} </a>(${participacao.tipo.descricao});</label><br>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 							</c:if>
 						</div>
