@@ -360,7 +360,7 @@ public class ProjetoController {
 
 	private boolean usuarioPodeEditarProjeto(Projeto projeto, Pessoa usuario) {
 		return (usuario.getId() == projeto.getCoordenador().getId() && (projeto.getStatus().equals(StatusProjeto.NOVO) || 
-				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)));
+				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS) || projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)));
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
@@ -476,6 +476,12 @@ public class ProjetoController {
 				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
+			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
+				projetoService.submeterPendenciasRelator(projeto);
+				
+				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
 
@@ -554,6 +560,13 @@ public class ProjetoController {
 			
 			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+			
+		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
+			projetoService.submeterPendenciasRelator(oldProjeto);
+			
+			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+			
 		} else {
 			projetoService.submeter(oldProjeto);
 
@@ -723,17 +736,24 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
-		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		if (projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
+			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
+			projetoService.update(projeto);
+
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		
+		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
+			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
+			projetoService.update(projeto);
 
-		projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS);
-		notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
-		projetoService.update(projeto);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
 
+		}
+
+		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
-
 	}
-
 }

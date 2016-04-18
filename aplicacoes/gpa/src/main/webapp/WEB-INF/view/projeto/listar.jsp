@@ -72,7 +72,7 @@
 											</td>
 													
 											<td class="acoes">
-												<c:if test="${projetoNaoHomologado.status == 'NOVO' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS'}">
+												<c:if test="${projetoNaoHomologado.status == 'NOVO' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS_HOMOLOGACAO'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
 														data-href="<c:url value="/projeto/submeter/${projetoNaoHomologado.id}" ></c:url>" data-name="${projetoNaoHomologado.nome }">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-cloud-upload"></i></button>

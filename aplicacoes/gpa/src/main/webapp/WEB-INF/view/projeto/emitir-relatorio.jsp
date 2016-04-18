@@ -8,7 +8,7 @@
 
 <html>
 	<head>
-		<title>Avaliar Projeto</title>
+		<title>Emitir Relatório</title>
 		<jsp:include page="../modulos/header-estrutura.jsp" />
 	</head>
 <body>
@@ -17,7 +17,7 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<div class="title">
-					<h3 class="panel-title">Avaliar Projeto</h3>
+					<h3 class="panel-title">Emitir Relatório</h3>
 				</div>
 				<div class="button-right">
 						<a href="<c:url value="/projeto/solicitar-resolucao-pendencias/${projeto.id}"></c:url>" class="btn btn-warning">Solicitar Resolução de Pendências</a>
@@ -32,8 +32,8 @@
 						<c:out value="${erro}"></c:out>
 					</div>
 				</c:if>
-				<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/projeto/avaliar"
-					modelAttribute="parecer" method="POST" cssClass="form-horizontal">
+				<form:form id="emitirParecerForm" enctype="multipart/form-data" servletRelativeAction="/projeto/emitir-parecer"
+					commandName="parecer" method="POST" cssClass="form-horizontal">
 					<input type="hidden" name="id-projeto" value="${projeto.id }"/>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Projeto:</label>
@@ -59,12 +59,19 @@
 							</select>
 						</div>
 					</div>
-					
+	
 					<div class="form-group form-item">
-						<label for="observacao" class="col-sm-2 control-label"> Observação:</label>
+						<label for="parecer" class="col-sm-2 control-label"><span class="required">*</span> Parecer:</label>
 						<div class="col-sm-10">
-							<form:textarea path="observacao" cssClass="form-control" rows="8" placeholder="Observacao"/>
-							<form:errors path="observacao" cssClass="error-validation"></form:errors>		
+							<form:textarea path="parecer" cssClass="form-control" rows="8" placeholder="Parecer" required="required" />
+							<form:errors path="parecer" cssClass="error-validation"></form:errors>		
+						</div>
+					</div>
+	
+					<div class="form-group">
+						<label for="anexo" class="col-sm-2 control-label">Anexo:</label>
+						<div class="col-sm-10 files">
+							<input type="file" id="anexos" name="anexo" class="anexo file-loading"></input>
 						</div>
 					</div>
 	
