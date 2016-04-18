@@ -77,6 +77,13 @@
 								<form:errors path="termino" cssClass="error-validation"></form:errors>
 							</div>
 						</div>
+						<div class="form-item">
+							<label for="valorProjeto" class="col-sm-2 control-label"><span class="required">*</span> Término:</label>
+							<div class="col-sm-2">
+								<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto" required="required"/>
+								<form:errors path="valorProjeto" cssClass="error-validation"></form:errors>
+							</div>
+						</div>
 					</div>
 
 					

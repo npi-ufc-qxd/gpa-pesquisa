@@ -272,7 +272,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/participacoes/{idProjeto}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("idProjeto") Long idProjeto,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
-			@RequestParam(value = "participanteExternoSelecionado") Long idParticipanteExternoSelecionado,
+			@RequestParam(value = "participanteExternoSelecionado", required = false) Long idParticipanteExternoSelecionado,
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
