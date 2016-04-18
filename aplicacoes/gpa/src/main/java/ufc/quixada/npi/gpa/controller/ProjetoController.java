@@ -37,7 +37,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,7 +48,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
-import ufc.quixada.npi.gpa.model.ParecerRelator.StatusPosicionamentoRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
@@ -652,14 +650,14 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		model.addAttribute("projeto", projeto);
-		model.addAttribute("posicionamento", StatusPosicionamentoRelator.values());
+		model.addAttribute("posicionamento", StatusPosicionamento.values());
 		model.addAttribute("parecer", new ParecerRelator());
 		return PAGINA_EMITIR_PARECER_RELATOR;
 	}
 	
 	@RequestMapping(value = "/avaliar", method = RequestMethod.POST)
 	public String avaliar(@RequestParam("id-projeto") Long idProjeto,
-			@RequestParam("posicionamento") StatusPosicionamentoRelator posicionamento,
+			@RequestParam("posicionamento") StatusPosicionamento posicionamento,
 			@RequestParam("observacao") String observacao, Model model, RedirectAttributes redirectAttributes) {
 		
 		Projeto projeto = projetoService.getProjeto(idProjeto);
