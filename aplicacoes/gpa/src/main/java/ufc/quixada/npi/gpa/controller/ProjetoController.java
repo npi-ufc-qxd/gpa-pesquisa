@@ -12,6 +12,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_SUBMETIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
@@ -46,6 +47,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
@@ -101,7 +103,10 @@ public class ProjetoController {
 		model.addAttribute("participacoesEmProjetos", projetoService.getParticipacoes(idUsuarioLogado));
 		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
 		model.addAttribute("projetosParecerEmitido", projetoService.getProjetosParecerEmitido(idUsuarioLogado));
+		model.addAttribute("projetosAguardandoAvaliacao", projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
+		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados(idUsuarioLogado));
+
 
 		return PAGINA_LISTAR_PROJETO;
 	}
@@ -117,19 +122,19 @@ public class ProjetoController {
 	public String cadastrar(@RequestParam("anexos") MultipartFile[] anexos,
 			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, Authentication authentication, Model model) {
 		
-		model.addAttribute("action", "cadastrar");
-
 		projetoValidator.validate(projeto, result);
 
 		if (result.hasErrors()) {
+			model.addAttribute("action", "cadastrar");
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
 		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
-		
 		projetoService.cadastrar(projeto);
-
-		projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
+		
+		if(projeto.getValorProjeto() != null) {
+			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
+		}
 		
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && anexos.length != 0) {
@@ -204,12 +209,10 @@ public class ProjetoController {
 			model.addAttribute("permissao", "parecerista");
 			return PAGINA_DETALHES_PROJETO;
 		}
-
-
-		if (projeto.getParecer().getParecerista().equals(pessoa)
-				&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
-			model.addAttribute("permissao", "parecerista");
-			return PAGINA_DETALHES_PROJETO;
+		
+		if(projeto.getParecerRelator().getRelator().equals(pessoa)){
+				model.addAttribute("permissao", "relator");
+				return PAGINA_DETALHES_PROJETO;
 		}
 
 		if (projeto.getStatus().equals(StatusProjeto.APROVADO)) {
@@ -272,7 +275,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/participacoes/{idProjeto}", method = RequestMethod.POST)
 	public String adicionarParticipacao(@PathVariable("idProjeto") Long idProjeto,
 			@RequestParam(value = "participanteSelecionado", required = true) Long idParticipanteSelecionado,
-			@RequestParam(value = "participanteExternoSelecionado") Long idParticipanteExternoSelecionado,
+			@RequestParam(value = "participanteExternoSelecionado", required = false) Long idParticipanteExternoSelecionado,
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
@@ -625,6 +628,52 @@ public class ProjetoController {
 
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
 		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+	
+	@RequestMapping(value = "/avaliar/{id-projeto}", method = RequestMethod.GET)
+	public String avaliarForm(@PathVariable("id-projeto") long idProjeto, Model model, HttpSession session,
+			RedirectAttributes redirectAttributes, Authentication authentication) {
+		Projeto projeto = projetoService.getProjeto(idProjeto);
+
+		if (projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		if (!usuario.equals(projeto.getParecerRelator().getRelator())) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		model.addAttribute("projeto", projeto);
+		model.addAttribute("posicionamento", StatusPosicionamento.values());
+		model.addAttribute("parecer", new ParecerRelator());
+		return PAGINA_EMITIR_PARECER_RELATOR;
+	}
+	
+	@RequestMapping(value = "/avaliar", method = RequestMethod.POST)
+	public String avaliar(@RequestParam("id-projeto") Long idProjeto,
+			@RequestParam("posicionamento") StatusPosicionamento posicionamento,
+			@RequestParam("observacao") String observacao, Model model, RedirectAttributes redirectAttributes) {
+		
+		Projeto projeto = projetoService.getProjeto(idProjeto);
+		
+		if(projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		
+		projeto.getParecerRelator().setData(new Date());
+		projeto.getParecerRelator().setStatus(posicionamento);
+		projeto.getParecerRelator().setObservacao(observacao);
+		projeto.setStatus(StatusProjeto.AGUARDANDO_HOMOLOGACAO);
+		
+		projetoService.update(projeto);
+		
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 

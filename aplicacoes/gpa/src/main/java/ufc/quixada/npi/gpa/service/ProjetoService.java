@@ -54,6 +54,10 @@ public interface ProjetoService {
 	List<Projeto> getProjetosAguardandoParecer(Long idParecerista);
 	
 	List<Projeto> getProjetosParecerEmitido(Long idParecerista);
+	
+	List<Projeto> getProjetosAguardandoAvaliacao(Long idUsuarioLogado);
+	
+	List<Projeto> getProjetosAvaliados(Long idRelator);
 
 	List<Participacao> getParticipacoes(Long idPessoa);
 
@@ -99,6 +103,7 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
+
 	List<Projeto> getProjetosParticipouHomologadosAtualmente(Long idCoordenador);
 
 }
