@@ -362,7 +362,7 @@ public class ProjetoController {
 
 	private boolean usuarioPodeEditarProjeto(Projeto projeto, Pessoa usuario) {
 		return (usuario.getId() == projeto.getCoordenador().getId() && (projeto.getStatus().equals(StatusProjeto.NOVO) || 
-				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS) || projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_RELATOR)));
+				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS) || projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)));
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
@@ -478,7 +478,7 @@ public class ProjetoController {
 				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
-			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_RELATOR)) {
+			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
 				projetoService.submeterPendenciasRelator(projeto);
 				
 				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
@@ -563,7 +563,7 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 			
-		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_RELATOR)) {
+		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
 			projetoService.submeterPendenciasRelator(oldProjeto);
 			
 			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
@@ -747,7 +747,7 @@ public class ProjetoController {
 		}
 		
 		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
-			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS_RELATOR);
+			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO);
 			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
 			projetoService.update(projeto);
 
