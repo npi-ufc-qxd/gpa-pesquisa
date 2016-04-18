@@ -67,6 +67,12 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
+	public void submeterPendenciasRelator(Projeto projeto) {
+		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
+		projetoRepository.update(projeto);
+	}
+	
+	@Override
 	public void atribuirParecerista(Projeto projeto, ParecerTecnico parecer) {
 		projeto.setParecer(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);

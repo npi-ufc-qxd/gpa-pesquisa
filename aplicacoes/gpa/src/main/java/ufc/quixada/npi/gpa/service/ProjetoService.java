@@ -20,6 +20,8 @@ public interface ProjetoService {
 	void submeter(Projeto projeto);
 	
 	void submeterPendencias(Projeto projeto);
+	
+	void submeterPendenciasRelator(Projeto projeto);
 
 	void atribuirParecerista(Projeto projeto, ParecerTecnico parecer);
 	
@@ -105,5 +107,6 @@ public interface ProjetoService {
 	 */
 
 	List<Projeto> getProjetosParticipouHomologadosAtualmente(Long idCoordenador);
+
 
 }
