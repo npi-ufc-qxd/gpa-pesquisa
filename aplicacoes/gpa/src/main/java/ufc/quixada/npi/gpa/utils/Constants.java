@@ -22,7 +22,9 @@ public class Constants {
 
 	public static final String PAGINA_DIRECAO_BUSCAR_PESSOA = "direcao/buscar-participante";
 
-	public static final String PAGINA_EMITIR_PARECER = "projeto/emitir-parecer";
+	public static final String PAGINA_EMITIR_PARECER = "projeto/emitir-parecer-tecnico";
+	
+	public static final String PAGINA_EMITIR_PARECER_RELATOR ="projeto/emitir-parecer-relator";
 
 	public static final String PAGINA_ATRIBUIR_PARECERISTA = "direcao/atribuir-parecerista";
 

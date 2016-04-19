@@ -299,6 +299,33 @@
 								</div>
 							</div>
 						</c:if>		
+						
+						<c:if test="${not empty projeto.parecerRelator}">
+							<h4 class="subtitle">Avaliação do Relator</h4>
+							<span class="line"></span>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Relator:</label>
+								<div class="col-sm-4 value-label">
+									<label><a href="<c:url value="/pessoa/detalhes/${projeto.parecerRelator.relator.id}" ></c:url>">${projeto.parecerRelator.relator.nome}</a></label>
+								</div>
+								
+								<c:if test="${not empty projeto.parecerRelator.status}">
+									<label class="col-sm-2 control-label">Posicionamento:</label>
+									<div class="col-sm-4 value-label">
+										<label>${projeto.parecerRelator.status }</label>
+									</div>						
+								
+									<label class="col-sm-2 control-label">Observação:</label>
+									<div class="col-sm-10 value-label">
+										<label>${projeto.parecerRelator.observacao}</label>
+									</div>
+								</c:if>
+								<c:if test="${empty projeto.parecerRelator.status}">
+									<label class="col-sm-3 control-label">Aguardando Avaliação</label>
+								</c:if>
+								
+							</div>
+						</c:if>	
 										
 						<c:if test="${permissao != 'participante' }">
 						<h4 class="subtitle">Comentários</h4>

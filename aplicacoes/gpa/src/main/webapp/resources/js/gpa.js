@@ -85,6 +85,32 @@ $(document).ready(function() {
         }
 	});
 	
+	$('#projetos-aguardando-avaliacao').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [0, 1]},
+            {"targets" : 1, "orderable" : false},
+            {"targets" : 3, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
+	$('#projetos-avaliados').DataTable({
+		"order" : [[ 0, 'desc' ]],
+		"columnDefs" : [ 
+		    {className: "dt-center", "targets": [0, 1, 3, 4]},
+            {"targets" : 1, "orderable" : false},
+            {"targets" : 4, "orderable" : false}
+		],
+		"bAutoWidth": false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$('#projetos-em-tramitacao').DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
