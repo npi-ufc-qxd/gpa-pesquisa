@@ -27,9 +27,9 @@ public class ParticipacaoServiceImpl implements ParticipacaoService{
 		List<Participacao> participacoes = new ArrayList<>();
 		
 		if(participacao.isExterno()){
-			participacoes = getParticipacoesPorPessoaByProjeto(idProjeto, participacao.getParticipanteExterno().getId(), true);
+			participacoes = getParticipacoesPorPessoaByProjeto(idProjeto, participacao.getParticipanteExterno().getId());
 		}else{
-			participacoes = getParticipacoesPorPessoaByProjeto(idProjeto, participacao.getParticipante().getId(), false);
+			participacoes = getParticipacoesPorPessoaByProjeto(idProjeto, participacao.getParticipante().getId());
 		}
 		// Participação atual
 		YearMonth inicioPartAtual = YearMonth.of(participacao.getAnoInicio(), participacao.getMesInicio());
@@ -56,18 +56,12 @@ public class ParticipacaoServiceImpl implements ParticipacaoService{
 		
 	}
 	
-	private List<Participacao> getParticipacoesPorPessoaByProjeto(Long idProjeto, Long idPessoa, boolean externo){
+	private List<Participacao> getParticipacoesPorPessoaByProjeto(Long idProjeto, Long idPessoa){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", idProjeto);
-		if(externo){
-			params.put("idPessoa", idPessoa);
-			return participacaoRepository.find(QueryType.JPQL,
-					"select distinct part FROM Participacao as part " + "WHERE part.projeto.id = :id AND part.participanteExterno.id = :idPessoa", params);
-		}else{
-			params.put("idPessoa", idPessoa);
-			return participacaoRepository.find(QueryType.JPQL,
-					"select distinct part FROM Participacao as part " + "WHERE part.projeto.id = :id AND part.participante.id = :idPessoa", params);
-		}
+		params.put("idPessoa", idPessoa);
+		return participacaoRepository.find(QueryType.JPQL,
+					"select distinct part FROM Participacao as part " + "WHERE part.projeto.id = :id AND (part.participanteExterno.id = :idPessoa OR part.participante.id =:idPessoa)", params);
 	}
 
 }
