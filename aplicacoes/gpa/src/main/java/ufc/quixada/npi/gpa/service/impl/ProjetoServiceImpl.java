@@ -67,6 +67,12 @@ public class ProjetoServiceImpl implements ProjetoService {
 	}
 
 	@Override
+	public void submeterPendenciasRelator(Projeto projeto) {
+		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
+		projetoRepository.update(projeto);
+	}
+	
+	@Override
 	public void atribuirParecerista(Projeto projeto, ParecerTecnico parecer) {
 		projeto.setParecer(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
@@ -207,7 +213,23 @@ public class ProjetoServiceImpl implements ProjetoService {
 				"from Projeto where parecer.parecerista.id = :id AND (status != :aguardando_parecer and status != :resolvendo_pendencias)",
 				params);
 	}
+	
+	@Override
+	public List<Projeto> getProjetosAguardandoAvaliacao(Long idRelator) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idRelator);
+		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where parecerRelator.relator.id = :id AND status = :aguardando_avaliacao" , params);
+	};
 
+	@Override
+	public List<Projeto> getProjetosAvaliados(Long idRelator) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", idRelator);
+		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where parecerRelator.relator.id = :id AND status != :aguardando_avaliacao" , params);
+	}
+	
 	@Override
 	public List<Participacao> getParticipacoes(Long idPessoa) {
 		Map<String, Object> params = new HashMap<String, Object>();
