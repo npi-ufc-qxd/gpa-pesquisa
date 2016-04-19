@@ -30,7 +30,7 @@
 						<button type="button" class="close" data-dismiss="alert">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 						</button>
-						<c:out value="${erro}"></c:out>
+						<c:out value="${erro}"> </c:out>
 					</div>
 				</c:if>
 
@@ -117,7 +117,7 @@
 									</div>
 								</div>							
 							</div>
-						<form:input type="hidden" id="externoBoolean" path="externo"/>
+						<form:input type="hidden" id="externoBoolean" path="externo" value="false"/>
 							
 						<div class="form-group">
 							<div class="form-item">

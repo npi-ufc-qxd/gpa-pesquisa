@@ -299,7 +299,6 @@ public class ProjetoController {
 		}else{
 			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
 		}
-		participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
 		participacao.setProjeto(projeto);
 		participacaoValidator.validate(participacao, result);
 		if (result.hasErrors()) {
@@ -309,10 +308,7 @@ public class ProjetoController {
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		try {
-			if(participacao.isExterno()== true)
-				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteExternoSelecionado);
-			else
-				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteSelecionado);
+			participacaoService.verificaIntervalosParticipacaoPessoa(participacao, projeto.getId());
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("erro", e.getMessage());
 			model.addAttribute("projeto", projeto);
