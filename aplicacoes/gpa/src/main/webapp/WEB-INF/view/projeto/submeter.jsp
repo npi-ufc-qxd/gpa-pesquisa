@@ -79,7 +79,24 @@
 						</div>
 					</div>
 
-					<div class="form-group col-sm-12">
+					<div class="form-group">
+						
+						<!-- Valor do Projeto -->
+						<div class="form-item">
+							<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
+							<div class="col-sm-2">
+								<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto"/>
+								<div class="error-validation">
+									<form:errors path="valorProjeto"></form:errors>
+								</div>
+								<c:if test="${not empty error_termino}">
+									<div class="error-validation">
+										<span>${error_termino}</span>
+									</div>
+								</c:if>
+							</div>
+						</div>
+					
 						<!-- Fonte de financiamento do projeto -->
 						<div class="form-item">
 							<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
@@ -170,8 +187,7 @@
 
 					<div class="form-group form-item">
 
-						<label for="div-arquivo-projeto" class="col-sm-2 control-label">Arquivo
-							do Projeto:</label>
+						<label for="div-arquivo-projeto" class="col-sm-2 control-label"><span class="required">*</span>Arquivo do Projeto:</label>
 
 						<div id="div-arquivo-projeto" class="col-sm-10">
 
