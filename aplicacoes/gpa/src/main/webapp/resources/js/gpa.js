@@ -179,14 +179,24 @@ $(document).ready(function() {
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
-	mensagemFonteFinanciamento();
+	testaTabelaFonteFinanciamentoVazia();
 	
-	function mensagemFonteFinanciamento(){
+	function testaTabelaFonteFinanciamentoVazia(){
+		mensagem = "Nenhuma fonte de financiamento cadastrada.";
 		if($('#table-fontes-financiamento tr').length){
-			$('#mensagem-fonte-financiamento').addClass('hidden');
+			$('#div-mensagem').addClass('hidden');
 		}else{
-			$('#mensagem-fonte-financiamento').removeClass('hidden');
+			mostraMensagem(mensagem);
 		}
+	}
+	
+	$('#button-mensagem').on('click', function(){
+		$('#div-mensagem').addClass('hidden');
+	});
+	
+	function mostraMensagem(mensagem){
+		$('#mensagem').html(mensagem);
+		$('#div-mensagem').removeClass('hidden');
 	}
 	
 	$('#confirm-delete-fonte-financiamento').on('show.bs.modal', function(e) {
@@ -208,9 +218,13 @@ $(document).ready(function() {
 		.success(function( result ) {
 			if(result.result == 'ok') {
 				$('#fonte-'+id).remove();
-				mensagemFonteFinanciamento();
+				testaTabelaFonteFinanciamentoVazia();
+				$('#confirm-delete-fonte-financiamento').modal('hide');
+			}else{
+				$('#confirm-delete-fonte-financiamento').modal('hide');
+				mostraMensagem(result.mensagem);
 			}
-			$('#confirm-delete-fonte-financiamento').modal('hide');
+			
 		});
 	});
 	

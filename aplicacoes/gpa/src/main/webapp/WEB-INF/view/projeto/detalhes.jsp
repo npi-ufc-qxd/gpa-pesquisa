@@ -102,6 +102,19 @@
 					</div>
 					
 					<div class="form-group">
+						<label class="col-sm-2 control-label">Fonte:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.fonteFinanciamento}">
+								<label>Projeto Não-Financiado</label>
+							</c:if>
+							
+							<c:if test="${not empty projeto.fonteFinanciamento}">
+								<label>${projeto.fonteFinanciamento.nome}</label>
+							</c:if>
+						</div>
+					</div>
+					
+					<div class="form-group">
 						<label class="col-sm-2 control-label">Data de submissão:</label>
 						<div class="col-sm-4 value-label">
 							<c:if test="${empty projeto.submissao }">

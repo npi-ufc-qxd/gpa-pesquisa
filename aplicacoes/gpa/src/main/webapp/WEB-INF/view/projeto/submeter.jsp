@@ -79,6 +79,39 @@
 						</div>
 					</div>
 
+					<div class="form-group col-sm-12">
+						<!-- Fonte de financiamento do projeto -->
+						<div class="form-item">
+							<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
+							<div class="col-sm-4">
+								<select id="fonte-financiamento" name="fonte-financiamento" class="form-control">
+												
+									<c:if test="${empty projeto.fonteFinanciamento}">
+										<option value="">Projeto Não-Financiado</option>
+												
+										<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
+											<option value="${fonteFinanciamento.id}" >${fonteFinanciamento.nome}</option>
+										</c:forEach>
+									</c:if>
+												
+									<c:if test="${not empty projeto.fonteFinanciamento}">
+										<option value="">Projeto Não-Financiado</option>
+													
+										<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
+											<c:if test="${projeto.fonteFinanciamento.id == fonteFinanciamento.id}">
+												<option value="${fonteFinanciamento.id}" selected="selected">${fonteFinanciamento.nome}</option>
+											</c:if>
+														
+											<c:if test="${projeto.fonteFinanciamento.id != fonteFinanciamento.id}">
+												<option value="${fonteFinanciamento.id}">${fonteFinanciamento.nome}</option>
+											</c:if>
+										</c:forEach>
+									</c:if>
+												
+								</select>
+							</div>
+						</div>
+					</div>
 					
 					<div class="form-group">
 						<div class="form-item">
@@ -154,11 +187,11 @@
 
 									<tbody>
 										<tr>
-											<td id="arquivo-projeto" class="col-sm-11"><a
+											<td id="arquivo-projeto"><a
 												href="<c:url value="/documento/${projeto.arquivoProjeto.id }" />">${projeto.arquivoProjeto.nome }</a>
 											</td>
 
-											<td><a id="exluir-arquivo-p" class="col-sm-1"
+											<td class="align-right"><a id="exluir-arquivo-p"
 												data-toggle="modal" data-target="#confirm-delete-p-file"
 												title="Excluir" data-name="${projeto.arquivoProjeto.nome }"
 												data-idprojeto="${projeto.id }">

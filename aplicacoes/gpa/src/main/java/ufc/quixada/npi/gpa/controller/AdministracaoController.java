@@ -6,6 +6,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_PERSISTIR_USUARI
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_VINCULAR_PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_CADASTRADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_REFERENCIADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OK;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_SUCESSO_VINCULAR_PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
@@ -161,7 +162,14 @@ public class AdministracaoController {
 			return model;
 		}
 		
-		fonteFinanciamentoService.remover(fonteFinanciamento);
+		try{
+			fonteFinanciamentoService.remover(fonteFinanciamento);
+		}catch(Exception e){
+			model.addAttribute("result", MENSAGEM_ERRO);
+			model.addAttribute("mensagem", MENSAGEM_FONTE_DE_FINANCIAMENTO_REFERENCIADA);
+			return model;
+		}
+		
 		
 		model.addAttribute("result", MENSAGEM_OK);
 		

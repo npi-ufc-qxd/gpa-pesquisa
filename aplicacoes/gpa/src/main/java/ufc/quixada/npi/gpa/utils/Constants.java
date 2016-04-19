@@ -118,6 +118,8 @@ public class Constants {
 	
 	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE = "Fonte de financiamento inexistente";
 	
+	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_REFERENCIADA = "Não é possível excluir! Possívelmente esta fonte de financiamento é usada em algum projeto.";
+	
 	public static final String MENSAGEM_RELATOR_ATRIBUIDO = "Relator atribuído com sucesso";
 
 	public static final String MENSAGEM_RELATOR_ALTERADO = "Relator alterado com sucesso";
@@ -134,7 +136,7 @@ public class Constants {
 	public static final String PAPEL_COORDENACAO = "COORDENADOR";
 
 	/* Arquivos */
-	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
+	public static final String PASTA_DOCUMENTOS_GPA = "/home/ruben.silva/gpa-pesquisa-uploads";
 	
 	/* Action */
 	public static final String ATRIBUIR_PARECERISTA = "atribuir";
