@@ -208,7 +208,7 @@ $(document).ready(function() {
 	testaTabelaFonteFinanciamentoVazia();
 	
 	function testaTabelaFonteFinanciamentoVazia(){
-		mensagem = "Nenhuma fonte de financiamento cadastrada.";
+		var mensagem = "Nenhuma fonte de financiamento cadastrada.";
 		if($('#table-fontes-financiamento tr').length){
 			$('#div-mensagem').addClass('hidden');
 		}else{
