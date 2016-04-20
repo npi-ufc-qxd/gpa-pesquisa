@@ -9,7 +9,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_CADASTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_REMOVIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_SUBMETIDO;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DOCUMENTO_UPLOAD;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
@@ -164,7 +163,6 @@ public class ProjetoController {
 			projeto.addDocumento(documento);
 		}
 		projetoService.update(projeto);
-		redirect.addFlashAttribute("info", MENSAGEM_DOCUMENTO_UPLOAD);
 		model.addAttribute("projeto", projeto);
 		return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 	}
