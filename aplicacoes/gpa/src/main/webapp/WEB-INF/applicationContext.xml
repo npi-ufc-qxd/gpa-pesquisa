@@ -15,7 +15,6 @@
 
 	<bean class="ufc.quixada.npi.gpa.model.PessoaEntityListener" />
 	<bean class="ufc.quixada.npi.gpa.model.DocumentoEntityListener" />
-	<bean class="ufc.quixada.npi.gpa.model.ProjetoEntityListener" />
 
 	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="dev" />

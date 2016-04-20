@@ -128,14 +128,20 @@
 							
 							<!-- Fonte de financiamento do projeto -->
 							<div class="form-item">
-									<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
-									<div id="fonte-financiamento" class="col-sm-4">
-										<form:select path="fonteFinanciamento.id" cssClass="form-control">
-											<form:option value="" label="Projeto Não-Financiado" />
-											<form:options items="${fontesFinanciamento}" itemLabel="nome" itemValue="id"/>
-										</form:select>
-									</div>
+								<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
+								<div id="fonte-financiamento" class="col-sm-4">
+									<form:select path="fonteFinanciamento.id" cssClass="form-control">
+										<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
+											<c:if test="${fonteFinanciamento.id == projeto.fonteFinanciamento.id}">
+												<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}" selected="true"></form:option>
+											</c:if>
+											<c:if test="${fonteFinanciamento.id != projeto.fonteFinanciamento.id}">
+												<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}"></form:option>
+											</c:if>
+										</c:forEach>
+									</form:select> 
 								</div>
+							</div>
 							
 						</div>
 
