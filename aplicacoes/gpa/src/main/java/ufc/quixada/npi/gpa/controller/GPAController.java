@@ -55,7 +55,8 @@ public class GPAController {
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
 	public String acessoNegado(ModelMap model, Principal user) {
 		if (user != null) {
-			model.addAttribute("message", "Olá, " + user.getName() 
+			Pessoa pessoa = pessoaService.getPessoa(user.getName());
+			model.addAttribute("message", "Olá, " + pessoa.getNome() 
 			+ ", você não tem permissão para acessar essa página!");
 		} else {
 			model.addAttribute("message", 
