@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$("#meus-projetos").dataTable({
+	$("#meus-projetos").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3,]},            
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	    }
 	});
 		
-	$("#minhas-participacoes").dataTable({
+	$("#minhas-participacoes").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 4, 5, 6]},
@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-homologados").dataTable({
+	$("#projetos-homologados").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3, 4]},            
@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-homologados-diretor").dataTable({
+	$("#projetos-homologados-diretor").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3]},            
@@ -51,7 +51,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#participantes-projetos").dataTable({
+	$("#participantes-projetos").DataTable({
 		"order" : [[ 0, "asc" ]],
 		"bAutoWidth": false,
 		"language": {
@@ -59,7 +59,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-aguardando-parecer").dataTable({
+	$("#projetos-aguardando-parecer").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
@@ -72,7 +72,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-parecer-emitido").dataTable({
+	$("#projetos-parecer-emitido").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 1, 3, 4 ]},            
@@ -85,7 +85,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-aguardando-avaliacao").dataTable({
+	$("#projetos-aguardando-avaliacao").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1]},
@@ -98,7 +98,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-avaliados").dataTable({
+	$("#projetos-avaliados").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
@@ -111,7 +111,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-em-tramitacao").dataTable({
+	$("#projetos-em-tramitacao").DataTable({
 		"order" : [[ 0, "asc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 3]},             
@@ -125,7 +125,7 @@ $(document).ready(function() {
 	});
 	
 	// Página Vincular Participantes
-	$("#participacoes-projeto").dataTable({
+	$("#participacoes-projeto").DataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0]},
@@ -142,7 +142,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#participantes-table").dataTable({
+	$("#participantes-table").DataTable({
 		
 		"searching":false,
 		"paging":false,
@@ -160,23 +160,18 @@ $(document).ready(function() {
 		$(this).datepicker("hide");
         $("#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm").bootstrapValidator("revalidateField", this.id);
     });
-
 	$(".anexo").fileinput({
+		showUpload: false,
+		showRemove: false,
+		overwriteInitial:true,
     	uploadUrl: "/file-upload-batch/2",
-    	showUpload:false,
-    	showRemove: false,
-    	language: "pt-BR",
-    	uploadAsync: false,
-    	layoutTemplates: {
-	        actions: "<div class=\"file-actions\">\n" +
-	        "    <div class=\"file-footer-buttons\">\n" +
-	        "        {delete}" +
-	        "    </div>\n" +
-	        "    <div class=\"clearfix\"></div>\n" +
-	        "</div>"
-    	}
+    	language: "pt-BR"
     });
-    
+	
+	$(".input-group-btn").on("click",function() {
+	    $("#anexos").fileinput("reset");
+	});
+	
     if($(".anexoSubmeter").length){
     	if($("#table-anexos").find("tr").length){
     		$("#anexos").removeAttr("required");
@@ -205,24 +200,14 @@ $(document).ready(function() {
 		$(this).find(".btn-danger").attr("href", $(e.relatedTarget).data("href"));
 	});
 	
-	testaTabelaFonteFinanciamentoVazia();
+	mensagemFonteFinanciamento();
 	
-	function testaTabelaFonteFinanciamentoVazia(){
-		var mensagem = "Nenhuma fonte de financiamento cadastrada.";
+	function mensagemFonteFinanciamento(){
 		if($("#table-fontes-financiamento tr").length){
-			$("#div-mensagem").addClass("hidden");
+			$("#mensagem-fonte-financiamento").addClass("hidden");
 		}else{
-			mostraMensagem(mensagem);
+			$("#mensagem-fonte-financiamento").removeClass("hidden");
 		}
-	}
-	
-	$("#button-mensagem").on("click", function(){
-		$("#div-mensagem").addClass("hidden");
-	});
-	
-	function mostraMensagem(mensagem){
-		$("#mensagem").html(mensagem);
-		$("#div-mensagem").removeClass("hidden");
 	}
 	
 	$("#confirm-delete-fonte-financiamento").on("show.bs.modal", function(e) {
@@ -244,13 +229,9 @@ $(document).ready(function() {
 		.success(function( result ) {
 			if(result.result == "ok") {
 				$("#fonte-"+id).remove();
-				testaTabelaFonteFinanciamentoVazia();
-				$("#confirm-delete-fonte-financiamento").modal("hide");
-			}else{
-				$("#confirm-delete-fonte-financiamento").modal("hide");
-				mostraMensagem(result.mensagem);
+				mensagemFonteFinanciamento();
 			}
-			
+			$("#confirm-delete-fonte-financiamento").modal("hide");
 		});
 	});
 	
@@ -593,7 +574,7 @@ $(document).ready(function() {
 		atualizaHash();
 	}
 	
-	$(".participanteCoordena").dataTable({
+	$(".participanteCoordena").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -604,7 +585,7 @@ $(document).ready(function() {
 		"autoWidth": false
 	});
 	
-	$(".participanteParticipa").dataTable({
+	$(".participanteParticipa").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -868,7 +849,7 @@ $(document).ready(function() {
 			$(this).datepicker("hide");
 	    });
 	
-	$("#busca-adm").dataTable({
+	$("#busca-adm").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -878,7 +859,7 @@ $(document).ready(function() {
 		],
 		"autoWidth": false
 	});
-	$("#busca-participante").dataTable({
+	$("#busca-participante").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
