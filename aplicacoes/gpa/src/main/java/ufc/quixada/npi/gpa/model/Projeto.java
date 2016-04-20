@@ -12,8 +12,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,6 +30,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@EntityListeners(ProjetoEntityListener.class)
 public class Projeto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,7 +68,7 @@ public class Projeto {
 	@Column(scale=2)
 	private BigDecimal valorProjeto;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private FonteFinanciamento fonteFinanciamento;
 
 	@Enumerated(EnumType.STRING)

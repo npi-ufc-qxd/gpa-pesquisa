@@ -129,32 +129,11 @@
 							<!-- Fonte de financiamento do projeto -->
 							<div class="form-item">
 									<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
-									<div class="col-sm-4">
-										<select id="fonte-financiamento" name="fonte-financiamento" class="form-control">
-											
-											<c:if test="${empty projeto.fonteFinanciamento}">
-												<option value="">Projeto Não-Financiado</option>
-											
-												<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
-													<option value="${fonteFinanciamento.id}" >${fonteFinanciamento.nome}</option>
-												</c:forEach>
-											</c:if>
-											
-											<c:if test="${not empty projeto.fonteFinanciamento}">
-												<option value="">Projeto Não-Financiado</option>
-												
-												<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
-													<c:if test="${projeto.fonteFinanciamento.id == fonteFinanciamento.id}">
-														<option value="${fonteFinanciamento.id}" selected="selected">${fonteFinanciamento.nome}</option>
-													</c:if>
-													
-													<c:if test="${projeto.fonteFinanciamento.id != fonteFinanciamento.id}">
-														<option value="${fonteFinanciamento.id}">${fonteFinanciamento.nome}</option>
-													</c:if>
-												</c:forEach>
-											</c:if>
-											
-										</select>
+									<div id="fonte-financiamento" class="col-sm-4">
+										<form:select path="fonteFinanciamento.id" cssClass="form-control">
+											<form:option value="" label="Projeto Não-Financiado" />
+											<form:options items="${fontesFinanciamento}" itemLabel="nome" itemValue="id"/>
+										</form:select>
 									</div>
 								</div>
 							

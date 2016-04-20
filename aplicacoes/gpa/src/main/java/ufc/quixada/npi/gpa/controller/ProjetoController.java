@@ -47,7 +47,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
-import ufc.quixada.npi.gpa.model.FonteFinanciamento;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
@@ -120,9 +119,7 @@ public class ProjetoController {
 	public String cadastrarForm(Model model, HttpSession session) {
 		model.addAttribute("projeto", new Projeto());
 		model.addAttribute("action", "cadastrar");
-		
-		List<FonteFinanciamento> fontesFinanciamento = fonteFinanciamentoService.getFontesFinanciamento();
-		model.addAttribute("fontesFinanciamento", fontesFinanciamento);
+		model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
 		
 		return PAGINA_CADASTRAR_PROJETO;
 	}
@@ -130,8 +127,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String cadastrar(@RequestParam("anexos") MultipartFile[] anexos,
 			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result,
-			RedirectAttributes redirect, Authentication authentication, Model model,
-			@RequestParam(value = "fonte-financiamento", required = false) Long fonteFinanciamentoId) {
+			RedirectAttributes redirect, Authentication authentication, Model model) {
 
 		projetoValidator.validate(projeto, result);
 
@@ -146,11 +142,6 @@ public class ProjetoController {
 		
 		if(projeto.getValorProjeto() != null) {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
-		}
-		
-		if(fonteFinanciamentoId != null){
-			FonteFinanciamento fonteFinanciamento = fonteFinanciamentoService.getFonteFinanciamento(fonteFinanciamentoId);
-			projeto.setFonteFinanciamento(fonteFinanciamento);
 		}
 
 		List<Documento> documentos = new ArrayList<Documento>();
@@ -257,9 +248,7 @@ public class ProjetoController {
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("action", "editar");
-			
-			List<FonteFinanciamento> fontesFinanciamento = fonteFinanciamentoService.getFontesFinanciamento();
-			model.addAttribute("fontesFinanciamento", fontesFinanciamento);
+			model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
 			
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -384,8 +373,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public String editar(@RequestParam("anexos") List<MultipartFile> anexos,
 			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result,
-			Model model, HttpSession session, RedirectAttributes redirect, Authentication authentication,
-			@RequestParam(value = "fonte-financiamento", required = false) Long fonteFinanciamentoId) {
+			Model model, HttpSession session, RedirectAttributes redirect, Authentication authentication) {
 		model.addAttribute("action", "editar");
 
 		if (result.hasErrors()) {
@@ -399,14 +387,6 @@ public class ProjetoController {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
-
-		if (fonteFinanciamentoId != null) {
-			FonteFinanciamento fonteFinanciamento = fonteFinanciamentoService
-					.getFonteFinanciamento(fonteFinanciamentoId);
-			oldProjeto.setFonteFinanciamento(fonteFinanciamento);
-		} else {
-			oldProjeto.setFonteFinanciamento(null);
-		}
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
@@ -498,8 +478,7 @@ public class ProjetoController {
 					model.addAttribute("validacao", result);
 				}
 				
-				List<FonteFinanciamento> fontesFinanciamento = fonteFinanciamentoService.getFontesFinanciamento();
-				model.addAttribute("fontesFinanciamento", fontesFinanciamento);
+				model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
 				
 				return PAGINA_SUBMETER_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
@@ -530,21 +509,12 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam("anexos") List<MultipartFile> anexos,
 			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, Model model,
-			RedirectAttributes redirectAttributes, Authentication authentication,
-			@RequestParam(value = "fonte-financiamento", required = false) Long fonteFinanciamentoId) {
+			RedirectAttributes redirectAttributes, Authentication authentication) {
 		
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
-		
-		if (fonteFinanciamentoId != null) {
-			FonteFinanciamento fonteFinanciamento = fonteFinanciamentoService
-					.getFonteFinanciamento(fonteFinanciamentoId);
-			oldProjeto.setFonteFinanciamento(fonteFinanciamento);
-		} else {
-			oldProjeto.setFonteFinanciamento(null);
-		}
 
 		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
@@ -766,6 +736,7 @@ public class ProjetoController {
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
 		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
+		oldProjeto.setFonteFinanciamento(newProjeto.getFonteFinanciamento());
 		return oldProjeto;
 	}
 
