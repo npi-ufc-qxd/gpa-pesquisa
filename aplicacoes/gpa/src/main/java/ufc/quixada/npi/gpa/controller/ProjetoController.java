@@ -169,9 +169,9 @@ public class ProjetoController {
 	}
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public String cadastrar(
-//			@RequestParam("anexos") MultipartFile[] anexos,
-			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, Authentication authentication, Model model) {
+	public String cadastrar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
+			@Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
+			Authentication authentication, Model model) {
 		
 		projetoValidator.validate(projeto, result);
 
@@ -186,30 +186,6 @@ public class ProjetoController {
 		if(projeto.getValorProjeto() != null) {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
 		}
-		
-//		List<Documento> documentos = new ArrayList<Documento>();
-//		if (anexos != null && anexos.length != 0) {
-//			for (MultipartFile anexo : anexos) {
-//				try {
-//					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-//						Documento documento = new Documento();
-//						documento.setArquivo(anexo.getBytes());
-//						documento.setNome(anexo.getOriginalFilename());
-//						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-//						documento.setExtensao(anexo.getContentType());
-//						documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-//						documentos.add(documento);
-//					}
-//				} catch (IOException e) {
-//					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-//					return PAGINA_CADASTRAR_PROJETO;
-//				}
-//			}
-//		}
-//		
-//		for (Documento documento : documentos) {
-//			projeto.addDocumento(documento);
-//		}
 
 		try {
 			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {
@@ -411,11 +387,9 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	public String editar(
-//			@RequestParam("anexos") List<MultipartFile> anexos,
-			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto,
-			BindingResult result, Model model, HttpSession session, RedirectAttributes redirect,
-			Authentication authentication) {
+	public String editar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
+			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
+			RedirectAttributes redirect, Authentication authentication) {
 		model.addAttribute("action", "editar");
 		
 		if (result.hasErrors()) {
@@ -429,32 +403,8 @@ public class ProjetoController {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
-//		
-//		List<Documento> documentos = new ArrayList<Documento>();
-//		if (anexos != null && !anexos.isEmpty()) {
-//			for (MultipartFile anexo : anexos) {
-//				try {
-//					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-//						Documento documento = new Documento();
-//						documento.setArquivo(anexo.getBytes());
-//						documento.setNome(anexo.getOriginalFilename());
-//						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-//						documento.setExtensao(anexo.getContentType());
-//						documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-//						documentos.add(documento);
-//					}
-//				} catch (IOException e) {
-//					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-//					return PAGINA_CADASTRAR_PROJETO;
-//				}
-//			}
-//		}
 
 		projetoValidator.validate(oldProjeto, result);
-
-//		for (Documento documento : documentos) {
-//			oldProjeto.addDocumento(documento);
-//		}
 		
 		try {
 			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {

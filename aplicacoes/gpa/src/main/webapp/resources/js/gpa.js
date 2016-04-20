@@ -163,12 +163,13 @@ $(document).ready(function() {
 	$(".anexo").fileinput({
 		showUpload: false,
 		showRemove: false,
+		overwriteInitial:true,
     	uploadUrl: "/file-upload-batch/2",
     	language: 'pt-BR'
     });
-    
-	$("#anexo").on('change',function(){
-		$("#anexo").fileinput('clear');
+	
+	$('.input-group-btn').on('click',function() {
+	    $('#anexos').fileinput('reset');
 	});
 	
     if($('.anexoSubmeter').length){
