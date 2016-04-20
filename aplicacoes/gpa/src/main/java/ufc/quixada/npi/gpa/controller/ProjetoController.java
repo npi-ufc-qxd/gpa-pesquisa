@@ -165,7 +165,8 @@ public class ProjetoController {
 		}
 		projetoService.update(projeto);
 		redirect.addFlashAttribute("info", MENSAGEM_DOCUMENTO_UPLOAD);
-		return REDIRECT_PAGINA_LISTAR_PROJETO;
+		model.addAttribute("projeto", projeto);
+		return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 	}
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
