@@ -85,7 +85,6 @@
 												<c:if test="${empty projetoNaoHomologado.submissao }">-</c:if>
 												<fmt:formatDate pattern="dd/MM/yyyy" value="${projetoNaoHomologado.submissao }" />
 											</td>
-													
 											<td class="acoes">
 												<c:if test="${projetoNaoHomologado.status == 'NOVO' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS_HOMOLOGACAO'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
@@ -98,7 +97,9 @@
 															<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
 														</a>
 													</c:if>
-														
+													<a id="upload-documentos" href="<c:url value="/projeto/uploadDocumento/${projetoNaoHomologado.id}" ></c:url>" title="Upload Documentos">
+														<button class="btn btn-primary btn-xs"><i class="fa fa-file"></i></button>
+													</a>	
 													<a id="editar" href="<c:url value="/projeto/editar/${projetoNaoHomologado.id}" ></c:url>" title="Editar">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 													</a>
