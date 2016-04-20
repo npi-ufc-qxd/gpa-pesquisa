@@ -160,23 +160,17 @@ $(document).ready(function() {
 		$(this).datepicker('hide');
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
-
 	$(".anexo").fileinput({
+		showUpload: false,
+		showRemove: false,
     	uploadUrl: "/file-upload-batch/2",
-    	showUpload:false,
-    	showRemove: false,
-    	language: 'pt-BR',
-    	uploadAsync: false,
-    	layoutTemplates: {
-	        actions: '<div class="file-actions">\n' +
-	        '    <div class="file-footer-buttons">\n' +
-	        '        {delete}' +
-	        '    </div>\n' +
-	        '    <div class="clearfix"></div>\n' +
-	        '</div>'
-    	}
+    	language: 'pt-BR'
     });
     
+	$("#anexo").on('change',function(){
+		$("#anexo").fileinput('clear');
+	});
+	
     if($('.anexoSubmeter').length){
     	if($('#table-anexos').find('tr').length){
     		$('#anexos').removeAttr('required');

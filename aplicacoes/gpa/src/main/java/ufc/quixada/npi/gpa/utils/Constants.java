@@ -13,7 +13,9 @@ public class Constants {
 	public static final String PAGINA_DETALHES_PROJETO = "projeto/detalhes";
 
 	public static final String PAGINA_EDITAR_PROJETO = "projeto/editar";
-
+	
+	public static final String PAGINA_UPLOAD_DOCUMENTOS_PROJETO = "projeto/upload-documentos";
+	
 	public static final String PAGINA_LISTAR_PROJETO = "projeto/listar";
 
 	public static final String PAGINA_SUBMETER_PROJETO = "projeto/submeter";
@@ -71,6 +73,8 @@ public class Constants {
 	public static final String MENSAGEM_PARTICIPACAO_INEXISTENTE = "Participação inexistente ou não relacionado com projeto";
 
 	public static final String MENSAGEM_PROJETO_ATUALIZADO = "Projeto atualizado com sucesso";
+	
+	public static final String MENSAGEM_DOCUMENTO_UPLOAD = "Documentos adicionados com sucesso";
 
 	public static final String MENSAGEM_PROJETO_CADASTRADO = "Projeto cadastrado com sucesso";
 
