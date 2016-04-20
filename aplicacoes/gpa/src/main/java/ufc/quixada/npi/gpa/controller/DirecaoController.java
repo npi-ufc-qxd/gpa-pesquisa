@@ -7,12 +7,12 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_HOMOLOGADO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DIRECAO_BUSCAR_PESSOA;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_HOMOLOGAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_INICIAL_DIRECAO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_DIRECAO;
-import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_RELATOR;
 
 import java.io.IOException;
 import java.util.Date;
@@ -272,7 +272,7 @@ public class DirecaoController {
 		projetoService.homologar(projeto);
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_HOMOLOGADO);
-		notificacaoService.notificar(projeto, Evento.AVALIACAO);
+		notificacaoService.notificar(projeto, Evento.HOMOLOGACAO);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
 	@RequestMapping(value = "/buscar", method = RequestMethod.GET)
