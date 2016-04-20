@@ -65,6 +65,13 @@ public class PessoaServiceImpl implements PessoaService {
 		return pessoaRepository.findFirst(QueryType.JPQL, "select pe from Pessoa pe, Papel pa where pa.nome = :papel and pa member of pe.papeis", params, 0);
 	}
 	
+	@Override
+	public List<Pessoa> getAllDirecao() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("direcao", Constants.PAPEL_DIRECAO);
+		return pessoaRepository.find(QueryType.JPQL,"from Pessoa pe, Papel pa where pa.nome = :direcao and pa member of pe.papeis",params);
+	}
+	
 	@Deprecated 
 	@Override
 	public List<Pessoa> getParticipantes(Pessoa usuario) {

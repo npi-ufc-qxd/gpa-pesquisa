@@ -17,6 +17,8 @@ public interface PessoaService {
 	List<Pessoa> getPareceristas(Projeto projeto);
 
 	Pessoa getDirecao();
+	
+	List<Pessoa> getAllDirecao();
 
 	List<Pessoa> getParticipantes(Pessoa pessoa);
 	

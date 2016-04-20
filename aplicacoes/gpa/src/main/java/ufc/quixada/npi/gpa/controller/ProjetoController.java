@@ -106,7 +106,8 @@ public class ProjetoController {
 		model.addAttribute("projetosAguardandoAvaliacao", projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados(idUsuarioLogado));
-
+		
+		List<Pessoa> direcao = pessoaService.getAllDirecao();
 
 		return PAGINA_LISTAR_PROJETO;
 	}
