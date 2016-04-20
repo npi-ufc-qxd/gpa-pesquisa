@@ -59,6 +59,7 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
+import ufc.quixada.npi.gpa.service.FonteFinanciamentoService;
 import ufc.quixada.npi.gpa.service.ParticipacaoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
@@ -95,6 +96,9 @@ public class ProjetoController {
 
 	@Inject
 	private ParticipacaoService participacaoService;
+	
+	@Inject
+	private FonteFinanciamentoService fonteFinanciamentoService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, Authentication authentication) {
@@ -116,6 +120,7 @@ public class ProjetoController {
 	public String cadastrarForm(Model model, HttpSession session) {
 		model.addAttribute("projeto", new Projeto());
 		model.addAttribute("action", "cadastrar");
+		model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
 		return PAGINA_CADASTRAR_PROJETO;
 	}
 	
@@ -265,6 +270,7 @@ public class ProjetoController {
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("action", "editar");
+			model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
@@ -467,6 +473,9 @@ public class ProjetoController {
 				if (result.hasGlobalErrors()) {
 					model.addAttribute("validacao", result);
 				}
+				
+				model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
+				
 				return PAGINA_SUBMETER_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
 				projetoService.submeterPendencias(projeto);
