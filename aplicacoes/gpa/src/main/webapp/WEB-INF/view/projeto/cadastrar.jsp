@@ -89,7 +89,7 @@
 									</c:if>
 								</div>
 							</div>
-
+			
 							<div class="form-item">
 								<label for="termino" class="col-sm-2 control-label">Término:</label>
 								<div class="col-sm-2">
@@ -105,7 +105,23 @@
 									</c:if>
 								</div>
 							</div>
-
+							
+							<!-- Valor do Projeto -->
+							<div class="form-item">
+								<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
+								<div class="col-sm-2">
+									<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto"/>
+									<div class="error-validation">
+										<form:errors path="valorProjeto"></form:errors>
+									</div>
+									<c:if test="${not empty error_termino}">
+										<div class="error-validation">
+											<span>${error_termino}</span>
+										</div>
+									</c:if>
+								</div>
+							</div>
+			
 						</div>
 
 						<div class="form-group form-item">
@@ -116,7 +132,7 @@
 									placeholder="Local do projeto" />
 							</div>
 						</div>
-
+			
 						<div class="form-group form-item">
 							<label for="atividades" class="col-sm-2 control-label">Atividades
 								gerais:</label>
@@ -126,7 +142,7 @@
 									placeholder="Atividades"></form:textarea>
 							</div>
 						</div>
-
+						
 						<div class="form-group form-item">
 							<label for="anexos" class="col-sm-2 control-label">Anexos:</label>
 							<div class="col-sm-10">
@@ -160,9 +176,6 @@
 								</c:if>
 							</div>
 						</div>
-
-						<hr></hr>
-						
 						<div class="form-group form-item">
 
 							<label for="div-arquivo-projeto" class="col-sm-2 control-label">Arquivo
@@ -205,24 +218,21 @@
 						</div>
 						
 						<hr></hr>
-
+						
 						<c:if test="${not empty projeto.participacoes}">
 							<div class="form-group form-item">
-								<label class="col-sm-2 control-label">Vincular
-									participantes:</label>
-
-								<div class="col-sm-10 field-value">
-										<label> 
-											<a id="vincular"
-
+								<label class="col-sm-2 control-label">Vincular participantes:</label>
+								
+								<div class="col-sm-10 field-value">	
+									<label>  
+										<a id="vincular"
 											href="<c:url value="/projeto/participacoes/${projeto.id}" ></c:url>"
 											target="_blank" title="Vincular participantes"
 											class="btn btn-primary"> <i class="fa fa-users"></i>
 										</a>
 									</label>
-
+										
 									<ul class="list-inline" style="line-height: 2.7em">
-
 											<table id="participantes-table" class="table table-striped table-hover ">
 												<thead>
 													<tr>
@@ -253,51 +263,45 @@
 								</div>
 							</div>
 							<c:if test="${empty projeto.participacoes }">
-								<div class="alert alert-warning" role="alert">Não há
-									participantes vinculados.</div>
+								<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>
 							</c:if>
-						</c:if>
-
+					</c:if>
+						
 						<div class="form-group">
 							<div class="col-sm-2"></div>
 							<div class="col-sm-2">
-								<span class="campo-obrigatorio"><span class="required">*</span>
-									Campos obrigatórios</span>
+								<span class="campo-obrigatorio"><span class="required">*</span> Campos obrigatórios</span>
 							</div>
 						</div>
-
+			
 						<div class="controls">
-							<input name="salvar" type="submit" class="btn btn-primary"
-								value="Salvar" /> <a class="btn btn-default back">Cancelar</a>
+							<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
+							<a  class="btn btn-default back">Cancelar</a>
 						</div>
 					</form:form>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	
 	<!-- Modal Excluir Arquivo -->
 	<div class="modal fade" id="confirm-delete-file">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">
-						&times;<span class="sr-only">Close</span>
-					</button>
-					<h4 class="modal-title">Excluir</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;<span class="sr-only">Close</span></button>
+	       			<h4 class="modal-title">Excluir</h4>
 				</div>
 				<div class="modal-body"></div>
 				<div class="modal-footer">
 					<button id="button-delete-file" class="btn btn-danger btn-sm">Excluir</button>
-					<button type="button" class="btn btn-default btn-sm"
-						data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- Modal Excluir Arquivo do Projeto -->
+<!-- Modal Excluir Arquivo do Projeto -->
 	<div class="modal fade" id="confirm-delete-p-file">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -317,9 +321,9 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<jsp:include page="../modulos/footer.jsp" />
-
+	
 	<script type="text/javascript">
 		$('#menu-novo-projeto').addClass('active');
 	</script>

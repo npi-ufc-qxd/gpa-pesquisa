@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
+import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -19,24 +20,28 @@ public interface ProjetoService {
 	void submeter(Projeto projeto);
 	
 	void submeterPendencias(Projeto projeto);
+	
+	void submeterPendenciasRelator(Projeto projeto);
 
 	void atribuirParecerista(Projeto projeto, ParecerTecnico parecer);
 	
 	void alterarParecerista(ParecerTecnico parecer);
+	
+	void atribuirRelator(Projeto projeto, ParecerRelator parecerRelator);
+	
+	void alterarRelator(ParecerRelator parecerRelator);
 
 	void emitirParecer(Projeto projeto);
 
-	void avaliar(Projeto projeto);
+	void homologar(Projeto projeto);
 
-	List<Projeto> getProjetosSubmetidos();
+	List<Projeto> getProjetosEmTramitacao();
 	
-	List<Projeto> getProjetosSubmetidos(Long idCoordenador);
-	
-	List<Projeto> getProjetosNaoAvaliados(Long idCoordenador);
+	List<Projeto> getProjetosNaoHomologados(Long idCoordenador);
 
-	List<Projeto> getProjetosAvaliados();
+	List<Projeto> getProjetosHomologados();
 
-	List<Projeto> getProjetosAvaliados(Long idCoordenador);
+	List<Projeto> getProjetosHomologados(Long idCoordenador);
 
 	Projeto getProjeto(Long id);
 
@@ -51,6 +56,10 @@ public interface ProjetoService {
 	List<Projeto> getProjetosAguardandoParecer(Long idParecerista);
 	
 	List<Projeto> getProjetosParecerEmitido(Long idParecerista);
+	
+	List<Projeto> getProjetosAguardandoAvaliacao(Long idUsuarioLogado);
+	
+	List<Projeto> getProjetosAvaliados(Long idRelator);
 
 	List<Participacao> getParticipacoes(Long idPessoa);
 
@@ -69,7 +78,7 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosCoordenaAprovadosAtualmente(Long idCoordenador);
+	List<Projeto> getProjetosCoordenaHomologadosAtualmente(Long idCoordenador);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o autor coordenou, com status APROVADO e APROVADO_COM_RESTRICAO.
@@ -78,7 +87,7 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosCoordenouAprovadosAtualmente(Long idCoordenador);
+	List<Projeto> getProjetosCoordenouHomologadosAtualmente(Long idCoordenador);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o usuário participa mas não é coordenador, com status APROVADO e APROVADO_COM_RESTRICAO.
@@ -87,7 +96,7 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosParticipaAprovadosAtualmente(Long idCoordenador);
+	List<Projeto> getProjetosParticipaHomologadosAtualmente(Long idCoordenador);
 	
 	/**
 	 * Exibe lista de {@link Projeto} que o usuário participou mas não é coordenador, com status APROVADO e APROVADO_COM_RESTRICAO.
@@ -96,6 +105,8 @@ public interface ProjetoService {
 	 * @param idCoordenador {@link Long}
 	 * @return {@link List} {@link Projeto}
 	 */
-	List<Projeto> getProjetosParticipouAprovadosAtualmente(Long idCoordenador);
+
+	List<Projeto> getProjetosParticipouHomologadosAtualmente(Long idCoordenador);
+
 
 }
