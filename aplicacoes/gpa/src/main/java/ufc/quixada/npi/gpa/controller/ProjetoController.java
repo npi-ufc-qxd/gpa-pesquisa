@@ -108,7 +108,6 @@ public class ProjetoController {
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados(idUsuarioLogado));
 
-
 		return PAGINA_LISTAR_PROJETO;
 	}
 

@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.observer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import br.ufc.quixada.npi.model.Email;
 import br.ufc.quixada.npi.service.EmailService;
+import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.service.Observer;
@@ -76,7 +78,6 @@ public class EmailObserver implements Observer {
 
 			if (properties.getProperty("email.ativo").equals("true")) {
 				final Evento eventoCopy = evento;
-				final String emailDiretor = pessoaService.getDirecao().getEmail();
 				final String emailCoordenador = projeto.getCoordenador().getEmail();
 				final String emailParecerista = projeto.getParecer() != null ? projeto.getParecer().getParecerista().getEmail() : "";
 				final String emailRelator = projeto.getParecerRelator() != null ? projeto.getParecerRelator().getRelator().getEmail() : "";
@@ -95,6 +96,7 @@ public class EmailObserver implements Observer {
 						String body = null;
 						Email email = new Email();
 						String emailGPA = "naoresponda@gpapesquisa.com";
+						boolean emailDiretores = false;
 
 						switch (eventoCopy) {
 						case SUBMISSAO:
@@ -103,12 +105,9 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailCoordenador, emailDiretor);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							email.setTo(emailCoordenador);
+							emailDiretores = true;
+							
 							break;
 
 						case ATRIBUICAO_PARECERISTA:
@@ -141,12 +140,8 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailDiretor);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							emailDiretores = true;
+							
 							break;
 
 						case ALTERACAO_PARECERISTA:
@@ -179,12 +174,8 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailDiretor);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							emailDiretores = true;
+							
 							break;
 
 						case EMISSAO_PARECER:
@@ -218,12 +209,8 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailDiretor);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							emailDiretores = true;
+							
 							break;
 
 						case ATRIBUICAO_RELATOR:
@@ -254,12 +241,8 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailDiretor);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							emailDiretores = true;
+							
 							break;
 
 						case ALTERACAO_RELATOR:
@@ -290,12 +273,8 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailDiretor);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							emailDiretores = true;
+							
 							break;
 
 						case EMISSAO_AVALIACAO_RELATOR:
@@ -326,12 +305,7 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailDiretor);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							emailDiretores = true;
 							break;
 
 						case HOMOLOGACAO:
@@ -341,12 +315,9 @@ public class EmailObserver implements Observer {
 							email.setFrom(emailGPA);
 							email.setSubject(subject);
 							email.setText(body);
-							email.setTo(emailDiretor, emailCoordenador);
-							try {
-								emailService.sendEmail(email);
-							} catch (MessagingException e) {
-
-							}
+							email.setTo(emailCoordenador);
+							emailDiretores = true;
+							
 							break;
 
 						case RESOLUCAO_PENDENCIAS:
@@ -407,6 +378,19 @@ public class EmailObserver implements Observer {
 							break;
 
 						}
+						
+						if(emailDiretores) {
+							List<Pessoa> diretores = pessoaService.getAllDirecao();
+							if(!diretores.isEmpty()) {
+								for(Pessoa diretor : diretores) {
+									email.setTo(diretor.getEmail());
+								}
+								try {
+									emailService.sendEmail(email);
+								} catch (MessagingException e) {
+								}
+							}
+						}
 					}
 				};
 
@@ -414,7 +398,6 @@ public class EmailObserver implements Observer {
 				threadEnviarEmail.start();
 			}
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 	}
 }
