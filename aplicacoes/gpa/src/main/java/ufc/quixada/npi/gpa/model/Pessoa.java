@@ -20,10 +20,6 @@ import ufc.quixada.npi.gpa.utils.Constants;
 @EntityListeners(PessoaEntityListener.class)
 public class Pessoa {
 	
-	public Pessoa() {
-		papeis = new ArrayList<Papel>();
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -43,6 +39,10 @@ public class Pessoa {
 	@Transient
 	private String email;
 
+	public Pessoa() {
+		papeis = new ArrayList<Papel>();
+	}
+	
 	public List<Projeto> getProjetos() {
 		return projetos;
 	}
