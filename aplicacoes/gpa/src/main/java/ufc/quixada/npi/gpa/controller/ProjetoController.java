@@ -15,6 +15,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
@@ -378,34 +379,8 @@ public class ProjetoController {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
-		
-		List<Documento> documentos = new ArrayList<Documento>();
-		if (anexos != null && !anexos.isEmpty()) {
-			for (MultipartFile anexo : anexos) {
-				try {
-					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-						Documento documento = new Documento();
-						documento.setArquivo(anexo.getBytes());
-						documento.setNome(anexo.getOriginalFilename());
-						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-						documento.setExtensao(anexo.getContentType());
-						documento.setPessoa(usuario);
-						documento.setData(new Date());
-						documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-						documentos.add(documento);
-					}
-				} catch (IOException e) {
-					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-					return PAGINA_CADASTRAR_PROJETO;
-				}
-			}
-		}
 
 		projetoValidator.validate(oldProjeto, result);
-
-		for (Documento documento : documentos) {
-			oldProjeto.addDocumento(documento);
-		}
 		
 		try {
 			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {

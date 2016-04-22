@@ -198,8 +198,9 @@ public class ProjetoValidator implements Validator {
 
 		List<Participacao> participantes = projeto.getParticipacoes();
 		for (Participacao participacao : participantes) {
-			if (participacao.getParticipante().getId().equals(coordenadorId))
+			if (!participacao.isExterno() && participacao.getParticipante().getId().equals(coordenadorId)){
 				coordenadorEstaParticipando = true;
+			}
 		}
 
 		if (!coordenadorEstaParticipando) {

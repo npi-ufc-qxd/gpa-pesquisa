@@ -1,7 +1,5 @@
 package ufc.quixada.npi.gpa.service;
 
-import java.util.List;
-
 import ufc.quixada.npi.gpa.model.Participacao;
 
 public interface ParticipacaoService{

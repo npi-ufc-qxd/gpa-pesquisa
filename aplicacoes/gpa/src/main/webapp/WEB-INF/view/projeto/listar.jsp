@@ -33,13 +33,28 @@
 					</div>
 				</c:if>
 		        <ul class="nav nav-tabs">
-		            <li class="active"><a aria-expanded="true" href="#tab-meus-projetos" data-toggle="tab">Meus projetos <span class="badge">${projetosNaoHomologados.size()}</span></a></li>
+		        	<li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Meus Projetos <span class="caret"></span></a>
+					    <ul class="dropdown-menu">
+					      <li class="active"><a href="#tab-meus-projetos" data-toggle="tab" aria-expanded="false">Meus projetos <span class="badge">${projetosNaoHomologados.size()}</span></a></li>
+					      <li class="divider"></li>
+					      <li class=""><a href="#tab-homologados" data-toggle="tab" aria-expanded="true">Projetos Homologados <span class="badge">${projetosHomologados.size() }</span></a></li>
+					    </ul>
+					 </li>
 		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Participações <span class="badge">${participacoesEmProjetos.size() }</span></a></li>
-		            <li class=""><a aria-expanded="false" href="#tab-homologados" data-toggle="tab">Projetos Homologados <span class="badge">${projetosHomologados.size() }</span></a></li>
-		            <li class=""><a aria-expanded="false" href="#tab-parecer" data-toggle="tab">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
-		            <li class=""><a aria-expanded="false" href="#tab-parecer-emitidos" data-toggle="tab">Pareceres Emitidos <span class="badge">${projetosParecerEmitido.size() }</span></a></li>
-		            <li class=""><a aria-expanded="false" href="#tab-projetos-aguardando-avaliacao" data-toggle="tab">Projetos a Avaliar <span class="badge">${projetosAguardandoAvaliacao.size() }</span></a></li>
-		            <li class=""><a aria-expanded="false" href="#tab-projetos-avaliados" data-toggle="tab">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
+		            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Parecer <span class="caret"></span></a>
+					    <ul class="dropdown-menu">
+					      <li class=""><a href="#tab-parecer" data-toggle="tab" aria-expanded="false">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
+					      <li class="divider"></li>
+					      <li class=""><a href="#tab-parecer-emitidos" data-toggle="tab" aria-expanded="true">Pareceres Emitidos <span class="badge">${projetosParecerEmitido.size() }</span></a></li>
+					    </ul>
+					 </li>
+					 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Relato <span class="caret"></span></a>
+					    <ul class="dropdown-menu">
+					      <li class=""><a href="#tab-projetos-aguardando-avaliacao" data-toggle="tab" aria-expanded="false">Projetos a Avaliar <span class="badge">${projetosAguardandoAvaliacao.size() }</span></a></li>
+					      <li class="divider"></li>
+					      <li class=""><a href="#tab-projetos-avaliados" data-toggle="tab" aria-expanded="true">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
+					    </ul>
+					 </li>
 		        </ul>
 		        <div class="tab-content">
 		        	<div class="tab-pane fade active in" id="tab-meus-projetos">
@@ -70,7 +85,6 @@
 												<c:if test="${empty projetoNaoHomologado.submissao }">-</c:if>
 												<fmt:formatDate pattern="dd/MM/yyyy" value="${projetoNaoHomologado.submissao }" />
 											</td>
-													
 											<td class="acoes">
 												<c:if test="${projetoNaoHomologado.status == 'NOVO' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS_HOMOLOGACAO'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
@@ -83,7 +97,9 @@
 															<button class="btn btn-primary btn-xs"><i class="fa fa-users"></i></button>
 														</a>
 													</c:if>
-														
+													<a id="upload-documentos" href="<c:url value="/projeto/uploadDocumento/${projetoNaoHomologado.id}" ></c:url>" title="Upload Documentos">
+														<button class="btn btn-primary btn-xs"><i class="fa fa-file"></i></button>
+													</a>	
 													<a id="editar" href="<c:url value="/projeto/editar/${projetoNaoHomologado.id}" ></c:url>" title="Editar">
 														<button class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></button>
 													</a>
