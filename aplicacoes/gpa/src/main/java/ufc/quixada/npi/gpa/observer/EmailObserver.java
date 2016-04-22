@@ -398,7 +398,6 @@ public class EmailObserver implements Observer {
 				threadEnviarEmail.start();
 			}
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 	}
 }
