@@ -716,6 +716,9 @@ public class ProjetoController {
 				case OFICIO_HOMOLOGACAO:
 					projeto.setOficio(documento);
 					break;
+					
+				default:
+					break;
 				}
 			}
 		} catch (IOException e) {
