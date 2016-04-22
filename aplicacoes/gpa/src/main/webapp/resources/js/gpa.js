@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$("#meus-projetos").DataTable({
+	$("#meus-projetos").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3,]},            
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	    }
 	});
 		
-	$("#minhas-participacoes").DataTable({
+	$("#minhas-participacoes").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 4, 5, 6]},
@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-homologados").DataTable({
+	$("#projetos-homologados").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3, 4]},            
@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-homologados-diretor").DataTable({
+	$("#projetos-homologados-diretor").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3]},            
@@ -51,7 +51,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#participantes-projetos").DataTable({
+	$("#participantes-projetos").dataTable({
 		"order" : [[ 0, "asc" ]],
 		"bAutoWidth": false,
 		"language": {
@@ -59,7 +59,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-aguardando-parecer").DataTable({
+	$("#projetos-aguardando-parecer").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
@@ -72,7 +72,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-parecer-emitido").DataTable({
+	$("#projetos-parecer-emitido").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 1, 3, 4 ]},            
@@ -85,7 +85,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-aguardando-avaliacao").DataTable({
+	$("#projetos-aguardando-avaliacao").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1]},
@@ -98,7 +98,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-avaliados").DataTable({
+	$("#projetos-avaliados").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
@@ -111,7 +111,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#projetos-em-tramitacao").DataTable({
+	$("#projetos-em-tramitacao").dataTable({
 		"order" : [[ 0, "asc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 3]},             
@@ -125,7 +125,7 @@ $(document).ready(function() {
 	});
 	
 	// Página Vincular Participantes
-	$("#participacoes-projeto").DataTable({
+	$("#participacoes-projeto").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0]},
@@ -142,7 +142,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$("#participantes-table").DataTable({
+	$("#participantes-table").dataTable({
 		
 		"searching":false,
 		"paging":false,
@@ -574,7 +574,7 @@ $(document).ready(function() {
 		atualizaHash();
 	}
 	
-	$(".participanteCoordena").DataTable({
+	$(".participanteCoordena").dataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -585,7 +585,7 @@ $(document).ready(function() {
 		"autoWidth": false
 	});
 	
-	$(".participanteParticipa").DataTable({
+	$(".participanteParticipa").dataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -849,7 +849,7 @@ $(document).ready(function() {
 			$(this).datepicker("hide");
 	    });
 	
-	$("#busca-adm").DataTable({
+	$("#busca-adm").dataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -859,7 +859,7 @@ $(document).ready(function() {
 		],
 		"autoWidth": false
 	});
-	$("#busca-participante").DataTable({
+	$("#busca-participante").dataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
