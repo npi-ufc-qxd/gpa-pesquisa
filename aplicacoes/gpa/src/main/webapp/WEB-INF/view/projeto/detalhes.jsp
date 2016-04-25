@@ -169,18 +169,42 @@
 							</div>
 							<div id="anexos" class="accordion-body collapse">
 								<div class="form-group">
-									<label class="col-sm-2 control-label">Anexos:</label>
-									<div class="col-sm-10 value-label">
-										<c:if test="${empty projeto.documentos }">
-											<label>-</label>						
-										</c:if>				
-										<c:if test="${not empty projeto.documentos }">
-											<c:forEach items="${projeto.documentos }" var="documento">
-												<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label><br>							
-											</c:forEach>
-										</c:if>
-									</div>
-								</div><!-- anexos -->
+						<label class="col-sm-2 control-label">Anexos:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.documentos }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.documentos }">
+								<table>
+									<thead>
+										<tr>
+											<th class="text-left">Nome</th>
+											<th class="text-left">Autor</th>
+											<th class="text-left">Data</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${projeto.documentos }" var="documento">
+											<tr>
+												<th class="col-sm-2 value-label"><label><a
+														href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label>
+												</th>
+												<th class="col-sm-2 value-label"><label><c:url
+															value=" ${documento.pessoa.nome}"></c:url></label></th>
+												<th class="col-sm-2 value-label"><label><fmt:formatDate
+															pattern="dd/MM/yyyy HH:mm" value="${documento.data }" /></label>
+												</th>
+
+											</tr>
+											<br>
+										</c:forEach>
+									</tbody>
+								</table>
+							</c:if>
+
+
+						</div>
+					</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Arquivo do Projeto:</label>
 										<div class="col-sm-10 value-label">

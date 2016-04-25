@@ -6,6 +6,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.ANO;
 import static ufc.quixada.npi.gpa.utils.Constants.CADASTRAR;
 import static ufc.quixada.npi.gpa.utils.Constants.EDITAR;
 import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.FONTES_FINANCIAMENTO;
 import static ufc.quixada.npi.gpa.utils.Constants.INFO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECER_EMITIDO;
@@ -52,7 +53,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_VINCULAR_PARTI
 import static ufc.quixada.npi.gpa.utils.Constants.TIPOS_DE_PARTICIPACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.USUARIO;
 import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
-import static ufc.quixada.npi.gpa.utils.Constants.FONTES_FINANCIAMENTO;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -177,8 +177,9 @@ public class ProjetoController {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO)){
+		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())){
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		
@@ -207,12 +208,12 @@ public class ProjetoController {
 	
 	@RequestMapping(value="/uploadDocumentos/{id}", method = RequestMethod.POST)
 	public String uploadArquivos(@RequestParam("anexos") MultipartFile[] anexos, 
-			@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect){
+			@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect, Authentication authentication){
 		Projeto projeto = projetoService.getProjeto(id);
 		
 		if (anexos != null && anexos.length != 0) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO)) {
+				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO, authentication.getName())) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 				}
@@ -309,7 +310,7 @@ public class ProjetoController {
 
 		projetoValidator.validate(oldProjeto, result);
 		
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO)) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -514,14 +515,14 @@ public class ProjetoController {
 
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO)) {
+				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO, authentication.getName())) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_CADASTRAR_PROJETO;
 				} 
 			}
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO)) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_SUBMETER_PROJETO;
 		}
@@ -586,7 +587,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/emitir-parecer", method = RequestMethod.POST)
 	public String emitirParecer(@RequestParam("id-projeto") Long idProjeto, @RequestParam("anexo") MultipartFile anexo,
 			@RequestParam("posicionamento") StatusPosicionamento posicionamento, Model model,
-			@Valid ParecerTecnico parecer, BindingResult result, RedirectAttributes redirectAttributes) {
+			@Valid ParecerTecnico parecer, BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		if (projeto == null) {
@@ -598,7 +599,7 @@ public class ProjetoController {
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecer.getParecer());
 		
-		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER)) {
+		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER, authentication.getName())) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_EMITIR_PARECER;
 		}
@@ -729,7 +730,7 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
-	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo) {
+	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo, String nomeUsuario) {
 		try {
 			if(arquivo.getBytes() != null && arquivo.getBytes().length != 0) {
 				Documento documento = new Documento();
@@ -738,6 +739,8 @@ public class ProjetoController {
 				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
 				documento.setExtensao(arquivo.getContentType());
 				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
+				documento.setPessoa(pessoaService.getPessoa(nomeUsuario));
+				documento.setData(new Date());
 				
 				switch (tipo) {
 				case DOCUMENTO_PARECER:

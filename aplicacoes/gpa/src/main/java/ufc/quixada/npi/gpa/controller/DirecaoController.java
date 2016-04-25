@@ -231,7 +231,7 @@ public class DirecaoController {
 	@RequestMapping(value = "/homologar", method = RequestMethod.POST)
 	public String homologar(@RequestParam("id") Long id, @RequestParam("homologacaoParam") StatusProjeto homologacao, 
 			@RequestParam("ataParam") MultipartFile ataParam, @RequestParam("oficioParam") MultipartFile oficioParam, 
-			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect) {
+			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect ,Authentication authentication) {
 					
 		projeto = projetoService.getProjeto(id);
 		
@@ -241,11 +241,14 @@ public class DirecaoController {
 		}
 		
 		ProjetoController pc = new ProjetoController();
-		if(!pc.setInfoDocumentos(ataParam, projeto, TipoDocumento.ATA_HOMOLOGACAO)) {
+
+		if(!pc.setInfoDocumentos(ataParam, projeto, TipoDocumento.ATA_HOMOLOGACAO,authentication.getName() )) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+
 			return PAGINA_HOMOLOGAR_PROJETO;
 		}
-		if(!pc.setInfoDocumentos(oficioParam, projeto, TipoDocumento.OFICIO_HOMOLOGACAO)) {
+
+		if(!pc.setInfoDocumentos(oficioParam, projeto, TipoDocumento.OFICIO_HOMOLOGACAO, authentication.getName())) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 
 			return PAGINA_HOMOLOGAR_PROJETO;

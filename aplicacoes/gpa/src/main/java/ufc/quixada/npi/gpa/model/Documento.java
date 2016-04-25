@@ -1,11 +1,20 @@
 package ufc.quixada.npi.gpa.model;
 
+
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+
 
 @Entity
 @EntityListeners(DocumentoEntityListener.class)
@@ -22,9 +31,27 @@ public class Documento {
 	private String caminhoArquivo;
 	
 	private String extensao;
+	@ManyToOne
+	private Pessoa pessoa;
+	
+	private Date data;
 	
 	@Column(insertable = false, updatable = false)
 	private byte[] arquivo;
+	
+	public Date getData() {
+		return data;
+	}
+	public void setData(Date data) {
+		this.data = data;
+	}
+	
+	public Pessoa getPessoa(){
+		return pessoa;
+	}
+	public void setPessoa(Pessoa pessoa){
+		this.pessoa = pessoa;
+	}
 	
 	public Long getId() {
 		return id;
