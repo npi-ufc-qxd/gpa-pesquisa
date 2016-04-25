@@ -52,6 +52,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_VINCULAR_PARTI
 import static ufc.quixada.npi.gpa.utils.Constants.TIPOS_DE_PARTICIPACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.USUARIO;
 import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.FONTES_FINANCIAMENTO;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -93,6 +94,7 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
+import ufc.quixada.npi.gpa.service.FonteFinanciamentoService;
 import ufc.quixada.npi.gpa.service.ParticipacaoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
@@ -129,6 +131,9 @@ public class ProjetoController {
 
 	@Inject
 	private ParticipacaoService participacaoService;
+	
+	@Inject
+	private FonteFinanciamentoService fonteFinanciamentoService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, Authentication authentication) {
@@ -148,6 +153,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
 	public String cadastrarForm(Model model, HttpSession session) {
 		model.addAttribute(PROJETO, new Projeto());
+		model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 		model.addAttribute(ACTION, CADASTRAR);
 		return PAGINA_CADASTRAR_PROJETO;
 	}
@@ -274,6 +280,7 @@ public class ProjetoController {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			model.addAttribute(PROJETO, projeto);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			model.addAttribute(ACTION, EDITAR);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -467,6 +474,9 @@ public class ProjetoController {
 				if (result.hasGlobalErrors()) {
 					model.addAttribute(VALIDACAO, result);
 				}
+				
+				model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
+				
 				return PAGINA_SUBMETER_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
 				projetoService.submeterPendencias(projeto);
