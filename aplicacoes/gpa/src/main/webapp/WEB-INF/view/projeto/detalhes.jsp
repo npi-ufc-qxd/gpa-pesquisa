@@ -24,7 +24,7 @@
 				<input id="projetoId" type="hidden" value="${projeto.id }"/>
 				<div class="form-horizontal">
 
-					<c:if test="${projeto.status == 'NOVO' or projeto.status == 'RESOLVENDO_PENDENCIAS' or projeto.status == 'RESOLVENDO_RESTRICOES'}">
+					<c:if test="${(projeto.status == 'NOVO' or projeto.status == 'RESOLVENDO_PENDENCIAS' or projeto.status == 'RESOLVENDO_RESTRICOES') and permissao == 'coordenador'}">
 						<div>
 							<label style="width: 100%; text-align: right;">
 								<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter" data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }" class="btn btn-primary btn-sm">
@@ -269,7 +269,7 @@
 										<c:if test="${projeto.status != 'AGUARDANDO_PARECER'}">
 											<label class="col-sm-2 control-label">Posicionamento:</label>
 											<div class="col-sm-4 value-label">
-												<label>${projeto.parecer.status }</label>
+												<label>${projeto.parecer.status.descricao }</label>
 											</div>						
 										</c:if>
 										<label class="col-sm-2 control-label">Parecer:</label>
@@ -303,7 +303,7 @@
 										<c:if test="${not empty projeto.parecerRelator.status}">
 											<label class="col-sm-2 control-label">Posicionamento:</label>
 											<div class="col-sm-4 value-label">
-												<label>${projeto.parecerRelator.status }</label>
+												<label>${projeto.parecerRelator.status.descricao }</label>
 											</div>						
 										
 											<label class="col-sm-2 control-label">Observação:</label>

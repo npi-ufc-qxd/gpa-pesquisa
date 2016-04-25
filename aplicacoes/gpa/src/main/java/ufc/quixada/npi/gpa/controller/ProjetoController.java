@@ -197,14 +197,15 @@ public class ProjetoController {
 
 		model.addAttribute("projeto", projeto);
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		if (pessoa.isDirecao()) {
-			model.addAttribute("permissao", "direcao");
-			return PAGINA_DETALHES_PROJETO;
-		}
-
+		
 		if(projeto.getCoordenador().equals(pessoa)){
 			model.addAttribute("permissao","coordenador");
 			return PAGINA_DETALHES_PROJETO;	
+		}
+		
+		if (pessoa.isDirecao()) {
+			model.addAttribute("permissao", "direcao");
+			return PAGINA_DETALHES_PROJETO;
 		}
 
 		if (projeto.getParecer().getParecerista().equals(pessoa)
@@ -213,7 +214,8 @@ public class ProjetoController {
 			return PAGINA_DETALHES_PROJETO;
 		}
 		
-		if(projeto.getParecerRelator().getRelator().equals(pessoa)){
+		if(projeto.getParecerRelator().getRelator().equals(pessoa)
+				&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
 				model.addAttribute("permissao", "relator");
 				return PAGINA_DETALHES_PROJETO;
 		}
