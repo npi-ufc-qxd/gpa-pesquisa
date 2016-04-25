@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$('#meus-projetos').DataTable({
+	$("#meus-projetos").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3,]},            
@@ -12,7 +12,7 @@ $(document).ready(function() {
 	    }
 	});
 		
-	$('#minhas-participacoes').DataTable({
+	$("#minhas-participacoes").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 4, 5, 6]},
@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-homologados').DataTable({
+	$("#projetos-homologados").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3, 4]},            
@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-homologados-diretor').DataTable({
+	$("#projetos-homologados-diretor").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3]},            
@@ -51,7 +51,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#participantes-projetos').DataTable({
+	$("#participantes-projetos").DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"bAutoWidth": false,
 		"language": {
@@ -59,7 +59,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-aguardando-parecer').DataTable({
+	$("#projetos-aguardando-parecer").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
@@ -72,7 +72,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-parecer-emitido').DataTable({
+	$("#projetos-parecer-emitido").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 1, 3, 4 ]},            
@@ -85,7 +85,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-aguardando-avaliacao').DataTable({
+	$("#projetos-aguardando-avaliacao").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1]},
@@ -98,7 +98,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-avaliados').DataTable({
+	$("#projetos-avaliados").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
@@ -111,7 +111,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#projetos-em-tramitacao').DataTable({
+	$("#projetos-em-tramitacao").DataTable({
 		"order" : [[ 0, 'asc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 3]},             
@@ -125,7 +125,7 @@ $(document).ready(function() {
 	});
 	
 	// Página Vincular Participantes
-	$('#participacoes-projeto').DataTable({
+	$("#participacoes-projeto").DataTable({
 		"order" : [[ 0, 'desc' ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0]},
@@ -142,7 +142,7 @@ $(document).ready(function() {
         }
 	});
 	
-	$('#participantes-table').DataTable({
+	$("#participantes-table").DataTable({
 		
 		"searching":false,
 		"paging":false,
@@ -160,44 +160,39 @@ $(document).ready(function() {
 		$(this).datepicker('hide');
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
-
 	$(".anexo").fileinput({
+		showUpload: false,
+		showRemove: false,
+		overwriteInitial:true,
     	uploadUrl: "/file-upload-batch/2",
-    	showUpload:false,
-    	showRemove: false,
-    	language: 'pt-BR',
-    	uploadAsync: false,
-    	layoutTemplates: {
-	        actions: '<div class="file-actions">\n' +
-	        '    <div class="file-footer-buttons">\n' +
-	        '        {delete}' +
-	        '    </div>\n' +
-	        '    <div class="clearfix"></div>\n' +
-	        '</div>'
-    	}
+    	language: 'pt-BR'
     });
-    
-    if($('.anexoSubmeter').length){
+	
+	$(".input-group-btn").on('click',function() {
+	    $('#anexos').fileinput('reset');
+	});
+	
+    if($(".anexoSubmeter").length){
     	if($('#table-anexos').find('tr').length){
     		$('#anexos').removeAttr('required');
     	}
     }
-    $('.anexoSubmeter').change(function(){
+    $(".anexoSubmeter").change(function(){
     	$('#anexos').attr('required', 'true');
     });
     
 	
-	$('#confirm-submit').on('show.bs.modal', function(e) {
+	$("#confirm-submit").on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja submeter o projeto \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-primary').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
-	$('#confirm-delete').on('show.bs.modal', function(e) {
+	$("#confirm-delete").on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o projeto \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
-	$('#confirm-delete-participacao').on('show.bs.modal', function(e) {
+	$("#confirm-delete-participacao").on('show.bs.modal', function(e) {
 		if($(e.relatedTarget).data('name') == "")
 			$(this).find('.modal-body').text('Tem certeza de que deseja excluir o(a) participante \"' + $(e.relatedTarget).data('name-externo') + '\"?');
 		else
@@ -205,25 +200,24 @@ $(document).ready(function() {
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
-	mensagemFonteFinanciamento();
-	
 	function mensagemFonteFinanciamento(){
-		if($('#table-fontes-financiamento tr').length){
-			$('#mensagem-fonte-financiamento').addClass('hidden');
+		if($("#table-fontes-financiamento tr").length){
+			$("#mensagem-fonte-financiamento").addClass('hidden');
 		}else{
-			$('#mensagem-fonte-financiamento').removeClass('hidden');
+			$("#mensagem-fonte-financiamento").removeClass('hidden');
 		}
 	}
+	mensagemFonteFinanciamento();
 	
-	$('#confirm-delete-fonte-financiamento').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a Fonte de Financiamento: \"' + $(e.relatedTarget).data('name') + '\"?');
-		$(this).find('#button-delete-fonte-financiamento').attr('data-id', $(e.relatedTarget).data('id'));
+	$("#confirm-delete-fonte-financiamento").on('show.bs.modal', function(e) {
+		$(this).find(".modal-body").text('Tem certeza de que deseja excluir a Fonte de Financiamento: \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find("#button-delete-fonte-financiamento").attr('data-id', $(e.relatedTarget).data('id'));
 	});
 	
-	$('#button-delete-fonte-financiamento').on('click', function(e) {
+	$("#button-delete-fonte-financiamento").on('click', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('data-id');
-		var fonteFinanciamentoId = $('#id').val();
+		var fonteFinanciamentoId = $("#id").val();
 		$.ajax({
 			type: "POST",
 			url: "/gpa-pesquisa/administracao/fonte-financiamento/excluir/" + id,
@@ -233,22 +227,22 @@ $(document).ready(function() {
 		})
 		.success(function( result ) {
 			if(result.result == 'ok') {
-				$('#fonte-'+id).remove();
+				$("#fonte-"+id).remove();
 				mensagemFonteFinanciamento();
 			}
-			$('#confirm-delete-fonte-financiamento').modal('hide');
+			$("#confirm-delete-fonte-financiamento").modal('hide');
 		});
 	});
 	
-	$('#confirm-delete-file').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
-		$(this).find('#button-delete-file').attr('data-id', $(e.relatedTarget).data('id'));
+	$("#confirm-delete-file").on('show.bs.modal', function(e) {
+		$(this).find(".modal-body").text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find("#button-delete-file").attr('data-id', $(e.relatedTarget).data('id'));
 	});
 	
-	$('#button-delete-file').on('click', function(e) {
+	$("#button-delete-file").on('click', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('data-id');
-		var projetoId = $('#id').val();
+		var projetoId = $("#id").val();
 		$.ajax({
 			type: "POST",
 			url: "/gpa-pesquisa/documento/excluir/" + id,
@@ -258,18 +252,18 @@ $(document).ready(function() {
 		})
 		.success(function( result ) {
 			if(result.result == 'ok') {
-				$('#documento-'+id).remove();
+				$("#documento-"+id).remove();
 			}
-			$('#confirm-delete-file').modal('hide');
+			$("#confirm-delete-file").modal('hide');
 		});
 	});
 	
-	$('#confirm-delete-p-file').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
-		$(this).find('#button-delete-p-file').attr('data-idProjeto', $(e.relatedTarget).data('idprojeto'));
+	$("#confirm-delete-p-file").on('show.bs.modal', function(e) {
+		$(this).find(".modal-body").text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find("#button-delete-p-file").attr('data-idProjeto', $(e.relatedTarget).data('idprojeto'));
 	});
 	
-	$('#button-delete-p-file').on('click', function(e) {
+	$("#button-delete-p-file").on('click', function(e) {
 		e.preventDefault();
 		var idProjeto = $(this).attr('data-idProjeto');
 		$.ajax({
@@ -278,16 +272,16 @@ $(document).ready(function() {
 		})
 		.success(function( result ) {
 			if(result.result == 'ok') {
-				$('#table-arquivo-projeto').remove();
-				$('#campo-arquivo-projeto').removeClass('hidden');
+				$("#table-arquivo-projeto").remove();
+				$("#campo-arquivo-projeto").removeClass('hidden');
 			}
-			$('#confirm-delete-p-file').modal('hide');
+			$("#confirm-delete-p-file").modal('hide');
 			
 		});
 	});
 	
-	if($('#table-arquivo-projeto').length){
-		$('#campo-arquivo-projeto').addClass('hidden');
+	if($("#table-arquivo-projeto").length){
+		$("#campo-arquivo-projeto").addClass('hidden');
 	}
 	
 	$("#participantes, #parecerista, #posicionamento, #avaliacao, #participante","#participanteExterno").select2({
@@ -296,7 +290,7 @@ $(document).ready(function() {
     });
 	
 	// Validações de formulários
-	$('#adicionarProjetoForm').bootstrapValidator({
+	$("#adicionarProjetoForm").bootstrapValidator({
 		group: '.form-item',
         feedbackIcons: {
             valid: false,
@@ -348,7 +342,7 @@ $(document).ready(function() {
         }
     });
 	
-	$('#submeterProjetoForm').bootstrapValidator({
+	$("#submeterProjetoForm").bootstrapValidator({
 		group: '.form-item',
 		excluded: ':disabled',
         fields: {
@@ -395,7 +389,7 @@ $(document).ready(function() {
         }
     });
 	
-	$('#atribuirPareceristaForm, #emitirParecerForm').bootstrapValidator({
+	$("#atribuirPareceristaForm, #emitirParecerForm").bootstrapValidator({
 		group: '.form-item',
 		excluded: ':disabled',
         feedbackIcons: {
@@ -405,7 +399,7 @@ $(document).ready(function() {
     });
 	
 	//VINCULAR PARTICIPANTES
-	$('#adicionarParticipacaoForm').bootstrapValidator({
+	$("#adicionarParticipacaoForm").bootstrapValidator({
 		group: '.form-item',
 		excluded: ':disabled',
         fields: {
@@ -491,7 +485,7 @@ $(document).ready(function() {
     });
 	
 	//Avaliar projeto
-	$('#homologarProjetoForm').bootstrapValidator({
+	$("#homologarProjetoForm").bootstrapValidator({
 		feedbackIcons: {
         	valid: 'glyphicon glyphicon-ok',
             validating: 'glyphicon glyphicon-refresh'
@@ -514,7 +508,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#comentarForm').bootstrapValidator({
+	$("#comentarForm").bootstrapValidator({
 		group: '.form-item',
 		fields: {
 			comentario: {
@@ -528,12 +522,12 @@ $(document).ready(function() {
 	});
 	
 	// Comentários
-	$('#comentar').click(function(e){
+	$("#comentar").click(function(e){
 		e.preventDefault();
-		var texto = $('#comentario').val();
-	    var projetoId = $('#projetoId').val();
+		var texto = $("#comentario").val();
+	    var projetoId = $("#projetoId").val();
 	    
-	    $('#comentarForm').bootstrapValidator('validate')
+	    $("#comentarForm").bootstrapValidator('validate')
 	    
 	    if(texto.length){
 	    	$.ajax({
@@ -548,9 +542,9 @@ $(document).ready(function() {
 		    	if(result.comentario.id) {
 		    		var data = moment(result.comentario.data).format('DD/MM/YYYY');
 		    		var hora = moment(result.comentario.data).format('HH:mm');
-		    		$('#comentario').val('');
-		    		$('#comentarForm').bootstrapValidator('resetForm');
-		    		$('#comentarios').append(
+		    		$("#comentario").val('');
+		    		$("#comentarForm").bootstrapValidator('resetForm');
+		    		$("#comentarios").append(
 	    				'<div class="panel panel-default">' +
 							'<div class="panel-heading">' + result.autor +
 								'<span class="date-comment">' + data + ' - ' + hora + '</span>' +
@@ -564,7 +558,7 @@ $(document).ready(function() {
 	});
 	
 	// Persiste aba com link na URL
-	var abaAtual = $('.nav-tabs');
+	var abaAtual = $(".nav-tabs");
 	abaAtual.on('click', 'a', function(e){
 		var $this = $(this);
 		e.preventDefault();
@@ -579,7 +573,7 @@ $(document).ready(function() {
 		atualizaHash();
 	}
 	
-	$('.participanteCoordena').DataTable({
+	$(".participanteCoordena").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -590,7 +584,7 @@ $(document).ready(function() {
 		"autoWidth": false
 	});
 	
-	$('.participanteParticipa').DataTable({
+	$(".participanteParticipa").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -622,7 +616,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#relatoriosAprovadosForm').bootstrapValidator({
+	$("#relatoriosAprovadosForm").bootstrapValidator({
 		group: '.form-item',
 		feedbackIcons: {
         	invalid: 'glyphicon glyphicon-remove',
@@ -764,13 +758,13 @@ $(document).ready(function() {
 			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'iInterInicio');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'fInterInicio');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'fInterTermino');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'iInterTermino');
+			$("#relatoriosAprovadosForm").bootstrapValidator('revalidateField', 'iInterInicio');
+			$("#relatoriosAprovadosForm").bootstrapValidator('revalidateField', 'fInterInicio');
+			$("#relatoriosAprovadosForm").bootstrapValidator('revalidateField', 'fInterTermino');
+			$("#relatoriosAprovadosForm").bootstrapValidator('revalidateField', 'iInterTermino');
 	    });
 	 
-		$('#relatoriosReprovadosForm').bootstrapValidator({
+		$("#relatoriosReprovadosForm").bootstrapValidator({
 			group: '.form-item',
 			feedbackIcons: {
 	        	valid: 'glyphicon glyphicon-ok',
@@ -826,8 +820,8 @@ $(document).ready(function() {
 			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
-			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoInicio');
-			$('#relatoriosReprovadosForm').bootstrapValidator('revalidateField', 'submissaoTermino');
+			$("#relatoriosReprovadosForm").bootstrapValidator('revalidateField', 'submissaoInicio');
+			$("#relatoriosReprovadosForm").bootstrapValidator('revalidateField', 'submissaoTermino');
 	    });
 
 	 
@@ -840,8 +834,8 @@ $(document).ready(function() {
 			todayHighlight : true
 		}).on('changeDate', function(e) {
 			$(this).datepicker('hide');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'inicio');
-			$('#relatoriosAprovadosForm').bootstrapValidator('revalidateField', 'termino');
+			$("#relatoriosAprovadosForm").bootstrapValidator('revalidateField', 'inicio');
+			$("#relatoriosAprovadosForm").bootstrapValidator('revalidateField', 'termino');
 	    });
 	 $("#anoRelatorio").datepicker({
 			format : "yyyy",
@@ -854,7 +848,7 @@ $(document).ready(function() {
 			$(this).datepicker('hide');
 	    });
 	
-	$('#busca-adm').DataTable({
+	$("#busca-adm").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -864,7 +858,7 @@ $(document).ready(function() {
 		],
 		"autoWidth": false
 	});
-	$('#busca-participante').DataTable({
+	$("#busca-participante").DataTable({
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         },
@@ -875,7 +869,7 @@ $(document).ready(function() {
 	});
 	
 	//Relatórios por pessoa
-	$('#relatoriosPPessoaForm').bootstrapValidator({
+	$("#relatoriosPPessoaForm").bootstrapValidator({
 		fields: {
 			id: {
                 validators: {
@@ -888,13 +882,13 @@ $(document).ready(function() {
 	});
 	
 	//ADM
-	$('#confirm-vincular').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza que deseja vincular papeis a \"' + $(e.relatedTarget).data('name') + '\"?'
+	$("#confirm-vincular").on('show.bs.modal', function(e) {
+		$(this).find(".modal-body").text('Tem certeza que deseja vincular papeis a \"' + $(e.relatedTarget).data('name') + '\"?'
 				+' '+ $(e.relatedTarget).data('name') +' será cadastrada(o) automaticamente no sistema, caso confirme.');
-		$(this).find('.btn-primary').attr('href', $(e.relatedTarget).data('href'));
+		$(this).find(".btn-primary").attr('href', $(e.relatedTarget).data('href'));
 	});
 	
-	$('#formBuscarPessoa').bootstrapValidator({
+	$("#formBuscarPessoa").bootstrapValidator({
 		fields: {
 			busca: {
                 validators: {
@@ -906,13 +900,13 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('a.back').click(function(){
+	$("a.back").click(function(){
 		parent.history.back();
 		return false;
 	});
 	
 	
-	$('#pessoaExternaCheckBox').change(function() {
+	$("#pessoaExternaCheckBox").change(function() {
 	   if($(this).is(":checked")) {
 		   $("#divParticipante").hide();
 		   $("#divParticipanteExterno").show();
@@ -924,7 +918,7 @@ $(document).ready(function() {
 	   }
 	});
 	/* MODAL */
-	var modal = document.getElementById('cadastrarPessoaExternaModal');
+	var modal = document.getElementById("cadastrarPessoaExternaModal");
 	$("#cadastrarPessoaExternaBtn").click(function() {
 	    modal.style.display = "block";
 	});
@@ -981,7 +975,7 @@ $(document).ready(function() {
     });
 	$("#submeterNovaPessoaExterna").on('click',function(e){
 		e.preventDefault();
-		$('#cadastrarPessoaExternaForm').bootstrapValidator('validate')
+		$("#cadastrarPessoaExternaForm").bootstrapValidator('validate')
 		if(cpfPessoaExterna.val().length){
 			$.ajax({
 				    url: "/gpa-pesquisa/pessoa/cadastrarExterno", 

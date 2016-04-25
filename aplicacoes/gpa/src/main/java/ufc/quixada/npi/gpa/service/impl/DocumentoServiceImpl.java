@@ -4,6 +4,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import javax.inject.Named;
 
@@ -50,7 +51,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 			fileInputStream = new FileInputStream(file);
 			fileInputStream.read(bFile);
 			fileInputStream.close();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
