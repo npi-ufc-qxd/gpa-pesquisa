@@ -1,11 +1,11 @@
 package ufc.quixada.npi.gpa.controller;
 
 import static ufc.quixada.npi.gpa.utils.Constants.ACTION;
+import static ufc.quixada.npi.gpa.utils.Constants.ALERT;
 import static ufc.quixada.npi.gpa.utils.Constants.ANO;
 import static ufc.quixada.npi.gpa.utils.Constants.CADASTRAR;
 import static ufc.quixada.npi.gpa.utils.Constants.EDITAR;
 import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
-import static ufc.quixada.npi.gpa.utils.Constants.FONTES_FINANCIAMENTO;
 import static ufc.quixada.npi.gpa.utils.Constants.INFO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECER_EMITIDO;
@@ -16,6 +16,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_CADASTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_REMOVIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_SUBMETIDO;
+import static ufc.quixada.npi.gpa.utils.Constants.OLD_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
@@ -24,9 +25,11 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PARECER;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO_EXTERNA;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACOES_EM_PROJETOS;
+import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPANTES;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_COORDENADOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_DIRECAO;
@@ -35,6 +38,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PESSOAS;
 import static ufc.quixada.npi.gpa.utils.Constants.PESSOAS_EXTERNAS;
+import static ufc.quixada.npi.gpa.utils.Constants.POSICIONAMENTO;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_AGUARDANDO_AVALIACAO;
@@ -48,17 +52,9 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_VINCULAR_PARTI
 import static ufc.quixada.npi.gpa.utils.Constants.TIPOS_DE_PARTICIPACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.USUARIO;
 import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
-import static ufc.quixada.npi.gpa.utils.Constants.ALERT;
-import static ufc.quixada.npi.gpa.utils.Constants.OLD_PROJETO;
-import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPANTES;
-import static ufc.quixada.npi.gpa.utils.Constants.PARECER;
-import static ufc.quixada.npi.gpa.utils.Constants.POSICIONAMENTO;
-import static ufc.quixada.npi.gpa.utils.Constants.COMENTARIO;
-import static ufc.quixada.npi.gpa.utils.Constants.AUTOR;
 
 import java.io.IOException;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -85,6 +81,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.Documento.TipoDocumento;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
@@ -96,7 +93,6 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
-import ufc.quixada.npi.gpa.service.FonteFinanciamentoService;
 import ufc.quixada.npi.gpa.service.ParticipacaoService;
 import ufc.quixada.npi.gpa.service.PessoaService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
@@ -133,9 +129,6 @@ public class ProjetoController {
 
 	@Inject
 	private ParticipacaoService participacaoService;
-	
-	@Inject
-	private FonteFinanciamentoService fonteFinanciamentoService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, Authentication authentication) {
@@ -149,7 +142,6 @@ public class ProjetoController {
 		model.addAttribute(PROJETOS_AVALIADOS, projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute(PROJETOS_HOMOLOGADOS, projetoService.getProjetosHomologados(idUsuarioLogado));
 
-
 		return PAGINA_LISTAR_PROJETO;
 	}
 
@@ -157,8 +149,37 @@ public class ProjetoController {
 	public String cadastrarForm(Model model, HttpSession session) {
 		model.addAttribute(PROJETO, new Projeto());
 		model.addAttribute(ACTION, CADASTRAR);
-		model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 		return PAGINA_CADASTRAR_PROJETO;
+	}
+	
+	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
+	public String cadastrar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
+			@Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
+			Authentication authentication, Model model) {
+		
+		projetoValidator.validate(projeto, result);
+
+		if (result.hasErrors()) {
+			model.addAttribute(ACTION, CADASTRAR);
+			return PAGINA_CADASTRAR_PROJETO;
+		}
+
+		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
+		projetoService.cadastrar(projeto);
+		
+		if(projeto.getValorProjeto() != null) {
+			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
+		}
+
+		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO)){
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+			return PAGINA_CADASTRAR_PROJETO;
+		}
+		
+		projetoService.update(projeto);
+		
+		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_CADASTRADO);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 	
 	@RequestMapping(value="/uploadDocumento/{id}", method = RequestMethod.GET)
@@ -182,72 +203,19 @@ public class ProjetoController {
 	public String uploadArquivos(@RequestParam("anexos") MultipartFile[] anexos, 
 			@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect){
 		Projeto projeto = projetoService.getProjeto(id);
-		List<Documento> documentos = new ArrayList<Documento>();
+		
 		if (anexos != null && anexos.length != 0) {
 			for (MultipartFile anexo : anexos) {
-				try {
-					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-						Documento documento = new Documento();
-						documento.setArquivo(anexo.getBytes());
-						documento.setNome(anexo.getOriginalFilename());
-						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-						documento.setExtensao(anexo.getContentType());
-						documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-						documentos.add(documento);
-					}
-				} catch (IOException e) {
+				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO)) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 				}
 			}
 		}
-		for (Documento documento : documentos) {
-			projeto.addDocumento(documento);
-		}
+		
 		projetoService.update(projeto);
 		model.addAttribute(PROJETO, projeto);
 		return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
-	}
-	
-	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public String cadastrar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
-			@Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
-			Authentication authentication, Model model) {
-		
-		projetoValidator.validate(projeto, result);
-
-		if (result.hasErrors()) {
-			model.addAttribute(ACTION, CADASTRAR);
-			return PAGINA_CADASTRAR_PROJETO;
-		}
-
-		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
-		projetoService.cadastrar(projeto);
-		
-		if(projeto.getValorProjeto() != null) {
-			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
-		}
-
-		try {
-			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(arquivoProjeto.getBytes());
-				documento.setNome(arquivoProjeto.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(arquivoProjeto.getContentType());
-				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				projeto.setArquivoProjeto(documento);
-				
-			}
-		} catch (IOException e) {
-			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
-			return PAGINA_CADASTRAR_PROJETO;
-		}
-		
-		projetoService.update(projeto);
-		
-		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_CADASTRADO);
-		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
 	@RequestMapping(value = "/detalhes/{id}")
@@ -268,7 +236,7 @@ public class ProjetoController {
 		}
 
 		if(projeto.getCoordenador().equals(pessoa)){
-			model.addAttribute(PERMISSAO, PERMISSAO_COORDENADOR);
+			model.addAttribute(PERMISSAO,PERMISSAO_COORDENADOR);
 			return PAGINA_DETALHES_PROJETO;	
 		}
 
@@ -307,7 +275,6 @@ public class ProjetoController {
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			model.addAttribute(PROJETO, projeto);
 			model.addAttribute(ACTION, EDITAR);
-			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
@@ -315,6 +282,36 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
+	@RequestMapping(value = "/editar", method = RequestMethod.POST)
+	public String editar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
+			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
+			RedirectAttributes redirect, Authentication authentication) {
+		model.addAttribute(ACTION, EDITAR);
+		
+		if (result.hasErrors()) {
+			if (result.hasGlobalErrors()) {
+				model.addAttribute(VALIDACAO, result);
+			}
+			return PAGINA_CADASTRAR_PROJETO;
+		}
+
+		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		oldProjeto.setCoordenador(usuario);
+		oldProjeto = updateProjetoFields(oldProjeto, projeto);
+
+		projetoValidator.validate(oldProjeto, result);
+		
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO)) {
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+			return PAGINA_CADASTRAR_PROJETO;
+		}
+
+		projetoService.update(oldProjeto);
+		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_ATUALIZADO);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+	
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.GET)
 	public String listarParticipacoes(@PathVariable("id") Long id, Model model,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
@@ -363,7 +360,7 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		if(participacao.isExterno()== true){
+		if(participacao.isExterno()){
 			participacao.setParticipanteExterno(pessoaService.getPessoaExterna(idParticipanteExternoSelecionado));
 		}else{
 			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
@@ -425,47 +422,7 @@ public class ProjetoController {
 
 	private boolean usuarioPodeEditarProjeto(Projeto projeto, Pessoa usuario) {
 		return (usuario.getId() == projeto.getCoordenador().getId() && (projeto.getStatus().equals(StatusProjeto.NOVO) || 
-				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS) || projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)));
-	}
-
-	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	public String editar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
-			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
-			RedirectAttributes redirect, Authentication authentication) {
-		model.addAttribute(ACTION, EDITAR);
-		
-		if (result.hasErrors()) {
-			if (result.hasGlobalErrors()) {
-				model.addAttribute(VALIDACAO, result);
-			}
-			return PAGINA_CADASTRAR_PROJETO;
-		}
-
-		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
-		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		oldProjeto.setCoordenador(usuario);
-		oldProjeto = updateProjetoFields(oldProjeto, projeto);
-
-		projetoValidator.validate(oldProjeto, result);
-		
-		try {
-			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(arquivoProjeto.getBytes());
-				documento.setNome(arquivoProjeto.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(arquivoProjeto.getContentType());
-				documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				oldProjeto.setArquivoProjeto(documento);
-			}
-		} catch (IOException e) {
-			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
-			return PAGINA_CADASTRAR_PROJETO;
-		}
-
-		projetoService.update(oldProjeto);
-		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_ATUALIZADO);
-		return REDIRECT_PAGINA_LISTAR_PROJETO;
+				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS) || projeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)));
 	}
 
 	@RequestMapping(value = "/excluir/{id}")
@@ -481,7 +438,7 @@ public class ProjetoController {
 			projetoService.remover(projeto);
 			redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PROJETO_REMOVIDO);
 		} else {
-			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PERMISSAO_NEGADA);
 		}
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
@@ -510,9 +467,6 @@ public class ProjetoController {
 				if (result.hasGlobalErrors()) {
 					model.addAttribute(VALIDACAO, result);
 				}
-				
-				model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
-				
 				return PAGINA_SUBMETER_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
 				projetoService.submeterPendencias(projeto);
@@ -520,7 +474,7 @@ public class ProjetoController {
 				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
-			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
+			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 				projetoService.submeterPendenciasRelator(projeto);
 				
 				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
@@ -548,44 +502,18 @@ public class ProjetoController {
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
 
-		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
-				try {
-					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-						Documento documento = new Documento();
-						documento.setArquivo(anexo.getBytes());
-						documento.setNome(anexo.getOriginalFilename());
-						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-						documento.setExtensao(anexo.getContentType());
-						documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-						documentos.add(documento);
-					}
-				} catch (IOException e) {
+				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO)) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_CADASTRAR_PROJETO;
-				}
+				} 
 			}
 		}
 
-		try {
-			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(arquivoProjeto.getBytes());
-				documento.setNome(arquivoProjeto.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(arquivoProjeto.getContentType());
-				documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				oldProjeto.setArquivoProjeto(documento);
-			}
-		} catch (IOException e) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_SUBMETER_PROJETO;
-		}
-
-		// Recupera os anexos já cadastrados para realizar validação
-		for (Documento documento : documentos) {
-			oldProjeto.addDocumento(documento);
 		}
 		
 		projetoService.update(oldProjeto);
@@ -605,7 +533,7 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 			
-		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
+		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 			projetoService.submeterPendenciasRelator(oldProjeto);
 			
 			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
@@ -659,17 +587,8 @@ public class ProjetoController {
 		projeto.getParecer().setDataRealizacao(new Date());
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecer.getParecer());
-		try {
-			if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(anexo.getBytes());
-				documento.setNome(anexo.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(anexo.getContentType());
-				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				projeto.getParecer().setDocumento(documento);
-			}
-		} catch (IOException e) {
+		
+		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_EMITIR_PARECER;
 		}
@@ -754,8 +673,8 @@ public class ProjetoController {
 		comentarioResult.setId(comentario.getId());
 		comentarioResult.setData(comentario.getData());
 		comentarioResult.setTexto(comentario.getTexto());
-		model.addAttribute(COMENTARIO, comentarioResult);
-		model.addAttribute(AUTOR, autor.getNome());
+		model.addAttribute("comentario", comentarioResult);
+		model.addAttribute("autor", autor.getNome());
 		return model;
 	}
 
@@ -789,15 +708,55 @@ public class ProjetoController {
 		}
 		
 		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
-			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO);
-			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
+			projeto.setStatus(StatusProjeto.RESOLVENDO_RESTRICOES);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_RESTRICAO);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
-
 		}
 
 		redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+
+	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo) {
+		try {
+			if(arquivo.getBytes() != null && arquivo.getBytes().length != 0) {
+				Documento documento = new Documento();
+				documento.setArquivo(arquivo.getBytes());
+				documento.setNome(arquivo.getOriginalFilename());
+				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
+				documento.setExtensao(arquivo.getContentType());
+				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
+				
+				switch (tipo) {
+				case DOCUMENTO_PARECER:
+					projeto.getParecer().setDocumento(documento);
+					break;
+					
+				case ARQUIVO_PROJETO:
+					projeto.setArquivoProjeto(documento);
+					break;
+					
+				case ANEXO:
+					projeto.addDocumento(documento);
+					break;
+					
+				case ATA_HOMOLOGACAO:
+					projeto.setAta(documento);
+					break;
+					
+				case OFICIO_HOMOLOGACAO:
+					projeto.setOficio(documento);
+					break;
+					
+				default:
+					break;
+				}
+			}
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
 	}
 }

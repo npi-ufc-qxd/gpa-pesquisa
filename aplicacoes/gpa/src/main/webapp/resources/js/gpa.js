@@ -239,9 +239,7 @@ $(document).ready(function() {
 		.success(function( result ) {
 			if(result.result == "ok") {
 				$("#fonte-"+id).remove();
-				testaTabelaFontesFinanciamentoVazia();
-			}else{
-				mostraMensagem(result.mensagem);
+				mensagemFonteFinanciamento();
 			}
 			$("#confirm-delete-fonte-financiamento").modal("hide");
 		});

@@ -1,7 +1,6 @@
 package ufc.quixada.npi.gpa.controller;
 
 import static ufc.quixada.npi.gpa.utils.Constants.ACTION;
-import static ufc.quixada.npi.gpa.utils.Constants.BUSCA;
 import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
 import static ufc.quixada.npi.gpa.utils.Constants.INFO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
@@ -9,7 +8,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECERISTA_ATRIBUIDO
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_HOMOLOGADO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DIRECAO_BUSCAR_PESSOA;
@@ -21,11 +19,9 @@ import static ufc.quixada.npi.gpa.utils.Constants.PESSOAS;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_EM_TRAMITACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_HOMOLOGADOS;
-import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_DIRECAO;
 import static ufc.quixada.npi.gpa.utils.Constants.USUARIOS;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.Documento.TipoDocumento;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -236,10 +232,7 @@ public class DirecaoController {
 	public String homologar(@RequestParam("id") Long id, @RequestParam("homologacaoParam") StatusProjeto homologacao, 
 			@RequestParam("ataParam") MultipartFile ataParam, @RequestParam("oficioParam") MultipartFile oficioParam, 
 			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect) {
-				
-		Documento ataDocumento = null;
-		Documento oficioDocumento = null;
-		
+					
 		projeto = projetoService.getProjeto(id);
 		
 		if (projeto == null) {
@@ -247,31 +240,18 @@ public class DirecaoController {
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 		
-		try {
-			if (ataParam != null && ataParam.getBytes() != null && ataParam.getBytes().length != 0) {
-				ataDocumento = new Documento();
-				ataDocumento.setArquivo(ataParam.getBytes());
-				ataDocumento.setNome(ataParam.getOriginalFilename());
-				ataDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + ataDocumento.getNome());
-				ataDocumento.setExtensao(ataParam.getContentType());
-				ataDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + ataDocumento.getNomeOriginal());
-			}
-			if (oficioParam != null && oficioParam.getBytes() != null && oficioParam.getBytes().length != 0) {
-				oficioDocumento = new Documento();
-				oficioDocumento.setArquivo(oficioParam.getBytes());
-				oficioDocumento.setNome(oficioParam.getOriginalFilename());
-				oficioDocumento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + oficioDocumento.getNome());
-				oficioDocumento.setExtensao(oficioParam.getContentType());
-				oficioDocumento.setCaminho(projeto.getCaminhoArquivos() + "/" + oficioDocumento.getNomeOriginal());
-			}
-		} catch (IOException e) {
+		ProjetoController pc = new ProjetoController();
+		if(!pc.setInfoDocumentos(ataParam, projeto, TipoDocumento.ATA_HOMOLOGACAO)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+			return PAGINA_HOMOLOGAR_PROJETO;
+		}
+		if(!pc.setInfoDocumentos(oficioParam, projeto, TipoDocumento.OFICIO_HOMOLOGACAO)) {
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+
 			return PAGINA_HOMOLOGAR_PROJETO;
 		}
 		
 		projeto.setStatus(homologacao);
-		projeto.setAta(ataDocumento);
-		projeto.setOficio(oficioDocumento);
 		projeto.setObservacaoHomologacao(observacao);
 		
 		projetoValidator.validateHomologacao(projeto, result);
@@ -288,21 +268,10 @@ public class DirecaoController {
 	}
 	@RequestMapping(value = "/buscar", method = RequestMethod.GET)
 	public String paginaInicial(Model model, Authentication authentication) {
-		return PAGINA_DIRECAO_BUSCAR_PESSOA;
-	}
-	
-	@RequestMapping(value = "/buscar", method = RequestMethod.POST)
-	public String buscarPessoa(@RequestParam("busca") String busca, Model model,
-			RedirectAttributes redirectAttributes) {
+
+		List<Pessoa> pessoas = pessoaService.getAll();
+		model.addAttribute(PESSOAS, pessoas);
 		
-		model.addAttribute(BUSCA, busca);
-		List<Pessoa> pessoas = pessoaService.getUsuariosByNomeOuCpf(busca);
-		if (!pessoas.isEmpty()) {
-			model.addAttribute(PESSOAS, pessoas);
-		} else {
-			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_USUARIO_NAO_ENCONTRADO);
-			return REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
-		}
 		return PAGINA_DIRECAO_BUSCAR_PESSOA;
 	}
 }
