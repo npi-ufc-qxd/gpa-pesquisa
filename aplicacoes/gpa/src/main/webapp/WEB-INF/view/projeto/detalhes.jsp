@@ -24,7 +24,7 @@
 				<input id="projetoId" type="hidden" value="${projeto.id }"/>
 				<div class="form-horizontal">
 
-					<c:if test="${projeto.status == 'NOVO' or projeto.status == 'RESOLVENDO_PENDENCIAS' or projeto.status == 'RESOLVENDO_RESTRICOES'}">
+					<c:if test="${(projeto.status == 'NOVO' or projeto.status == 'RESOLVENDO_PENDENCIAS' or projeto.status == 'RESOLVENDO_RESTRICOES') and permissao == 'coordenador'}">
 						<div>
 							<label style="width: 100%; text-align: right;">
 								<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter" data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }" class="btn btn-primary btn-sm">
