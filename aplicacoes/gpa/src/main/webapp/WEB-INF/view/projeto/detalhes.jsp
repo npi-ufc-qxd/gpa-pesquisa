@@ -155,12 +155,12 @@
 							</div><!-- basico body -->
 						</div> <!-- accordion basico -->
 						
-						<span class="line"></span>
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
 								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#anexos">Anexos</h4>
 							</div>
+							<span class="line"></span>
 							<div id="anexos" class="accordion-body collapse">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Anexos:</label>
@@ -189,12 +189,12 @@
 							</div> <!-- anexos body -->
 						</div> <!-- accordion anexos-->
 	
-						<span class="line"></span>
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
 								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#participantes">Participantes</h4>
 							</div>
+							<span class="line"></span>
 							<div id="participantes" class="accordion-body collapse">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Participantes:</label>
@@ -220,13 +220,12 @@
 							</div><!-- participantes body -->
 						</div><!-- accordion participantes -->
 						
-						<span class="line"></span>
-						
 						<c:if test="${not empty projeto.parecer and projeto.status != 'RESOLVENDO_PENDENCIAS'}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
 									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer">Parecer Técnico</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="parecer">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Parecerista:</label>

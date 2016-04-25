@@ -991,5 +991,9 @@ $(document).ready(function() {
 			});
 		}
 	});
+	$("#accordion").on('toggled', function (event, accordion){
+		console.log("collapse");
+	});
+	
 	/* MODAL */
 });
