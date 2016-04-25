@@ -1,9 +1,11 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OK;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_RESULTADO_ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_RESULTADO_OK;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM;
+import static ufc.quixada.npi.gpa.utils.Constants.RESULT;
 
 import javax.inject.Inject;
 
@@ -76,13 +78,13 @@ public class DocumentoController {
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		if(!projeto.getCoordenador().equals(pessoa) || !projeto.getStatus().equals(StatusProjeto.NOVO)){
-			model.addAttribute("result", "erro");
-			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
+			model.addAttribute(RESULT, MENSAGEM_RESULTADO_ERRO);
+			model.addAttribute(MENSAGEM, MENSAGEM_PERMISSAO_NEGADA);
 			return model;
 		}
 		projeto.getDocumentos().remove(documento);
 		projetoService.update(projeto);
-		model.addAttribute("result", "ok");
+		model.addAttribute(RESULT, MENSAGEM_RESULTADO_OK);
 		return model;
 	}
 	
@@ -90,22 +92,22 @@ public class DocumentoController {
 	@ResponseBody public  ModelMap excluirArquivoProjeto(@PathVariable("idProjeto") Long idProjeto, Authentication authentication,@ModelAttribute ModelMap model) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		if(projeto == null){
-			model.addAttribute("result", MENSAGEM_ERRO);
-			model.addAttribute("mensagem", MENSAGEM_PROJETO_INEXISTENTE);
+			model.addAttribute(RESULT, MENSAGEM_RESULTADO_ERRO);
+			model.addAttribute(MENSAGEM, MENSAGEM_PROJETO_INEXISTENTE);
 			return model;
 		}
 		
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		if(!pessoa.equals(projeto.getCoordenador()) || !projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			model.addAttribute("result", MENSAGEM_ERRO);
-			model.addAttribute("mensagem", MENSAGEM_PERMISSAO_NEGADA);
+			model.addAttribute(RESULT, MENSAGEM_RESULTADO_ERRO);
+			model.addAttribute(MENSAGEM, MENSAGEM_PERMISSAO_NEGADA);
 			return model;
 		}
 		
 		projeto.setArquivoProjeto(null);
 		projetoService.update(projeto);
 		
-		model.addAttribute("result", MENSAGEM_OK);
+		model.addAttribute(RESULT, MENSAGEM_RESULTADO_OK);
 		return model;
 	}
 }

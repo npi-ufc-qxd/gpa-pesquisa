@@ -91,12 +91,18 @@
 										</c:if>
 										<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></label>
 									</div>
+								</div><!-- data inicio e fim -->
+								<div class="form-group">
 									<label class="col-sm-2 control-label">Valor:</label>
 									<div class="col-sm-2 value-label">
 										<fmt:setLocale value="pt_BR"/>
 										<label><fmt:formatNumber value="${projeto.valorProjeto }" type="currency" currencySymbol="R$ "/></label>
 									</div>
-								</div><!-- data inicio e fim -->
+									<label class="col-sm-2 control-label">Fonte:</label>
+									<div class="col-sm-2 value-label">
+										<label>${projeto.fonteFinanciamento.nome}</label>
+									</div>
+								</div><!-- valor e fonte de financiamento -->
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Data de submissão:</label>
 									<div class="col-sm-4 value-label">
