@@ -1002,5 +1002,12 @@ $(document).ready(function() {
 			});
 		}
 	});
+	$(".accordion-group").on('shown.bs.collapse', function() {
+	    $(this).find(".accordion-icon").addClass('fa-minus').removeClass('fa-plus');
+	  });
+
+	$(".accordion-group").on('hidden.bs.collapse', function(e) {
+		$(this).find(".accordion-icon").addClass('fa-plus').removeClass('fa-minus');
+	  });
 	/* MODAL */
 });
