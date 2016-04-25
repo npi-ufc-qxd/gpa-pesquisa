@@ -15,17 +15,10 @@
 		<div class="container">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">Buscar Participantes</h3>
+					<h3 class="panel-title">Participantes</h3>
 				</div>
 				<div class="panel-body">
-					<c:if test="${not empty erro}">
-						<div class="alert alert-danger alert-dismissible" role="alert">
-							<button type="button" class="close" data-dismiss="alert">
-								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-							</button>
-							<c:out value="${erro}"></c:out>
-						</div>
-					</c:if>
+					
 					<c:if test="${not empty info}">
 						<div class="alert alert-success alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert">
@@ -35,18 +28,11 @@
 						</div>
 					</c:if>
 					<div class="buscar-pessoa" align="left">
-						<h3>Buscar Participantes</h3>
-						<form:form id="formBuscarPessoa" role="form" servletRelativeAction="/direcao/buscar" method="POST" class="bs-component">	
-							<div class="form-group">
-							  <div class="input-group">
-								<input id="busca" name="busca" type="text" class="form-control" placeholder="Nome ou CPF" size="40" required="required" value="${busca }" autofocus="autofocus"/>
-							    <span class="input-group-btn">
-							    	<button class="btn btn-default" name="submit" type="submit"><span class="glyphicon glyphicon-search"></span> Buscar</button>
-							    </span>
-							  </div>
-							</div>
-						</form:form>
-				
+						<h3>Participantes</h3>
+						
+						<c:if test="${empty pessoas}">
+							<div class="alert alert-warning" role="alert">Não há usuários cadastrados.</div>
+						</c:if>
 						<c:if test="${not empty pessoas}">
 						    <table id="busca-participante" class="table table-striped">
 						        <thead class="thead">

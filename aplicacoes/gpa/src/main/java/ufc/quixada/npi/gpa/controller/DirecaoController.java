@@ -277,21 +277,8 @@ public class DirecaoController {
 	}
 	@RequestMapping(value = "/buscar", method = RequestMethod.GET)
 	public String paginaInicial(Model model, Authentication authentication) {
-		return PAGINA_DIRECAO_BUSCAR_PESSOA;
-	}
-	
-	@RequestMapping(value = "/buscar", method = RequestMethod.POST)
-	public String buscarPessoa(@RequestParam("busca") String busca, Model model,
-			RedirectAttributes redirectAttributes) {
-		
-		model.addAttribute("busca", busca);
-		List<Pessoa> pessoas = pessoaService.getUsuariosByNomeOuCpf(busca);
-		if (!pessoas.isEmpty()) {
-			model.addAttribute("pessoas", pessoas);
-		} else {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
-			return REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
-		}
+		List<Pessoa> pessoas = pessoaService.getAll();
+		model.addAttribute("pessoas", pessoas);
 		return PAGINA_DIRECAO_BUSCAR_PESSOA;
 	}
 }
