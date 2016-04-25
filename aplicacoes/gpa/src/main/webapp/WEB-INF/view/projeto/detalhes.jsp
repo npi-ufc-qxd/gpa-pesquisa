@@ -256,7 +256,6 @@
 										</div>
 									</div><!-- anexo -->
 								</div><!-- parecer body -->
-								<span class="line"></span>
 							</div><!-- accordion parecer -->
 						</c:if>
 						
@@ -265,6 +264,7 @@
 								<div class="accordion-heading">
 									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#relator">Parecer Relator</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="relator">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Relator:</label>
@@ -288,7 +288,6 @@
 										</c:if>
 									</div><!-- relator -->
 								</div><!-- relator body -->
-								<span class="line"></span>
 							</div><!-- accordion relator -->
 						</c:if>
 					
@@ -298,6 +297,7 @@
 								<div class="accordion-heading">
 									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#homologacao">Homologação</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="homologacao">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Observação:</label>

@@ -128,13 +128,11 @@ footer img {
 	color:#000;
 }
 .accordion-group .accordion-toggle:after {
-    /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
-    float: right;        /* adjust as needed */
-    color: #2c3e50;         /* adjust as needed */
+    font-family: 'Glyphicons Halflings'; 
+    content: "\e114";
+    float: right;    
+    color: #2c3e50;  
 }
 .accordion-group .accordion-toggle.collapsed:after {
-    /* symbol for "collapsed" panels */
-    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+    content: "\e080";
 }
