@@ -1,7 +1,13 @@
 package ufc.quixada.npi.gpa.controller;
 
+import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PARTICIPANTE;
+import static ufc.quixada.npi.gpa.utils.Constants.PESSOA;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_COORDENA;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_COORDENOU;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_PARTICIPA;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_PARTICIPOU;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import javax.inject.Inject;
@@ -36,15 +42,15 @@ public class PessoaController {
 		Pessoa pessoa = pessoaService.getPessoa(id);
 		
 		if (pessoa == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		} else {
-			model.addAttribute("pessoa", pessoa);
+			model.addAttribute(PESSOA, pessoa);
 
-			model.addAttribute("projetosCoordena", projetoService.getProjetosCoordenaHomologadosAtualmente(pessoa.getId()));
-			model.addAttribute("projetosCoordenou", projetoService.getProjetosCoordenouHomologadosAtualmente(pessoa.getId()));
-			model.addAttribute("projetosParticipa", projetoService.getProjetosParticipaHomologadosAtualmente(pessoa.getId()));
-			model.addAttribute("projetosParticipou", projetoService.getProjetosParticipouHomologadosAtualmente(pessoa.getId()));
+			model.addAttribute(PROJETOS_COORDENA, projetoService.getProjetosCoordenaHomologadosAtualmente(pessoa.getId()));
+			model.addAttribute(PROJETOS_COORDENOU, projetoService.getProjetosCoordenouHomologadosAtualmente(pessoa.getId()));
+			model.addAttribute(PROJETOS_PARTICIPA, projetoService.getProjetosParticipaHomologadosAtualmente(pessoa.getId()));
+			model.addAttribute(PROJETOS_PARTICIPOU, projetoService.getProjetosParticipouHomologadosAtualmente(pessoa.getId()));
 
 			return PAGINA_DETALHES_PARTICIPANTE;
 		}

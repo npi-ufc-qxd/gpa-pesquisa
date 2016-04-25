@@ -77,6 +77,7 @@
 								<form:errors path="termino" cssClass="error-validation"></form:errors>
 							</div>
 						</div>
+
 						<!-- Valor do Projeto -->
 						<div class="form-item">
 							<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
@@ -87,6 +88,41 @@
 						</div>
 					</div>
 
+					<div class="form-group">
+						
+						<!-- Valor do Projeto -->
+						<div class="form-item">
+							<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
+							<div class="col-sm-2">
+								<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto"/>
+								<div class="error-validation">
+									<form:errors path="valorProjeto"></form:errors>
+								</div>
+								<c:if test="${not empty error_termino}">
+									<div class="error-validation">
+										<span>${error_termino}</span>
+									</div>
+								</c:if>
+							</div>
+						</div>
+					
+						<!-- Fonte de financiamento do projeto -->
+						<div class="form-item">
+							<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
+							<div id="fonte-financiamento" class="col-sm-4">
+								<form:select path="fonteFinanciamento.id" cssClass="form-control">
+									<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
+										<c:if test="${fonteFinanciamento.id == projeto.fonteFinanciamento.id}">
+											<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}" selected="true"></form:option>
+										</c:if>
+										<c:if test="${fonteFinanciamento.id != projeto.fonteFinanciamento.id}">
+											<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}"></form:option>
+										</c:if>
+									</c:forEach>
+								</form:select> 
+							</div>
+						</div>
+					</div>
 					
 					<div class="form-group">
 						<div class="form-item">
@@ -145,8 +181,7 @@
 
 					<div class="form-group form-item">
 
-						<label for="div-arquivo-projeto" class="col-sm-2 control-label">Arquivo
-							do Projeto:</label>
+						<label for="div-arquivo-projeto" class="col-sm-2 control-label"><span class="required">*</span>Arquivo do Projeto:</label>
 
 						<div id="div-arquivo-projeto" class="col-sm-10">
 
@@ -162,11 +197,11 @@
 
 									<tbody>
 										<tr>
-											<td id="arquivo-projeto" class="col-sm-11"><a
+											<td id="arquivo-projeto"><a
 												href="<c:url value="/documento/${projeto.arquivoProjeto.id }" />">${projeto.arquivoProjeto.nome }</a>
 											</td>
 
-											<td><a id="exluir-arquivo-p" class="col-sm-1"
+											<td class="align-right"><a id="exluir-arquivo-p"
 												data-toggle="modal" data-target="#confirm-delete-p-file"
 												title="Excluir" data-name="${projeto.arquivoProjeto.nome }"
 												data-idprojeto="${projeto.id }">

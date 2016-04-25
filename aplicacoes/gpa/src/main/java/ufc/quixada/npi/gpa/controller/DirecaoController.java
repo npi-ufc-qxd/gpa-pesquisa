@@ -1,18 +1,26 @@
 package ufc.quixada.npi.gpa.controller;
 
+import static ufc.quixada.npi.gpa.utils.Constants.ACTION;
+import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.INFO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECERISTA_ATRIBUIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_HOMOLOGADO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_PARECERISTA;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ATRIBUIR_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DIRECAO_BUSCAR_PESSOA;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_HOMOLOGAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_INICIAL_DIRECAO;
-import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
+import static ufc.quixada.npi.gpa.utils.Constants.PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPANTES;
+import static ufc.quixada.npi.gpa.utils.Constants.PESSOAS;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_EM_TRAMITACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_HOMOLOGADOS;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_DIRECAO;
+import static ufc.quixada.npi.gpa.utils.Constants.USUARIOS;
 
 import java.util.Date;
 import java.util.List;
@@ -73,9 +81,9 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {
-		model.addAttribute("projetosEmTramitacao", projetoService.getProjetosEmTramitacao());
-		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados());
-		model.addAttribute("participantes", pessoaService.getParticipantesProjetos());
+		model.addAttribute(PROJETOS_EM_TRAMITACAO, projetoService.getProjetosEmTramitacao());
+		model.addAttribute(PROJETOS_HOMOLOGADOS, projetoService.getProjetosHomologados());
+		model.addAttribute(PARTICIPANTES, pessoaService.getParticipantesProjetos());
 		return PAGINA_INICIAL_DIRECAO;
 
 	}
@@ -84,28 +92,28 @@ public class DirecaoController {
 	public String atribuirPareceristaForm(@PathVariable("id-projeto") Long projetoId, Model model, RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 		if (projeto.getStatus() != StatusProjeto.SUBMETIDO && projeto.getStatus() != StatusProjeto.AGUARDANDO_PARECER) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 		
 		else {
 			if (projeto.getStatus() == StatusProjeto.SUBMETIDO ) {
-				model.addAttribute("action", Constants.ATRIBUIR_PARECERISTA);
-				model.addAttribute("parecer", new ParecerTecnico());
+				model.addAttribute(ACTION, Constants.ATRIBUIR);
+				model.addAttribute(PARECER, new ParecerTecnico());
 			}
 		
 			else {
-				model.addAttribute("action", Constants.ALTERAR_PARECERISTA);
-				model.addAttribute("parecer", projeto.getParecer());
+				model.addAttribute(ACTION, Constants.ALTERAR);
+				model.addAttribute(PARECER, projeto.getParecer());
 			}
 		}
 
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
+		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(USUARIOS, pessoaService.getPareceristas(projeto));
 		return PAGINA_ATRIBUIR_PARECERISTA;
 	}
 	
@@ -121,22 +129,22 @@ public class DirecaoController {
 		
 		parecerValidator.validateAtribuirParecerista(parecer, result);
 		if(result.hasErrors()){
-			model.addAttribute("projeto", projeto);
-			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-			model.addAttribute("action", action);
+			model.addAttribute(PROJETO, projeto);
+			model.addAttribute(USUARIOS, pessoaService.getPareceristas(projeto));
+			model.addAttribute(ACTION, action);
 			return PAGINA_ATRIBUIR_PARECERISTA;
 		}
 		
-		if (action.equals(Constants.ALTERAR_PARECERISTA)) {
+		if (action.equals(Constants.ALTERAR)) {
 			notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA);
 			projetoService.alterarParecerista(parecer);
 			
-			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PARECERISTA_ALTERADO);
+			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PARECERISTA_ALTERADO);
 		}
-		else if (action.equals(Constants.ATRIBUIR_PARECERISTA)) {
+		else if (action.equals(Constants.ATRIBUIR)) {
 			projetoService.atribuirParecerista(projeto, parecer);
 			
-			redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
+			redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PARECERISTA_ATRIBUIDO);
 		}
 		
 		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
@@ -147,26 +155,26 @@ public class DirecaoController {
 	public String atribuirRelatorForm(@PathVariable("id-projeto") Long projetoId, Model model, RedirectAttributes redirectAttributes){
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 		
 		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 			
 		if(projeto.getParecerRelator() == null){
-			model.addAttribute("action", Constants.ATRIBUIR_RELATOR);
-			model.addAttribute("parecer", new ParecerRelator());
+			model.addAttribute(ACTION, Constants.ATRIBUIR);
+			model.addAttribute(PARECER, new ParecerRelator());
 			}
 		else{
-			model.addAttribute("action", Constants.ALTERAR_RELATOR);
-			model.addAttribute("parecer", projeto.getParecerRelator());
+			model.addAttribute(ACTION, Constants.ALTERAR);
+			model.addAttribute(PARECER, projeto.getParecerRelator());
 			}
 		
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
+		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(USUARIOS, pessoaService.getPareceristas(projeto));
 		return PAGINA_ATRIBUIR_RELATOR;
 		
 	}
@@ -182,22 +190,22 @@ public class DirecaoController {
 		
 		parecerRelatorValidador.validate(parecerRelator, result);
 		if(result.hasErrors()){
-			model.addAttribute("projeto", projeto);
-			model.addAttribute("usuarios", pessoaService.getPareceristas(projeto));
-			model.addAttribute("action", action);
+			model.addAttribute(PROJETO, projeto);
+			model.addAttribute(USUARIOS, pessoaService.getPareceristas(projeto));
+			model.addAttribute(ACTION, action);
 			return PAGINA_ATRIBUIR_RELATOR;
 		}
 		
-		if (action.equals(Constants.ALTERAR_RELATOR)) {
+		if (action.equals(Constants.ALTERAR)) {
 			notificacaoService.notificar(projeto, Evento.ALTERACAO_RELATOR);
 			projetoService.alterarRelator(parecerRelator);
 			
-			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_RELATOR_ALTERADO);
+			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_RELATOR_ALTERADO);
 		}
-		else if (action.equals(Constants.ATRIBUIR_RELATOR)) {
+		else if (action.equals(Constants.ATRIBUIR)) {
 			projetoService.atribuirRelator(projeto, parecerRelator);
 			
-			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_RELATOR_ATRIBUIDO);
+			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_RELATOR_ATRIBUIDO);
 		}
 		
 		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_RELATOR);
@@ -208,37 +216,41 @@ public class DirecaoController {
 	public String homologarForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
-			redirect.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirect.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 		
 		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_HOMOLOGACAO)) {
-			redirect.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirect.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
-		model.addAttribute("projeto", projeto);
+		model.addAttribute(PROJETO, projeto);
 		return PAGINA_HOMOLOGAR_PROJETO;
 	}
 	
 	@RequestMapping(value = "/homologar", method = RequestMethod.POST)
 	public String homologar(@RequestParam("id") Long id, @RequestParam("homologacaoParam") StatusProjeto homologacao, 
 			@RequestParam("ataParam") MultipartFile ataParam, @RequestParam("oficioParam") MultipartFile oficioParam, 
-			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect) {
+			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect ,Authentication authentication) {
 					
 		projeto = projetoService.getProjeto(id);
 		
 		if (projeto == null) {
-			redirect.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirect.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_INICIAL_DIRECAO;
 		}
 		
 		ProjetoController pc = new ProjetoController();
-		if(!pc.setInfoDocumentos(ataParam, projeto, TipoDocumento.ATA_HOMOLOGACAO)) {
-			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+
+		if(!pc.setInfoDocumentos(ataParam, projeto, TipoDocumento.ATA_HOMOLOGACAO,authentication.getName() )) {
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+
 			return PAGINA_HOMOLOGAR_PROJETO;
 		}
-		if(!pc.setInfoDocumentos(oficioParam, projeto, TipoDocumento.OFICIO_HOMOLOGACAO)) {
-			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+
+		if(!pc.setInfoDocumentos(oficioParam, projeto, TipoDocumento.OFICIO_HOMOLOGACAO, authentication.getName())) {
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+
 			return PAGINA_HOMOLOGAR_PROJETO;
 		}
 		
@@ -247,33 +259,22 @@ public class DirecaoController {
 		
 		projetoValidator.validateHomologacao(projeto, result);
 		if(result.hasErrors()){			
-			model.addAttribute("projeto", projeto);
+			model.addAttribute(PROJETO, projeto);
 			return PAGINA_HOMOLOGAR_PROJETO;
 		}
 		
 		projetoService.homologar(projeto);
 		
-		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_HOMOLOGADO);
+		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_HOMOLOGADO);
 		notificacaoService.notificar(projeto, Evento.HOMOLOGACAO);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
 	@RequestMapping(value = "/buscar", method = RequestMethod.GET)
 	public String paginaInicial(Model model, Authentication authentication) {
-		return PAGINA_DIRECAO_BUSCAR_PESSOA;
-	}
-	
-	@RequestMapping(value = "/buscar", method = RequestMethod.POST)
-	public String buscarPessoa(@RequestParam("busca") String busca, Model model,
-			RedirectAttributes redirectAttributes) {
+
+		List<Pessoa> pessoas = pessoaService.getAll();
+		model.addAttribute(PESSOAS, pessoas);
 		
-		model.addAttribute("busca", busca);
-		List<Pessoa> pessoas = pessoaService.getUsuariosByNomeOuCpf(busca);
-		if (!pessoas.isEmpty()) {
-			model.addAttribute("pessoas", pessoas);
-		} else {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
-			return REDIRECT_PAGINA_BUSCAR_PARTICIPANTE;
-		}
 		return PAGINA_DIRECAO_BUSCAR_PESSOA;
 	}
 }

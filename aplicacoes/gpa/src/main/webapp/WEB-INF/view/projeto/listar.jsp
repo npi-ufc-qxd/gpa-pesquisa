@@ -227,7 +227,7 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
-											<td>${projeto.parecer.status }</td>
+											<td>${projeto.parecer.status.descricao }</td>
 											<td>
 												<fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.dataRealizacao }" />
 											</td>
