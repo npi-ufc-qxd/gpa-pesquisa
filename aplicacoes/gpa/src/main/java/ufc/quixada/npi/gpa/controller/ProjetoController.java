@@ -15,12 +15,12 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +37,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,8 +47,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
+import ufc.quixada.npi.gpa.model.Documento.TipoDocumento;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
-import ufc.quixada.npi.gpa.model.ParecerRelator.StatusPosicionamentoRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
@@ -109,7 +108,6 @@ public class ProjetoController {
 		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados(idUsuarioLogado));
 
-
 		return PAGINA_LISTAR_PROJETO;
 	}
 
@@ -119,10 +117,11 @@ public class ProjetoController {
 		model.addAttribute("action", "cadastrar");
 		return PAGINA_CADASTRAR_PROJETO;
 	}
-
+	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public String cadastrar(@RequestParam("anexos") MultipartFile[] anexos,
-			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, Authentication authentication, Model model) {
+	public String cadastrar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
+			@Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
+			Authentication authentication, Model model) {
 		
 		projetoValidator.validate(projeto, result);
 
@@ -137,43 +136,8 @@ public class ProjetoController {
 		if(projeto.getValorProjeto() != null) {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
 		}
-		
-		List<Documento> documentos = new ArrayList<Documento>();
-		if (anexos != null && anexos.length != 0) {
-			for (MultipartFile anexo : anexos) {
-				try {
-					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-						Documento documento = new Documento();
-						documento.setArquivo(anexo.getBytes());
-						documento.setNome(anexo.getOriginalFilename());
-						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-						documento.setExtensao(anexo.getContentType());
-						documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-						documentos.add(documento);
-					}
-				} catch (IOException e) {
-					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-					return PAGINA_CADASTRAR_PROJETO;
-				}
-			}
-		}
-		
-		for (Documento documento : documentos) {
-			projeto.addDocumento(documento);
-		}
 
-		try {
-			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(arquivoProjeto.getBytes());
-				documento.setNome(arquivoProjeto.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(arquivoProjeto.getContentType());
-				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				projeto.setArquivoProjeto(documento);
-				
-			}
-		} catch (IOException e) {
+		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO)){
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -182,6 +146,42 @@ public class ProjetoController {
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+	
+	@RequestMapping(value="/uploadDocumento/{id}", method = RequestMethod.GET)
+	public String uploadArquivoForm(@PathVariable("id") Long id, Model model,
+			HttpSession session, RedirectAttributes redirectAttributes, Authentication authentication){
+		Projeto projeto = projetoService.getProjeto(id);
+		if (projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		if (usuarioPodeEditarProjeto(projeto, usuario)) {
+			model.addAttribute("projeto", projeto);
+			return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
+		}
+		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+	
+	@RequestMapping(value="/uploadDocumentos/{id}", method = RequestMethod.POST)
+	public String uploadArquivos(@RequestParam("anexos") MultipartFile[] anexos, 
+			@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect){
+		Projeto projeto = projetoService.getProjeto(id);
+		
+		if (anexos != null && anexos.length != 0) {
+			for (MultipartFile anexo : anexos) {
+				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO)) {
+					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+					return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
+				}
+			}
+		}
+		
+		projetoService.update(projeto);
+		model.addAttribute("projeto", projeto);
+		return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 	}
 
 	@RequestMapping(value = "/detalhes/{id}")
@@ -248,6 +248,36 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
+	@RequestMapping(value = "/editar", method = RequestMethod.POST)
+	public String editar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
+			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
+			RedirectAttributes redirect, Authentication authentication) {
+		model.addAttribute("action", "editar");
+		
+		if (result.hasErrors()) {
+			if (result.hasGlobalErrors()) {
+				model.addAttribute("validacao", result);
+			}
+			return PAGINA_CADASTRAR_PROJETO;
+		}
+
+		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		oldProjeto.setCoordenador(usuario);
+		oldProjeto = updateProjetoFields(oldProjeto, projeto);
+
+		projetoValidator.validate(oldProjeto, result);
+		
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO)) {
+			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+			return PAGINA_CADASTRAR_PROJETO;
+		}
+
+		projetoService.update(oldProjeto);
+		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+	
 	@RequestMapping(value = "/participacoes/{id}", method = RequestMethod.GET)
 	public String listarParticipacoes(@PathVariable("id") Long id, Model model,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
@@ -296,12 +326,11 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		if(participacao.isExterno()== true){
+		if(participacao.isExterno()){
 			participacao.setParticipanteExterno(pessoaService.getPessoaExterna(idParticipanteExternoSelecionado));
 		}else{
 			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
 		}
-		participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
 		participacao.setProjeto(projeto);
 		participacaoValidator.validate(participacao, result);
 		if (result.hasErrors()) {
@@ -311,10 +340,7 @@ public class ProjetoController {
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		try {
-			if(participacao.isExterno()== true)
-				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteExternoSelecionado);
-			else
-				participacaoService.verificaIntervalosParticipacaoPessoa(participacao, idParticipanteSelecionado);
+			participacaoService.verificaIntervalosParticipacaoPessoa(participacao, projeto.getId());
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("erro", e.getMessage());
 			model.addAttribute("projeto", projeto);
@@ -362,71 +388,7 @@ public class ProjetoController {
 
 	private boolean usuarioPodeEditarProjeto(Projeto projeto, Pessoa usuario) {
 		return (usuario.getId() == projeto.getCoordenador().getId() && (projeto.getStatus().equals(StatusProjeto.NOVO) || 
-				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS) || projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)));
-	}
-
-	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	public String editar(@RequestParam("anexos") List<MultipartFile> anexos, @RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto,
-			BindingResult result, Model model, HttpSession session, RedirectAttributes redirect,
-			Authentication authentication) {
-		model.addAttribute("action", "editar");
-		
-		if (result.hasErrors()) {
-			if (result.hasGlobalErrors()) {
-				model.addAttribute("validacao", result);
-			}
-			return PAGINA_CADASTRAR_PROJETO;
-		}
-
-		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
-		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
-		oldProjeto.setCoordenador(usuario);
-		oldProjeto = updateProjetoFields(oldProjeto, projeto);
-		
-		List<Documento> documentos = new ArrayList<Documento>();
-		if (anexos != null && !anexos.isEmpty()) {
-			for (MultipartFile anexo : anexos) {
-				try {
-					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-						Documento documento = new Documento();
-						documento.setArquivo(anexo.getBytes());
-						documento.setNome(anexo.getOriginalFilename());
-						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-						documento.setExtensao(anexo.getContentType());
-						documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-						documentos.add(documento);
-					}
-				} catch (IOException e) {
-					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-					return PAGINA_CADASTRAR_PROJETO;
-				}
-			}
-		}
-
-		projetoValidator.validate(oldProjeto, result);
-
-		for (Documento documento : documentos) {
-			oldProjeto.addDocumento(documento);
-		}
-		
-		try {
-			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(arquivoProjeto.getBytes());
-				documento.setNome(arquivoProjeto.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(arquivoProjeto.getContentType());
-				documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				oldProjeto.setArquivoProjeto(documento);
-			}
-		} catch (IOException e) {
-			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
-			return PAGINA_CADASTRAR_PROJETO;
-		}
-
-		projetoService.update(oldProjeto);
-		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
-		return REDIRECT_PAGINA_LISTAR_PROJETO;
+				projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS) || projeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)));
 	}
 
 	@RequestMapping(value = "/excluir/{id}")
@@ -478,7 +440,7 @@ public class ProjetoController {
 				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
-			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
+			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 				projetoService.submeterPendenciasRelator(projeto);
 				
 				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
@@ -506,44 +468,18 @@ public class ProjetoController {
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
 
-		List<Documento> documentos = new ArrayList<Documento>();
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
-				try {
-					if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-						Documento documento = new Documento();
-						documento.setArquivo(anexo.getBytes());
-						documento.setNome(anexo.getOriginalFilename());
-						documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-						documento.setExtensao(anexo.getContentType());
-						documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-						documentos.add(documento);
-					}
-				} catch (IOException e) {
+				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO)) {
 					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_CADASTRAR_PROJETO;
-				}
+				} 
 			}
 		}
 
-		try {
-			if (arquivoProjeto.getBytes() != null && arquivoProjeto.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(arquivoProjeto.getBytes());
-				documento.setNome(arquivoProjeto.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(arquivoProjeto.getContentType());
-				documento.setCaminho(oldProjeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				oldProjeto.setArquivoProjeto(documento);
-			}
-		} catch (IOException e) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO)) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_SUBMETER_PROJETO;
-		}
-
-		// Recupera os anexos já cadastrados para realizar validação
-		for (Documento documento : documentos) {
-			oldProjeto.addDocumento(documento);
 		}
 		
 		projetoService.update(oldProjeto);
@@ -563,7 +499,7 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 			
-		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
+		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 			projetoService.submeterPendenciasRelator(oldProjeto);
 			
 			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
@@ -617,17 +553,8 @@ public class ProjetoController {
 		projeto.getParecer().setDataRealizacao(new Date());
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecer.getParecer());
-		try {
-			if (anexo.getBytes() != null && anexo.getBytes().length != 0) {
-				Documento documento = new Documento();
-				documento.setArquivo(anexo.getBytes());
-				documento.setNome(anexo.getOriginalFilename());
-				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
-				documento.setExtensao(anexo.getContentType());
-				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				projeto.getParecer().setDocumento(documento);
-			}
-		} catch (IOException e) {
+		
+		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER)) {
 			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_EMITIR_PARECER;
 		}
@@ -665,14 +592,14 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		model.addAttribute("projeto", projeto);
-		model.addAttribute("posicionamento", StatusPosicionamentoRelator.values());
+		model.addAttribute("posicionamento", StatusPosicionamento.values());
 		model.addAttribute("parecer", new ParecerRelator());
 		return PAGINA_EMITIR_PARECER_RELATOR;
 	}
 	
 	@RequestMapping(value = "/avaliar", method = RequestMethod.POST)
 	public String avaliar(@RequestParam("id-projeto") Long idProjeto,
-			@RequestParam("posicionamento") StatusPosicionamentoRelator posicionamento,
+			@RequestParam("posicionamento") StatusPosicionamento posicionamento,
 			@RequestParam("observacao") String observacao, Model model, RedirectAttributes redirectAttributes) {
 		
 		Projeto projeto = projetoService.getProjeto(idProjeto);
@@ -747,15 +674,55 @@ public class ProjetoController {
 		}
 		
 		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
-			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO);
-			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
+			projeto.setStatus(StatusProjeto.RESOLVENDO_RESTRICOES);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_RESTRICAO);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
-
 		}
 
 		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
+
+	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo) {
+		try {
+			if(arquivo.getBytes() != null && arquivo.getBytes().length != 0) {
+				Documento documento = new Documento();
+				documento.setArquivo(arquivo.getBytes());
+				documento.setNome(arquivo.getOriginalFilename());
+				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
+				documento.setExtensao(arquivo.getContentType());
+				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
+				
+				switch (tipo) {
+				case DOCUMENTO_PARECER:
+					projeto.getParecer().setDocumento(documento);
+					break;
+					
+				case ARQUIVO_PROJETO:
+					projeto.setArquivoProjeto(documento);
+					break;
+					
+				case ANEXO:
+					projeto.addDocumento(documento);
+					break;
+					
+				case ATA_HOMOLOGACAO:
+					projeto.setAta(documento);
+					break;
+					
+				case OFICIO_HOMOLOGACAO:
+					projeto.setOficio(documento);
+					break;
+					
+				default:
+					break;
+				}
+			}
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
 	}
 }

@@ -73,9 +73,10 @@
 						        </tbody>
 						    </table>
 						</c:if>
-						
-						<c:if test="${action == 'busca' && not empty pessoas}">
-						    <table id="busca-adm" class="table table-striped display">
+
+						<%--Buscando todas as pessoas --%>
+						<c:if test="${not empty pessoas && action == 'buscar'}">
+							<table id="busca-adm" class="table table-striped display">
 						        <thead class="thead">
 						            <tr>
 						                <th>Usuário</th>
@@ -91,13 +92,14 @@
 							                <td align="right">
 							                	<c:if test="${empty pessoa.papeis }">
 							                		<a data-toggle="modal" data-target="#confirm-vincular" href="#"
-							                		data-href="<c:url value="/administracao/pessoa/vincular/${pessoa.cpf }"></c:url>"
-							                		title="Vincular papel ao usuário"
-							                		data-name="${pessoa.nome }" data-id="${pessoa.cpf }"  
-							                		class="btn btn-primary btn-sm"> Vincular papel</a>
+							                			data-href="<c:url value="/administracao/pessoa/vincular/${pessoa.cpf }"></c:url>"
+							                			title="Vincular papel ao usuário"
+							                			data-name="${pessoa.nome }" data-id="${pessoa.cpf }"  
+							                			class="btn btn-primary btn-sm"> Vincular papel
+							                		</a>
 							                	</c:if>
-							                	<c:forEach var="papel" items="${pessoa.papeis }">
-							                		<span class="label label-primary">${papel.nome}</span>
+							                	<c:forEach var="papel" items="${pessoa.papeis}">
+							                		<span class="label label-primary">${papel.nome }</span>
 							                	</c:forEach>
 							                </td>
 							            </tr>

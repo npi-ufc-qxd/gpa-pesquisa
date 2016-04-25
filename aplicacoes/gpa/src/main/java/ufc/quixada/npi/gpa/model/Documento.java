@@ -73,6 +73,10 @@ public class Documento {
 	public void setCaminho(String caminho) {
 		this.caminhoArquivo = caminho;
 	}
+	
+	public enum TipoDocumento {
+		ARQUIVO_PROJETO, ANEXO, DOCUMENTO_PARECER, ATA_HOMOLOGACAO, OFICIO_HOMOLOGACAO
+	}
 
 	@Override
 	public boolean equals(Object obj) {
