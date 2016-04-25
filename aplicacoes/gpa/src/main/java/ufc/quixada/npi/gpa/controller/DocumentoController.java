@@ -54,6 +54,7 @@ public class DocumentoController {
 		return new HttpEntity<byte[]>(arquivo, headers);
 	}
 	
+	
 	@RequestMapping(value = "/{id-arquivo}", method = RequestMethod.GET)
 	public HttpEntity<byte[]> getArquivoEdicao(@PathVariable("id-arquivo") Long idArquivo) {
 
@@ -66,7 +67,7 @@ public class DocumentoController {
 
 		return new HttpEntity<byte[]>(arquivo, headers);
 	}
-
+	
 	
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.POST)
 	@ResponseBody public  ModelMap excluir(@PathVariable("id") Long id, @RequestParam("projetoId") Long projetoId, Authentication authentication, @ModelAttribute ModelMap model) {
