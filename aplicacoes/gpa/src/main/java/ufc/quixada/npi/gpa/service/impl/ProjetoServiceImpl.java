@@ -220,7 +220,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		params.put("id", idRelator);
 		params.put("aguardando_avaliacao", StatusProjeto.AGUARDANDO_AVALIACAO);
 		params.put("resolvendo_restricoes",StatusProjeto.RESOLVENDO_RESTRICOES);
-		return projetoRepository.find(QueryType.JPQL, "from Projeto where parecerRelator.relator.id = :id AND status = :aguardando_avaliacao OR status = :resolvendo_restricoes" , params);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where parecerRelator.relator.id = :id AND (status = :aguardando_avaliacao OR status = :resolvendo_restricoes)" , params);
 	};
 
 	@Override

@@ -35,6 +35,9 @@
 										<i class="fa fa-users"></i>
 									</a>
 								</c:if>
+								<a id="upload-documentos" href="<c:url value="/projeto/uploadDocumento/${projeto.id}" ></c:url>" title="Upload Documentos">
+									<button class="btn btn-primary btn-sm"><i class="fa fa-file"></i></button>
+								</a>
 								<a id="editar" href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>" title="Editar projeto" class="btn btn-primary btn-sm">
 									<i class="fa fa-edit"></i>
 								</a>
@@ -242,7 +245,7 @@
 										<c:if test="${projeto.status != 'AGUARDANDO_PARECER'}">
 											<label class="col-sm-2 control-label">Posicionamento:</label>
 											<div class="col-sm-4 value-label">
-												<label>${projeto.parecer.status }</label>
+												<label>${projeto.parecer.status.descricao }</label>
 											</div>						
 										</c:if>
 										<label class="col-sm-2 control-label">Parecer:</label>
@@ -276,7 +279,7 @@
 										<c:if test="${not empty projeto.parecerRelator.status}">
 											<label class="col-sm-2 control-label">Posicionamento:</label>
 											<div class="col-sm-4 value-label">
-												<label>${projeto.parecerRelator.status }</label>
+												<label>${projeto.parecerRelator.status.descricao }</label>
 											</div>						
 										
 											<label class="col-sm-2 control-label">Observação:</label>
