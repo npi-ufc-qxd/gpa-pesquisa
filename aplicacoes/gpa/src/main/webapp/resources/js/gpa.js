@@ -200,15 +200,25 @@ $(document).ready(function() {
 		$(this).find(".btn-danger").attr("href", $(e.relatedTarget).data("href"));
 	});
 	
-	mensagemFonteFinanciamento();
+	testaTabelaFontesFinanciamentoVazia();
 	
-	function mensagemFonteFinanciamento(){
+	function testaTabelaFontesFinanciamentoVazia() {
 		if($("#table-fontes-financiamento tr").length){
-			$("#mensagem-fonte-financiamento").addClass("hidden");
+			$("#div-mensagem").addClass("hidden");
 		}else{
-			$("#mensagem-fonte-financiamento").removeClass("hidden");
+			var mensagem = "Nenhuma fonte de financiamento cadastrada";
+			mostraMensagem(mensagem);
 		}
 	}
+	
+	function mostraMensagem(mensagem) {
+		$("#mensagem").html(mensagem);
+		$("#div-mensagem").removeClass("hidden");
+	}
+	
+	$("#button-mensagem").on("click", function(){
+		$("#div-mensagem").addClass("hidden");
+	});
 	
 	$("#confirm-delete-fonte-financiamento").on("show.bs.modal", function(e) {
 		$(this).find(".modal-body").text("Tem certeza de que deseja excluir a Fonte de Financiamento: \"" + $(e.relatedTarget).data("name") + "\"?");
@@ -229,7 +239,9 @@ $(document).ready(function() {
 		.success(function( result ) {
 			if(result.result == "ok") {
 				$("#fonte-"+id).remove();
-				mensagemFonteFinanciamento();
+				testaTabelaFontesFinanciamentoVazia();
+			}else{
+				mostraMensagem(result.mensagem);
 			}
 			$("#confirm-delete-fonte-financiamento").modal("hide");
 		});

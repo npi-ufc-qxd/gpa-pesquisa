@@ -1,21 +1,34 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.ACTION;
+import static ufc.quixada.npi.gpa.utils.Constants.BUSCA;
+import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.FONTES_FINANCIAMENTO;
+import static ufc.quixada.npi.gpa.utils.Constants.FONTE_FINANCIAMENTO;
+import static ufc.quixada.npi.gpa.utils.Constants.INFO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_RESULTADO_ERRO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_ATUALIZAR_PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_PERSISTIR_USUARIO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_VINCULAR_PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_CADASTRADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_FONTE_DE_FINANCIAMENTO_REFERENCIADA;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OK;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_RESULTADO_OK;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_SUCESSO_VINCULAR_PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_NAO_ENCONTRADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ADMINISTRACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_ADMINISTRACAO_VINCULAR_PAPEL;
+import static ufc.quixada.npi.gpa.utils.Constants.PAPEIS;
 import static ufc.quixada.npi.gpa.utils.Constants.PAPEL_COORDENACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.PESSOA;
+import static ufc.quixada.npi.gpa.utils.Constants.PESSOAS;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_ADMINISTRACAO_VINCULAR_PAPEL;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_INICIAL_ADMINISTRACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.RESULT;
+import static ufc.quixada.npi.gpa.utils.Constants.RESULTADO;
 
 import java.util.List;
 
@@ -68,14 +81,14 @@ public class AdministracaoController {
 	public String buscarPessoa(@RequestParam("busca") String busca, ModelMap map, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
 
-		map.addAttribute("busca", busca);
+		map.addAttribute(BUSCA, busca);
 
 		List<Usuario> usuarios = administracaoService.getUsuariosByNomeOuCpf(busca);
 		if (!usuarios.isEmpty()) {
-			map.addAttribute("pessoas", usuarios);
-			map.addAttribute("action", "resultado");
+			map.addAttribute(PESSOAS, usuarios);
+			map.addAttribute(ACTION, RESULTADO);
 		} else {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_INICIAL_ADMINISTRACAO;
 		}
 		return PAGINA_ADMINISTRACAO;
@@ -86,7 +99,7 @@ public class AdministracaoController {
 			Authentication authentication) {
 		Usuario usuario = administracaoService.getUsuariosByCpf(cpf);
 		if (usuario == null) {
-			redirect.addFlashAttribute("erro", MENSAGEM_USUARIO_NAO_ENCONTRADO);
+			redirect.addFlashAttribute(ERRO, MENSAGEM_USUARIO_NAO_ENCONTRADO);
 			return REDIRECT_PAGINA_INICIAL_ADMINISTRACAO;
 		} else {
 			Pessoa pessoa = pessoaService.getPessoa(cpf);
@@ -98,13 +111,13 @@ public class AdministracaoController {
 				try {
 					pessoaService.save(pessoa);
 				} catch (Exception e) {
-					redirect.addFlashAttribute("erro", MENSAGEM_ERRO_PERSISTIR_USUARIO);
+					redirect.addFlashAttribute(ERRO, MENSAGEM_ERRO_PERSISTIR_USUARIO);
 					return REDIRECT_PAGINA_INICIAL_ADMINISTRACAO;
 				}
 				pessoa = pessoaService.getPessoa(pessoa.getId());
 			}
-			model.addAttribute("pessoa", pessoa);
-			model.addAttribute("papeis", papelService.atualizaStatus(pessoa.getPapeis()));
+			model.addAttribute(PESSOA, pessoa);
+			model.addAttribute(PAPEIS, papelService.atualizaStatus(pessoa.getPapeis()));
 		}
 		return PAGINA_ADMINISTRACAO_VINCULAR_PAPEL;
 	}
@@ -114,8 +127,8 @@ public class AdministracaoController {
 			BindingResult result) {
 
 		if (result.hasErrors()) {
-			redirect.addFlashAttribute("erro", MENSAGEM_ERRO_VINCULAR_PAPEIS);
-			return "redirect:/administracao/pessoa/vincular/" + pessoa.getCpf();
+			redirect.addFlashAttribute(ERRO, MENSAGEM_ERRO_VINCULAR_PAPEIS);
+			return REDIRECT_PAGINA_ADMINISTRACAO_VINCULAR_PAPEL + pessoa.getCpf();
 		}
 		Pessoa oldPessoa = pessoaService.getPessoa(pessoa.getCpf());
 
@@ -124,30 +137,30 @@ public class AdministracaoController {
 		try {
 			pessoaService.update(oldPessoa);
 		} catch (Exception e) {
-			redirect.addFlashAttribute("erro", MENSAGEM_ERRO_ATUALIZAR_PAPEIS);
-			return "redirect:/administracao/pessoa/vincular/" + pessoa.getCpf();
+			redirect.addFlashAttribute(ERRO, MENSAGEM_ERRO_ATUALIZAR_PAPEIS);
+			return REDIRECT_PAGINA_ADMINISTRACAO_VINCULAR_PAPEL + pessoa.getCpf();
 		}
-		redirect.addFlashAttribute("info", MENSAGEM_SUCESSO_VINCULAR_PAPEIS);
-		return "redirect:/administracao/pessoa/vincular/" + pessoa.getCpf();
+		redirect.addFlashAttribute(INFO, MENSAGEM_SUCESSO_VINCULAR_PAPEIS);
+		return REDIRECT_PAGINA_ADMINISTRACAO_VINCULAR_PAPEL + pessoa.getCpf();
 	}
 
 	@RequestMapping(value = "/fonte-financiamento/mostrar", method = RequestMethod.GET)
 	public String mostrarFontesFinanciamento(ModelMap model) {
 		List<FonteFinanciamento> fontesFinanciamento = fonteFinanciamentoService.getFontesFinanciamento();
 
-		model.addAttribute("fonteFinanciamento", new FonteFinanciamento());
-		model.addAttribute("fontesFinanciamento", fontesFinanciamento);
+		model.addAttribute(FONTE_FINANCIAMENTO, new FonteFinanciamento());
+		model.addAttribute(FONTES_FINANCIAMENTO, fontesFinanciamento);
 
 		return PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO;
 	}
 
 	@RequestMapping(value = "/fonte-financiamento/cadastrar", method = RequestMethod.POST)
 	public String cadastrarFonteFinanciamento(
-			@ModelAttribute("fonteFinanciamento") FonteFinanciamento fonteFinanciamento, RedirectAttributes redirect) {
+			@ModelAttribute(FONTE_FINANCIAMENTO) FonteFinanciamento fonteFinanciamento, RedirectAttributes redirect) {
 
 		fonteFinanciamentoService.cadastrar(fonteFinanciamento);
 
-		redirect.addFlashAttribute("info", MENSAGEM_FONTE_DE_FINANCIAMENTO_CADASTRADA);
+		redirect.addFlashAttribute(INFO, MENSAGEM_FONTE_DE_FINANCIAMENTO_CADASTRADA);
 
 		return REDIRECT_PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO;
 	}
@@ -157,21 +170,20 @@ public class AdministracaoController {
 		FonteFinanciamento fonteFinanciamento = fonteFinanciamentoService.getFonteFinanciamento(fonteFinanciamentoId);
 		
 		if(fonteFinanciamento == null){
-			model.addAttribute("result", MENSAGEM_ERRO);
-			model.addAttribute("mensagem", MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE);
+			model.addAttribute(RESULT, MENSAGEM_RESULTADO_ERRO);
+			model.addAttribute(MENSAGEM, MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE);
 			return model;
 		}
 		
 		try{
 			fonteFinanciamentoService.remover(fonteFinanciamento);
 		}catch(Exception e){
-			model.addAttribute("result", MENSAGEM_ERRO);
-			model.addAttribute("mensagem", MENSAGEM_FONTE_DE_FINANCIAMENTO_REFERENCIADA);
+			model.addAttribute(RESULT, MENSAGEM_RESULTADO_ERRO);
+			model.addAttribute(MENSAGEM, MENSAGEM_FONTE_DE_FINANCIAMENTO_REFERENCIADA);
 			return model;
 		}
 		
-		
-		model.addAttribute("result", MENSAGEM_OK);
+		model.addAttribute(RESULT, MENSAGEM_RESULTADO_OK);
 		
 		return model;
 	}

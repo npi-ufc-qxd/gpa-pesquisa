@@ -1,5 +1,12 @@
 package ufc.quixada.npi.gpa.controller;
 
+import static ufc.quixada.npi.gpa.utils.Constants.ACTION;
+import static ufc.quixada.npi.gpa.utils.Constants.ANO;
+import static ufc.quixada.npi.gpa.utils.Constants.CADASTRAR;
+import static ufc.quixada.npi.gpa.utils.Constants.EDITAR;
+import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.FONTES_FINANCIAMENTO;
+import static ufc.quixada.npi.gpa.utils.Constants.INFO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_UPLOAD;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARECER_EMITIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PARTICIPACAO_REMOVIDA;
@@ -17,7 +24,37 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO_EXTERNA;
+import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACOES_EM_PROJETOS;
+import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO;
+import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_COORDENADOR;
+import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_DIRECAO;
+import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_PARECERISTA;
+import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_PARTICIPANTE;
+import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_RELATOR;
+import static ufc.quixada.npi.gpa.utils.Constants.PESSOAS;
+import static ufc.quixada.npi.gpa.utils.Constants.PESSOAS_EXTERNAS;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_AGUARDANDO_AVALIACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_AGUARDANDO_PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_AVALIADOS;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_HOMOLOGADOS;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_NAO_HOMOLOGADOS;
+import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_PARECER_EMITIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.TIPOS_DE_PARTICIPACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.USUARIO;
+import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.ALERT;
+import static ufc.quixada.npi.gpa.utils.Constants.OLD_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPANTES;
+import static ufc.quixada.npi.gpa.utils.Constants.PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.POSICIONAMENTO;
+import static ufc.quixada.npi.gpa.utils.Constants.COMENTARIO;
+import static ufc.quixada.npi.gpa.utils.Constants.AUTOR;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -103,14 +140,14 @@ public class ProjetoController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String listar(Model model, Authentication authentication) {
 		Long idUsuarioLogado = pessoaService.getPessoa(authentication.getName()).getId();
-		model.addAttribute("projetos", projetoService.getProjetos(idUsuarioLogado));
-		model.addAttribute("projetosNaoHomologados", projetoService.getProjetosNaoHomologados(idUsuarioLogado));
-		model.addAttribute("participacoesEmProjetos", projetoService.getParticipacoes(idUsuarioLogado));
-		model.addAttribute("projetosAguardandoParecer", projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
-		model.addAttribute("projetosParecerEmitido", projetoService.getProjetosParecerEmitido(idUsuarioLogado));
-		model.addAttribute("projetosAguardandoAvaliacao", projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
-		model.addAttribute("projetosAvaliados", projetoService.getProjetosAvaliados(idUsuarioLogado));
-		model.addAttribute("projetosHomologados", projetoService.getProjetosHomologados(idUsuarioLogado));
+		model.addAttribute(PROJETOS, projetoService.getProjetos(idUsuarioLogado));
+		model.addAttribute(PROJETOS_NAO_HOMOLOGADOS, projetoService.getProjetosNaoHomologados(idUsuarioLogado));
+		model.addAttribute(PARTICIPACOES_EM_PROJETOS, projetoService.getParticipacoes(idUsuarioLogado));
+		model.addAttribute(PROJETOS_AGUARDANDO_PARECER, projetoService.getProjetosAguardandoParecer(idUsuarioLogado));
+		model.addAttribute(PROJETOS_PARECER_EMITIDO, projetoService.getProjetosParecerEmitido(idUsuarioLogado));
+		model.addAttribute(PROJETOS_AGUARDANDO_AVALIACAO, projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
+		model.addAttribute(PROJETOS_AVALIADOS, projetoService.getProjetosAvaliados(idUsuarioLogado));
+		model.addAttribute(PROJETOS_HOMOLOGADOS, projetoService.getProjetosHomologados(idUsuarioLogado));
 
 
 		return PAGINA_LISTAR_PROJETO;
@@ -118,9 +155,9 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
 	public String cadastrarForm(Model model, HttpSession session) {
-		model.addAttribute("projeto", new Projeto());
-		model.addAttribute("action", "cadastrar");
-		model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
+		model.addAttribute(PROJETO, new Projeto());
+		model.addAttribute(ACTION, CADASTRAR);
+		model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 		return PAGINA_CADASTRAR_PROJETO;
 	}
 	
@@ -129,15 +166,15 @@ public class ProjetoController {
 			HttpSession session, RedirectAttributes redirectAttributes, Authentication authentication){
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
-			model.addAttribute("projeto", projeto);
+			model.addAttribute(PROJETO, projeto);
 			return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 		}
-		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 	
@@ -159,7 +196,7 @@ public class ProjetoController {
 						documentos.add(documento);
 					}
 				} catch (IOException e) {
-					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 				}
 			}
@@ -168,7 +205,7 @@ public class ProjetoController {
 			projeto.addDocumento(documento);
 		}
 		projetoService.update(projeto);
-		model.addAttribute("projeto", projeto);
+		model.addAttribute(PROJETO, projeto);
 		return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 	}
 	
@@ -180,7 +217,7 @@ public class ProjetoController {
 		projetoValidator.validate(projeto, result);
 
 		if (result.hasErrors()) {
-			model.addAttribute("action", "cadastrar");
+			model.addAttribute(ACTION, CADASTRAR);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
@@ -203,13 +240,13 @@ public class ProjetoController {
 				
 			}
 		} catch (IOException e) {
-			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		
 		projetoService.update(projeto);
 		
-		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
+		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
@@ -219,42 +256,42 @@ public class ProjetoController {
 		Projeto projeto = projetoService.getProjeto(id);
 
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 
-		model.addAttribute("projeto", projeto);
+		model.addAttribute(PROJETO, projeto);
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
 		if (pessoa.isDirecao()) {
-			model.addAttribute("permissao", "direcao");
+			model.addAttribute(PERMISSAO, PERMISSAO_DIRECAO);
 			return PAGINA_DETALHES_PROJETO;
 		}
 
 		if(projeto.getCoordenador().equals(pessoa)){
-			model.addAttribute("permissao","coordenador");
+			model.addAttribute(PERMISSAO, PERMISSAO_COORDENADOR);
 			return PAGINA_DETALHES_PROJETO;	
 		}
 
 		if (projeto.getParecer().getParecerista().equals(pessoa)
 				&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
-			model.addAttribute("permissao", "parecerista");
+			model.addAttribute(PERMISSAO, PERMISSAO_PARECERISTA);
 			return PAGINA_DETALHES_PROJETO;
 		}
 		
 		if(projeto.getParecerRelator().getRelator().equals(pessoa)){
-				model.addAttribute("permissao", "relator");
+				model.addAttribute(PERMISSAO, PERMISSAO_RELATOR);
 				return PAGINA_DETALHES_PROJETO;
 		}
 
 		if (projeto.getStatus().equals(StatusProjeto.APROVADO)) {
 			for (Participacao participacao : projeto.getParticipacoes()) {
 				if (pessoa.equals(participacao.getParticipante())) {
-					model.addAttribute("permissao", "participante");
+					model.addAttribute(PERMISSAO, PERMISSAO_PARTICIPANTE);
 					return PAGINA_DETALHES_PROJETO;
 				}
 			}
 		}
-		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
@@ -263,18 +300,18 @@ public class ProjetoController {
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
-			model.addAttribute("projeto", projeto);
-			model.addAttribute("action", "editar");
-			model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
+			model.addAttribute(PROJETO, projeto);
+			model.addAttribute(ACTION, EDITAR);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
-		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
@@ -283,24 +320,24 @@ public class ProjetoController {
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		
 		Projeto projeto = projetoService.getProjeto(id);
-		model.addAttribute("tiposDeParticipacao", TipoParticipacao.values());
+		model.addAttribute(TIPOS_DE_PARTICIPACAO, TipoParticipacao.values());
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Calendar calendario = Calendar.getInstance();
-		model.addAttribute("ano", calendario.get(Calendar.YEAR));
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("participacao", new Participacao());
-		model.addAttribute("participacaoExterna", new PessoaExterna());
-		model.addAttribute("pessoasExternas", pessoaService.getAllPessoaExterna());
-		model.addAttribute("pessoas", pessoaService.getAll());
+		model.addAttribute(ANO, calendario.get(Calendar.YEAR));
+		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(PARTICIPACAO, new Participacao());
+		model.addAttribute(PARTICIPACAO_EXTERNA, new PessoaExterna());
+		model.addAttribute(PESSOAS_EXTERNAS, pessoaService.getAllPessoaExterna());
+		model.addAttribute(PESSOAS, pessoaService.getAll());
 		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 	}
 
@@ -313,17 +350,17 @@ public class ProjetoController {
 
 
 		Projeto projeto = projetoService.getProjeto(idProjeto);
-		model.addAttribute("tiposDeParticipacao",TipoParticipacao.values());
-		model.addAttribute("pessoasExternas", pessoaService.getAllPessoaExterna());
+		model.addAttribute(TIPOS_DE_PARTICIPACAO,TipoParticipacao.values());
+		model.addAttribute(PESSOAS_EXTERNAS, pessoaService.getAllPessoaExterna());
 
-		model.addAttribute("tiposDeParticipacao", TipoParticipacao.values());
+		model.addAttribute(TIPOS_DE_PARTICIPACAO, TipoParticipacao.values());
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		if(participacao.isExterno()== true){
@@ -334,28 +371,28 @@ public class ProjetoController {
 		participacao.setProjeto(projeto);
 		participacaoValidator.validate(participacao, result);
 		if (result.hasErrors()) {
-			model.addAttribute("projeto", projeto);
-			model.addAttribute("pessoas", pessoaService.getAll());
-			model.addAttribute("validacao", result);
+			model.addAttribute(PROJETO, projeto);
+			model.addAttribute(PESSOAS, pessoaService.getAll());
+			model.addAttribute(VALIDACAO, result);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		try {
 			participacaoService.verificaIntervalosParticipacaoPessoa(participacao, projeto.getId());
 		} catch (IllegalArgumentException e) {
-			model.addAttribute("erro", e.getMessage());
-			model.addAttribute("projeto", projeto);
-			model.addAttribute("pessoas", pessoaService.getAll());
+			model.addAttribute(ERRO, e.getMessage());
+			model.addAttribute(PROJETO, projeto);
+			model.addAttribute(PESSOAS, pessoaService.getAll());
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		projeto.adicionarParticipacao(participacao);
 		projetoService.update(projeto);
 
 		Calendar calendario = Calendar.getInstance();
-		model.addAttribute("ano", calendario.get(Calendar.YEAR));
-		model.addAttribute("usuario", usuario);
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("participacao", new Participacao());
-		model.addAttribute("pessoas", pessoaService.getAll());
+		model.addAttribute(ANO, calendario.get(Calendar.YEAR));
+		model.addAttribute(USUARIO, usuario);
+		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(PARTICIPACAO, new Participacao());
+		model.addAttribute(PESSOAS, pessoaService.getAll());
 		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 	}
 
@@ -366,24 +403,24 @@ public class ProjetoController {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		Participacao participacao = projetoService.getParticipacao(idParticipacao);
 		projetoService.removerParticipacao(projeto, participacao);
 
-		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARTICIPACAO_REMOVIDA);
+		redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PARTICIPACAO_REMOVIDA);
 
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("participacao", new Participacao());
-		model.addAttribute("pessoas", pessoaService.getAll());
-		model.addAttribute("pessoasExternas", pessoaService.getAllPessoaExterna());
-		return "redirect:/" + PAGINA_VINCULAR_PARTICIPANTES_PROJETO + "/" + idProjeto;
+		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(PARTICIPACAO, new Participacao());
+		model.addAttribute(PESSOAS, pessoaService.getAll());
+		model.addAttribute(PESSOAS_EXTERNAS, pessoaService.getAllPessoaExterna());
+		return REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO + idProjeto;
 	}
 
 	private boolean usuarioPodeEditarProjeto(Projeto projeto, Pessoa usuario) {
@@ -395,11 +432,11 @@ public class ProjetoController {
 	public String editar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
 			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect, Authentication authentication) {
-		model.addAttribute("action", "editar");
+		model.addAttribute(ACTION, EDITAR);
 		
 		if (result.hasErrors()) {
 			if (result.hasGlobalErrors()) {
-				model.addAttribute("validacao", result);
+				model.addAttribute(VALIDACAO, result);
 			}
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -422,12 +459,12 @@ public class ProjetoController {
 				oldProjeto.setArquivoProjeto(documento);
 			}
 		} catch (IOException e) {
-			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
 		projetoService.update(oldProjeto);
-		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
+		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
@@ -436,15 +473,15 @@ public class ProjetoController {
 			Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 			projetoService.remover(projeto);
-			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_REMOVIDO);
+			redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PROJETO_REMOVIDO);
 		} else {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 		}
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
@@ -455,7 +492,7 @@ public class ProjetoController {
 			Model model, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(id);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 
@@ -463,41 +500,41 @@ public class ProjetoController {
 		if (usuarioPodeEditarProjeto(projeto, usuario)) {
 
 			// Adicionando o @ModelAttribute ao BindingResult
-			BindingResult result = new BeanPropertyBindingResult(projeto, "projeto");
+			BindingResult result = new BeanPropertyBindingResult(projeto, PROJETO);
 			projetoValidator.validateSubmissao(projeto, result);
 
 			if (result.hasErrors()) {
-				model.addAttribute("projeto", projeto);
-				model.addAttribute("alert", Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
+				model.addAttribute(PROJETO, projeto);
+				model.addAttribute(ALERT, Constants.MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
 
 				if (result.hasGlobalErrors()) {
-					model.addAttribute("validacao", result);
+					model.addAttribute(VALIDACAO, result);
 				}
 				
-				model.addAttribute("fontesFinanciamento", fonteFinanciamentoService.getFontesFinanciamento());
+				model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 				
 				return PAGINA_SUBMETER_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
 				projetoService.submeterPendencias(projeto);
 				
-				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
 				projetoService.submeterPendenciasRelator(projeto);
 				
-				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
 
-				redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+				redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PROJETO_SUBMETIDO);
 				notificacaoService.notificar(projeto, Evento.SUBMISSAO);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			}
 		} else {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 	}
@@ -525,7 +562,7 @@ public class ProjetoController {
 						documentos.add(documento);
 					}
 				} catch (IOException e) {
-					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_CADASTRAR_PROJETO;
 				}
 			}
@@ -542,7 +579,7 @@ public class ProjetoController {
 				oldProjeto.setArquivoProjeto(documento);
 			}
 		} catch (IOException e) {
-			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_SUBMETER_PROJETO;
 		}
 
@@ -553,31 +590,31 @@ public class ProjetoController {
 		
 		projetoService.update(oldProjeto);
 
-		BindingResult result = new BeanPropertyBindingResult(oldProjeto, "oldProjeto");
+		BindingResult result = new BeanPropertyBindingResult(oldProjeto, OLD_PROJETO);
 		projetoValidator.validateSubmissao(oldProjeto, result);
 		
 		if (result.hasErrors()) {
-			model.addAttribute("projeto", oldProjeto);
-			model.addAttribute("participantes", pessoaService.getParticipantes(usuario));
-			model.addAttribute("validacao", result);
+			model.addAttribute(PROJETO, oldProjeto);
+			model.addAttribute(PARTICIPANTES, pessoaService.getParticipantes(usuario));
+			model.addAttribute(VALIDACAO, result);
 			return PAGINA_SUBMETER_PROJETO;
 
 		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
 			projetoService.submeterPendencias(oldProjeto);
 			
-			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 			
 		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS_HOMOLOGACAO)) {
 			projetoService.submeterPendenciasRelator(oldProjeto);
 			
-			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
+			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
 			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
 			
 		} else {
 			projetoService.submeter(oldProjeto);
 
-			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+			redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PROJETO_SUBMETIDO);
 			notificacaoService.notificar(projeto, Evento.SUBMISSAO);
 		}
 		
@@ -590,21 +627,21 @@ public class ProjetoController {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuario.equals(projeto.getParecer().getParecerista())) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("posicionamento", StatusPosicionamento.values());
-		model.addAttribute("parecer", new ParecerTecnico());
+		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(POSICIONAMENTO, StatusPosicionamento.values());
+		model.addAttribute(PARECER, new ParecerTecnico());
 		return PAGINA_EMITIR_PARECER;
 	}
 
@@ -615,7 +652,7 @@ public class ProjetoController {
 
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 
@@ -633,20 +670,20 @@ public class ProjetoController {
 				projeto.getParecer().setDocumento(documento);
 			}
 		} catch (IOException e) {
-			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_EMITIR_PARECER;
 		}
 
 		parecerValidator.validate(projeto.getParecer(), result);
 		if (result.hasErrors()) {
-			model.addAttribute("projeto", projeto);
-			model.addAttribute("posicionamento", StatusPosicionamento.values());
+			model.addAttribute(PROJETO, projeto);
+			model.addAttribute(POSICIONAMENTO, StatusPosicionamento.values());
 			return PAGINA_EMITIR_PARECER;
 		}
 
 		projetoService.emitirParecer(projeto);
 
-		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
+		redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PARECER_EMITIDO);
 		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -657,21 +694,21 @@ public class ProjetoController {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		if (!usuario.equals(projeto.getParecerRelator().getRelator())) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		model.addAttribute("projeto", projeto);
-		model.addAttribute("posicionamento", StatusPosicionamento.values());
-		model.addAttribute("parecer", new ParecerRelator());
+		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(POSICIONAMENTO, StatusPosicionamento.values());
+		model.addAttribute(PARECER, new ParecerRelator());
 		return PAGINA_EMITIR_PARECER_RELATOR;
 	}
 	
@@ -683,7 +720,7 @@ public class ProjetoController {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		
 		if(projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
@@ -717,8 +754,8 @@ public class ProjetoController {
 		comentarioResult.setId(comentario.getId());
 		comentarioResult.setData(comentario.getData());
 		comentarioResult.setTexto(comentario.getTexto());
-		model.addAttribute("comentario", comentarioResult);
-		model.addAttribute("autor", autor.getNome());
+		model.addAttribute(COMENTARIO, comentarioResult);
+		model.addAttribute(AUTOR, autor.getNome());
 		return model;
 	}
 
@@ -739,7 +776,7 @@ public class ProjetoController {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
@@ -760,7 +797,7 @@ public class ProjetoController {
 
 		}
 
-		redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+		redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 }
