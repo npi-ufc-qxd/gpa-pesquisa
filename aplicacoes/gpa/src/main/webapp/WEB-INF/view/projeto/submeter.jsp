@@ -77,6 +77,7 @@
 								<form:errors path="termino" cssClass="error-validation"></form:errors>
 							</div>
 						</div>
+
 						<!-- Valor do Projeto -->
 						<div class="form-item">
 							<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
