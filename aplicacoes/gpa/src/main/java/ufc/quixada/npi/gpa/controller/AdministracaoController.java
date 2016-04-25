@@ -41,6 +41,9 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String paginaInicial(Model model) {
+		List<Pessoa> pessoas = pessoaService.getAll();
+		model.addAttribute("pessoas", pessoas);
+		model.addAttribute("action", "busca");
 		return PAGINA_ADMINISTRACAO;
 	}
 	
