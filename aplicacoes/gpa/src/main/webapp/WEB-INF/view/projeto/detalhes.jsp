@@ -51,7 +51,7 @@
 					<div id="accordion" class="accordion">
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#basico">Informações Básicas</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#basico"><i class="accordion-icon fa fa-minus"></i>	Informações Básicas</h4>
 							</div>
 							<div id="basico" class="accordion-body collapse in">
 								<div class="form-group">
@@ -167,7 +167,7 @@
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#anexos">Anexos</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#anexos"><i class="accordion-icon fa fa-plus"></i>	Anexos</h4>
 							</div>
 							<span class="line"></span>
 							<div id="anexos" class="accordion-body collapse">
@@ -225,7 +225,7 @@
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#participantes">Participantes</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#participantes"><i class="accordion-icon fa fa-plus"></i>	Participantes</h4>
 							</div>
 							<span class="line"></span>
 							<div id="participantes" class="accordion-body collapse">
@@ -256,7 +256,7 @@
 						<c:if test="${not empty projeto.parecer and projeto.status != 'RESOLVENDO_PENDENCIAS'}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer">Parecer Técnico</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer"><i class="accordion-icon fa fa-plus"></i>	Parecer Técnico</h4>
 								</div>
 								<span class="line"></span>
 								<div class="accordion-body collapse" id="parecer">
@@ -295,7 +295,7 @@
 						<c:if test="${not empty projeto.parecerRelator}">	
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#relator">Parecer Relator</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#relator"><i class="accordion-icon fa fa-plus"></i>		Parecer Relator</h4>
 								</div>
 								<span class="line"></span>
 								<div class="accordion-body collapse" id="relator">
@@ -328,7 +328,7 @@
 						<c:if test="${projeto.status == 'APROVADO' or  projeto.status == 'REPROVADO'}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#homologacao">Homologação</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#homologacao"><i class="accordion-icon fa fa-plus"></i>		Homologação</h4>
 								</div>
 								<span class="line"></span>
 								<div class="accordion-body collapse" id="homologacao">
@@ -368,7 +368,6 @@
 										</div>
 									</div><!-- ata -->
 								</div><!-- homologacao body -->
-								<span class="line"></span>
 							</div><!-- accordion homologacao -->
 						</c:if>
 					</div><!-- div accordion - geral -->
