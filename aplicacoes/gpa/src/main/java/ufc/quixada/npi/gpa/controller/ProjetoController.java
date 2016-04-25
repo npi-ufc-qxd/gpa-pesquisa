@@ -33,7 +33,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACOES_EM_PROJETOS;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPANTES;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_COORDENADOR;
-import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_DIRECAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_PARECERISTA;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_PARTICIPANTE;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_RELATOR;
@@ -237,14 +236,15 @@ public class ProjetoController {
 
 		model.addAttribute(PROJETO, projeto);
 		Pessoa pessoa = pessoaService.getPessoa(authentication.getName());
-		if (pessoa.isDirecao()) {
-			model.addAttribute(PERMISSAO, PERMISSAO_DIRECAO);
-			return PAGINA_DETALHES_PROJETO;
-		}
 
 		if(projeto.getCoordenador().equals(pessoa)){
 			model.addAttribute(PERMISSAO,PERMISSAO_COORDENADOR);
 			return PAGINA_DETALHES_PROJETO;	
+		}
+		
+		if (pessoa.isDirecao()) {
+			model.addAttribute("permissao", "direcao");
+			return PAGINA_DETALHES_PROJETO;
 		}
 
 		if (projeto.getParecer().getParecerista().equals(pessoa)
@@ -253,7 +253,8 @@ public class ProjetoController {
 			return PAGINA_DETALHES_PROJETO;
 		}
 		
-		if(projeto.getParecerRelator().getRelator().equals(pessoa)){
+		if(projeto.getParecerRelator().getRelator().equals(pessoa)
+				&& projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
 				model.addAttribute(PERMISSAO, PERMISSAO_RELATOR);
 				return PAGINA_DETALHES_PROJETO;
 		}
