@@ -1,11 +1,9 @@
 package ufc.quixada.npi.gpa.model;
 
 
-import java.math.BigDecimal;
-
 import static ufc.quixada.npi.gpa.utils.Constants.PASTA_DOCUMENTOS_GPA;
 
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,6 +65,9 @@ public class Projeto {
 	
 	@Column(scale=2)
 	private BigDecimal valorProjeto;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private FonteFinanciamento fonteFinanciamento;
 
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
@@ -161,6 +163,14 @@ public class Projeto {
 
 	public void setValorProjeto(BigDecimal valorProjeto) {
 		this.valorProjeto = valorProjeto;
+	}
+	
+	public FonteFinanciamento getFonteFinanciamento() {
+		return fonteFinanciamento;
+	}
+
+	public void setFonteFinanciamento(FonteFinanciamento fonteFinanciamento) {
+		this.fonteFinanciamento = fonteFinanciamento;
 	}
 
 	public void setLocal(String local) {
