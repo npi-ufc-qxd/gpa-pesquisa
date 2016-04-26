@@ -145,7 +145,7 @@ public class ProjetoController {
 		model.addAttribute(PROJETOS_AGUARDANDO_AVALIACAO, projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
 		model.addAttribute(PROJETOS_AVALIADOS, projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute(PROJETOS_HOMOLOGADOS, projetoService.getProjetosHomologados(idUsuarioLogado));
-
+		model.addAttribute(pessoaService.getPessoa(idUsuarioLogado));
 		return PAGINA_LISTAR_PROJETO;
 	}
 

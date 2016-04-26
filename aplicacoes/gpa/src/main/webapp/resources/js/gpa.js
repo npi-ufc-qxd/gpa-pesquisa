@@ -4,12 +4,15 @@ $(document).ready(function() {
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3,]},            
-	        {"targets" : 3, "orderable" : false},
+	        {"targets" : 3, "orderable" : false, "visible":false},
 	        {"targets" : 4, "orderable" : false}
 		],
 		"language": {
 	        "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-	    }
+	    },
+	    "paging": false,
+	    "searching": false
+	    
 	});
 		
 	$("#minhas-participacoes").dataTable({
@@ -23,20 +26,24 @@ $(document).ready(function() {
 		],
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-homologados").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3, 4]},            
-            {"targets" : 3, "orderable" : false},
+            {"targets" : 3, "orderable" : false, "visible":false},
 		    {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-homologados-diretor").dataTable({
@@ -69,7 +76,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-parecer-emitido").dataTable({
@@ -82,7 +91,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-aguardando-avaliacao").dataTable({
@@ -96,7 +107,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-avaliados").dataTable({
@@ -109,7 +122,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-em-tramitacao").dataTable({
