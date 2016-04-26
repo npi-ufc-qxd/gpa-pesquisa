@@ -127,3 +127,6 @@ footer img {
 .dropdown-menu > li > a {
 	color:#000;
 }
+.accordion-heading {
+	cursor:pointer;
+}
