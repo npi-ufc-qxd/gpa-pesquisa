@@ -261,6 +261,45 @@
 								<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>
 							</c:if>
 					</c:if>
+					
+					<hr></hr>
+					
+					<c:if test="${not empty projeto.documentos}">
+							<div class="form-group form-item">
+								<label class="col-sm-2 control-label">Adicionar anexos:</label>
+								
+								<div class="col-sm-10 field-value">	
+									<label>  
+										<a id="adicionar"
+											href="<c:url value="/projeto/uploadDocumento/${projeto.id}" ></c:url>"
+											target="_blank" title="Adicionar anexos"
+											class="btn btn-primary"> <i class="fa fa-file"></i>
+										</a>
+									</label>
+										<table id="anexos-table" class="table table-striped table-hover">
+											<thead>
+												<tr>
+													<th>Nome</th>
+													<th>Autor</th>
+													<th>Data</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach var="documento" items="${projeto.documentos}">
+													<tr>
+														<td><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></td>
+														<td>${documento.pessoa.nome }</td>
+														<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${documento.data }" /></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+								</div>
+							</div>
+							<c:if test="${empty projeto.participacoes }">
+								<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>
+							</c:if>
+					</c:if>
 						
 						<div class="form-group">
 							<div class="col-sm-2"></div>
@@ -298,6 +337,7 @@
 			</div>
 		</div>
 	</div>
+	
 	
 	<jsp:include page="../modulos/footer.jsp" />
 	

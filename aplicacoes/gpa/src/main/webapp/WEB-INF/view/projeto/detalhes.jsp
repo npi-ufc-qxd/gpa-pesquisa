@@ -179,7 +179,7 @@
 								<label>-</label>
 							</c:if>
 							<c:if test="${not empty projeto.documentos }">
-								<table>
+								<table id="anexos-table">
 									<thead>
 										<tr>
 											<th class="text-left">Nome</th>
