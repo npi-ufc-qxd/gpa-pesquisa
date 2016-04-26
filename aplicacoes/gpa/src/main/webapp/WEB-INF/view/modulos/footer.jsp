@@ -21,6 +21,8 @@
 <script src="<c:url value="/resources/js/datatable_ext/vfs_fonts.js" />"></script>
 <script src="<c:url value="/resources/js/datatable_ext/buttons.html5.min.js" />"></script>
 <script src="<c:url value="/resources/js/datatable_ext/buttons.print.min.js" />"></script>
+<script src="<c:url value="/resources/js/moment.js" />"></script>
+<script src="<c:url value="/resources/js/moment.min.js" />"></script>
 
 <footer>
 	<img id="logo-npi" alt="Núcleo de Práticas em Informática - Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-npi.png" />">

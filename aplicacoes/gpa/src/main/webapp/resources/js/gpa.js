@@ -160,6 +160,21 @@ $(document).ready(function() {
 		$(this).datepicker('hide');
         $('#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm').bootstrapValidator('revalidateField', this.id);
     });
+	
+	$("#anoInicio, #anoTermino").datepicker({
+		format: "yyyy",
+		minViewMode: 2,
+		startDate: moment().format("YYYY"),
+		autoclose: true,
+	});
+	
+	$("#mesInicio, #mesTermino").datepicker({
+		format: "mm",
+		minViewMode: 1,
+		startDate: moment().format("MM"),
+		autoclose: true,
+	});
+	
 	$(".anexo").fileinput({
 		showUpload: false,
 		showRemove: false,
