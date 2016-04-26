@@ -72,6 +72,9 @@ public class Projeto {
 	
 	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private List<Participacao> participacoes;
+	
+	@OneToMany(mappedBy = "projeto", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+	private List<Log> logs;
 
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval=true)
 	@JoinTable(name = "projeto_documento", joinColumns = @JoinColumn(name = "projeto_id",referencedColumnName="id"),
@@ -100,6 +103,14 @@ public class Projeto {
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private Documento arquivoProjeto;
 
+	public List<Log> getLogs() {
+		return logs;
+	}
+
+	public void setLogs(List<Log> logs) {
+		this.logs = logs;
+	}
+	
 	public List<Participacao> getParticipacoes() {
 		return participacoes;
 	}
@@ -316,7 +327,7 @@ public class Projeto {
 
 	public enum Evento {
 		
-		SUBMISSAO, ATRIBUICAO_PARECERISTA, ALTERACAO_PARECERISTA, EMISSAO_PARECER, RESOLUCAO_PENDENCIAS,
+		CADASTRO_PROJETO, EDICAO_PROJETO, ADICAO_PARTICIPANTE, REMOCAO_PARTICIPANTE, SUBMISSAO, ATRIBUICAO_PARECERISTA, ALTERACAO_PARECERISTA, EMISSAO_PARECER, RESOLUCAO_PENDENCIAS,
 		SUBMISSAO_RESOLUCAO_PENDENCIAS, ATRIBUICAO_RELATOR, ALTERACAO_RELATOR, EMISSAO_AVALIACAO_RELATOR,
 		RESOLUCAO_RESTRICAO, SUBMISSAO_RESOLUCAO_RESTRICAO, HOMOLOGACAO
 	}

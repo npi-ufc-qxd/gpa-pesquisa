@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import ufc.quixada.npi.gpa.model.Log;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Participacao;
@@ -26,6 +27,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
 	private GenericRepository<Projeto> projetoRepository;
+	
+	@Inject
+	private GenericRepository<Log> logRepository;
 
 	@Inject
 	private GenericRepository<Participacao> participacaoRepository;
@@ -315,6 +319,12 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return projetoRepository.find(QueryType.JPQL,
 				"SELECT proj FROM Projeto AS proj JOIN proj.participacoes part WHERE part.participante.id = :idCoordenador AND proj.coordenador.id <> :idCoordenador AND proj.status = :statusAprovado AND termino < current_date()",
 				params);
+	}
+	
+	@Override
+	public void salvarLog(Log log) {
+		log.setData(new Date());
+		logRepository.save(log);
 	}
 }
 

@@ -123,6 +123,7 @@ public class ProjetoController {
 			@Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
 			Authentication authentication, Model model) {
 		
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		projetoValidator.validate(projeto, result);
 
 		if (result.hasErrors()) {
@@ -132,6 +133,7 @@ public class ProjetoController {
 
 		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
 		projetoService.cadastrar(projeto);
+		notificacaoService.notificar(projeto, Evento.CADASTRO_PROJETO, usuario);
 		
 		if(projeto.getValorProjeto() != null) {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
@@ -143,6 +145,7 @@ public class ProjetoController {
 		}
 		
 		projetoService.update(projeto);
+
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -274,6 +277,7 @@ public class ProjetoController {
 		}
 
 		projetoService.update(oldProjeto);
+		notificacaoService.notificar(projeto, Evento.EDICAO_PROJETO, usuario);
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -311,7 +315,7 @@ public class ProjetoController {
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
-
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		model.addAttribute("tiposDeParticipacao",TipoParticipacao.values());
 		model.addAttribute("pessoasExternas", pessoaService.getAllPessoaExterna());
@@ -321,7 +325,7 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -349,6 +353,7 @@ public class ProjetoController {
 		}
 		projeto.adicionarParticipacao(participacao);
 		projetoService.update(projeto);
+		notificacaoService.notificar(projeto, Evento.ADICAO_PARTICIPANTE, usuario);
 
 		Calendar calendario = Calendar.getInstance();
 		model.addAttribute("ano", calendario.get(Calendar.YEAR));
@@ -364,19 +369,20 @@ public class ProjetoController {
 			@PathVariable("idParticipacao") Long idParticipacao, HttpSession session, Model model,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
-
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		Participacao participacao = projetoService.getParticipacao(idParticipacao);
 		projetoService.removerParticipacao(projeto, participacao);
-
+		notificacaoService.notificar(projeto, Evento.REMOCAO_PARTICIPANTE, usuario);
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARTICIPACAO_REMOVIDA);
 
 		model.addAttribute("projeto", projeto);
@@ -438,19 +444,19 @@ public class ProjetoController {
 				projetoService.submeterPendencias(projeto);
 				
 				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 				projetoService.submeterPendenciasRelator(projeto);
 				
 				redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
 
 				redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO, usuario);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			}
 		} else {
@@ -497,19 +503,19 @@ public class ProjetoController {
 			projetoService.submeterPendencias(oldProjeto);
 			
 			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 			
 		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 			projetoService.submeterPendenciasRelator(oldProjeto);
 			
 			redirectAttributes.addFlashAttribute("info", Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 			
 		} else {
 			projetoService.submeter(oldProjeto);
 
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
-			notificacaoService.notificar(projeto, Evento.SUBMISSAO);
+			notificacaoService.notificar(projeto, Evento.SUBMISSAO, usuario);
 		}
 		
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -542,8 +548,9 @@ public class ProjetoController {
 	@RequestMapping(value = "/emitir-parecer", method = RequestMethod.POST)
 	public String emitirParecer(@RequestParam("id-projeto") Long idProjeto, @RequestParam("anexo") MultipartFile anexo,
 			@RequestParam("posicionamento") StatusPosicionamento posicionamento, Model model,
-			@Valid ParecerTecnico parecer, BindingResult result, RedirectAttributes redirectAttributes) {
+			@Valid ParecerTecnico parecer, BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
@@ -569,7 +576,7 @@ public class ProjetoController {
 		projetoService.emitirParecer(projeto);
 
 		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
-		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER);
+		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER, usuario);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 	
@@ -656,8 +663,9 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/solicitar-resolucao-pendencias/{id-projeto}")
-	public String SolicitarResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, RedirectAttributes redirectAttributes) {
+	public String SolicitarResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, RedirectAttributes redirectAttributes, Authentication authentication) {
 
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		
 		if (projeto == null) {
@@ -667,7 +675,7 @@ public class ProjetoController {
 		
 		if (projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS);
-			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS, usuario);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -675,7 +683,7 @@ public class ProjetoController {
 		
 		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
 			projeto.setStatus(StatusProjeto.RESOLVENDO_RESTRICOES);
-			notificacaoService.notificar(projeto, Evento.RESOLUCAO_RESTRICAO);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_RESTRICAO, usuario);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
