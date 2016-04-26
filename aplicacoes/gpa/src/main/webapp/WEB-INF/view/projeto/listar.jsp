@@ -33,35 +33,18 @@
 					</div>
 				</c:if>
 		        <ul class="nav nav-tabs">
-		        	<li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Meus Projetos <span class="caret"></span></a>
-					    <ul class="dropdown-menu">
-					      <li class="active"><a href="#tab-meus-projetos" data-toggle="tab" aria-expanded="false">Meus projetos <span class="badge">${projetosNaoHomologados.size()}</span></a></li>
-					      <li class="divider"></li>
-					      <li class=""><a href="#tab-homologados" data-toggle="tab" aria-expanded="true">Projetos Homologados <span class="badge">${projetosHomologados.size() }</span></a></li>
-					    </ul>
-					 </li>
+		        	<li class="active"><a href="#tab-meus-projetos" data-toggle="tab" aria-expanded="false">Projetos <span class="badge">${projetosNaoHomologados.size() + projetosHomologados.size()}</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Participações <span class="badge">${participacoesEmProjetos.size() }</span></a></li>
-		            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Parecer <span class="caret"></span></a>
-					    <ul class="dropdown-menu">
-					      <li class=""><a href="#tab-parecer" data-toggle="tab" aria-expanded="false">Emissão de Parecer <span class="badge">${projetosAguardandoParecer.size() }</span></a></li>
-					      <li class="divider"></li>
-					      <li class=""><a href="#tab-parecer-emitidos" data-toggle="tab" aria-expanded="true">Pareceres Emitidos <span class="badge">${projetosParecerEmitido.size() }</span></a></li>
-					    </ul>
-					 </li>
-					 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"> Relato <span class="caret"></span></a>
-					    <ul class="dropdown-menu">
-					      <li class=""><a href="#tab-projetos-aguardando-avaliacao" data-toggle="tab" aria-expanded="false">Projetos a Avaliar <span class="badge">${projetosAguardandoAvaliacao.size() }</span></a></li>
-					      <li class="divider"></li>
-					      <li class=""><a href="#tab-projetos-avaliados" data-toggle="tab" aria-expanded="true">Projetos Avaliados <span class="badge">${projetosAvaliados.size() }</span></a></li>
-					    </ul>
-					 </li>
+		            <li class=""><a href="#tab-parecer" data-toggle="tab" aria-expanded="false">Parecer <span class="badge">${projetosAguardandoParecer.size() + projetosParecerEmitido.size()}</span></a></li>
+		            <li class=""><a href="#tab-projetos-aguardando-avaliacao" data-toggle="tab" aria-expanded="false">Avaliação <span class="badge">${projetosAguardandoAvaliacao.size() + projetosAvaliados.size()}</span></a></li>
 		        </ul>
 		        <div class="tab-content">
 		        	<div class="tab-pane fade active in" id="tab-meus-projetos">
+		        		<h3>Projetos Não Homologados</h3>
+						<span class="line"></span>
 			        	<c:if test="${empty projetosNaoHomologados}">
 							<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 						</c:if>
-							
 						<c:if test="${not empty projetosNaoHomologados}">
 							<table id="meus-projetos" class="display">
 								<thead>
@@ -115,6 +98,35 @@
 								</tbody>
 							</table>
 						</c:if>
+						<h3>Projetos Homologados</h3>
+						<span class="line"></span>
+				    	<c:if test="${empty projetosHomologados}">
+							<div class="alert alert-warning" role="alert">Não há projetos homologados.</div>
+						</c:if>
+						<c:if test="${not empty projetosHomologados}">
+							<table id="projetos-homologados" class="display">
+								<thead>
+									<tr>
+										<th>Código</th>
+										<th>Nome</th>
+										<th>Status</th>
+										<th>Data Submissão</th>
+										<th>Data Homologação</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="projeto" items="${projetosHomologados}">
+										<tr>
+											<td>${projeto.codigo }</td>
+											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
+											<td>${projeto.status.descricao}</td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.homologacao }" /></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</c:if>
 		        	</div><!-- tab-meus-projetos -->
 		        	
 		        	<div class="tab-pane fade" id="tab-em-participacao">
@@ -154,37 +166,9 @@
 						</c:if>
 		        	</div><!-- tab-em-participacao -->
 
-			        <div class="tab-pane fade" id="tab-homologados">
-				    	<c:if test="${empty projetosHomologados}">
-							<div class="alert alert-warning" role="alert">Não há projetos homologados.</div>
-						</c:if>
-						<c:if test="${not empty projetosHomologados}">
-							<table id="projetos-homologados" class="display">
-								<thead>
-									<tr>
-										<th>Código</th>
-										<th>Nome</th>
-										<th>Status</th>
-										<th>Data Submissão</th>
-										<th>Data Homologação</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="projeto" items="${projetosHomologados}">
-										<tr>
-											<td>${projeto.codigo }</td>
-											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.status.descricao}</td>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.homologacao }" /></td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-						</c:if>
-				    </div><!-- tab-homologados -->
-				        	
 			        <div class="tab-pane fade" id="tab-parecer">
+			        	<h3>Aguardando Parecer</h3>
+						<span class="line"></span>
 			            <c:if test="${empty projetosAguardandoParecer}">
 							<div class="alert alert-warning" role="alert">Não há projetos aguardando parecer.</div>
 						</c:if>
@@ -220,13 +204,13 @@
 								</tbody>
 							</table>
 						</c:if>
-			        </div><!-- tab-parecer -->
-			        
-			        <div class="tab-pane fade" id="tab-parecer-emitidos">
-			            <c:if test="${empty projetosParecerEmitido}">
+						<h3>Pareceres Emitidos</h3>
+						<span class="line"></span>
+						<c:if test="${empty projetosParecerEmitido}">
 							<div class="alert alert-warning" role="alert">Não há projetos com parecer emitido.</div>
 						</c:if>
 						<c:if test="${not empty projetosParecerEmitido}">
+							
 							<table id="projetos-parecer-emitido" class="display">
 								<thead>
 									<tr>
@@ -243,7 +227,7 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
-											<td>${projeto.parecer.status }</td>
+											<td>${projeto.parecer.status.descricao }</td>
 											<td>
 												<fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.dataRealizacao }" />
 											</td>
@@ -252,9 +236,11 @@
 								</tbody>
 							</table>
 						</c:if>
-			        </div><!-- tab-parecer emitidos -->
-		        	
+			        </div><!-- tab-parecer -->
+			        
 		        	 <div class="tab-pane fade" id="tab-projetos-aguardando-avaliacao">
+		        	 	<h3>Projetos Aguardando Avaliação</h3>
+		        	 	<span class="line"></span>
 			            <c:if test="${empty projetosAguardandoAvaliacao}">
 							<div class="alert alert-warning" role="alert">Não há projetos aguardando avaliação.</div>
 						</c:if>
@@ -284,9 +270,8 @@
 								</tbody>
 							</table>
 						</c:if>
-			        </div><!-- tab-aguardando avaliacao -->
-			        
-			        <div class="tab-pane fade" id="tab-projetos-avaliados">
+						<h3>Projetos Avaliados</h3>
+			        	<span class="line"></span>
 			            <c:if test="${empty projetosAvaliados}">
 							<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
 						</c:if>
@@ -316,8 +301,7 @@
 								</tbody>
 							</table>
 						</c:if>
-			        </div><!-- tab-projetos-avaliados -->
-		        	
+			        </div><!-- tab-aguardando avaliacao -->
 		        </div><!-- tab-content -->
 		    </div><!-- /panel-body -->
 		</div><!-- /panel -->

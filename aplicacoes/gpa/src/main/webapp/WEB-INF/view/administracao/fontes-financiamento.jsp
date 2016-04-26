@@ -17,27 +17,14 @@
 			</div>
 
 			<div class="panel-body">
-
-				<c:if test="${not empty erro}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert">
-							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						<c:out value="${erro}"></c:out>
-					</div>
-				</c:if>
-				<c:if test="${not empty info}">
-					<div class="alert alert-success alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert">
-							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						<c:out value="${info}"></c:out>
-					</div>
-				</c:if>
+				
 
 				<div id="fontes-financiamento" align="left">
-					
-					<div id="mensagem-fonte-financiamento" class="alert alert-warning" role="alert">Nenhuma fonte de financiamento cadastrada.</div>
+				
+					<div id="div-mensagem" class="alert alert-warning alert-dismissible" role="alert">
+  						<button id="button-mensagem" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  						<div id="mensagem"></div>
+					</div>
 
 					<c:if test="${not empty fontesFinanciamento}">
 
@@ -68,7 +55,9 @@
 						</table>
 
 					</c:if>
-
+					
+					<hr/>
+					
 					<form:form id="adicionarFonteFinanciamentoForm" role="form" commandName="fonteFinanciamento" servletRelativeAction="/administracao/fonte-financiamento/cadastrar" method="POST" cssClass="form-horizontal">
 
 						<div class="form-group form-item col-sm-10">
