@@ -128,7 +128,6 @@ $(document).ready(function() {
 	$("#participacoes-projeto").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
-		    {className: "dt-center", "targets": [ 0]},
             {"targets" : 1, "orderable" : false},
             {"targets" : 2, "orderable" : false},
             {"targets" : 3, "orderable" : false},
