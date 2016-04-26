@@ -52,7 +52,6 @@
 										<th>Código</th>
 										<th>Nome</th>
 										<th>Status</th>
-										<th>Data Submissão</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -64,10 +63,6 @@
 												<a href="<c:url value="/projeto/detalhes/${projetoNaoHomologado.id}" ></c:url>">${projetoNaoHomologado.nome}</a>
 											</td>
 											<td>${projetoNaoHomologado.status.descricao}</td>
-											<td>
-												<c:if test="${empty projetoNaoHomologado.submissao }">-</c:if>
-												<fmt:formatDate pattern="dd/MM/yyyy" value="${projetoNaoHomologado.submissao }" />
-											</td>
 											<td class="acoes">
 												<c:if test="${projetoNaoHomologado.status == 'NOVO' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS' or projetoNaoHomologado.status == 'RESOLVENDO_RESTRICOES'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
@@ -110,7 +105,6 @@
 										<th>Código</th>
 										<th>Nome</th>
 										<th>Status</th>
-										<th>Data Submissão</th>
 										<th>Data Homologação</th>
 									</tr>
 								</thead>
@@ -120,7 +114,6 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.homologacao }" /></td>
 										</tr>
 									</c:forEach>
