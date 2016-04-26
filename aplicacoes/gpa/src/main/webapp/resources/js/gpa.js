@@ -88,9 +88,10 @@ $(document).ready(function() {
 	$("#projetos-aguardando-avaliacao").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
-            {className: "dt-center", "targets": [0, 1]},
+            {className: "dt-center", "targets": [0, 1, 3]},
             {"targets" : 1, "orderable" : false},
-            {"targets" : 3, "orderable" : false}
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
