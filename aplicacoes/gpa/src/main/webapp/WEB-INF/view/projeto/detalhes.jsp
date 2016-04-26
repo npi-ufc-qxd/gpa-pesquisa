@@ -271,7 +271,7 @@
 											<label class="col-sm-2 control-label">Data:</label>
 												<div class="col-sm-2 value-label">
 													<label><fmt:formatDate pattern="dd/MM/yyyy" value="${log.data}" /></label>
-												</div><br>
+												</div><br><br>
 										</c:forEach>	
 									</div>
 								</div><!-- participantes -->
