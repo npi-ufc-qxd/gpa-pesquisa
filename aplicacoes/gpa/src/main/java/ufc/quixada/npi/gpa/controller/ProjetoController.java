@@ -79,6 +79,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.ufc.quixada.npi.ldap.model.Usuario;
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Documento.TipoDocumento;
@@ -178,7 +179,7 @@ public class ProjetoController {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())){
+		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO, usuario)){
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 
 			return PAGINA_CADASTRAR_PROJETO;
@@ -215,7 +216,7 @@ public class ProjetoController {
 		
 		if (anexos != null && anexos.length != 0) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO, authentication.getName())) {
+				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO, pessoaService.getPessoa(authentication.getName()))) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 				}
@@ -314,7 +315,7 @@ public class ProjetoController {
 
 		projetoValidator.validate(oldProjeto, result);
 		
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -522,14 +523,14 @@ public class ProjetoController {
 
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO, authentication.getName())) {
+				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO, usuario)) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_CADASTRAR_PROJETO;
 				} 
 			}
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_SUBMETER_PROJETO;
 		}
@@ -607,7 +608,7 @@ public class ProjetoController {
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecer.getParecer());
 		
-		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER, authentication.getName())) {
+		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_EMITIR_PARECER;
 		}
@@ -739,7 +740,7 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
-	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo, String nomeUsuario) {
+	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo, Pessoa pessoa) {
 		try {
 			if(arquivo.getBytes() != null && arquivo.getBytes().length != 0) {
 				Documento documento = new Documento();
@@ -748,7 +749,7 @@ public class ProjetoController {
 				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
 				documento.setExtensao(arquivo.getContentType());
 				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				documento.setPessoa(pessoaService.getPessoa(nomeUsuario));
+				documento.setPessoa(pessoa);
 				documento.setData(new Date());
 				
 				switch (tipo) {
