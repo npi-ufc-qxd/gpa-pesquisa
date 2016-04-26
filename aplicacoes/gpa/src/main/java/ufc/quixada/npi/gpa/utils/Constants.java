@@ -43,6 +43,14 @@ public class Constants {
 	public static final String PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO = "administracao/fontes-financiamento";
 
 	public static final String PAGINA_ATRIBUIR_RELATOR = "direcao/atribuir-relator";
+	
+	public static final String PAGINA_LOGIN = "login";
+	
+	public static final String PAGINA_403 = "403";
+	
+	public static final String PAGINA_404 = "404";
+	
+	public static final String PAGINA_500 = "500";
 
 	
 	/** Redirecionamentos */
@@ -57,8 +65,12 @@ public class Constants {
 
 	public static final String REDIRECT_PAGINA_BUSCAR_PARTICIPANTE = "redirect:/direcao/buscar";
 	
+	public static final String REDIRECT_PAGINA_ADMINISTRACAO_VINCULAR_PAPEL = "redirect:/administracao/pessoa/vincular/";
+	
 	public static final String REDIRECT_PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO = "redirect:/administracao/fonte-financiamento/mostrar";
 
+	public static final String REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO = "redirect:projeto/participacoes/";
+	
 	/** Mensagens */
 	public static final String MENSAGEM_PERMISSAO_NEGADA = "Permissão negada";
 
@@ -124,13 +136,23 @@ public class Constants {
 	
 	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_INEXISTENTE = "Fonte de financiamento inexistente";
 	
+	public static final String MENSAGEM_FONTE_DE_FINANCIAMENTO_REFERENCIADA = "Não é possível excluir! Possívelmente esta fonte de financiamento é usada em algum projeto.";
+	
 	public static final String MENSAGEM_RELATOR_ATRIBUIDO = "Relator atribuído com sucesso";
 
 	public static final String MENSAGEM_RELATOR_ALTERADO = "Relator alterado com sucesso";
-
-	public static final String MENSAGEM_OK = "ok";
 	
-	public static final String MENSAGEM_ERRO = "erro";
+	public static final String MENSAGEM_USUARIO_SENHA_INVALIDOS = "Usuário e/ou senha inválidos!";
+	
+	public static final String MENSAGEM_PAGINA_NAO_ENCONTRADA = "Oops, página não encontrada.";
+	
+	public static final String MENSAGEM_ERRO_TECNICO = "Oops, o site teve um erro técnico.";
+	
+	public static final String MENSAGEM_OCORREU_UM_ERRO = "Ocorreu um erro, contate o administrador do sistema";
+
+	public static final String MENSAGEM_RESULTADO_OK = "ok";
+	
+	public static final String MENSAGEM_RESULTADO_ERRO = "erro";
 	
 	/* Papeis */
 	public static final String PAPEL_DIRECAO = "DIRECAO";
@@ -139,16 +161,137 @@ public class Constants {
 
 	public static final String PAPEL_COORDENACAO = "COORDENADOR";
 
+	/* Permissões */
+	public static final String PERMISSAO_DIRECAO = "direcao";
+	
+	public static final String PERMISSAO_COORDENADOR = "coordenador";
+	
+	public static final String PERMISSAO_PARECERISTA = "parecerista";
+	
+	public static final String PERMISSAO_RELATOR = "relator";
+	
+	public static final String PERMISSAO_PARTICIPANTE = "participante";
+	
 	/* Arquivos */
 	public static final String PASTA_DOCUMENTOS_GPA = "/gpa-pesquisa-uploads";
 	
 	/* Action */
-	public static final String ATRIBUIR_PARECERISTA = "atribuir";
+	public static final String CADASTRAR = "cadastrar";
 	
-	public static final String ALTERAR_PARECERISTA = "alterar";
-
-	public static final String ATRIBUIR_RELATOR = "atribuir";
+	public static final String ATRIBUIR = "atribuir";
 	
-	public static final String ALTERAR_RELATOR = "alterar";
+	public static final String ALTERAR = "alterar";
+	
+	public static final String RESULTADO = "resultado";
+	
+	public static final String EDITAR = "editar";
 
-}
+	/* Attributes Names*/
+	public static final String ANO = "ano";
+	
+	public static final String INFO = "info";
+	
+	public static final String ERRO = "erro";
+	
+	public static final String ACTION = "action";
+	
+	public static final String ALERT = "alert";
+	
+	public static final String BUSCA = "busca";
+	
+	public static final String RESULT = "result";
+	
+	public static final String MENSAGEM = "mensagem";
+	
+	public static final String PERMISSAO = "permissao";
+	
+	public static final String VALIDACAO = "validacao";
+	
+	public static final String TIPOS_DE_PARTICIPACAO = "tiposDeParticipacao";
+	
+	public static final String FONTE_FINANCIAMENTO = "fonteFinanciamento";
+	
+	public static final String FONTES_FINANCIAMENTO = "fontesFinanciamento";
+	
+	public static final String PAPEIS = "papeis";
+	
+	public static final String USUARIO = "usuario";
+	
+	public static final String USUARIOS = "usuarios";
+	
+	public static final String PESSOA = "pessoa";
+	
+	public static final String PESSOAS = "pessoas";
+	
+	public static final String PESSOAS_EXTERNAS = "pessoasExternas";
+	
+	public static final String PROJETO = "projeto";
+	
+	public static final String OLD_PROJETO = "oldProjeto";
+	
+	public static final String PROJETOS = "projetos";
+	
+	public static final String PROJETOS_NAO_HOMOLOGADOS = "projetosNaoHomologados";
+	
+	public static final String PARTICIPACOES_EM_PROJETOS = "participacoesEmProjetos";
+	
+	public static final String PROJETOS_AGUARDANDO_PARECER = "projetosAguardandoParecer";
+	
+	public static final String PROJETOS_PARECER_EMITIDO = "projetosParecerEmitido";
+	
+	public static final String PROJETOS_AGUARDANDO_AVALIACAO = "projetosAguardandoAvaliacao";
+	
+	public static final String PROJETOS_AVALIADOS = "projetosAvaliados";
+	
+	public static final String PROJETOS_HOMOLOGADOS = "projetosHomologados";
+	
+	public static final String PROJETOS_EM_TRAMITACAO = "projetosEmTramitacao";
+	
+	public static final String PARTICIPACAO = "participacao";
+	
+	public static final String PARTICIPACAO_EXTERNA = "participacaoExterna";
+	
+	public static final String PARTICIPANTES = "participantes";
+	
+	public static final String PARECER = "parecer";
+	
+	public static final String POSICIONAMENTO = "posicionamento";
+	
+	public static final String COMENTARIO = "comentario";
+	
+	public static final String AUTOR = "autor";
+	
+	public static final String PROJETOS_COORDENA = "projetosCoordena";
+	
+	public static final String PROJETOS_COORDENOU = "projetosCoordenou";
+	
+	public static final String PROJETOS_PARTICIPA = "projetosParticipa";
+	
+	public static final String PROJETOS_PARTICIPOU = "projetosParticipou";
+	
+	public static final String TIPO_RELATORIO = "tipoRelatorio";
+	
+	public static final String RELATORIO = "relatorio";
+	
+	public static final String DATA_PESQUISA = "data_pesquisa";
+	
+	public static final String INICIO_INTERVALO_INICIO = "inicio_intervalo_inicio";
+	
+	public static final String TERMINO_INTERVALO_INICIO = "termino_intervalo_inicio";
+	
+	public static final String INICIO_INTERVALO_TERMINO = "inicio_intervalo_termino";
+	
+	public static final String TERMINO_INTERVALO_TERMINO = "termino_intervalo_termino";
+	
+	public static final String DATA_INICIO_INTERVALO = "data_inicio_intervalo";
+	
+	public static final String DATA_TERMINO_INTERVALO = "data_termino_intervalo";
+	
+	/*Tipos de relatório*/
+	
+	public static final String APROVADOS = "aprovados";
+	
+	public static final String REPROVADOS = "reprovados";
+	
+	public static final String POR_PESSOA = "por-pessoa";
+};

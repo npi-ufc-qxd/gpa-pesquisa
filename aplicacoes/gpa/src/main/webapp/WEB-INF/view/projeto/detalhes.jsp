@@ -24,7 +24,7 @@
 				<input id="projetoId" type="hidden" value="${projeto.id }"/>
 				<div class="form-horizontal">
 
-					<c:if test="${projeto.status == 'NOVO' or projeto.status == 'RESOLVENDO_PENDENCIAS' or projeto.status == 'RESOLVENDO_RESTRICOES'}">
+					<c:if test="${(projeto.status == 'NOVO' or projeto.status == 'RESOLVENDO_PENDENCIAS' or projeto.status == 'RESOLVENDO_RESTRICOES') and permissao == 'coordenador'}">
 						<div>
 							<label style="width: 100%; text-align: right;">
 								<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter" data-href="<c:url value="/projeto/submeter/${projeto.id}" ></c:url>" data-name="${projeto.nome }" class="btn btn-primary btn-sm">
@@ -35,6 +35,9 @@
 										<i class="fa fa-users"></i>
 									</a>
 								</c:if>
+								<a id="upload-documentos" href="<c:url value="/projeto/uploadDocumento/${projeto.id}" ></c:url>" title="Upload Documentos">
+									<button class="btn btn-primary btn-sm"><i class="fa fa-file"></i></button>
+								</a>
 								<a id="editar" href="<c:url value="/projeto/editar/${projeto.id}" ></c:url>" title="Editar projeto" class="btn btn-primary btn-sm">
 									<i class="fa fa-edit"></i>
 								</a>
@@ -48,7 +51,7 @@
 					<div id="accordion" class="accordion">
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#basico">Informações Básicas</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#basico"><i class="accordion-icon fa fa-minus"></i>	Informações Básicas</h4>
 							</div>
 							<div id="basico" class="accordion-body collapse in">
 								<div class="form-group">
@@ -88,12 +91,18 @@
 										</c:if>
 										<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.termino }" /></label>
 									</div>
+								</div><!-- data inicio e fim -->
+								<div class="form-group">
 									<label class="col-sm-2 control-label">Valor:</label>
 									<div class="col-sm-2 value-label">
 										<fmt:setLocale value="pt_BR"/>
 										<label><fmt:formatNumber value="${projeto.valorProjeto }" type="currency" currencySymbol="R$ "/></label>
 									</div>
-								</div><!-- data inicio e fim -->
+									<label class="col-sm-2 control-label">Fonte:</label>
+									<div class="col-sm-2 value-label">
+										<label>${projeto.fonteFinanciamento.nome}</label>
+									</div>
+								</div><!-- valor e fonte de financiamento -->
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Data de submissão:</label>
 									<div class="col-sm-4 value-label">
@@ -155,26 +164,50 @@
 							</div><!-- basico body -->
 						</div> <!-- accordion basico -->
 						
-						<span class="line"></span>
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#anexos">Anexos</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#anexos"><i class="accordion-icon fa fa-plus"></i>	Anexos</h4>
 							</div>
+							<span class="line"></span>
 							<div id="anexos" class="accordion-body collapse">
 								<div class="form-group">
-									<label class="col-sm-2 control-label">Anexos:</label>
-									<div class="col-sm-10 value-label">
-										<c:if test="${empty projeto.documentos }">
-											<label>-</label>						
-										</c:if>				
-										<c:if test="${not empty projeto.documentos }">
-											<c:forEach items="${projeto.documentos }" var="documento">
-												<label><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label><br>							
-											</c:forEach>
-										</c:if>
-									</div>
-								</div><!-- anexos -->
+						<label class="col-sm-2 control-label">Anexos:</label>
+						<div class="col-sm-10 value-label">
+							<c:if test="${empty projeto.documentos }">
+								<label>-</label>
+							</c:if>
+							<c:if test="${not empty projeto.documentos }">
+								<table>
+									<thead>
+										<tr>
+											<th class="text-left">Nome</th>
+											<th class="text-left">Autor</th>
+											<th class="text-left">Data</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${projeto.documentos }" var="documento">
+											<tr>
+												<th class="col-sm-2 value-label"><label><a
+														href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></label>
+												</th>
+												<th class="col-sm-2 value-label"><label><c:url
+															value=" ${documento.pessoa.nome}"></c:url></label></th>
+												<th class="col-sm-2 value-label"><label><fmt:formatDate
+															pattern="dd/MM/yyyy HH:mm" value="${documento.data }" /></label>
+												</th>
+
+											</tr>
+											<br>
+										</c:forEach>
+									</tbody>
+								</table>
+							</c:if>
+
+
+						</div>
+					</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Arquivo do Projeto:</label>
 										<div class="col-sm-10 value-label">
@@ -189,12 +222,12 @@
 							</div> <!-- anexos body -->
 						</div> <!-- accordion anexos-->
 	
-						<span class="line"></span>
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#participantes">Participantes</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#participantes"><i class="accordion-icon fa fa-plus"></i>	Participantes</h4>
 							</div>
+							<span class="line"></span>
 							<div id="participantes" class="accordion-body collapse">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Participantes:</label>
@@ -219,8 +252,6 @@
 								</div><!-- participantes -->
 							</div><!-- participantes body -->
 						</div><!-- accordion participantes -->
-						
-						<span class="line"></span>
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
@@ -252,8 +283,9 @@
 						<c:if test="${not empty projeto.parecer and projeto.status != 'RESOLVENDO_PENDENCIAS'}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer">Parecer Técnico</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer"><i class="accordion-icon fa fa-plus"></i>	Parecer Técnico</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="parecer">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Parecerista:</label>
@@ -269,7 +301,7 @@
 										<c:if test="${projeto.status != 'AGUARDANDO_PARECER'}">
 											<label class="col-sm-2 control-label">Posicionamento:</label>
 											<div class="col-sm-4 value-label">
-												<label>${projeto.parecer.status }</label>
+												<label>${projeto.parecer.status.descricao }</label>
 											</div>						
 										</c:if>
 										<label class="col-sm-2 control-label">Parecer:</label>
@@ -284,15 +316,15 @@
 										</div>
 									</div><!-- anexo -->
 								</div><!-- parecer body -->
-								<span class="line"></span>
 							</div><!-- accordion parecer -->
 						</c:if>
 						
 						<c:if test="${not empty projeto.parecerRelator}">	
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#relator">Parecer Relator</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#relator"><i class="accordion-icon fa fa-plus"></i>		Parecer Relator</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="relator">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Relator:</label>
@@ -303,7 +335,7 @@
 										<c:if test="${not empty projeto.parecerRelator.status}">
 											<label class="col-sm-2 control-label">Posicionamento:</label>
 											<div class="col-sm-4 value-label">
-												<label>${projeto.parecerRelator.status }</label>
+												<label>${projeto.parecerRelator.status.descricao }</label>
 											</div>						
 										
 											<label class="col-sm-2 control-label">Observação:</label>
@@ -316,7 +348,6 @@
 										</c:if>
 									</div><!-- relator -->
 								</div><!-- relator body -->
-								<span class="line"></span>
 							</div><!-- accordion relator -->
 						</c:if>
 					
@@ -324,8 +355,9 @@
 						<c:if test="${projeto.status == 'APROVADO' or  projeto.status == 'REPROVADO'}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#homologacao">Homologação</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#homologacao"><i class="accordion-icon fa fa-plus"></i>		Homologação</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="homologacao">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Observação:</label>
@@ -363,7 +395,6 @@
 										</div>
 									</div><!-- ata -->
 								</div><!-- homologacao body -->
-								<span class="line"></span>
 							</div><!-- accordion homologacao -->
 						</c:if>
 					</div><!-- div accordion - geral -->
