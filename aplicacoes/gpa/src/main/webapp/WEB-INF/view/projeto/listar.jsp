@@ -33,14 +33,7 @@
 					</div>
 				</c:if>
 		        <ul class="nav nav-tabs">
-		        	<li class="active"><a href="#tab-meus-projetos" data-toggle="tab" aria-expanded="false">
-		        		<c:forEach var="papel" items="${pessoa.papeis}">
-		        			<c:choose>
-			        			<c:when test="${papel.nome == 'COORDENADOR'}">Meus Projetos</c:when>
-			        			<c:otherwise>Projetos</c:otherwise>
-		        			</c:choose>
-		        		</c:forEach>
-		        	<span class="badge">${projetosNaoHomologados.size() + projetosHomologados.size()}</span></a></li>
+		        	<li class="active"><a href="#tab-meus-projetos" data-toggle="tab" aria-expanded="false">Meus Projetos <span class="badge">${projetosNaoHomologados.size() + projetosHomologados.size()}</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Participações <span class="badge">${participacoesEmProjetos.size() }</span></a></li>
 		            <li class=""><a href="#tab-parecer" data-toggle="tab" aria-expanded="false">Parecer <span class="badge">${projetosAguardandoParecer.size() + projetosParecerEmitido.size()}</span></a></li>
 		            <li class=""><a href="#tab-projetos-aguardando-avaliacao" data-toggle="tab" aria-expanded="false">Avaliação <span class="badge">${projetosAguardandoAvaliacao.size() + projetosAvaliados.size()}</span></a></li>
