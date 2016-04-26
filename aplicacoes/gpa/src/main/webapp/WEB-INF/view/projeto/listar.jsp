@@ -179,7 +179,7 @@
 										<th>Código</th>
 										<th>Projeto</th>
 										<th>Coordenador</th>
-										<th>Data Submissão</th>
+										<th>Status</th>
 										<th>Prazo</th>
 										<th></th>
 									</tr>
@@ -190,7 +190,7 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
+											<td>${projeto.status.descricao }</td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
@@ -251,6 +251,7 @@
 										<th>Código</th>
 										<th>Projeto</th>
 										<th>Coordenador</th>
+										<th>Status</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -260,10 +261,13 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
+											<td>${projeto.status.descricao }</td>
 											<td class="acoes">
-												<a id="avaliarProjeto" title="Avaliar Projeto" href="<c:url value="/projeto/avaliar/${projeto.id}" ></c:url>">
-													<button class="btn btn-primary btn-xs"><i class="fa fa-gavel"></i></button>
-												</a>
+												<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
+													<a id="avaliarProjeto" title="Avaliar Projeto" href="<c:url value="/projeto/avaliar/${projeto.id}" ></c:url>">
+														<button class="btn btn-primary btn-xs"><i class="fa fa-gavel"></i></button>
+													</a>
+												</c:if>
 											</td>
 										</tr>
 									</c:forEach>

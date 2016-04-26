@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
+import ufc.quixada.npi.gpa.model.Log;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.Participacao;
@@ -68,6 +69,8 @@ public interface ProjetoService {
 	Participacao getParticipacao(Long idParticipacao);
 
 	List<Participacao> getParticipacoesByProjeto(Long idProjeto);
+	
+	void salvarLog(Log log);
 
 	boolean isParticipante(Pessoa pessoa, Projeto projeto);
 	

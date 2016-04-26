@@ -88,9 +88,10 @@ $(document).ready(function() {
 	$("#projetos-aguardando-avaliacao").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
-            {className: "dt-center", "targets": [0, 1]},
+            {className: "dt-center", "targets": [0, 1, 3]},
             {"targets" : 1, "orderable" : false},
-            {"targets" : 3, "orderable" : false}
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
@@ -160,6 +161,21 @@ $(document).ready(function() {
 		$(this).datepicker("hide");
         $("#adicionarProjetoForm, #submeterProjetoForm, #atribuirPareceristaForm").bootstrapValidator("revalidateField", this.id);
     });
+	
+	$("#anoInicio, #anoTermino").datepicker({
+		format: "yyyy",
+		minViewMode: 2,
+		startDate: moment().format("YYYY"),
+		autoclose: true,
+	});
+	
+	$("#mesInicio, #mesTermino").datepicker({
+		format: "mm",
+		minViewMode: 1,
+		startDate: moment().format("MM"),
+		autoclose: true,
+	});
+	
 	$(".anexo").fileinput({
 		showUpload: false,
 		showRemove: false,

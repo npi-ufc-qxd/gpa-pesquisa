@@ -119,8 +119,9 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "/atribuir-parecerista", method = RequestMethod.POST)
 	public String atribuirParecerista(@Valid @ModelAttribute("parecer") ParecerTecnico parecer, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("action") String action, @RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
+			@RequestParam("action") String action, @RequestParam("pareceristaId") Long pareceristaId, Model model, BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		Pessoa parecerista = pessoaService.getPessoa(pareceristaId);
 		
@@ -136,18 +137,17 @@ public class DirecaoController {
 		}
 		
 		if (action.equals(Constants.ALTERAR)) {
-			notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA);
 			projetoService.alterarParecerista(parecer);
-			
+			notificacaoService.notificar(projeto, Evento.ALTERACAO_PARECERISTA, usuario);
 			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PARECERISTA_ALTERADO);
 		}
 		else if (action.equals(Constants.ATRIBUIR)) {
 			projetoService.atribuirParecerista(projeto, parecer);
-			
+			notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA, usuario);
 			redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PARECERISTA_ATRIBUIDO);
 		}
 		
-		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
+		
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
 	
@@ -181,8 +181,9 @@ public class DirecaoController {
 	
 	@RequestMapping(value = "/atribuir-relator", method = RequestMethod.POST)
 	public String atribuirRelator(@Valid @ModelAttribute("parecer") ParecerRelator parecerRelator, @RequestParam("projetoId") Long projetoId, 
-			@RequestParam("action") String action, @RequestParam("relatorId") Long relatorId, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
+			@RequestParam("action") String action, @RequestParam("relatorId") Long relatorId, Model model, BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(projetoId);
 		Pessoa relator = pessoaService.getPessoa(relatorId);
 		
@@ -197,7 +198,7 @@ public class DirecaoController {
 		}
 		
 		if (action.equals(Constants.ALTERAR)) {
-			notificacaoService.notificar(projeto, Evento.ALTERACAO_RELATOR);
+			notificacaoService.notificar(projeto, Evento.ALTERACAO_RELATOR, usuario);
 			projetoService.alterarRelator(parecerRelator);
 			
 			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_RELATOR_ALTERADO);
@@ -208,7 +209,7 @@ public class DirecaoController {
 			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_RELATOR_ATRIBUIDO);
 		}
 		
-		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_RELATOR);
+		notificacaoService.notificar(projeto, Evento.ATRIBUICAO_RELATOR, usuario);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
 	
@@ -231,8 +232,9 @@ public class DirecaoController {
 	@RequestMapping(value = "/homologar", method = RequestMethod.POST)
 	public String homologar(@RequestParam("id") Long id, @RequestParam("homologacaoParam") StatusProjeto homologacao, 
 			@RequestParam("ataParam") MultipartFile ataParam, @RequestParam("oficioParam") MultipartFile oficioParam, 
-			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect ,Authentication authentication) {
-					
+			@RequestParam("observacao") String observacao, Model model, @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, Authentication authentication) {
+		
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		projeto = projetoService.getProjeto(id);
 		
 		if (projeto == null) {
@@ -266,7 +268,7 @@ public class DirecaoController {
 		projetoService.homologar(projeto);
 		
 		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_HOMOLOGADO);
-		notificacaoService.notificar(projeto, Evento.HOMOLOGACAO);
+		notificacaoService.notificar(projeto, Evento.HOMOLOGACAO, usuario);
 		return REDIRECT_PAGINA_INICIAL_DIRECAO;
 	}
 	@RequestMapping(value = "/buscar", method = RequestMethod.GET)

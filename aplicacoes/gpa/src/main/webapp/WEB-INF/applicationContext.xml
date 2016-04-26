@@ -45,6 +45,7 @@
 		<property name="observadores">
 			<list>
 				<bean name="emailObserver" class="ufc.quixada.npi.gpa.observer.EmailObserver"></bean>
+				<bean name="logObserver" class="ufc.quixada.npi.gpa.observer.LogObserver"></bean>
 			</list>
 		</property>
 	</bean>
