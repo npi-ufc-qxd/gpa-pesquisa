@@ -236,8 +236,15 @@
 													<c:forEach var="participacao"
 														items="${projeto.participacoes}">
 														<tr>
-															<td>${participacao.participante.nome }</td>
-															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+														<c:choose>
+															<c:when test="${not participacao.externo}">
+																<td class="dt-center">${participacao.participante.nome }</td>
+															</c:when>
+															<c:otherwise>
+																<td class="dt-center">${participacao.participanteExterno.nome }</td>
+															</c:otherwise>
+														</c:choose>
+														<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
 															<td><fmt:formatNumber type="CURRENCY"

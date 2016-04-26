@@ -77,15 +77,6 @@
 								<form:errors path="termino" cssClass="error-validation"></form:errors>
 							</div>
 						</div>
-
-						<!-- Valor do Projeto -->
-						<div class="form-item">
-							<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
-							<div class="col-sm-2">
-								<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto" required="required"/>
-								<form:errors path="valorProjeto"></form:errors>
-							</div>
-						</div>
 					</div>
 
 					<div class="form-group">
@@ -256,18 +247,22 @@
 													</tr>
 												</thead>
 												<tbody>
-													<c:forEach var="participacao"
-														items="${projeto.participacoes}">
+													<c:forEach var="participacao" items="${projeto.participacoes}">
 														<tr>
-															<td>${participacao.participante.nome }</td>
+															<c:choose>
+																	<c:when test="${not participacao.externo}">
+																		<td class="dt-center">${participacao.participante.nome }</td>
+																	</c:when>
+																	<c:otherwise>
+																		<td class="dt-center">${participacao.participanteExterno.nome }</td>
+																	</c:otherwise>
+															</c:choose>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
-															<td><fmt:formatNumber type="CURRENCY"
-																	currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
-
+															<td><fmt:formatNumber type="CURRENCY" currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
 														</tr>
-													</c:forEach>
+											</c:forEach>
 												</tbody>
 											</table>
 										</c:if>

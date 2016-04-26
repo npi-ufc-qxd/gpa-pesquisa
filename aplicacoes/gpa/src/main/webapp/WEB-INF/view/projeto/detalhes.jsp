@@ -53,6 +53,7 @@
 							<div class="accordion-heading">
 								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#basico"><i class="accordion-icon fa fa-minus"></i>	Informações Básicas</h4>
 							</div>
+							<span class="line"></span>
 							<div id="basico" class="accordion-body collapse in">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Nome:</label>
