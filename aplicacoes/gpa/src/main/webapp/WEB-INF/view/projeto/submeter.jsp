@@ -71,19 +71,10 @@
 						</div>
 
 						<div class="form-item">
-							<label for="termino" class="col-sm-2 control-label"><span class="required">*</span> Término:</label>
+							<label for="termino" class="col-sm-3 control-label"><span class="required">*</span> Término:</label>
 							<div class="col-sm-2">
 								<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de término" required="required"/>
 								<form:errors path="termino" cssClass="error-validation"></form:errors>
-							</div>
-						</div>
-
-						<!-- Valor do Projeto -->
-						<div class="form-item">
-							<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
-							<div class="col-sm-2">
-								<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto" required="required"/>
-								<form:errors path="valorProjeto"></form:errors>
 							</div>
 						</div>
 					</div>
@@ -92,9 +83,9 @@
 						
 						<!-- Valor do Projeto -->
 						<div class="form-item">
-							<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
+							<label for="valorProjeto" class="col-sm-2 control-label"><span class="required">*</span>Valor:</label>
 							<div class="col-sm-2">
-								<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto"/>
+								<form:input id="valorProjeto" type="number" path="valorProjeto" cssClass="form-control" step="1.5" min="0.00" placeholder="Valor do Projeto" required="required"/>
 								<div class="error-validation">
 									<form:errors path="valorProjeto"></form:errors>
 								</div>
@@ -108,9 +99,9 @@
 					
 						<!-- Fonte de financiamento do projeto -->
 						<div class="form-item">
-							<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
+							<label for="fonte-financiamento" class="col-sm-3 control-label"><span class="required">*</span>Fonte de Financiamento:</label>
 							<div id="fonte-financiamento" class="col-sm-4">
-								<form:select path="fonteFinanciamento.id" cssClass="form-control">
+								<form:select path="fonteFinanciamento.id" cssClass="form-control" required="required">
 									<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
 										<c:if test="${fonteFinanciamento.id == projeto.fonteFinanciamento.id}">
 											<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}" selected="true"></form:option>
