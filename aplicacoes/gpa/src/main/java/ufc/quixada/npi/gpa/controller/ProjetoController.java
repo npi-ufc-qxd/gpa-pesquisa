@@ -79,7 +79,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ufc.quixada.npi.ldap.model.Usuario;
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Documento.TipoDocumento;
@@ -463,7 +462,9 @@ public class ProjetoController {
 	@RequestMapping(value = "/submeter/{id}", method = RequestMethod.GET)
 	public String submeterForm(HttpSession session, @PathVariable("id") Long id, RedirectAttributes redirectAttributes,
 			Model model, Authentication authentication) {
+		
 		Projeto projeto = projetoService.getProjeto(id);
+		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -706,6 +707,7 @@ public class ProjetoController {
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
 		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
+		oldProjeto.setFonteFinanciamento(newProjeto.getFonteFinanciamento());
 		return oldProjeto;
 	}
 
