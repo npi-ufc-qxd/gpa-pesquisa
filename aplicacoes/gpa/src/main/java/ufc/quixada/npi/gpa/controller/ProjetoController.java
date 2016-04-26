@@ -145,7 +145,7 @@ public class ProjetoController {
 		model.addAttribute(PROJETOS_AGUARDANDO_AVALIACAO, projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
 		model.addAttribute(PROJETOS_AVALIADOS, projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute(PROJETOS_HOMOLOGADOS, projetoService.getProjetosHomologados(idUsuarioLogado));
-
+		
 		return PAGINA_LISTAR_PROJETO;
 	}
 
@@ -178,7 +178,7 @@ public class ProjetoController {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())){
+		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO, usuario)){
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 
 			return PAGINA_CADASTRAR_PROJETO;
@@ -215,7 +215,7 @@ public class ProjetoController {
 		
 		if (anexos != null && anexos.length != 0) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO, authentication.getName())) {
+				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO, pessoaService.getPessoa(authentication.getName()))) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 				}
@@ -314,7 +314,7 @@ public class ProjetoController {
 
 		projetoValidator.validate(oldProjeto, result);
 		
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
@@ -462,7 +462,9 @@ public class ProjetoController {
 	@RequestMapping(value = "/submeter/{id}", method = RequestMethod.GET)
 	public String submeterForm(HttpSession session, @PathVariable("id") Long id, RedirectAttributes redirectAttributes,
 			Model model, Authentication authentication) {
+		
 		Projeto projeto = projetoService.getProjeto(id);
+		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -522,14 +524,14 @@ public class ProjetoController {
 
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO, authentication.getName())) {
+				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO, usuario)) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_CADASTRAR_PROJETO;
 				} 
 			}
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_SUBMETER_PROJETO;
 		}
@@ -607,7 +609,7 @@ public class ProjetoController {
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecer.getParecer());
 		
-		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER, authentication.getName())) {
+		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_EMITIR_PARECER;
 		}
@@ -705,6 +707,7 @@ public class ProjetoController {
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
 		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
+		oldProjeto.setFonteFinanciamento(newProjeto.getFonteFinanciamento());
 		return oldProjeto;
 	}
 
@@ -739,7 +742,7 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
-	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo, String nomeUsuario) {
+	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo, Pessoa pessoa) {
 		try {
 			if(arquivo.getBytes() != null && arquivo.getBytes().length != 0) {
 				Documento documento = new Documento();
@@ -748,7 +751,7 @@ public class ProjetoController {
 				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
 				documento.setExtensao(arquivo.getContentType());
 				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				documento.setPessoa(pessoaService.getPessoa(nomeUsuario));
+				documento.setPessoa(pessoa);
 				documento.setData(new Date());
 				
 				switch (tipo) {

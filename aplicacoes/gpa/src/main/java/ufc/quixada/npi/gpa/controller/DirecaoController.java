@@ -244,13 +244,13 @@ public class DirecaoController {
 		
 		ProjetoController pc = new ProjetoController();
 
-		if(!pc.setInfoDocumentos(ataParam, projeto, TipoDocumento.ATA_HOMOLOGACAO,authentication.getName() )) {
+		if(!pc.setInfoDocumentos(ataParam, projeto, TipoDocumento.ATA_HOMOLOGACAO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 
 			return PAGINA_HOMOLOGAR_PROJETO;
 		}
 
-		if(!pc.setInfoDocumentos(oficioParam, projeto, TipoDocumento.OFICIO_HOMOLOGACAO, authentication.getName())) {
+		if(!pc.setInfoDocumentos(oficioParam, projeto, TipoDocumento.OFICIO_HOMOLOGACAO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 
 			return PAGINA_HOMOLOGAR_PROJETO;
