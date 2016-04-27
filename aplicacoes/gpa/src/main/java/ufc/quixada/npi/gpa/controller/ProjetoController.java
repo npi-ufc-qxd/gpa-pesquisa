@@ -374,6 +374,10 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		if(participacao.isExterno()){
+			if(idParticipanteExternoSelecionado==null){
+				redirectAttributes.addFlashAttribute(ERRO, "Cadastrar ou selecionar pessoa externa primeiro!");
+				return REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO + idProjeto;
+			}
 			participacao.setParticipanteExterno(pessoaService.getPessoaExterna(idParticipanteExternoSelecionado));
 		}else{
 			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
