@@ -90,18 +90,18 @@
 								<div class="form-item" id="divParticipanteExterno" style="display: none;">
 									<label for="idParticipantes" class="col-sm-2 control-label">Participante externo:</label>
 									<div class="col-sm-4">
-									<select name="participanteExternoSelecionado" class="form-control">
-										<c:set var="part" value="${pessoasExternas }"></c:set>
-										
-										<c:forEach items="${pessoasExternas }" var="participante">
-											<c:set var="selected" value=""></c:set>
-											<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
-											<c:if test="${fn:contains(part, participanteSelecionado)}">
-												<c:set var="selected" value="selected=\"selected\""></c:set>
-											</c:if>
-											<option value="${participante.id }" ${selected }>${participante.nome }</option>
-										</c:forEach>
-									</select>
+										<select name="participanteExternoSelecionado" class="form-control">
+											<c:set var="part" value="${pessoasExternas }"></c:set>
+											
+											<c:forEach items="${pessoasExternas }" var="participante">
+												<c:set var="selected" value=""></c:set>
+												<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
+												<c:if test="${fn:contains(part, participanteSelecionado)}">
+													<c:set var="selected" value="selected=\"selected\""></c:set>
+												</c:if>
+												<option value="${participante.id }" ${selected }>${participante.nome }</option>
+											</c:forEach>
+										</select>
 									
 									<a href="#" id="cadastrarPessoaExternaBtn" class="btn btn-link">Cadastrar pessoa externa</a>
 									</div>

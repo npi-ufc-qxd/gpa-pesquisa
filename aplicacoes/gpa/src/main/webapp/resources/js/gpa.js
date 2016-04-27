@@ -188,13 +188,14 @@ $(document).ready(function() {
 		format: "yyyy",
 		minViewMode: 2,
 		startDate: moment().format("YYYY"),
+		language : "pt-BR",
 		autoclose: true,
 	});
 	
 	$("#mesInicio, #mesTermino").datepicker({
-		format: "mm",
+		format: "m",
 		minViewMode: 1,
-		startDate: moment().format("MM"),
+		language : "pt-BR",
 		autoclose: true,
 	});
 	
@@ -444,6 +445,20 @@ $(document).ready(function() {
         feedbackIcons: {
             invalid: "glyphicon glyphicon-remove",
             validating: "glyphicon glyphicon-refresh"
+        }
+    });
+	
+	$("#adicionarFonteFinanciamentoForm").bootstrapValidator({
+		group: ".form-item",
+		excluded: ":disabled",
+        fields:{
+        	nome:{
+        		validators:{
+        			notEmpty:{
+        				message: "Campo obrigatório"
+        			}
+        		}
+        	}
         }
     });
 	

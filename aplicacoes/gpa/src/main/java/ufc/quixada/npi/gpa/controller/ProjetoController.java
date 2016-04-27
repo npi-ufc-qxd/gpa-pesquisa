@@ -374,6 +374,10 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		if(participacao.isExterno()){
+			if(idParticipanteExternoSelecionado==null){
+				redirectAttributes.addFlashAttribute(ERRO, "Cadastrar ou selecionar pessoa externa primeiro!");
+				return REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO + idProjeto;
+			}
 			participacao.setParticipanteExterno(pessoaService.getPessoaExterna(idParticipanteExternoSelecionado));
 		}else{
 			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
@@ -533,6 +537,7 @@ public class ProjetoController {
 
 		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_SUBMETER_PROJETO;
 		}
 		
@@ -545,6 +550,7 @@ public class ProjetoController {
 			model.addAttribute(PROJETO, oldProjeto);
 			model.addAttribute(PARTICIPANTES, pessoaService.getParticipantes(usuario));
 			model.addAttribute(VALIDACAO, result);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_SUBMETER_PROJETO;
 
 		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {

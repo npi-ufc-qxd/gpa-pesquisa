@@ -57,7 +57,7 @@
 							<div id="basico" class="accordion-body collapse in">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Nome:</label>
-									<div class="col-sm-4 value-label">
+									<div class="col-sm-10 value-label">
 										<label>${projeto.nome }</label>
 									</div>
 								</div><!-- nome -->
