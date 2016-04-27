@@ -178,7 +178,7 @@
 
 							<div id="campo-arquivo-projeto">
 								<input type="file" name="arquivo_projeto"
-									class="anexo file-loading "></input>
+									class="anexo file-loading" required="required"></input>
 							</div>
 
 

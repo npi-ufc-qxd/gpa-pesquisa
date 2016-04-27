@@ -537,6 +537,7 @@ public class ProjetoController {
 
 		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_SUBMETER_PROJETO;
 		}
 		
@@ -549,6 +550,7 @@ public class ProjetoController {
 			model.addAttribute(PROJETO, oldProjeto);
 			model.addAttribute(PARTICIPANTES, pessoaService.getParticipantes(usuario));
 			model.addAttribute(VALIDACAO, result);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_SUBMETER_PROJETO;
 
 		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
