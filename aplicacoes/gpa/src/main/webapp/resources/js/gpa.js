@@ -3,13 +3,16 @@ $(document).ready(function() {
 	$("#meus-projetos").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
-		    {className: "dt-center", "targets": [ 0, 3,]},            
-	        {"targets" : 3, "orderable" : false},
-	        {"targets" : 4, "orderable" : false}
+		    {className: "dt-center", "targets": [ 0, 3]},            
+	        {"targets" : 2, "orderable" : false},
+	        {"targets" : 3, "orderable" : false}
 		],
 		"language": {
 	        "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-	    }
+	    },
+	    "paging": false,
+	    "searching": false
+	    
 	});
 		
 	$("#minhas-participacoes").dataTable({
@@ -23,20 +26,23 @@ $(document).ready(function() {
 		],
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-homologados").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
-		    {className: "dt-center", "targets": [ 0, 3, 4]},            
+		    {className: "dt-center", "targets": [ 0, 3 ]},            
             {"targets" : 3, "orderable" : false},
-		    {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-homologados-diretor").dataTable({
@@ -69,7 +75,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-parecer-emitido").dataTable({
@@ -82,7 +90,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-aguardando-avaliacao").dataTable({
@@ -96,7 +106,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-avaliados").dataTable({
@@ -109,7 +121,9 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"language": {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
-        }
+        },
+        "paging":false,
+        "searching": false
 	});
 	
 	$("#projetos-em-tramitacao").dataTable({
@@ -129,7 +143,6 @@ $(document).ready(function() {
 	$("#participacoes-projeto").dataTable({
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
-		    {className: "dt-center", "targets": [ 0]},
             {"targets" : 1, "orderable" : false},
             {"targets" : 2, "orderable" : false},
             {"targets" : 3, "orderable" : false},
@@ -144,6 +157,15 @@ $(document).ready(function() {
 	});
 	
 	$("#participantes-table").dataTable({
+		
+		"searching":false,
+		"paging":false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
+	$("#anexos-table").dataTable({
 		
 		"searching":false,
 		"paging":false,

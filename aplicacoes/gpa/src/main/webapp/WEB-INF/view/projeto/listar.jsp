@@ -33,7 +33,7 @@
 					</div>
 				</c:if>
 		        <ul class="nav nav-tabs">
-		        	<li class="active"><a href="#tab-meus-projetos" data-toggle="tab" aria-expanded="false">Projetos <span class="badge">${projetosNaoHomologados.size() + projetosHomologados.size()}</span></a></li>
+		        	<li class="active"><a href="#tab-meus-projetos" data-toggle="tab" aria-expanded="false">Meus Projetos <span class="badge">${projetosNaoHomologados.size() + projetosHomologados.size()}</span></a></li>
 		            <li class=""><a aria-expanded="false" href="#tab-em-participacao" data-toggle="tab">Participações <span class="badge">${participacoesEmProjetos.size() }</span></a></li>
 		            <li class=""><a href="#tab-parecer" data-toggle="tab" aria-expanded="false">Parecer <span class="badge">${projetosAguardandoParecer.size() + projetosParecerEmitido.size()}</span></a></li>
 		            <li class=""><a href="#tab-projetos-aguardando-avaliacao" data-toggle="tab" aria-expanded="false">Avaliação <span class="badge">${projetosAguardandoAvaliacao.size() + projetosAvaliados.size()}</span></a></li>
@@ -52,7 +52,6 @@
 										<th>Código</th>
 										<th>Nome</th>
 										<th>Status</th>
-										<th>Data Submissão</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -64,10 +63,6 @@
 												<a href="<c:url value="/projeto/detalhes/${projetoNaoHomologado.id}" ></c:url>">${projetoNaoHomologado.nome}</a>
 											</td>
 											<td>${projetoNaoHomologado.status.descricao}</td>
-											<td>
-												<c:if test="${empty projetoNaoHomologado.submissao }">-</c:if>
-												<fmt:formatDate pattern="dd/MM/yyyy" value="${projetoNaoHomologado.submissao }" />
-											</td>
 											<td class="acoes">
 												<c:if test="${projetoNaoHomologado.status == 'NOVO' or projetoNaoHomologado.status == 'RESOLVENDO_PENDENCIAS' or projetoNaoHomologado.status == 'RESOLVENDO_RESTRICOES'}">
 													<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" title="Submeter"
@@ -110,7 +105,6 @@
 										<th>Código</th>
 										<th>Nome</th>
 										<th>Status</th>
-										<th>Data Submissão</th>
 										<th>Data Homologação</th>
 									</tr>
 								</thead>
@@ -120,7 +114,6 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.submissao }" /></td>
 											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.homologacao }" /></td>
 										</tr>
 									</c:forEach>
