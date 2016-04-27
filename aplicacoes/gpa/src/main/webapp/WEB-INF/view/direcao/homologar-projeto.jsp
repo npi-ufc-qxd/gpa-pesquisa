@@ -66,7 +66,7 @@
 					<div class="form-group form-item">
 						<label for="ata" class="col-sm-2 control-label"><span class="required">*</span> Ata de reunião:</label>
 						<div class="col-sm-10">
-							<input type="file" id="ataParam" name="ataParam" class="anexo file-loading" required="required" />
+							<input type="file" id="ataParam" name="ataParam" class="anexo file-loading" data-show-preview="false" required="required" />
 							<form:errors path="ata" cssClass="error-validation"></form:errors>
 						</div>
 					</div>
@@ -74,7 +74,7 @@
 					<div class="form-group form-item">
 						<label for="oficio" class="col-sm-2 control-label"><span class="required">*</span> Ofício de aceitação:</label>
 						<div class="col-sm-10">
-							<input type="file" id="oficioParam" name="oficioParam" class="anexo file-loading" required="required" />
+							<input type="file" id="oficioParam" name="oficioParam" class="anexo file-loading" data-show-preview="false" required="required" />
 							<form:errors path="oficio" cssClass="error-validation"></form:errors>
 						</div>
 					</div>
