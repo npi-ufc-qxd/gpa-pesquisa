@@ -447,6 +447,20 @@ $(document).ready(function() {
         }
     });
 	
+	$("#adicionarFonteFinanciamentoForm").bootstrapValidator({
+		group: ".form-item",
+		excluded: ":disabled",
+        fields:{
+        	nome:{
+        		validators:{
+        			notEmpty:{
+        				message: "Campo obrigatório"
+        			}
+        		}
+        	}
+        }
+    });
+	
 	//VINCULAR PARTICIPANTES
 	$("#adicionarParticipacaoForm").bootstrapValidator({
 		group: ".form-item",
