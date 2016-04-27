@@ -959,12 +959,10 @@ $(document).ready(function() {
 	   if($(this).is(":checked")) {
 		   $("#divParticipante").hide();
 		   $("#divParticipanteExterno").show();
-//		   document.getElementsByName("participanteExternoSelecionado").required=true;
 		   document.getElementById("externoBoolean").value=true;
 	   } else {
 		   $("#divParticipanteExterno").hide();
 		   $("#divParticipante").show();
-//		   document.getElementsByName("participanteExternoSelecionado").required=false;
 		   document.getElementById("externoBoolean").value=false;
 	   }
 	});

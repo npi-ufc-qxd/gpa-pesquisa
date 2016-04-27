@@ -90,7 +90,7 @@
 								<div class="form-item" id="divParticipanteExterno" style="display: none;">
 									<label for="idParticipantes" class="col-sm-2 control-label">Participante externo:</label>
 									<div class="col-sm-4">
-										<select id="participanteExternoSelect" name="participanteExternoSelecionado" class="form-control">
+										<select name="participanteExternoSelecionado" class="form-control">
 											<c:set var="part" value="${pessoasExternas }"></c:set>
 											
 											<c:forEach items="${pessoasExternas }" var="participante">
