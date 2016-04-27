@@ -38,13 +38,15 @@
 						<div class="col-sm-2 value-label">
 							<label>${projeto.parecer.parecerista.nome }</label>
 						</div>
-						<label class="col-sm-2 control-label">Parecer Técnico:</label>
-						<div class="col-sm-2 value-label">
-							<label>${projeto.parecer.parecer }</label>
-						</div>
 						<label class="col-sm-2 control-label">Posicionamento:</label>
 						<div class="col-sm-2 value-label">
 							<label>${projeto.parecer.status.descricao }</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Parecer Técnico:</label>
+						<div class="col-sm-10 value-label">
+							<label>${projeto.parecer.parecer }</label>
 						</div>
 					</div>
 					<div class="form-group">
