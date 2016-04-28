@@ -71,13 +71,12 @@
 						</div>
 
 						<div class="form-item">
-							<label for="termino" class="col-sm-2 control-label"><span class="required">*</span> Término:</label>
+							<label for="termino" class="col-sm-3 control-label"><span class="required">*</span> Término:</label>
 							<div class="col-sm-2">
 								<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de término" required="required"/>
 								<form:errors path="termino" cssClass="error-validation"></form:errors>
 							</div>
 						</div>
-						
 					</div>
 
 					<div class="form-group">
@@ -85,8 +84,10 @@
 						<!-- Valor do Projeto -->
 						<div class="form-item">
 							<label for="valorProjeto" class="col-sm-2 control-label"><span class="required">*</span> Valor:</label>
+
 							<div class="col-sm-2">
 								<form:input id="valorProjeto" type="text" path="valorProjeto" cssClass="form-control" step="1.5" placeholder="Valor do Projeto"/>
+
 								<div class="error-validation">
 									<form:errors path="valorProjeto"></form:errors>
 								</div>
@@ -100,9 +101,9 @@
 					
 						<!-- Fonte de financiamento do projeto -->
 						<div class="form-item">
-							<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
+							<label for="fonte-financiamento" class="col-sm-3 control-label"><span class="required">*</span>Fonte de Financiamento:</label>
 							<div id="fonte-financiamento" class="col-sm-4">
-								<form:select path="fonteFinanciamento.id" cssClass="form-control">
+								<form:select path="fonteFinanciamento.id" cssClass="form-control" required="required">
 									<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
 										<c:if test="${fonteFinanciamento.id == projeto.fonteFinanciamento.id}">
 											<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}" selected="true"></form:option>
@@ -139,7 +140,7 @@
 					<div class="form-group form-item">
 						<label for="anexos" class="col-sm-2 control-label"> Anexos:</label>
 						<div class="col-sm-10">
-							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple"></input>
+							<input id="anexos" type="file" name="anexos" class="anexo file-loading anexoSubmeter" multiple="multiple" data-show-preview="false"></input>
 							<form:errors path="documentos"></form:errors>
 							<c:if test="${not empty projeto.documentos}">
 								<table id="table-anexos" class="table table-striped table-hover">
@@ -179,7 +180,7 @@
 
 							<div id="campo-arquivo-projeto">
 								<input type="file" name="arquivo_projeto"
-									class="anexo file-loading "></input>
+									class="anexo file-loading" required="required"></input>
 							</div>
 
 
@@ -248,18 +249,22 @@
 													</tr>
 												</thead>
 												<tbody>
-													<c:forEach var="participacao"
-														items="${projeto.participacoes}">
+													<c:forEach var="participacao" items="${projeto.participacoes}">
 														<tr>
-															<td>${participacao.participante.nome }</td>
+															<c:choose>
+																	<c:when test="${not participacao.externo}">
+																		<td class="dt-center">${participacao.participante.nome }</td>
+																	</c:when>
+																	<c:otherwise>
+																		<td class="dt-center">${participacao.participanteExterno.nome }</td>
+																	</c:otherwise>
+															</c:choose>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
-															<td><fmt:formatNumber type="CURRENCY"
-																	currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
-
+															<td><fmt:formatNumber type="CURRENCY" currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
 														</tr>
-													</c:forEach>
+											</c:forEach>
 												</tbody>
 											</table>
 										</c:if>

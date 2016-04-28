@@ -51,12 +51,13 @@
 					<div id="accordion" class="accordion">
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#basico">Informações Básicas</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#basico"><i class="accordion-icon fa fa-minus"></i>	Informações Básicas</h4>
 							</div>
+							<span class="line"></span>
 							<div id="basico" class="accordion-body collapse in">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Nome:</label>
-									<div class="col-sm-4 value-label">
+									<div class="col-sm-10 value-label">
 										<label>${projeto.nome }</label>
 									</div>
 								</div><!-- nome -->
@@ -164,12 +165,12 @@
 							</div><!-- basico body -->
 						</div> <!-- accordion basico -->
 						
-						<span class="line"></span>
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#anexos">Anexos</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#anexos"><i class="accordion-icon fa fa-plus"></i>	Anexos</h4>
 							</div>
+							<span class="line"></span>
 							<div id="anexos" class="accordion-body collapse">
 								<div class="form-group">
 						<label class="col-sm-2 control-label">Anexos:</label>
@@ -178,7 +179,7 @@
 								<label>-</label>
 							</c:if>
 							<c:if test="${not empty projeto.documentos }">
-								<table>
+								<table id="anexos-table">
 									<thead>
 										<tr>
 											<th class="text-left">Nome</th>
@@ -222,32 +223,80 @@
 							</div> <!-- anexos body -->
 						</div> <!-- accordion anexos-->
 	
-						<span class="line"></span>
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#participantes">Participantes</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#participantes"><i class="accordion-icon fa fa-plus"></i>	Participantes</h4>
 							</div>
+							<span class="line"></span>
 							<div id="participantes" class="accordion-body collapse">
-								<div class="form-group">
-									<label class="col-sm-2 control-label">Participantes:</label>
-									<div class="col-sm-10 value-label">
+								<div>
+									<div>
 										<c:if test="${empty projeto.participacoes }">
 											<label>-</label>
 										</c:if>
 										<c:if test="${not empty projeto.participacoes }">
-											<c:forEach items="${projeto.participacoes }" var="participacao">
-												<c:choose>
-													<c:when test="${participacao.externo}">
-														<label>${participacao.participanteExterno.nome} (${participacao.tipo.descricao});</label><br>
-													</c:when>
-													<c:otherwise>
-														<label><a href="<c:url value="/pessoa/detalhes/${participacao.participante.id}" >
-														</c:url>">${participacao.participante.nome} </a>(${participacao.tipo.descricao});</label><br>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
+											<table id="participacoes-projeto" class="display">
+												<thead>
+													<tr>
+														<th class="dt-center">Participante</th>
+														<th class="dt-center">Início</th>
+														<th class="dt-center">Término</th>
+														<th class="dt-center">Carga Horária Mensal</th>
+														<th class="dt-center">Valor da Bolsa</th>
+														<th class="dt-center">Tipo de Participação</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach var="participacao" items="${projeto.participacoes}">
+														<tr>
+															<c:choose>
+																<c:when test="${not participacao.externo}">
+																	<td class="dt-center">${participacao.participante.nome }</td>
+																</c:when>
+																<c:otherwise>
+																	<td class="dt-center">${participacao.participanteExterno.nome }</td>
+																</c:otherwise>
+															</c:choose>
+															<td class="dt-center"><fmt:formatNumber
+																	minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+															<td class="dt-center"><fmt:formatNumber
+																	minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
+															<td class="dt-center"><fmt:formatNumber
+																	minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
+															<td class="dt-center"><fmt:formatNumber type="CURRENCY"
+																	currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+															<td class="dt-center">${participacao.tipo.descricao }</td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
 										</c:if>
+									</div>
+								</div><!-- participantes -->
+							</div><!-- participantes body -->
+						</div><!-- accordion participantes -->
+						
+						<div class="accordion-group">
+							<div class="accordion-heading">
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#logs"><i class="accordion-icon fa fa-plus"></i>Histórico</h4>
+							</div>
+							<div id="logs" class="accordion-body collapse">
+								<div class="form-group">
+									<c:forEach items="${projeto.logs }" var="log">
+										<label class="col-sm-2 control-label">Descrição:</label>
+											<div class="col-sm-2 value-label">
+												<label >${log.descricao}</label>
+											</div>
+										<label class="col-sm-2 control-label">Autor:</label>
+											<div class="col-sm-2 value-label">
+												<label>${log.autor}</label>
+											</div>
+										<label class="col-sm-2 control-label">Data:</label>
+											<div class="col-sm-2 value-label">
+												<label><fmt:formatDate pattern="dd/MM/yyyy" value="${log.data}" /></label>
+											</div><br><br><br>
+										</c:forEach>	
 									</div>
 								</div><!-- participantes -->
 							</div><!-- participantes body -->
@@ -258,8 +307,9 @@
 						<c:if test="${not empty projeto.parecer and projeto.status != 'RESOLVENDO_PENDENCIAS'}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer">Parecer Técnico</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer"><i class="accordion-icon fa fa-plus"></i>	Parecer Técnico</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="parecer">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Parecerista:</label>
@@ -290,15 +340,15 @@
 										</div>
 									</div><!-- anexo -->
 								</div><!-- parecer body -->
-								<span class="line"></span>
 							</div><!-- accordion parecer -->
 						</c:if>
 						
 						<c:if test="${not empty projeto.parecerRelator}">	
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#relator">Parecer Relator</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#relator"><i class="accordion-icon fa fa-plus"></i>		Parecer Relator</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="relator">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Relator:</label>
@@ -322,7 +372,6 @@
 										</c:if>
 									</div><!-- relator -->
 								</div><!-- relator body -->
-								<span class="line"></span>
 							</div><!-- accordion relator -->
 						</c:if>
 					
@@ -330,8 +379,9 @@
 						<c:if test="${projeto.status == 'APROVADO' or  projeto.status == 'REPROVADO'}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
-									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#homologacao">Homologação</h4>
+									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#homologacao"><i class="accordion-icon fa fa-plus"></i>		Homologação</h4>
 								</div>
+								<span class="line"></span>
 								<div class="accordion-body collapse" id="homologacao">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Observação:</label>
@@ -369,7 +419,6 @@
 										</div>
 									</div><!-- ata -->
 								</div><!-- homologacao body -->
-								<span class="line"></span>
 							</div><!-- accordion homologacao -->
 						</c:if>
 					</div><!-- div accordion - geral -->

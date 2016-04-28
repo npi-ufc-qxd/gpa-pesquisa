@@ -71,7 +71,7 @@ public class EmailObserver implements Observer {
 	private static final String STATUS_HOMOLOGACAO = "#STATUS_HOMOLOGACAO#";
 
 	@Override
-	public void notificar(Projeto projeto, Evento evento) {
+	public void notificar(Projeto projeto, Evento evento, Pessoa pessoa) {
 		try {
 			Resource resource = new ClassPathResource("/notification.properties");
 			final Properties properties = PropertiesLoaderUtils.loadProperties(resource);

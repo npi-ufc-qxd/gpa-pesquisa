@@ -173,7 +173,7 @@
 
 								<div id="campo-arquivo-projeto">
 									<input type="file" name="arquivo_projeto"
-										class="anexo file-loading "></input>
+										class="anexo file-loading " data-show-preview="false"></input>
 								</div>
 
 
@@ -236,8 +236,15 @@
 													<c:forEach var="participacao"
 														items="${projeto.participacoes}">
 														<tr>
-															<td>${participacao.participante.nome }</td>
-															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
+														<c:choose>
+															<c:when test="${not participacao.externo}">
+																<td class="dt-center">${participacao.participante.nome }</td>
+															</c:when>
+															<c:otherwise>
+																<td class="dt-center">${participacao.participanteExterno.nome }</td>
+															</c:otherwise>
+														</c:choose>
+														<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesInicio}</fmt:formatNumber>/${participacao.anoInicio}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
 															<td><fmt:formatNumber minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
 															<td><fmt:formatNumber type="CURRENCY"
@@ -248,6 +255,45 @@
 												</tbody>
 											</table>
 									</ul>
+								</div>
+							</div>
+							<c:if test="${empty projeto.participacoes }">
+								<div class="alert alert-warning" role="alert">Não há participantes vinculados.</div>
+							</c:if>
+					</c:if>
+					
+					<hr></hr>
+					
+					<c:if test="${not empty projeto.documentos}">
+							<div class="form-group form-item">
+								<label class="col-sm-2 control-label">Adicionar anexos:</label>
+								
+								<div class="col-sm-10 field-value">	
+									<label>  
+										<a id="adicionar"
+											href="<c:url value="/projeto/uploadDocumento/${projeto.id}" ></c:url>"
+											target="_blank" title="Adicionar anexos"
+											class="btn btn-primary"> <i class="fa fa-file"></i>
+										</a>
+									</label>
+										<table id="anexos-table" class="table table-striped table-hover">
+											<thead>
+												<tr>
+													<th>Nome</th>
+													<th>Autor</th>
+													<th>Data</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach var="documento" items="${projeto.documentos}">
+													<tr>
+														<td><a href="<c:url value="/documento/${projeto.id }/${documento.id }" ></c:url>">${documento.nome }</a></td>
+														<td>${documento.pessoa.nome }</td>
+														<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${documento.data }" /></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
 								</div>
 							</div>
 							<c:if test="${empty projeto.participacoes }">
@@ -291,6 +337,7 @@
 			</div>
 		</div>
 	</div>
+	
 	
 	<jsp:include page="../modulos/footer.jsp" />
 	

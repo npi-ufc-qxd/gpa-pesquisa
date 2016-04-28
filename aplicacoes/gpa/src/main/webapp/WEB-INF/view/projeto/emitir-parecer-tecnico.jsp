@@ -71,7 +71,7 @@
 					<div class="form-group">
 						<label for="anexo" class="col-sm-2 control-label">Anexo:</label>
 						<div class="col-sm-10 files">
-							<input type="file" id="anexos" name="anexo" class="anexo file-loading"></input>
+							<input type="file" id="anexos" name="anexo" class="anexo file-loading" data-show-preview="false"></input>
 						</div>
 					</div>
 	

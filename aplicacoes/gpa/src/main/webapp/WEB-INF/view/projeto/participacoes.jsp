@@ -90,18 +90,18 @@
 								<div class="form-item" id="divParticipanteExterno" style="display: none;">
 									<label for="idParticipantes" class="col-sm-2 control-label">Participante externo:</label>
 									<div class="col-sm-4">
-									<select name="participanteExternoSelecionado" class="form-control">
-										<c:set var="part" value="${pessoasExternas }"></c:set>
-										
-										<c:forEach items="${pessoasExternas }" var="participante">
-											<c:set var="selected" value=""></c:set>
-											<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
-											<c:if test="${fn:contains(part, participanteSelecionado)}">
-												<c:set var="selected" value="selected=\"selected\""></c:set>
-											</c:if>
-											<option value="${participante.id }" ${selected }>${participante.nome }</option>
-										</c:forEach>
-									</select>
+										<select name="participanteExternoSelecionado" class="form-control">
+											<c:set var="part" value="${pessoasExternas }"></c:set>
+											
+											<c:forEach items="${pessoasExternas }" var="participante">
+												<c:set var="selected" value=""></c:set>
+												<c:set var="participanteSelecionado" value="id=${participante.id }"></c:set>
+												<c:if test="${fn:contains(part, participanteSelecionado)}">
+													<c:set var="selected" value="selected=\"selected\""></c:set>
+												</c:if>
+												<option value="${participante.id }" ${selected }>${participante.nome }</option>
+											</c:forEach>
+										</select>
 									
 									<a href="#" id="cadastrarPessoaExternaBtn" class="btn btn-link">Cadastrar pessoa externa</a>
 									</div>
@@ -123,9 +123,9 @@
 							<div class="form-item">
 								<label class="col-sm-2 control-label"><span class="required">*</span> Mês/Ano início: </label>
 								<div class="col-sm-2">
-									<form:input id="mesInicio" name="mesInicio" 
-										type="number" placeholder="1" min="1" max="12" step="1" 
-										path="mesInicio" cssClass="form-control" required="required" />
+									<form:input id="mesInicio" name="mesInicio" type="number" 
+										min="1" max="12" path="mesInicio" 
+										cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="mesInicio"></form:errors>
 									</div>
@@ -133,8 +133,7 @@
 							</div>
 							<div class="form-item">
 								<div class="col-sm-2">
-									<form:input id="anoInicio" name="anoInicio" 
-										type="number" placeholder="${ano }" min="${ano }" step="1"
+									<form:input id="anoInicio" name="anoInicio" type="number" 
 										path="anoInicio" cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="anoInicio"></form:errors>
@@ -144,8 +143,8 @@
 							<div class="form-item">
 								<label class="col-sm-2 control-label"><span class="required">*</span> Mês/Ano término: </label>
 								<div class="col-sm-2">
-									<form:input name="mesTermino" type="number" step="1" 
-										placeholder="1" min="1" max="12" path="mesTermino" 
+									<form:input id="mesTermino" name="mesTermino" type="number" 
+										min="1" max="12" path="mesTermino" 
 										cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="mesTermino"></form:errors>
@@ -154,9 +153,8 @@
 							</div>
 							<div class="form-item">
 								<div class="col-sm-2">
-									<form:input name="anoTermino" type="number"
-										placeholder="${ano }" step="1" min="${ano }" path="anoTermino"
-										cssClass="form-control" required="required" />
+									<form:input id="anoTermino" name="anoTermino" type="number"
+										 path="anoTermino" cssClass="form-control" required="required" />
 									<div class="error-validation">
 										<form:errors path="anoTermino"></form:errors>
 									</div>
@@ -169,7 +167,7 @@
 								<label for="cargaHorariaMensal" class="col-sm-2 control-label"><span class="required">*</span> Carga horária mensal (em horas):</label>
 								<div class="col-sm-4">
 									<form:input id="cargaHorariaMensal" name="cargaHorariaMensal"
-										type="number" placeholder="1" path="cargaHorariaMensal"
+										type="number" path="cargaHorariaMensal"
 										cssClass="form-control" min="1" required="required" />
 									<div class="error-validation">
 										<form:errors path="cargaHorariaMensal"></form:errors>
@@ -181,7 +179,7 @@
 								<label for="bolsa" class="col-sm-2 control-label"><span
 									class="required">*</span> Valor da bolsa (R$):</label>
 								<div class="col-sm-4">
-									<form:input id="bolsaValorMensal"
+									<form:input id="bolsaValorMensal" name="bolsaValorMensal"
 										type="text" path="bolsaValorMensal"
 										cssClass="form-control" />
 									<div class="error-validation">

@@ -73,8 +73,9 @@
 						        </tbody>
 						    </table>
 						</c:if>
+
 						<%--Buscando todas as pessoas --%>
-						<c:if test="${not empty pessoas && action == 'buscar'}">
+						<c:if test="${not empty pessoas && action == 'busca'}">
 							<table id="busca-adm" class="table table-striped display">
 						        <thead class="thead">
 						            <tr>

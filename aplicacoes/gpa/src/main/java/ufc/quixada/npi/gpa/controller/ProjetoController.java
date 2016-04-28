@@ -25,6 +25,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PARECER;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO;
@@ -146,7 +147,7 @@ public class ProjetoController {
 		model.addAttribute(PROJETOS_AGUARDANDO_AVALIACAO, projetoService.getProjetosAguardandoAvaliacao(idUsuarioLogado));
 		model.addAttribute(PROJETOS_AVALIADOS, projetoService.getProjetosAvaliados(idUsuarioLogado));
 		model.addAttribute(PROJETOS_HOMOLOGADOS, projetoService.getProjetosHomologados(idUsuarioLogado));
-
+		
 		return PAGINA_LISTAR_PROJETO;
 	}
 
@@ -163,6 +164,7 @@ public class ProjetoController {
 			@ModelAttribute("projeto") @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
 			Authentication authentication, Model model) {
 		
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		projetoValidator.validate(projeto, result);
 
 		if (result.hasErrors()) {
@@ -172,18 +174,20 @@ public class ProjetoController {
 
 		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
 		projetoService.cadastrar(projeto);
+		notificacaoService.notificar(projeto, Evento.CADASTRO_PROJETO, usuario);
 		
 		if(projeto.getValorProjeto() != null) {
 			projeto.setValorProjeto(projeto.getValorProjeto().setScale(2, RoundingMode.FLOOR));
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())){
+		if(!setInfoDocumentos(arquivoProjeto, projeto, TipoDocumento.ARQUIVO_PROJETO, usuario)){
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		
 		projetoService.update(projeto);
+
 		
 		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -213,7 +217,7 @@ public class ProjetoController {
 		
 		if (anexos != null && anexos.length != 0) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO, authentication.getName())) {
+				if(!setInfoDocumentos(anexo, projeto, TipoDocumento.ANEXO, pessoaService.getPessoa(authentication.getName()))) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 				}
@@ -221,8 +225,8 @@ public class ProjetoController {
 		}
 		
 		projetoService.update(projeto);
-		model.addAttribute(PROJETO, projeto);
-		return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
+		redirect.addFlashAttribute(PROJETO, projeto);
+		return REDIRECT_PAGINA_UPLOAD_DOCUMENTOS_PROJETO + id;
 	}
 
 	@RequestMapping(value = "/detalhes/{id}")
@@ -312,12 +316,13 @@ public class ProjetoController {
 
 		projetoValidator.validate(oldProjeto, result);
 		
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 
 		projetoService.update(oldProjeto);
+		notificacaoService.notificar(projeto, Evento.EDICAO_PROJETO, usuario);
 		redirect.addFlashAttribute(INFO, MENSAGEM_PROJETO_ATUALIZADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
@@ -355,7 +360,7 @@ public class ProjetoController {
 			Participacao participacao, HttpSession session, Model model, 
 			BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
-
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		model.addAttribute(TIPOS_DE_PARTICIPACAO,TipoParticipacao.values());
 		model.addAttribute(PESSOAS_EXTERNAS, pessoaService.getAllPessoaExterna());
@@ -365,12 +370,16 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		if(participacao.isExterno()){
+			if(idParticipanteExternoSelecionado==null){
+				redirectAttributes.addFlashAttribute(ERRO, "Cadastrar ou selecionar pessoa externa primeiro!");
+				return REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO + idProjeto;
+			}
 			participacao.setParticipanteExterno(pessoaService.getPessoaExterna(idParticipanteExternoSelecionado));
 		}else{
 			participacao.setParticipante(pessoaService.getPessoa(idParticipanteSelecionado));
@@ -393,6 +402,7 @@ public class ProjetoController {
 		}
 		projeto.adicionarParticipacao(participacao);
 		projetoService.update(projeto);
+		notificacaoService.notificar(projeto, Evento.ADICAO_PARTICIPANTE, usuario);
 
 		Calendar calendario = Calendar.getInstance();
 		model.addAttribute(ANO, calendario.get(Calendar.YEAR));
@@ -408,19 +418,20 @@ public class ProjetoController {
 			@PathVariable("idParticipacao") Long idParticipacao, HttpSession session, Model model,
 			RedirectAttributes redirectAttributes, Authentication authentication) {
 		Projeto projeto = projetoService.getProjeto(idProjeto);
-
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
+		
 		if (!usuarioPodeEditarProjeto(projeto, usuario)) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 		}
 		Participacao participacao = projetoService.getParticipacao(idParticipacao);
 		projetoService.removerParticipacao(projeto, participacao);
-
+		notificacaoService.notificar(projeto, Evento.REMOCAO_PARTICIPANTE, usuario);
 		redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PARTICIPACAO_REMOVIDA);
 
 		model.addAttribute(PROJETO, projeto);
@@ -457,7 +468,9 @@ public class ProjetoController {
 	@RequestMapping(value = "/submeter/{id}", method = RequestMethod.GET)
 	public String submeterForm(HttpSession session, @PathVariable("id") Long id, RedirectAttributes redirectAttributes,
 			Model model, Authentication authentication) {
+		
 		Projeto projeto = projetoService.getProjeto(id);
+		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -485,19 +498,19 @@ public class ProjetoController {
 				projetoService.submeterPendencias(projeto);
 				
 				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 				projetoService.submeterPendenciasRelator(projeto);
 				
 				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
 
 				redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PROJETO_SUBMETIDO);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO, usuario);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			}
 		} else {
@@ -517,15 +530,16 @@ public class ProjetoController {
 
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
-				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO, authentication.getName())) {
+				if(!setInfoDocumentos(anexo, oldProjeto, TipoDocumento.ANEXO, usuario)) {
 					model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 					return PAGINA_CADASTRAR_PROJETO;
 				} 
 			}
 		}
 
-		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, authentication.getName())) {
+		if(!setInfoDocumentos(arquivoProjeto, oldProjeto, TipoDocumento.ARQUIVO_PROJETO, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_SUBMETER_PROJETO;
 		}
 		
@@ -538,25 +552,26 @@ public class ProjetoController {
 			model.addAttribute(PROJETO, oldProjeto);
 			model.addAttribute(PARTICIPANTES, pessoaService.getParticipantes(usuario));
 			model.addAttribute(VALIDACAO, result);
+			model.addAttribute(FONTES_FINANCIAMENTO, fonteFinanciamentoService.getFontesFinanciamento());
 			return PAGINA_SUBMETER_PROJETO;
 
 		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_PENDENCIAS)) {
 			projetoService.submeterPendencias(oldProjeto);
 			
 			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 			
 		} else if (oldProjeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 			projetoService.submeterPendenciasRelator(oldProjeto);
 			
 			redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(oldProjeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
 			
 		} else {
 			projetoService.submeter(oldProjeto);
 
 			redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PROJETO_SUBMETIDO);
-			notificacaoService.notificar(projeto, Evento.SUBMISSAO);
+			notificacaoService.notificar(projeto, Evento.SUBMISSAO, usuario);
 		}
 		
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -591,6 +606,7 @@ public class ProjetoController {
 			@RequestParam("posicionamento") StatusPosicionamento posicionamento, Model model,
 			@Valid ParecerTecnico parecer, BindingResult result, RedirectAttributes redirectAttributes, Authentication authentication) {
 
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
@@ -601,7 +617,7 @@ public class ProjetoController {
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecer.getParecer());
 		
-		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER, authentication.getName())) {
+		if(!setInfoDocumentos(anexo, projeto, TipoDocumento.DOCUMENTO_PARECER, usuario)) {
 			model.addAttribute(ERRO, MENSAGEM_ERRO_UPLOAD);
 			return PAGINA_EMITIR_PARECER;
 		}
@@ -616,7 +632,7 @@ public class ProjetoController {
 		projetoService.emitirParecer(projeto);
 
 		redirectAttributes.addFlashAttribute(INFO, MENSAGEM_PARECER_EMITIDO);
-		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER);
+		notificacaoService.notificar(projeto, Evento.EMISSAO_PARECER, usuario);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 	
@@ -699,12 +715,14 @@ public class ProjetoController {
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
 		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
+		oldProjeto.setFonteFinanciamento(newProjeto.getFonteFinanciamento());
 		return oldProjeto;
 	}
 
 	@RequestMapping(value = "/solicitar-resolucao-pendencias/{id-projeto}")
-	public String SolicitarResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, RedirectAttributes redirectAttributes) {
+	public String SolicitarResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, RedirectAttributes redirectAttributes, Authentication authentication) {
 
+		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(idProjeto);
 		
 		if (projeto == null) {
@@ -714,7 +732,7 @@ public class ProjetoController {
 		
 		if (projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS);
-			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS, usuario);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -722,7 +740,7 @@ public class ProjetoController {
 		
 		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
 			projeto.setStatus(StatusProjeto.RESOLVENDO_RESTRICOES);
-			notificacaoService.notificar(projeto, Evento.RESOLUCAO_RESTRICAO);
+			notificacaoService.notificar(projeto, Evento.RESOLUCAO_RESTRICAO, usuario);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
@@ -732,7 +750,7 @@ public class ProjetoController {
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
-	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo, String nomeUsuario) {
+	public boolean setInfoDocumentos(MultipartFile arquivo, Projeto projeto, TipoDocumento tipo, Pessoa pessoa) {
 		try {
 			if(arquivo.getBytes() != null && arquivo.getBytes().length != 0) {
 				Documento documento = new Documento();
@@ -741,7 +759,7 @@ public class ProjetoController {
 				documento.setNomeOriginal(String.valueOf(System.currentTimeMillis()) + "_" + documento.getNome());
 				documento.setExtensao(arquivo.getContentType());
 				documento.setCaminho(projeto.getCaminhoArquivos() + "/" + documento.getNomeOriginal());
-				documento.setPessoa(pessoaService.getPessoa(nomeUsuario));
+				documento.setPessoa(pessoa);
 				documento.setData(new Date());
 				
 				switch (tipo) {

@@ -42,11 +42,7 @@ public class PessoaServiceImpl implements PessoaService {
 	public Pessoa getPessoa(String cpf) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", cpf);
-		List<Pessoa> pessoas = pessoaRepository.find(QueryType.JPQL, "from Pessoa where cpf = :cpf",params);
-		if(pessoas !=null && !pessoas.isEmpty()){
-			return pessoas.get(0);
-		}
-		return null;
+		return pessoaRepository.findFirst(QueryType.JPQL, "from Pessoa where cpf = :cpf",params, 0);
 	}
 
 	@Override

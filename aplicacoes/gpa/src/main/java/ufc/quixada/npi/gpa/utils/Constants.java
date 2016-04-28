@@ -69,7 +69,9 @@ public class Constants {
 	
 	public static final String REDIRECT_PAGINA_ADMINISTRACAO_FONTES_DE_FINANCIAMENTO = "redirect:/administracao/fonte-financiamento/mostrar";
 
-	public static final String REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO = "redirect:projeto/participacoes/";
+	public static final String REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO = "redirect:/projeto/participacoes/";
+	
+	public static final String REDIRECT_PAGINA_UPLOAD_DOCUMENTOS_PROJETO = "redirect:/projeto/uploadDocumento/";
 	
 	/** Mensagens */
 	public static final String MENSAGEM_PERMISSAO_NEGADA = "Permissão negada";
