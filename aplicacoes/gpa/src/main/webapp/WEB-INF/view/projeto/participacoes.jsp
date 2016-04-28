@@ -180,9 +180,8 @@
 									class="required">*</span> Valor da bolsa (R$):</label>
 								<div class="col-sm-4">
 									<form:input id="bolsaValorMensal" name="bolsaValorMensal"
-										type="number" path="bolsaValorMensal"
-										step="1.5" min="0.00"
-										class="form-control" />
+										type="text" path="bolsaValorMensal"
+										cssClass="form-control" />
 									<div class="error-validation">
 										<form:errors path="bolsaValorMensal"></form:errors>
 									</div>
@@ -235,8 +234,8 @@
 												minIntegerDigits="2">${participacao.mesTermino}</fmt:formatNumber>/${participacao.anoTermino}</td>
 										<td class="dt-center"><fmt:formatNumber
 												minIntegerDigits="2">${participacao.cargaHorariaMensal}</fmt:formatNumber></td>
-										<td class="dt-center"><fmt:formatNumber type="CURRENCY"
-												currencyCode="BRL">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
+										<td class="dt-center"><fmt:formatNumber type="currency"
+												currencySymbol="R$ ">${participacao.bolsaValorMensal}</fmt:formatNumber></td>
 										<td class="dt-center">${participacao.tipo.descricao }</td>
 										<td class="acoes dt-center"><a id="excluir"
 											data-toggle="modal" class="btn btn-danger btn-xs"
