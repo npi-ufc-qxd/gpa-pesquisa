@@ -392,13 +392,18 @@
 	</div>
 	<!-- /container -->
 	<jsp:include page="../modulos/footer.jsp" />
-
 	<script>
 		$(function() {
 			var text_export = 'Exportar para PDF';
+			var text_export_excel = 'Exportar para Excel';
+			var relatorio_title_aprovados='Relatório - Projetos Aprovados';
+			var relatorio_title_reprovados='Relatório - Projetos Reprovados';
+			var relatorio_title_por_usuario='Relatório - Projetos por usuário';
 			var tabela_dom = 'Bfrtip';
+			var tabela_export_excel='excel';
 			var tabela_ext = 'print';
 			var img_align = 'center';
+
 			$('#relatorios-projetosAprovados')
 			.DataTable({
 				"columnDefs" : [ 
@@ -409,7 +414,7 @@
 					extend : tabela_ext,
 					text : text_export,
 					orientation: 'landscape',
-					title : 'Relatório - Projetos Aprovados',
+					title : relatorio_title_aprovados,
 					message : 'Gerado em: <fmt:formatDate value="${data_pesquisa}" pattern="dd/MM/yyyy' às 'HH:mm:ss"/>;\t'+
 								'Quantidade de Projetos: ${fn:length(relatorio.projetosAprovados)};\t'+ 
 								'Início do Intervalo de Início: <c:if test="${empty inicio_intervalo_inicio}">- \t</c:if>'+
@@ -425,7 +430,17 @@
                         .addClass( 'compact' )
                         .css( 'font-size', 'inherit' );
 					}
-				} ],
+				},{
+		            extend:tabela_export_excel,
+		            text: text_export_excel,
+		            title: relatorio_title_aprovados,
+		            exportOptions: {
+		                modifier: {
+		                    page: 'current'
+		                }
+		            }
+		        }
+				],
 				"language" : {
 					"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
 				}
@@ -449,7 +464,16 @@
 	                        .addClass( 'compact' )
 	                        .css( 'font-size', 'inherit' );
 						}
-					} ],
+					},{
+			            extend:tabela_export_excel,
+			            text: text_export_excel,
+			            title: relatorio_title_reprovados,
+			            exportOptions: {
+			                modifier: {
+			                    page: 'current'
+			                }
+			            }
+			        } ],
 					"language" : {
 						"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
 					}
@@ -470,7 +494,16 @@
 	                        .addClass( 'compact' )
 	                        .css( 'font-size', 'inherit' );
 						}
-					} ],
+					},{
+			            extend:tabela_export_excel,
+			            text: text_export_excel,
+			            title: relatorio_title_por_usuario,
+			            exportOptions: {
+			                modifier: {
+			                    page: 'current'
+			                }
+			            }
+			        } ],
 					"language" : {
 						"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
 					}
