@@ -55,6 +55,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
 
 import java.io.IOException;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +83,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Documento.TipoDocumento;
+import ufc.quixada.npi.gpa.model.FonteFinanciamento;
 import ufc.quixada.npi.gpa.model.ParecerRelator;
 import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
@@ -713,8 +715,24 @@ public class ProjetoController {
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
 		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
-		oldProjeto.setFonteFinanciamento(newProjeto.getFonteFinanciamento());
+		oldProjeto.setFontesFinanciamento(buscarFontesById(newProjeto.getFontesFinanciamento()));
+		
 		return oldProjeto;
+	}
+	
+	private List<FonteFinanciamento> buscarFontesById(List<FonteFinanciamento> fontes){
+		List<FonteFinanciamento> fontesValidas = new ArrayList<FonteFinanciamento>();
+		if(fontes != null) {
+			for(FonteFinanciamento fonte : fontes) {
+				if(fonte.getId() != null) {
+					FonteFinanciamento aux = fonteFinanciamentoService.getFonteFinanciamento(fonte.getId());
+					if(aux != null) {
+						fontesValidas.add(aux);
+					}
+				}
+			}
+		}
+		return fontesValidas;
 	}
 
 	@RequestMapping(value = "/solicitar-resolucao-pendencias/{id-projeto}")

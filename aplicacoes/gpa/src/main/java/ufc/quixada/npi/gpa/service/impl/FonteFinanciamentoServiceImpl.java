@@ -21,8 +21,8 @@ public class FonteFinanciamentoServiceImpl implements FonteFinanciamentoService 
 	}
 	
 	@Override
-	public FonteFinanciamento getFonteFinanciamento(Long fonteFinanciamentoId){
-		return fonteFinanciamentoRepository.find(FonteFinanciamento.class, fonteFinanciamentoId);
+	public FonteFinanciamento getFonteFinanciamento(Long id){
+		return fonteFinanciamentoRepository.find(FonteFinanciamento.class, id);
 	}
 
 	@Override

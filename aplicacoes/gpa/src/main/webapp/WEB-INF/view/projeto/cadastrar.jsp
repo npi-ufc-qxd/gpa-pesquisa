@@ -128,22 +128,19 @@
 							
 							<!-- Fonte de financiamento do projeto -->
 							<div class="form-item">
-								<label for="fonte-financiamento" class="col-sm-3 control-label">Fonte de Financiamento:</label>
-								<div id="fonte-financiamento" class="col-sm-4">
-									<form:select path="fonteFinanciamento.id" cssClass="form-control">
-										<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
-											<c:if test="${fonteFinanciamento.id == projeto.fonteFinanciamento.id}">
-												<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}" selected="true"></form:option>
-											</c:if>
-											<c:if test="${fonteFinanciamento.id != projeto.fonteFinanciamento.id}">
-												<form:option value="${fonteFinanciamento.id}" label="${fonteFinanciamento.nome}"></form:option>
-											</c:if>
-										</c:forEach>
-									</form:select> 
+								<label for="fontes-financiamento" class="col-sm-3 control-label">Fontes de Financiamento:</label>
+								<div id="fontes-financiamento" class="col-sm-2">
+									<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento" varStatus="i">
+										<div>
+    										<input type="checkbox" name="fontesFinanciamento[${i.index}].id" value="${fonteFinanciamento.id}"
+    										<c:forEach items="${projeto.fontesFinanciamento}" var="projetoFonte">
+    										<c:if test="${fonteFinanciamento eq projetoFonte}">checked="checked"</c:if></c:forEach>>${fonteFinanciamento.nome}
+ 										</div>
+									</c:forEach>
 								</div>
 							</div>
-							
 						</div>
+						
 
 						<div class="form-group form-item">
 							<label for="local" class="col-sm-2 control-label">Local

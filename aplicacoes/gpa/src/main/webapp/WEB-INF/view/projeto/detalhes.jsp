@@ -99,9 +99,13 @@
 										<fmt:setLocale value="pt_BR"/>
 										<label><fmt:formatNumber value="${projeto.valorProjeto }" type="currency" currencySymbol="R$ "/></label>
 									</div>
-									<label class="col-sm-2 control-label">Fonte:</label>
-									<div class="col-sm-2 value-label">
-										<label>${projeto.fonteFinanciamento.nome}</label>
+									<label class="col-sm-2 control-label">Fontes de Financiamento:</label>
+									<div class="col-sm-4 value-label">
+										<c:forEach items="${projeto.fontesFinanciamento}" var="fonteFinanciamento">
+											<div class="value-label">
+												<label>${fonteFinanciamento.nome}</label>
+											</div>
+										</c:forEach>
 									</div>
 								</div><!-- valor e fonte de financiamento -->
 								<div class="form-group">
