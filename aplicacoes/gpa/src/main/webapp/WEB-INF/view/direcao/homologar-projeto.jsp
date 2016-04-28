@@ -33,20 +33,40 @@
 							<label><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></label>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="coordenador" class="col-sm-2 control-label">Parecerista:</label>
-						<div class="col-sm-2 value-label">
-							<label>${projeto.parecer.parecerista.nome }</label>
+					<div class="well">
+						<div class="form-group">
+							<label for="coordenador" class="col-sm-2 control-label">Parecerista Técnico:</label>
+							<div class="col-sm-2 value-label">
+								<label>${projeto.parecer.parecerista.nome }</label>
+							</div>
+							<label class="col-sm-2 control-label">Posicionamento:</label>
+							<div class="col-sm-2 value-label">
+								<label>${projeto.parecer.status.descricao }</label>
+							</div>
 						</div>
-						<label class="col-sm-2 control-label">Posicionamento:</label>
-						<div class="col-sm-2 value-label">
-							<label>${projeto.parecer.status.descricao }</label>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Parecer Técnico:</label>
+							<div class="col-sm-10 value-label">
+								<label>${projeto.parecer.parecer }</label>
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Parecer Técnico:</label>
-						<div class="col-sm-10 value-label">
-							<label>${projeto.parecer.parecer }</label>
+					<div class="well">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Parecerista Relator:</label>
+							<div class="col-sm-2 value-label">
+								<label>${projeto.parecerRelator.relator.nome }</label>
+							</div>
+							<label class="col-sm-2 control-label">Posicionamento:</label>
+							<div class="col-sm-2 value-label">
+								<label>${projeto.parecer.status.descricao }</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Observações:</label>
+							<div class="col-sm-10 value-label">
+									<label default=" - ">${projeto.parecerRelator.observacao }</label>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">
