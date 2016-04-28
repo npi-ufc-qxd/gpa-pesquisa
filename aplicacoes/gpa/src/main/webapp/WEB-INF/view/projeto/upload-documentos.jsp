@@ -26,7 +26,6 @@
 				</h3>
 			</div>
 			<div class="panel-body">
-				
 				<div class="formulario">
 					<form:form id="adicionarArquivos" role="form" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="${url }" method="POST" cssClass="form-horizontal">
 						<input type="hidden" id="id" name="id" value="${projeto.id }"/>
@@ -36,28 +35,31 @@
 								<input id="anexos" type="file" name="anexos"
 									class="anexo file" multiple="multiple" data-show-preview="false"></input>
 								<c:if test="${not empty projeto.documentos }">
-									<table id="table-anexos"
-										class="table table-striped table-hover">
+									<table id="table-anexos" class="table table-striped table-hover">
 										<thead>
 											<tr>
-												<th></th>
-												<th></th>
+												<th>Nome do Documento</th>
+												<th>Pessoa</th>
+												<th>Data de Upload</th>
 											</tr>
 										</thead>
 										<tbody>
 											<c:forEach items="${projeto.documentos }" var="documento">
-				                    			<tr id="documento-${documento.id}">
-											        <td>
-											            <a href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
-											        </td>
-											        <td class="align-right">
-											        	<a id="exluir-arquivo" data-toggle="modal" data-target="#confirm-delete-file" href="#" title="Excluir"
-											        		data-name="${documento.nome }" data-id="${documento.id }" data-projeto-id="${projeto.id}">
-															<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
-														</a>
-											        </td>
-											    </tr>	
-				                    		</c:forEach>
+												<tr id="documento-${documento.id}">
+													<td><a href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
+													</td>
+													<td><label><c:out value="${documento.pessoa.nome }"></c:out></label></td>
+													<td><label><fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${documento.data }" /></label></td>
+													<td class="align-right"><a id="exluir-arquivo"
+														data-toggle="modal" data-target="#confirm-delete-file"
+														href="#" title="Excluir" data-name="${documento.nome }"
+														data-id="${documento.id }" data-projeto-id="${projeto.id}">
+														<button class="btn btn-danger btn-xs">
+															<i class="fa fa-trash-o"></i>
+															</button>
+													</a></td>
+												</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</c:if>
@@ -67,8 +69,8 @@
 						<hr></hr>
 			
 						<div class="controls">
-							<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" id="btnSalvarParticipacao"/>
-							<a  class="btn btn-default back">Cancelar</a>
+							<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" id="btnSalvarDocumento"/>
+							<a href="<c:url value="/projeto/"></c:url>" class="btn btn-default back">Cancelar</a>
 						</div>
 					</form:form>
 				</div>

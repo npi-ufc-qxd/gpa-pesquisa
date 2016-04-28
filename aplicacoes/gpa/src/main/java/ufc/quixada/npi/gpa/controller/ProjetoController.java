@@ -25,6 +25,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PARECER;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO;
@@ -223,8 +224,8 @@ public class ProjetoController {
 		}
 		
 		projetoService.update(projeto);
-		model.addAttribute(PROJETO, projeto);
-		return PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
+		redirect.addFlashAttribute(PROJETO, projeto);
+		return REDIRECT_PAGINA_UPLOAD_DOCUMENTOS_PROJETO + id;
 	}
 
 	@RequestMapping(value = "/detalhes/{id}")
