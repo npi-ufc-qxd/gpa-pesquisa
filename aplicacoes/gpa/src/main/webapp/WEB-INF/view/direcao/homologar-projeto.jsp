@@ -65,7 +65,12 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Observações:</label>
 							<div class="col-sm-10 value-label">
-									<label default=" - ">${projeto.parecerRelator.observacao }</label>
+								<c:if test="${empty projeto.parecerRelator.observacao }">
+									<label>-</label>
+								</c:if>
+								<c:if test="${not empty projeto.parecerRelator.observacao }">
+									<label>${projeto.parecerRelator.observacao }</label>
+								</c:if>
 							</div>
 						</div>
 					</div>
