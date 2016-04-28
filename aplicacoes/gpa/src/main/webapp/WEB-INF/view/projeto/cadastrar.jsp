@@ -170,7 +170,7 @@
 
 								<div id="campo-arquivo-projeto">
 									<input type="file" name="arquivo_projeto"
-										class="anexo file-loading "></input>
+										class="anexo file-loading " data-show-preview="false"></input>
 								</div>
 
 

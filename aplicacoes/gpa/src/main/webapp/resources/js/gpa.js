@@ -1061,6 +1061,6 @@ $(document).ready(function() {
 
 	$(".accordion-group").on('hidden.bs.collapse', function(e) {
 		$(this).find(".accordion-icon").addClass('fa-plus').removeClass('fa-minus');
-	  });
+	});
 	/* MODAL */
 });
