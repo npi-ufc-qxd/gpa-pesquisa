@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	$(".select-fontes-financiamento").select2();
 	
 	$("#meus-projetos").dataTable({
 		"order" : [[ 0, "desc" ]],

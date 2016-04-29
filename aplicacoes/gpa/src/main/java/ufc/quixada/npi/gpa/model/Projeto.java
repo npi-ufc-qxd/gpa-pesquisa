@@ -14,12 +14,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -66,8 +66,10 @@ public class Projeto {
 	@Column(scale=2)
 	private BigDecimal valorProjeto;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private FonteFinanciamento fonteFinanciamento;
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@JoinTable(name = "fonte_financiamento_projeto", joinColumns = @JoinColumn(name = "projeto_id", referencedColumnName="id"),
+	inverseJoinColumns = @JoinColumn(name = "fonte_financiamento_id", referencedColumnName="id"))
+	private List<FonteFinanciamento> fontesFinanciamento;
 
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
@@ -176,12 +178,12 @@ public class Projeto {
 		this.valorProjeto = valorProjeto;
 	}
 	
-	public FonteFinanciamento getFonteFinanciamento() {
-		return fonteFinanciamento;
+	public List<FonteFinanciamento> getFontesFinanciamento() {
+		return fontesFinanciamento;
 	}
 
-	public void setFonteFinanciamento(FonteFinanciamento fonteFinanciamento) {
-		this.fonteFinanciamento = fonteFinanciamento;
+	public void setFontesFinanciamento(List<FonteFinanciamento> fonteFinanciamento) {
+		this.fontesFinanciamento = fonteFinanciamento;
 	}
 
 	public void setLocal(String local) {
