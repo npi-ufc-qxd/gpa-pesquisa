@@ -95,4 +95,9 @@ public class GPAController {
 		model.addAttribute(ERRO, MENSAGEM_OCORREU_UM_ERRO);
 		return PAGINA_LOGIN;
 	}
+	
+	@RequestMapping(value = "/sobre", method = RequestMethod.GET)
+	public String sobre(ModelMap model, Principal user) {
+		return "sobre";
+	}
 }
