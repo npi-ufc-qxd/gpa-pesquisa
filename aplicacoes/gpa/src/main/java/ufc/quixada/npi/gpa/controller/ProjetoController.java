@@ -25,7 +25,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER_RELATOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_SUBMETER_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
-import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PARECER;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO;
@@ -49,9 +48,9 @@ import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_HOMOLOGADOS;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_NAO_HOMOLOGADOS;
 import static ufc.quixada.npi.gpa.utils.Constants.PROJETOS_PARECER_EMITIDO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_UPLOAD_DOCUMENTOS_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.TIPOS_DE_PARTICIPACAO;
-import static ufc.quixada.npi.gpa.utils.Constants.USUARIO;
 import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
 
 import java.io.IOException;
@@ -402,14 +401,7 @@ public class ProjetoController {
 		projeto.adicionarParticipacao(participacao);
 		projetoService.update(projeto);
 		notificacaoService.notificar(projeto, Evento.ADICAO_PARTICIPANTE, usuario);
-
-		Calendar calendario = Calendar.getInstance();
-		model.addAttribute(ANO, calendario.get(Calendar.YEAR));
-		model.addAttribute(USUARIO, usuario);
-		model.addAttribute(PROJETO, projeto);
-		model.addAttribute(PARTICIPACAO, new Participacao());
-		model.addAttribute(PESSOAS, pessoaService.getAll());
-		return PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
+		return REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO + idProjeto;
 	}
 
 	@RequestMapping(value = "/participacoes/{idProjeto}/excluir/{idParticipacao}")

@@ -433,12 +433,7 @@
 				},{
 		            extend:tabela_export_excel,
 		            text: text_export_excel,
-		            title: relatorio_title_aprovados,
-		            exportOptions: {
-		                modifier: {
-		                    page: 'current'
-		                }
-		            }
+		            title: relatorio_title_aprovados
 		        }
 				],
 				"language" : {
@@ -467,12 +462,7 @@
 					},{
 			            extend:tabela_export_excel,
 			            text: text_export_excel,
-			            title: relatorio_title_reprovados,
-			            exportOptions: {
-			                modifier: {
-			                    page: 'current'
-			                }
-			            }
+			            title: relatorio_title_reprovados
 			        } ],
 					"language" : {
 						"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
@@ -497,12 +487,7 @@
 					},{
 			            extend:tabela_export_excel,
 			            text: text_export_excel,
-			            title: relatorio_title_por_usuario,
-			            exportOptions: {
-			                modifier: {
-			                    page: 'current'
-			                }
-			            }
+			            title: relatorio_title_por_usuario
 			        } ],
 					"language" : {
 						"url" : "<c:url value="/resources/js/Portuguese-Brasil.json"/>"
