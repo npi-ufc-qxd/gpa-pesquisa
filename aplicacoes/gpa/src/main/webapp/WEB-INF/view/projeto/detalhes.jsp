@@ -279,30 +279,36 @@
 						
 						<div class="accordion-group">
 							<div class="accordion-heading">
-								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#logs"><i class="accordion-icon fa fa-plus"></i>Histórico</h4>
+								<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#logs"><i class="accordion-icon fa fa-plus"></i>		Histórico</h4>
 							</div>
+							<span class="line"></span>
 							<div id="logs" class="accordion-body collapse">
-								<div class="form-group">
-									<c:forEach items="${projeto.logs }" var="log">
-										<label class="col-sm-2 control-label">Descrição:</label>
-											<div class="col-sm-2 value-label">
-												<label >${log.descricao}</label>
-											</div>
-										<label class="col-sm-2 control-label">Autor:</label>
-											<div class="col-sm-2 value-label">
-												<label>${log.autor}</label>
-											</div>
-										<label class="col-sm-2 control-label">Data:</label>
-											<div class="col-sm-2 value-label">
-												<label><fmt:formatDate pattern="dd/MM/yyyy" value="${log.data}" /></label>
-											</div><br><br><br>
-										</c:forEach>	
-									</div>
+								<c:if test="${empty projeto.logs }">
+									<label>-</label>
+								</c:if>
+								<c:if test="${not empty projeto.logs }">
+									<table id="historico-table" class="display">
+										<thead>
+											<tr>
+												<th class="dt-center">Descrição</th>
+												<th class="dt-center">Autor</th>
+												<th class="dt-center">Data</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${projeto.logs }" var="log">
+												<tr>
+													<td class="dt-center">${log.descricao}</td>
+													<td class="dt-center">${log.autor}</td>
+													<td class="dt-center"><fmt:formatDate pattern="dd/MM/yyyy" value="${log.data}" /></td>
+												</tr>
+										</c:forEach>
+										</tbody>
+									</table>
+								</c:if>
 								</div><!-- participantes -->
 							</div><!-- participantes body -->
-						</div><!-- accordion participantes -->
 						
-						<span class="line"></span>
 						
 						<c:if test="${not empty projeto.parecer and projeto.status != 'RESOLVENDO_PENDENCIAS'}">
 							<div class="accordion-group">

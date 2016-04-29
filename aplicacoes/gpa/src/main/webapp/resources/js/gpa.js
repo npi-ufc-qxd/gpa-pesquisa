@@ -155,7 +155,17 @@ $(document).ready(function() {
             "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
         }
 	});
-	
+	$("#historico-table").dataTable({
+		"order" : [[ 0, "desc" ]],
+		"columnDefs" : [ 
+		                {"targets" : 0, "orderable" : false}
+		                ],
+		"searching":false,
+		"paging":false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
 	$("#participantes-table").dataTable({
 		
 		"searching":false,
@@ -391,7 +401,6 @@ $(document).ready(function() {
             
         }
     });
-	
 	$("#submeterProjetoForm").bootstrapValidator({
 		group: ".form-item",
 		excluded: ":disabled",
