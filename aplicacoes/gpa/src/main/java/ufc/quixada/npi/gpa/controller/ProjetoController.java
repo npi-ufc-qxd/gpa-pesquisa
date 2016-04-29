@@ -637,7 +637,7 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
+		if ((projeto.getStatus().equals(StatusProjeto.APROVADO) || projeto.getStatus().equals(StatusProjeto.REPROVADO))) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
@@ -648,7 +648,14 @@ public class ProjetoController {
 		}
 		model.addAttribute(PROJETO, projeto);
 		model.addAttribute(POSICIONAMENTO, StatusPosicionamento.values());
-		model.addAttribute(PARECER, new ParecerRelator());
+		
+		if (projeto.getStatus().equals(StatusProjeto.AGUARDANDO_HOMOLOGACAO)) {
+			model.addAttribute(ACTION, EDITAR);
+			model.addAttribute(PARECER, projeto.getParecerRelator());
+		} else {
+			model.addAttribute(ACTION, CADASTRAR);
+			model.addAttribute(PARECER, new ParecerRelator());
+		}
 		return PAGINA_EMITIR_PARECER_RELATOR;
 	}
 	

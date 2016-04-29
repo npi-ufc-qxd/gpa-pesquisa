@@ -49,24 +49,53 @@
 						</div>
 					</div>
 					
-					<div class="form-group form-item">
-						<label for="posicionamento" class="col-sm-2 control-label">Posicionamento:</label>
-						<div class="col-sm-4">
-							<select id="posicionamento" name="posicionamento" class="form-control">
-								<c:forEach items="${posicionamento}" var="pos">
-									<option value="${pos}">${pos.descricao}</option>
-								</c:forEach>
-							</select>
+					<c:if test="${action == 'cadastrar'}">
+						<div class="form-group form-item">
+							<label for="posicionamento" class="col-sm-2 control-label">Posicionamento:</label>
+							<div class="col-sm-4">
+								<select id="posicionamento" name="posicionamento" class="form-control">
+									<c:forEach items="${posicionamento}" var="pos">
+										<option value="${pos}">${pos.descricao}</option>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
-					</div>
 					
-					<div class="form-group form-item">
-						<label for="observacao" class="col-sm-2 control-label"> Observação:</label>
-						<div class="col-sm-10">
-							<form:textarea path="observacao" cssClass="form-control" rows="8" placeholder="Observacao"/>
-							<form:errors path="observacao" cssClass="error-validation"></form:errors>		
+						<div class="form-group form-item">
+							<label for="observacao" class="col-sm-2 control-label"> Observação:</label>
+							<div class="col-sm-10">
+								<form:textarea path="observacao" cssClass="form-control" rows="8" placeholder="Observacao"/>
+								<form:errors path="observacao" cssClass="error-validation"></form:errors>		
+							</div>
 						</div>
-					</div>
+					</c:if>
+					
+					<c:if test="${action == 'editar'}">
+						<div class="form-group form-item">
+							<label for="posicionamento" class="col-sm-2 control-label">Posicionamento:</label>
+							<div class="col-sm-4">
+								<select id="posicionamento" name="posicionamento" class="form-control">
+									<c:forEach items="${posicionamento}" var="pos">
+										<c:if test="${parecer.status == pos}">
+											<option selected="selected" value="${pos}">${pos.descricao}</option>
+										</c:if>
+										
+										<c:if test="${parecer.status != pos}">
+											<option value="${pos}">${pos.descricao}</option>
+										</c:if>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+					
+						<div class="form-group form-item">
+							<label for="observacao" class="col-sm-2 control-label"> Observação:</label>
+							<div class="col-sm-10">
+								<form:textarea value="${parecer.observacao}" path="observacao" cssClass="form-control" rows="8" placeholder="Observacao" />
+								<form:errors path="observacao" cssClass="error-validation"></form:errors>		
+							</div>
+						</div>
+					</c:if>
 	
 					<div class="form-group">
 						<div class="col-sm-2"></div>
