@@ -4,7 +4,6 @@ $(document).ready(function() {
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3]},            
-	        {"targets" : 2, "orderable" : false},
 	        {"targets" : 3, "orderable" : false}
 		],
 		"language": {
@@ -35,7 +34,6 @@ $(document).ready(function() {
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 3 ]},            
-            {"targets" : 3, "orderable" : false},
 		],
 		"bAutoWidth": false,
 		"language": {
@@ -69,7 +67,6 @@ $(document).ready(function() {
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
-            {"targets" : 3, "orderable" : false},
             {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
@@ -84,8 +81,6 @@ $(document).ready(function() {
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [ 0, 1, 3, 4 ]},            
-            {"targets" : 1, "orderable" : false},
-		    {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {
@@ -99,8 +94,6 @@ $(document).ready(function() {
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
             {className: "dt-center", "targets": [0, 1, 3]},
-            {"targets" : 1, "orderable" : false},
-            {"targets" : 3, "orderable" : false},
             {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
@@ -115,8 +108,6 @@ $(document).ready(function() {
 		"order" : [[ 0, "desc" ]],
 		"columnDefs" : [ 
 		    {className: "dt-center", "targets": [0, 1, 3, 4]},
-            {"targets" : 1, "orderable" : false},
-            {"targets" : 4, "orderable" : false}
 		],
 		"bAutoWidth": false,
 		"language": {

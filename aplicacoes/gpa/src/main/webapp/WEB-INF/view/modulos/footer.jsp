@@ -21,6 +21,7 @@
 <script src="<c:url value="/resources/js/datatable_ext/vfs_fonts.js" />"></script>
 <script src="<c:url value="/resources/js/datatable_ext/buttons.html5.min.js" />"></script>
 <script src="<c:url value="/resources/js/datatable_ext/buttons.print.min.js" />"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
 <script src="<c:url value="/resources/js/moment.js" />"></script>
 <script src="<c:url value="/resources/js/moment.min.js" />"></script>
 
