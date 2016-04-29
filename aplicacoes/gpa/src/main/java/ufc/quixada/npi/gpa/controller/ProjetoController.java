@@ -71,6 +71,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -159,7 +160,7 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String cadastrar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
-			@Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
+			@ModelAttribute("projeto") @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
 			Authentication authentication, Model model) {
 		
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());

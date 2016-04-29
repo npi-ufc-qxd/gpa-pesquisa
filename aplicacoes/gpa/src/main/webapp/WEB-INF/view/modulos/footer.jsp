@@ -29,4 +29,5 @@
 	<img id="logo-npi" alt="Núcleo de Práticas em Informática - Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-npi.png" />">
 	<p>Desenvolvido por <a href="http://www.npi.quixada.ufc.br" target="_blank">Núcleo de Práticas em Informática</a></p>
 	<p><a href="http://www.quixada.ufc.br" target="_blank">Universidade Federal do Ceará - Campus Quixadá</a></p>
+	<p><a href="/gpa-pesquisa/sobre">Sobre a Equipe</a>
 </footer>
