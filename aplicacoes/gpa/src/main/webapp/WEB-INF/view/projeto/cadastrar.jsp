@@ -129,14 +129,12 @@
 							<!-- Fonte de financiamento do projeto -->
 							<div class="form-item">
 								<label for="fontes-financiamento" class="col-sm-3 control-label">Fontes de Financiamento:</label>
-								<div id="fontes-financiamento" class="col-sm-2">
-									<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento" varStatus="i">
-										<div>
-    										<input type="checkbox" name="fontesFinanciamento[${i.index}].id" value="${fonteFinanciamento.id}"
-    										<c:forEach items="${projeto.fontesFinanciamento}" var="projetoFonte">
-    										<c:if test="${fonteFinanciamento eq projetoFonte}">checked="checked"</c:if></c:forEach>>${fonteFinanciamento.nome}
- 										</div>
-									</c:forEach>
+								<div id="fontes-financiamento">
+									<select class="select-fontes-financiamento col-sm-5" multiple="multiple" name="fontesId">
+										<c:forEach items="${fontesFinanciamento}" var="fonteFinanciamento">
+											<option value="${fonteFinanciamento.id}" <c:if test="${projeto.fontesFinanciamento.contains(fonteFinanciamento)}">selected="selected"</c:if>>${fonteFinanciamento.nome}</option>
+										</c:forEach>
+									</select>
 								</div>
 							</div>
 						</div>

@@ -163,7 +163,7 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String cadastrar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
-			@ModelAttribute("projeto") @Valid Projeto projeto, BindingResult result, RedirectAttributes redirect, 
+			@ModelAttribute("projeto") @Valid Projeto projeto, @RequestParam(value = "fontesId", required = false) List<Long> fontesFinanciamentoId, BindingResult result, RedirectAttributes redirect, 
 			Authentication authentication, Model model) {
 		
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
@@ -175,6 +175,7 @@ public class ProjetoController {
 		}
 
 		projeto.setCoordenador(pessoaService.getPessoa(authentication.getName()));
+		projeto.setFontesFinanciamento(buscarFontesById(fontesFinanciamentoId));
 		projetoService.cadastrar(projeto);
 		notificacaoService.notificar(projeto, Evento.CADASTRO_PROJETO, usuario);
 		
@@ -300,7 +301,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
 	public String editar(@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, 
-			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
+			@Valid Projeto projeto, BindingResult result, @RequestParam(value = "fontesId", required = false) List<Long> fontesFinanciamentoId , Model model, HttpSession session,
 			RedirectAttributes redirect, Authentication authentication) {
 		model.addAttribute(ACTION, EDITAR);
 		
@@ -315,6 +316,7 @@ public class ProjetoController {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
+		oldProjeto.setFontesFinanciamento(buscarFontesById(fontesFinanciamentoId));
 
 		projetoValidator.validate(oldProjeto, result);
 		
@@ -505,8 +507,8 @@ public class ProjetoController {
 			} else if (projeto.getStatus().equals(StatusProjeto.RESOLVENDO_RESTRICOES)) {
 				projetoService.submeterPendenciasRelator(projeto);
 				
-				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS);
-				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_PENDENCIAS, usuario);
+				redirectAttributes.addFlashAttribute(INFO, Constants.MENSAGEM_PROJETO_RESOLUCAO_RESTRICOES);
+				notificacaoService.notificar(projeto, Evento.SUBMISSAO_RESOLUCAO_RESTRICAO, usuario);
 				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			} else {
 				projetoService.submeter(projeto);
@@ -524,11 +526,12 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam("anexos") List<MultipartFile> anexos,
 			@RequestParam("arquivo_projeto") MultipartFile arquivoProjeto, @Valid Projeto projeto,
-			Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
+			@RequestParam("fontesId") List<Long> fontesFinanciamentoId, Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto oldProjeto = projetoService.getProjeto(projeto.getId());
 		oldProjeto.setCoordenador(usuario);
 		oldProjeto = updateProjetoFields(oldProjeto, projeto);
+		oldProjeto.setFontesFinanciamento(buscarFontesById(fontesFinanciamentoId));
 
 		if (anexos != null && !anexos.isEmpty()) {
 			for (MultipartFile anexo : anexos) {
@@ -717,17 +720,16 @@ public class ProjetoController {
 		oldProjeto.setAtividades(newProjeto.getAtividades());
 		oldProjeto.setTermino(newProjeto.getTermino());
 		oldProjeto.setValorProjeto(newProjeto.getValorProjeto());
-		oldProjeto.setFontesFinanciamento(buscarFontesById(newProjeto.getFontesFinanciamento()));
 		
 		return oldProjeto;
 	}
 	
-	private List<FonteFinanciamento> buscarFontesById(List<FonteFinanciamento> fontes){
+	private List<FonteFinanciamento> buscarFontesById(List<Long> ids){
 		List<FonteFinanciamento> fontesValidas = new ArrayList<FonteFinanciamento>();
-		if(fontes != null) {
-			for(FonteFinanciamento fonte : fontes) {
-				if(fonte.getId() != null) {
-					FonteFinanciamento aux = fonteFinanciamentoService.getFonteFinanciamento(fonte.getId());
+		if(ids != null) {
+			for(Long id : ids) {
+				if(id != null) {
+					FonteFinanciamento aux = fonteFinanciamentoService.getFonteFinanciamento(id);
 					if(aux != null) {
 						fontesValidas.add(aux);
 					}
