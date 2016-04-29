@@ -254,7 +254,7 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
-											<td>${projeto.status.descricao }</td>
+											<td>${projeto.status.descricao}</td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
 													<a id="avaliarProjeto" title="Avaliar Projeto" href="<c:url value="/projeto/avaliar/${projeto.id}" ></c:url>">
@@ -281,6 +281,7 @@
 										<th>Coordenador</th>
 										<th>Avaliação</th>
 										<th>Data Avaliação</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -289,9 +290,16 @@
 											<td>${projeto.codigo }</td>
 											<td><a href="<c:url value="/projeto/detalhes/${projeto.id}" ></c:url>">${projeto.nome}</a></td>
 											<td><a href="<c:url value="/pessoa/detalhes/${projeto.coordenador.id}" ></c:url>">${projeto.coordenador.nome}</a></td>
-											<td>${projeto.parecerRelator.status}</td>
+											<td>${projeto.parecerRelator.status.descricao}</td>
 											<td>
 												<fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecerRelator.data}" />
+											</td>
+											<td class="acoes">
+												<c:if test="${projeto.status == 'AGUARDANDO_HOMOLOGACAO'}">
+													<a id="reavaliarProjeto" title="Reavaliar Projeto" href="<c:url value="/projeto/avaliar/${projeto.id}" ></c:url>">
+														<button class="btn btn-primary btn-xs"><i class="fa fa-gavel"></i></button>
+													</a>
+												</c:if>
 											</td>
 										</tr>
 									</c:forEach>
