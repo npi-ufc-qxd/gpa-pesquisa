@@ -41,6 +41,7 @@ public class Participacao {
 	private Integer anoInicio;
 	private Integer mesTermino;
 	private Integer anoTermino;
+	
 	private BigDecimal bolsaValorMensal;
 	private Integer cargaHorariaMensal;
 	
