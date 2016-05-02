@@ -19,8 +19,15 @@
 				<div class="title">
 					<h3 class="panel-title">Avaliar Projeto</h3>
 				</div>
-				<div class="button-right">
-						<a href="<c:url value="/projeto/solicitar-resolucao-pendencias/${projeto.id}"></c:url>" class="btn btn-warning">Solicitar Resolução de Restrições</a>
+				<div class="align-right">
+					<a id="solicitar-resolucao-restricoes" data-toggle="modal"
+					data-target="#confirm-solicitar-resolucao-restricoes" title="Solicitar Resolução de Restrições">
+						
+						<button class="btn btn-warning btn-sm">
+							Solicitar Resolução de Restrições
+						</button>
+						
+					</a>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -113,6 +120,37 @@
 			</div><!-- /panel-body -->
 		</div><!-- /panel -->
 	</div><!-- /container -->
+	
+	
+	<!-- Modal Solicitar Resolução de Restrições -->
+	<div class="modal fade" id="confirm-solicitar-resolucao-restricoes">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						&times;<span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">Solicitar Resolução de Restrições</h4>
+				</div>
+				
+				<form:form commandName="pendencia" servletRelativeAction="/projeto/solicitar-resolucao-pendencias/${projeto.id}">
+					<div class="modal-body form-group">
+						
+						<form:textarea path="descricao" cssClass="form-control" placeholder="Descrição das restrições" required="required"/>
+						<form:errors path="descricao" cssClass="error-validation"></form:errors>	
+						
+					</div>
+					<div class="modal-footer controls">
+						<input name="enviar" type="submit" class="btn btn-warning btn-sm" value="Enviar Solicitação">
+						<button type="button" class="btn btn-default btn-sm"
+							data-dismiss="modal">Cancelar</button>
+					</div>
+				</form:form>
+			</div>
+		</div>
+	</div>
+	
 	
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>
 	

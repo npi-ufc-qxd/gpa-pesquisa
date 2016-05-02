@@ -1,6 +1,8 @@
 package ufc.quixada.npi.gpa.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,6 +48,9 @@ public class ParecerTecnico {
 	@ManyToOne
 	@JoinColumn(name = "parecerista_id")
 	private Pessoa parecerista;
+	
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+	private List<Pendencia> pendencias;
 
 	public Long getId() {
 		return id;
@@ -108,6 +114,17 @@ public class ParecerTecnico {
 
 	public void setParecer(String parecer) {
 		this.parecer = parecer;
+	}
+
+	public List<Pendencia> getPendencias() {
+		return pendencias;
+	}
+	
+	public void addPendencia(Pendencia pendencia){
+		if(this.pendencias == null){
+			this.pendencias = new ArrayList<Pendencia>();
+		}
+		this.pendencias.add(pendencia);
 	}
 
 	@Override

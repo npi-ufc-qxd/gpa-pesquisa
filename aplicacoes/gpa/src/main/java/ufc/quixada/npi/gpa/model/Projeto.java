@@ -90,7 +90,7 @@ public class Projeto {
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	private ParecerTecnico parecer;
 	
-	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+	@OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
 	private ParecerRelator parecerRelator;
 	
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
@@ -278,7 +278,7 @@ public class Projeto {
 	public void setArquivoProjeto(Documento arquivoProjeto) {
 		this.arquivoProjeto = arquivoProjeto;
 	}
-	
+
 	public String getCaminhoArquivos(){
 		return PASTA_DOCUMENTOS_GPA + "/" + this.codigo;
 	}

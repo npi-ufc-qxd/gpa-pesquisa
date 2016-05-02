@@ -304,7 +304,7 @@
 						
 						<span class="line"></span>
 						
-						<c:if test="${not empty projeto.parecer and projeto.status != 'RESOLVENDO_PENDENCIAS'}">
+						<c:if test="${not empty projeto.parecer}">
 							<div class="accordion-group">
 								<div class="accordion-heading">
 									<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#parecer"><i class="accordion-icon fa fa-plus"></i>	Parecer Técnico</h4>
@@ -316,29 +316,53 @@
 										<div class="col-sm-4 value-label">
 											<label><a href="<c:url value="/pessoa/detalhes/${projeto.parecer.parecerista.id}" ></c:url>">${projeto.parecer.parecerista.nome}</a></label>
 										</div>
-										<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
+										<c:if test="${projeto.status == 'AGUARDANDO_PARECER' or projeto.status == 'RESOLVENDO_PENDENCIAS'}">
 											<label class="col-sm-2 control-label">Prazo parecer:</label>
 											<div class="col-sm-4 value-label">
 												<label><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></label>
 											</div>						
 										</c:if>
-										<c:if test="${projeto.status != 'AGUARDANDO_PARECER'}">
+										<c:if test="${projeto.status != 'AGUARDANDO_PARECER' and projeto.status != 'RESOLVENDO_PENDENCIAS'}">
 											<label class="col-sm-2 control-label">Posicionamento:</label>
 											<div class="col-sm-4 value-label">
 												<label>${projeto.parecer.status.descricao }</label>
-											</div>						
+											</div>
+											<label class="col-sm-2 control-label">Parecer:</label>
+											<div class="col-sm-10 value-label">
+												<label>${projeto.parecer.parecer}</label>
+											</div>
+											<c:if test="${not empty projeto.parecer.documento}">
+												<label class="col-sm-2 control-label">Anexo:</label>
+												<div class="col-sm-10 value-label">
+													<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />">${projeto.parecer.documento.nome }</a>
+												</div>
+											</c:if>
 										</c:if>
-										<label class="col-sm-2 control-label">Parecer:</label>
-										<div class="col-sm-10 value-label">
-											<label>${projeto.parecer.parecer}</label>
-										</div>
 									</div><!-- parecer -->
-									<div class="form-group">
-										<label class="col-sm-2 control-label">Anexo:</label>
-										<div class="col-sm-10 value-label">
-											<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />">${projeto.parecer.documento.nome }</a>
-										</div>
-									</div><!-- anexo -->
+									<c:if test="${not empty projeto.parecer.pendencias}">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">Histórico de Pendências:</label>
+											<br/>
+											<div class="col-sm-10">
+												<table class="table table-hover table-striped">
+													<thead>
+														<tr>
+															<th class="col-sm-2">Data</th>
+															<th class="col-sm-10">Descrição</th>
+														</tr>
+													</thead>
+													<tbody>
+														<c:forEach var="pendencia" items="${projeto.parecer.pendencias}">
+															<tr>
+																<td class="col-sm-2"><fmt:formatDate pattern="dd/MM/yyyy" value="${pendencia.data}" /></td>
+																<td class="col-sm-10">${pendencia.descricao}</td>
+															</tr>
+														</c:forEach>
+													</tbody>
+												</table>
+											</div>
+										</div><!-- Pendencias -->
+									</c:if>
 								</div><!-- parecer body -->
 							</div><!-- accordion parecer -->
 						</c:if>
@@ -371,6 +395,30 @@
 											<label class="col-sm-3 control-label">Aguardando Avaliação</label>
 										</c:if>
 									</div><!-- relator -->
+									<c:if test="${not empty projeto.parecerRelator.restricoes}">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">Histórico de Restrições:</label>
+											<br/>
+											<div class="col-sm-10">
+												<table class="table table-hover table-striped">
+													<thead>
+														<tr>
+															<th class="col-sm-2">Data</th>
+															<th class="col-sm-10">Descrição</th>
+														</tr>
+													</thead>
+													<tbody>
+														<c:forEach var="restricao" items="${projeto.parecerRelator.restricoes}">
+															<tr>
+																<td class="col-sm-2"><fmt:formatDate pattern="dd/MM/yyyy" value="${restricao.data}" /></td>
+																<td class="col-sm-10">${restricao.descricao}</td>
+															</tr>
+														</c:forEach>
+													</tbody>
+												</table>
+											</div>
+										</div><!-- Restrições -->
+									</c:if>
 								</div><!-- relator body -->
 							</div><!-- accordion relator -->
 						</c:if>
