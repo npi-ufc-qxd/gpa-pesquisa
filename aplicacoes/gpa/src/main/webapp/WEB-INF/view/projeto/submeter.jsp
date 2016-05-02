@@ -86,7 +86,7 @@
 							<label for="valorProjeto" class="col-sm-2 control-label"><span class="required">*</span> Valor:</label>
 
 							<div class="col-sm-2">
-								<form:input id="valorProjeto" type="text" path="valorProjeto" cssClass="form-control" step="1.5" placeholder="Valor do Projeto"/>
+								<form:input id="valorProjeto" type="text" value="0,00" path="valorProjeto" cssClass="form-control" step="1.5" placeholder="Valor do Projeto"/>
 
 								<div class="error-validation">
 									<form:errors path="valorProjeto"></form:errors>

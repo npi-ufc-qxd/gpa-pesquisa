@@ -180,7 +180,7 @@
 									class="required">*</span> Valor da bolsa (R$):</label>
 								<div class="col-sm-4">
 									<form:input id="bolsaValorMensal" name="bolsaValorMensal"
-										type="text" path="bolsaValorMensal"
+										type="text" value="0,00" path="bolsaValorMensal"
 										cssClass="form-control" />
 									<div class="error-validation">
 										<form:errors path="bolsaValorMensal"></form:errors>

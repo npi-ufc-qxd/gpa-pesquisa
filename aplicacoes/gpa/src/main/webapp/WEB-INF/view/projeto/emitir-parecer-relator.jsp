@@ -110,6 +110,32 @@
 							<span class="campo-obrigatorio"><span class="required">*</span> Campos obrigatórios</span>
 						</div>
 					</div>
+					
+					<div class="col-sm-2"></div>
+					
+					<div class="col-sm-10 accordion-group">
+						<div class="accordion-heading">
+							<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#restricoes"><i class="accordion-icon fa fa-plus"></i> Histórico de Restrições</h4>
+							<div id="restricoes" class="accordion-body collapse">
+								<table class="display pendencias-table">
+									<thead>
+										<tr>
+											<th class="col-sm-2">Data</th>
+											<th class="col-sm-10">Descrição</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="restricao" items="${parecer.restricoes}">
+											<tr>
+												<td class="col-sm-2"><fmt:formatDate pattern="dd/MM/yyyy" value="${restricao.data}" /></td>
+												<td class="col-sm-10">${restricao.descricao}</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 	
 					<div class="controls">
 						<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />

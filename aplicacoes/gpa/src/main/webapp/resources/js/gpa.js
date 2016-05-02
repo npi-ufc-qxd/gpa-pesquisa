@@ -176,6 +176,21 @@ $(document).ready(function() {
         }
 	});
 	
+	$(".pendencias-table").dataTable({
+		"order" : [[ 0, "desc" ]],
+		
+		"columnDefs" : [ 
+		                {"targets" : 0, "orderable" : true},
+		                {"targets" : 1, "orderable" : false},
+		    		],
+		
+		"searching":false,
+		"paging":false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$("#inicio, #termino, #prazo").datepicker({
 		format : "dd/mm/yyyy",
 		todayBtn : "linked",
