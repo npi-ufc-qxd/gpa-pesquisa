@@ -97,6 +97,8 @@ public class Constants {
 	public static final String MENSAGEM_PROJETO_SUBMETIDO = "Projeto submetido com sucesso";
 	
 	public static final String MENSAGEM_PROJETO_RESOLUCAO_PENDENCIAS = "Resolução de pendências submetido com sucesso";
+	
+	public static final String MENSAGEM_PROJETO_RESOLUCAO_RESTRICOES = "Resolução de restrições submetido com sucesso";
 
 	public static final String MENSAGEM_PARECER_EMITIDO = "Parecer emitido com sucesso";
 

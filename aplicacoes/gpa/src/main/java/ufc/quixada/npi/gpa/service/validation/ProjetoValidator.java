@@ -78,7 +78,6 @@ public class ProjetoValidator implements Validator {
 		validaCampoObrigatorio("documentos", errors);
 		validaCampoObrigatorio("arquivoProjeto", errors);
 		validaCampoObrigatorio("valorProjeto", errors);
-		validaCampoObrigatorio("fonteFinanciamento", errors);
 
 		Map<String, Date> datas = new HashMap<>();
 		datas.put("inicio", projeto.getInicio());
@@ -86,8 +85,15 @@ public class ProjetoValidator implements Validator {
 		validaCampoData(datas, false, errors);
 		
 		validaValorProjeto(projeto, errors);
+		validaFontesFinanciamento(projeto, errors);
 
 		validaParticipacaoCoordenador(projeto, errors);
+	}
+
+	private void validaFontesFinanciamento(Projeto projeto, Errors errors) {
+		if(projeto.getFontesFinanciamento().isEmpty()) {
+			errors.rejectValue("fontesFinanciamento", "projeto.campoNulo");
+		}
 	}
 
 	/**
