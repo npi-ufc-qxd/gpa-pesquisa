@@ -1082,9 +1082,51 @@ $(document).ready(function() {
 	$(".accordion-group").on('shown.bs.collapse', function() {
 	    $(this).find(".accordion-icon").addClass('fa-minus').removeClass('fa-plus');
 	  });
+	
 
 	$(".accordion-group").on('hidden.bs.collapse', function(e) {
 		$(this).find(".accordion-icon").addClass('fa-plus').removeClass('fa-minus');
+	});
+	
+	$(function(){
+		var status = $("#status").val();
+		
+		if(status == "NOVO"){
+			$("#progress-novo").addClass("progress-bar-warning");
+			$("#progress-submetido").css({"background-color": "gray"});
+			$("#progress-parecer").css({"background-color": "gray"});
+			$("#progress-avaliacao").css({"background-color": "gray"});
+			$("#progress-homologado").css({"background-color": "gray"});
+			
+		}else if(status == "SUBMETIDO"){
+			$("#progress-novo").addClass("progress-bar-success");
+			$("#progress-submetido").addClass("progress-bar-warning");
+			$("#progress-parecer").css({"background-color": "gray"});
+			$("#progress-avaliacao").css({"background-color": "gray"});
+			$("#progress-homologado").css({"background-color": "gray"});
+			
+		}else if(status == "AGUARDANDO_PARECER" || status == "RESOLVENDO_PENDENCIAS"){
+			$("#progress-novo").addClass("progress-bar-success");
+			$("#progress-submetido").addClass("progress-bar-success");
+			$("#progress-parecer").addClass("progress-bar-warning");
+			$("#progress-avaliacao").css({"background-color": "gray"});
+			$("#progress-homologado").css({"background-color": "gray"});
+			
+		}else if(status == "AGUARDANDO_AVALIACAO" || status == "RESOLVENDO_RESTRICOES" || status == "AGUARDANDO_HOMOLOGACAO"){
+			$("#progress-novo").addClass("progress-bar-success");
+			$("#progress-submetido").addClass("progress-bar-success");
+			$("#progress-parecer").addClass("progress-bar-success");
+			$("#progress-avaliacao").addClass("progress-bar-warning");
+			$("#progress-homologado").css({"background-color": "gray"});
+			
+		}else{
+			$("#progress-novo").addClass("progress-bar-success");
+			$("#progress-submetido").addClass("progress-bar-success");
+			$("#progress-parecer").addClass("progress-bar-success");
+			$("#progress-avaliacao").addClass("progress-bar-success");
+			$("#progress-homologado").addClass("progress-bar-warning");
+			
+		}
 	});
 
 	/* MODAL */
