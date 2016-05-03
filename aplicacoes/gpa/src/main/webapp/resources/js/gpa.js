@@ -1077,21 +1077,17 @@ $(document).ready(function() {
 	});
 	
 	$(function(){
-		$("#valorProjeto").maskMoney({prefix:"R$ ", decimal:",", thousands:".", allowZero:true, allowNegative:true, affixesStay: false});
-		$("#bolsaValorMensal").maskMoney({prefix:"R$ ", decimal:",", thousands:".", allowZero:true, allowNegative:true, affixesStay: false});
-
+		if($(".campo-valor").val()==""){
+			$(".campo-valor").val("0.00");
+		}
 	});
 	
-	$("#adicionarProjetoForm").submit(function(){
-		$("#valorProjeto").val($("#valorProjeto").val().replace(".", "").replace(",", "."));
+	$(".campo-valor").focusin(function(){
+		$(this).maskMoney({prefix:"R$ ", decimal:",", thousands:".", allowZero:true, allowNegative:true});
 	});
 	
-	$("#submeterProjetoForm").submit(function(){
-		$("#valorProjeto").val($("#valorProjeto").val().replace(".", "").replace(",", "."));
-	});
-	
-	$("#adicionarParticipacaoForm").submit(function(){
-		$("#bolsaValorMensal").val($("#bolsaValorMensal").val().replace(".", "").replace(",", "."));
+	$(".campo-valor").focusout(function(){
+		$(this).val($(this).val().replace("R$ ", "").replace(".", "").replace(",", "."));
 	});
 	
 	$(".accordion-group").on('shown.bs.collapse', function() {
@@ -1101,6 +1097,8 @@ $(document).ready(function() {
 	$(".accordion-group").on('hidden.bs.collapse', function(e) {
 		$(this).find(".accordion-icon").addClass('fa-plus').removeClass('fa-minus');
 	});
+	
+	
 
 	/* MODAL */
 });

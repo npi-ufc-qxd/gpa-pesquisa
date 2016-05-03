@@ -114,7 +114,7 @@
 							<div class="form-item">
 								<label for="valorProjeto" class="col-sm-2 control-label">Valor:</label>
 								<div class="col-sm-2">
-									<form:input id="valorProjeto" type="text" value="0,00" path="valorProjeto" cssClass="form-control" placeholder="Valor do Projeto"/>
+									<form:input id="valorProjeto" type="text" path="valorProjeto" cssClass="form-control campo-valor" placeholder="Valor do Projeto"/>
 									<div class="error-validation">
 										<form:errors path="valorProjeto"></form:errors>
 									</div>
