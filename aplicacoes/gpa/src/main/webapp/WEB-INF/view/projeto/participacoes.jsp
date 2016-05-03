@@ -72,8 +72,8 @@
 								<div class="form-item" id="divParticipante">	
 									<label for="idParticipantes" class="col-sm-2 control-label">Novo participante:</label>
 									<div class="col-sm-4">
-										<select name="participanteSelecionado" class="form-control">
-											<c:set var="part" value="${pessoas }"></c:set>
+										<select name="participanteSelecionado" class="select-participantes form-control">
+											<c:set var="part" value="${pessoas}"></c:set>
 											
 											<c:forEach items="${pessoas }" var="participante">
 												<c:set var="selected" value=""></c:set>
