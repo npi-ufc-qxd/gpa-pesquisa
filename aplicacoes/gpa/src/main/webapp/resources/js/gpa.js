@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$(".select-fontes-financiamento").select2();
+	$(".select-fontes-financiamento, .select-participantes, .select-parecerista, .select-relator").select2();
 	
 	$("#meus-projetos").dataTable({
 		"order" : [[ 0, "desc" ]],

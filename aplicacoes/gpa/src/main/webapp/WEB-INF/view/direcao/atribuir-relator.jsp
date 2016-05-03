@@ -55,7 +55,7 @@
 					<div class="form-group form-item">
 						<label for="relator" class="col-sm-2 control-label"><span class="required">*</span> ${relator}</label>
 						<div class="col-sm-4">
-							<select id="relator" name="relatorId" class="form-control">
+							<select class="select-relator form-control" id="relator" name="relatorId" class="form-control">
 								<c:forEach items="${usuarios}" var="usuario">
 									<option value="${usuario.id}">${usuario.nome}</option>
 								</c:forEach>
