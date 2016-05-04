@@ -181,7 +181,7 @@
 								<div class="col-sm-4">
 									<form:input id="bolsaValorMensal" name="bolsaValorMensal"
 										type="text" path="bolsaValorMensal"
-										cssClass="form-control" />
+										cssClass="form-control campo-valor" />
 									<div class="error-validation">
 										<form:errors path="bolsaValorMensal"></form:errors>
 									</div>

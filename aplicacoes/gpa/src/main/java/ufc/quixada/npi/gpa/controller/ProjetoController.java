@@ -52,6 +52,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_UPLOAD_DOCUMEN
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.TIPOS_DE_PARTICIPACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
+import static ufc.quixada.npi.gpa.utils.Constants.PENDENCIA;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -90,6 +91,7 @@ import ufc.quixada.npi.gpa.model.ParecerTecnico;
 import ufc.quixada.npi.gpa.model.ParecerTecnico.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Participacao;
 import ufc.quixada.npi.gpa.model.Participacao.TipoParticipacao;
+import ufc.quixada.npi.gpa.model.Pendencia;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.PessoaExterna;
 import ufc.quixada.npi.gpa.model.Projeto;
@@ -593,6 +595,7 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		model.addAttribute(PROJETO, projeto);
+		model.addAttribute(PENDENCIA, new Pendencia());
 		model.addAttribute(POSICIONAMENTO, StatusPosicionamento.values());
 		model.addAttribute(PARECER, new ParecerTecnico());
 		return PAGINA_EMITIR_PARECER;
@@ -653,8 +656,9 @@ public class ProjetoController {
 		}
 		model.addAttribute(PROJETO, projeto);
 		model.addAttribute(POSICIONAMENTO, StatusPosicionamento.values());
+		model.addAttribute(PENDENCIA, new Pendencia());
 		
-		if (projeto.getStatus().equals(StatusProjeto.AGUARDANDO_HOMOLOGACAO)) {
+		if (projeto.getStatus().equals(StatusProjeto.AGUARDANDO_HOMOLOGACAO) || (projeto.getParecerRelator() != null)) {
 			model.addAttribute(ACTION, EDITAR);
 			model.addAttribute(PARECER, projeto.getParecerRelator());
 		} else {
@@ -739,10 +743,11 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/solicitar-resolucao-pendencias/{id-projeto}")
-	public String SolicitarResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, RedirectAttributes redirectAttributes, Authentication authentication) {
+	public String SolicitarResolucaoPendencias(@PathVariable("id-projeto") Long idProjeto, Pendencia pendencia, RedirectAttributes redirectAttributes, Authentication authentication) {
 
 		Pessoa usuario = pessoaService.getPessoa(authentication.getName());
 		Projeto projeto = projetoService.getProjeto(idProjeto);
+		pendencia.setData(new Date());
 		
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute(ERRO, MENSAGEM_PROJETO_INEXISTENTE);
@@ -752,14 +757,16 @@ public class ProjetoController {
 		if (projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			projeto.setStatus(StatusProjeto.RESOLVENDO_PENDENCIAS);
 			notificacaoService.notificar(projeto, Evento.RESOLUCAO_PENDENCIAS, usuario);
+			projeto.getParecer().addPendencia(pendencia);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
-		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)){
+		if(projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO) || projeto.getStatus().equals(StatusProjeto.AGUARDANDO_HOMOLOGACAO)){
 			projeto.setStatus(StatusProjeto.RESOLVENDO_RESTRICOES);
 			notificacaoService.notificar(projeto, Evento.RESOLUCAO_RESTRICAO, usuario);
+			projeto.getParecerRelator().addRestricao(pendencia);
 			projetoService.update(projeto);
 
 			return REDIRECT_PAGINA_LISTAR_PROJETO;

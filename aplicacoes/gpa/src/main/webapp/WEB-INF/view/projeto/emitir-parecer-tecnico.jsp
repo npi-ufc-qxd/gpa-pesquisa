@@ -19,8 +19,15 @@
 				<div class="title">
 					<h3 class="panel-title">Emitir Parecer</h3>
 				</div>
-				<div class="button-right">
-						<a href="<c:url value="/projeto/solicitar-resolucao-pendencias/${projeto.id}"></c:url>" class="btn btn-warning">Solicitar Resolução de Pendências</a>
+				<div class="align-right">
+					<a id="solicitar-resolucao-pendencias" data-toggle="modal"
+					data-target="#confirm-solicitar-resolucao-pendencias" title="Solicitar Resolução de Pendências">
+						
+						<button class="btn btn-warning btn-sm">
+							Solicitar Resolução de Pendências
+						</button>
+						
+					</a>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -81,6 +88,32 @@
 							<span class="campo-obrigatorio"><span class="required">*</span> Campos obrigatórios</span>
 						</div>
 					</div>
+					
+					<div class="col-sm-2"></div>
+					
+					<div class="col-sm-10 accordion-group">
+						<div class="accordion-heading">
+							<h4 class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#pendencias"><i class="accordion-icon fa fa-plus"></i> Histórico de Pendências</h4>
+							<div id="pendencias" class="accordion-body collapse">
+								<table class="display pendencias-table">
+									<thead>
+										<tr>
+											<th class="col-sm-2">Data</th>
+											<th class="col-sm-10">Descrição</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="pendencia" items="${parecer.pendencias}">
+											<tr>
+												<td class="col-sm-2"><fmt:formatDate pattern="dd/MM/yyyy" value="${pendencia.data}" /></td>
+												<td class="col-sm-10">${pendencia.descricao}</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 	
 					<div class="controls">
 						<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
@@ -91,6 +124,35 @@
 			</div><!-- /panel-body -->
 		</div><!-- /panel -->
 	</div><!-- /container -->
+	
+	<!-- Modal Solicitar Resolução de Pendências -->
+	<div class="modal fade" id="confirm-solicitar-resolucao-pendencias">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">
+						&times;<span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title">Solicitar Resolução de Pendências</h4>
+				</div>
+				
+				<form:form commandName="pendencia" servletRelativeAction="/projeto/solicitar-resolucao-pendencias/${projeto.id}">
+					<div class="modal-body form-group">
+						
+						<form:textarea path="descricao" cssClass="form-control" placeholder="Descrição das pendências" required="required"/>
+						<form:errors path="descricao" cssClass="error-validation"></form:errors>	
+						
+					</div>
+					<div class="modal-footer controls">
+						<input name="enviar" type="submit" class="btn btn-warning btn-sm" value="Enviar Solicitação">
+						<button type="button" class="btn btn-default btn-sm"
+							data-dismiss="modal">Cancelar</button>
+					</div>
+				</form:form>
+			</div>
+		</div>
+	</div>
 	
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>
 	
