@@ -1096,6 +1096,7 @@ $(document).ready(function() {
 			$("#progress-submetido").css({"background-color": "gray"});
 			$("#progress-parecer").css({"background-color": "gray"});
 			$("#progress-avaliacao").css({"background-color": "gray"});
+			$("#progress-homologacao").css({"background-color": "gray"});
 			$("#progress-homologado").css({"background-color": "gray"});
 			
 		}else if(status == "SUBMETIDO"){
@@ -1103,6 +1104,7 @@ $(document).ready(function() {
 			$("#progress-submetido").addClass("progress-bar-warning");
 			$("#progress-parecer").css({"background-color": "gray"});
 			$("#progress-avaliacao").css({"background-color": "gray"});
+			$("#progress-homologacao").css({"background-color": "gray"});
 			$("#progress-homologado").css({"background-color": "gray"});
 			
 		}else if(status == "AGUARDANDO_PARECER" || status == "RESOLVENDO_PENDENCIAS"){
@@ -1110,13 +1112,23 @@ $(document).ready(function() {
 			$("#progress-submetido").addClass("progress-bar-success");
 			$("#progress-parecer").addClass("progress-bar-warning");
 			$("#progress-avaliacao").css({"background-color": "gray"});
+			$("#progress-homologacao").css({"background-color": "gray"});
 			$("#progress-homologado").css({"background-color": "gray"});
 			
-		}else if(status == "AGUARDANDO_AVALIACAO" || status == "RESOLVENDO_RESTRICOES" || status == "AGUARDANDO_HOMOLOGACAO"){
+		}else if(status == "AGUARDANDO_AVALIACAO" || status == "RESOLVENDO_RESTRICOES"){
 			$("#progress-novo").addClass("progress-bar-success");
 			$("#progress-submetido").addClass("progress-bar-success");
 			$("#progress-parecer").addClass("progress-bar-success");
 			$("#progress-avaliacao").addClass("progress-bar-warning");
+			$("#progress-homologacao").css({"background-color": "gray"});
+			$("#progress-homologado").css({"background-color": "gray"});
+			
+		}else if(status == "AGUARDANDO_HOMOLOGACAO"){
+			$("#progress-novo").addClass("progress-bar-success");
+			$("#progress-submetido").addClass("progress-bar-success");
+			$("#progress-parecer").addClass("progress-bar-success");
+			$("#progress-avaliacao").addClass("progress-bar-success");
+			$("#progress-homologacao").addClass("progress-bar-warning");
 			$("#progress-homologado").css({"background-color": "gray"});
 			
 		}else{
@@ -1124,7 +1136,8 @@ $(document).ready(function() {
 			$("#progress-submetido").addClass("progress-bar-success");
 			$("#progress-parecer").addClass("progress-bar-success");
 			$("#progress-avaliacao").addClass("progress-bar-success");
-			$("#progress-homologado").addClass("progress-bar-warning");
+			$("#progress-homologacao").addClass("progress-bar-success");
+			$("#progress-homologado").addClass("progress-bar-success");
 			
 		}
 	});
