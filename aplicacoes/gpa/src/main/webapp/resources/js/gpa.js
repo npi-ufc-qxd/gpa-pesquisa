@@ -176,6 +176,21 @@ $(document).ready(function() {
         }
 	});
 	
+	$(".pendencias-table").dataTable({
+		"order" : [[ 0, "desc" ]],
+		
+		"columnDefs" : [ 
+		                {"targets" : 0, "orderable" : true},
+		                {"targets" : 1, "orderable" : false},
+		    		],
+		
+		"searching":false,
+		"paging":false,
+		"language": {
+            "url": "/gpa-pesquisa/resources/js/Portuguese-Brasil.json"
+        }
+	});
+	
 	$("#inicio, #termino, #prazo").datepicker({
 		format : "dd/mm/yyyy",
 		todayBtn : "linked",
@@ -1062,21 +1077,17 @@ $(document).ready(function() {
 	});
 	
 	$(function(){
-		$("#valorProjeto").maskMoney({prefix:"R$ ", decimal:",", thousands:".", allowZero:true, allowNegative:true, affixesStay: false});
-		$("#bolsaValorMensal").maskMoney({prefix:"R$ ", decimal:",", thousands:".", allowZero:true, allowNegative:true, affixesStay: false});
-
+		if($(".campo-valor").val()==""){
+			$(".campo-valor").val("0.00");
+		}
 	});
 	
-	$("#adicionarProjetoForm").submit(function(){
-		$("#valorProjeto").val($("#valorProjeto").val().replace(".", "").replace(",", "."));
+	$(".campo-valor").focusin(function(){
+		$(this).maskMoney({prefix:"R$ ", decimal:",", thousands:".", allowZero:true, allowNegative:true});
 	});
 	
-	$("#submeterProjetoForm").submit(function(){
-		$("#valorProjeto").val($("#valorProjeto").val().replace(".", "").replace(",", "."));
-	});
-	
-	$("#adicionarParticipacaoForm").submit(function(){
-		$("#bolsaValorMensal").val($("#bolsaValorMensal").val().replace(".", "").replace(",", "."));
+	$(".campo-valor").focusout(function(){
+		$(this).val($(this).val().replace("R$ ", "").replace(".", "").replace(",", "."));
 	});
 	
 	$(".accordion-group").on('shown.bs.collapse', function() {

@@ -291,6 +291,8 @@ public class Constants {
 	
 	public static final String DATA_TERMINO_INTERVALO = "data_termino_intervalo";
 	
+	public static final String PENDENCIA = "pendencia";
+	
 	/*Tipos de relatório*/
 	
 	public static final String APROVADOS = "aprovados";
