@@ -48,6 +48,24 @@
 						</div>
 					</c:if>
 					
+					<div>
+									
+						<hr/>	
+							
+						<div id="projeto-progress" class="progress" style="height:25px">
+							<input id="status" type="hidden" value="${projeto.status}">
+							<div id="progress-novo" class="progress-bar align-center" role="progressbar" style="width:19%;font-size:15px;line-height:25px"> Novo </div>
+							<div id="progress-submetido" class="progress-bar" role="progressbar" style="width:19%;font-size:15px;line-height:25px"> Submetido </div>
+							<div id="progress-parecer" class="progress-bar" role="progressbar" style="width:19%;font-size:15px;line-height:25px"> Aguardando Parecer </div>
+							<div id="progress-avaliacao" class="progress-bar" role="progressbar" style="width:19%;font-size:15px;line-height:25px"> Aguardando Avaliação </div>
+							<div id="progress-homologacao" class="progress-bar" role="progressbar" style="width:19%;font-size:15px;line-height:25px"> Aguardando Homologação </div>
+							<div id="progress-homologado" class="progress-bar" role="progressbar" style="width:5%;font-size:15px;line-height:25px"> <span class="glyphicon glyphicon-ok"></span> </div>
+						</div>
+												
+						<hr/>
+					
+					</div>
+					
 					<div id="accordion" class="accordion">
 						<div class="accordion-group">
 							<div class="accordion-heading">
