@@ -40,7 +40,7 @@ public class LdapAuthentication implements AuthenticationProvider {
             throw new BadCredentialsException(LOGIN_INVALIDO);
         }
  
-        return new UsernamePasswordAuthenticationToken(user, password, authorities);
+        return new UsernamePasswordAuthenticationToken(username, password, authorities);
 	}
 
 	@Override

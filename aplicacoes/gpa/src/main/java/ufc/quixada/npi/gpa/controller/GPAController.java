@@ -2,16 +2,16 @@ package ufc.quixada.npi.gpa.controller;
 
 import static ufc.quixada.npi.gpa.utils.Constants.ERRO;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_TECNICO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OCORREU_UM_ERRO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PAGINA_NAO_ENCONTRADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_USUARIO_SENHA_INVALIDOS;
-import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LOGIN;
-import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
-import static ufc.quixada.npi.gpa.utils.Constants.USUARIO_LOGADO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_403;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_404;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_500;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_OCORREU_UM_ERRO;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_ERRO_TECNICO;
-import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PAGINA_NAO_ENCONTRADA;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LOGIN;
+import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.USUARIO_LOGADO;
 
 import java.security.Principal;
 

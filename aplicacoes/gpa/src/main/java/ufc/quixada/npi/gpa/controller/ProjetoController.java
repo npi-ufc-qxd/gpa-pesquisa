@@ -31,6 +31,7 @@ import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACAO_EXTERNA;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPACOES_EM_PROJETOS;
 import static ufc.quixada.npi.gpa.utils.Constants.PARTICIPANTES;
+import static ufc.quixada.npi.gpa.utils.Constants.PENDENCIA;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_COORDENADOR;
 import static ufc.quixada.npi.gpa.utils.Constants.PERMISSAO_PARECERISTA;
@@ -52,7 +53,6 @@ import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_UPLOAD_DOCUMEN
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_VINCULAR_PARTICIPANTES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.TIPOS_DE_PARTICIPACAO;
 import static ufc.quixada.npi.gpa.utils.Constants.VALIDACAO;
-import static ufc.quixada.npi.gpa.utils.Constants.PENDENCIA;
 
 import java.io.IOException;
 import java.math.RoundingMode;
