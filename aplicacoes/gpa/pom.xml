@@ -24,7 +24,7 @@
 		<javax.inject.version>1</javax.inject.version>
 
 		<!-- Spring -->
-		<spring.version>4.0.1.RELEASE</spring.version>
+		<spring.version>5.2.7.RELEASE</spring.version>
 
 		<!-- Hibernate / JPA -->
 		<hibernate.version>4.3.1.Final</hibernate.version>
