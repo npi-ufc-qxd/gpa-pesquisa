@@ -34,7 +34,7 @@
 		<postgresql.version>9.4-1205-jdbc42</postgresql.version>
 
 		<!-- Spring Security -->
-		<spring.security.version>3.2.1.RELEASE</spring.security.version>
+		<spring.security.version>5.3.3.RELEASE</spring.security.version>
 
 		<!-- Logging -->
 		<slf4j-log4j12.version>1.7.6</slf4j-log4j12.version>
