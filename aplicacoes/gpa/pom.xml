@@ -10,7 +10,7 @@
 
 	<properties>
 		<!-- Jackson JSON Mapper -->
-		<jackson.version>2.6.3</jackson.version>
+		<jackson.version>2.12.1</jackson.version>
 
 		<!-- Generic properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
